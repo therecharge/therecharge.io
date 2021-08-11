@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
+import { Section } from 'react-scroll-section';
 import Footer from "../../Components/Desktop/Footer";
 
 function randomNum() {
@@ -38,7 +39,7 @@ function Home({ t }) {
   };
 
   return (
-    <Container>
+    <Container id="home">
       <Content>
         <div className="first">
           <div className="left">

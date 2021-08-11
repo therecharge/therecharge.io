@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
+import { Section } from 'react-scroll-section';
 import Footer from "../../Components/Desktop/Footer";
 
 function About({ t }) {
@@ -66,7 +67,7 @@ function About({ t }) {
       </Content>
       <Content id="aboutSection2">
         <div className="second">
-          <div className="theme text Roboto_50pt_Black">
+          <div className="theme Roboto_50pt_Black">
             Recharge Virtuous Cycle
           </div>
           <div className="content">
@@ -235,7 +236,6 @@ function About({ t }) {
 }
 const Container = styled.div`
   width: 100%;
-  margin-top: 100px;
   // padding: 0 416px;
   box-sizing: border-box;
 `;
@@ -252,6 +252,7 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     margin: 0 auto;
+    margin-top: 100px;
 
     .theme {
       margin: 0 auto;

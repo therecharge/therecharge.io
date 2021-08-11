@@ -332,13 +332,6 @@ function Pool({
     }
   }, [poolInfo, userInfo])
 
-  // useEffect(async () => {
-  //   if (account && chList[sel].address !== "0x00" && !poolMethods.isSet && userInfo.address !== "0x00") {
-  //     setOnLoading(false);
-  //   }
-  // }, [poolMethods])
-
-
   useEffect(async () => {
     setOnLoading(true);
     try {
@@ -810,7 +803,7 @@ function Pool({
                   style={
                     userInfo.balance > 0
                       ? {
-                        backgroundColor: "var(--gray-20)",
+                        backgroundColor: "var(--ultramarine-blue)",
                         cursor: "pointer",
                       }
                       : {
@@ -932,7 +925,7 @@ function Pool({
                     poolInfo.period[0] + poolInfo.period[1] <
                       new Date().getTime() / 1000 && userInfo.balance > 0
                       ? {
-                        backgroundColor: "var(--gray-20)",
+                        backgroundColor: "var(--ultramarine-blue)",
                         cursor: "pointer",
                       }
                       : {

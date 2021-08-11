@@ -194,51 +194,50 @@ const Mobile = React.memo(
     }, [web3]);
 
     return (
-      <Main layout={false}>
-        <div className={"desktop " + getTitle()}>
-          <Gnb
-            connectWallet={ConnectWallet}
-            onDisconnect={onDisconnect}
-            account={account}
-            getTitle={getTitle}
-            modalPoolOpen={modalPoolOpen}
-            modal2Open={modal2Open}
-            modalSwapOpen={modalSwapOpen}
-            setModalPoolOpen={setModalPoolOpen}
-            setModal2Open={setModal2Open}
-            setModalSwapOpen={setModalSwapOpen}
-            params={params}
-            setParams={setParams}
-          />
+      <div className={"desktop " + getTitle()}>
+        <Gnb
+          connectWallet={ConnectWallet}
+          onDisconnect={onDisconnect}
+          account={account}
+          getTitle={getTitle}
+          modalPoolOpen={modalPoolOpen}
+          modal2Open={modal2Open}
+          modalSwapOpen={modalSwapOpen}
+          setModalPoolOpen={setModalPoolOpen}
+          setModal2Open={setModal2Open}
+          setModalSwapOpen={setModalSwapOpen}
+          params={params}
+          setParams={setParams}
+        />
 
-          <Switch>
-            <Route path="/docs/:viewNum" component={Docs}></Route>
-            <Route
-              path="/defi"
-              component={() => (
-                <Defi
-                  connectWallet={ConnectWallet}
-                  onDisconnect={onDisconnect}
-                  account={account}
-                  chainId={chainId}
-                  web3={web3}
-                  toast={toast}
-                  modalPoolOpen={modalPoolOpen}
-                  modal2Open={modal2Open}
-                  modalSwapOpen={modalSwapOpen}
-                  setModalPoolOpen={setModalPoolOpen}
-                  setModal2Open={setModal2Open}
-                  setModalSwapOpen={setModalSwapOpen}
-                  params={params}
-                  setParams={setParams}
-                />
-              )}
-            ></Route>
-            <Route path="/recharge" component={Recharge}></Route>
-            <Route path="/about" component={About}></Route>
-            <Route path="/" component={Home}></Route>
-          </Switch>
-          <style jsx global>{`
+        <Switch>
+          <Route path="/docs/:viewNum" component={Docs}></Route>
+          <Route
+            path="/defi"
+            component={() => (
+              <Defi
+                connectWallet={ConnectWallet}
+                onDisconnect={onDisconnect}
+                account={account}
+                chainId={chainId}
+                web3={web3}
+                toast={toast}
+                modalPoolOpen={modalPoolOpen}
+                modal2Open={modal2Open}
+                modalSwapOpen={modalSwapOpen}
+                setModalPoolOpen={setModalPoolOpen}
+                setModal2Open={setModal2Open}
+                setModalSwapOpen={setModalSwapOpen}
+                params={params}
+                setParams={setParams}
+              />
+            )}
+          ></Route>
+          <Route path="/recharge" component={Recharge}></Route>
+          <Route path="/about" component={About}></Route>
+          <Route path="/" component={Home}></Route>
+        </Switch>
+        <style jsx global>{`
             body {
               width: 100%;
               margin: 0px;
@@ -292,9 +291,14 @@ const Mobile = React.memo(
               background-color: #02051c;
               border-radius: 3px;
             }
+            .ToastHub___StyledAnimatedDiv-sc-1y0i8xl-1 {
+              margin-top: 10px;
+            } 
+            .ToastHub___StyledDiv-sc-1y0i8xl-0 {
+              padding: 5px 20px;
+            }
           `}</style>
-        </div>
-      </Main>
+      </div>
     );
   },
   (prevProps, nextProps) => {
