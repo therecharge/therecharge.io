@@ -20,7 +20,7 @@ function ModalPool({
   setParams,
   t,
   chainId,
-  toast
+  toast,
 }) {
   // const [modalPoolOpen, setModalPoolOpen] = useRecoilState(modalPoolOpenState);
   // const [modalPool2Open, setModalPool2Open] =
@@ -35,14 +35,14 @@ function ModalPool({
         <Link to="/defi">
           <div
             className="background"
-            onClick={() => {
-              setModalPoolOpen(!modalPoolOpen);
-              setModalPool2Open(!modalPool2Open);
-              setParams({
-                type: "",
-                isLP: false,
-              });
-            }}
+            // onClick={() => {
+            //   setModalPoolOpen(!modalPoolOpen);
+            //   setModalPool2Open(!modalPool2Open);
+            //   setParams({
+            //     type: "",
+            //     isLP: false,
+            //   });
+            // }}
           ></div>
         </Link>
         <div
@@ -169,19 +169,23 @@ function ModalPool({
               className="modal2"
               style={modalPool2Open ? { display: "flex" } : { display: "none" }}
             >
-              <Pool
-                web3={web3}
-                connectWallet={connectWallet}
-                onDisconnect={onDisconnect}
-                handleModal2={() => {
-                  setModalPool2Open(!modalPool2Open);
-                }}
-                account={account}
-                setParams={setParams}
-                params={params}
-                chainId={chainId}
-                toast={toast}
-              />
+              {modalPool2Open ? (
+                <Pool
+                  web3={web3}
+                  connectWallet={connectWallet}
+                  onDisconnect={onDisconnect}
+                  handleModal2={() => {
+                    setModalPool2Open(!modalPool2Open);
+                  }}
+                  account={account}
+                  setParams={setParams}
+                  params={params}
+                  chainId={chainId}
+                  toast={toast}
+                />
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>

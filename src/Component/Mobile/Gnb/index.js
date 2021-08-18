@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ToastHub, Toast } from "@aragon/ui";
-import { useTranslation } from "react-i18next";
+import { useTranslation, withTranslation } from "react-i18next";
 
 function Gnb({
   connectWallet,
@@ -70,7 +70,11 @@ function Gnb({
       </Logo>
       <div
         className="state Roboto_30pt_Black"
-        style={modal2Open || modalPoolOpen || modalSwapOpen ? { marginLeft: "80px" } : {}}
+        style={
+          modal2Open || modalPoolOpen || modalSwapOpen
+            ? { marginLeft: "80px" }
+            : {}
+        }
       >
         {getTitle()}
       </div>
@@ -97,26 +101,42 @@ function Gnb({
                 onClick={
                   account
                     ? async () => {
-                      await onDisconnect();
-                      // await toast("코인 지갑의 연결이 해제되었어요.");
-                    }
+                        await onDisconnect();
+                        // await toast("코인 지갑의 연결이 해제되었어요.");
+                      }
                     : async () => {
-                      await connectWallet();
-                      // await toast("코인 지갑이 연결되었어요.");
-                    }
+                        await connectWallet();
+                        // await toast("코인 지갑이 연결되었어요.");
+                      }
                 }
               >
                 <span className="Roboto_35pt_Bold">
                   {account
                     ? account.substring(0, 8) +
-                    "..." +
-                    account.substring(36, 42)
+                      "..." +
+                      account.substring(36, 42)
                     : "Wallet Connect"}
                 </span>
               </ConnectWallet>
             )}
           </Toast>
         </ToastHub>
+        <div className="dropdown">
+          <div
+            className={
+              sidemenuOpen.about ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
+            }
+          >
+            <a
+              href={"/"}
+              onClick={() => {
+                setMenuOpen(false);
+              }}
+            >
+              Home
+            </a>
+          </div>
+        </div>
         <div className="dropdown">
           <Link
             // to={"/about"}
@@ -418,7 +438,12 @@ function Gnb({
               <div
                 className="logo"
                 onClick={() => {
-                  window.open("https://medium.com/therecharge", "_blank");
+                  window.open(
+                    i18n.language == "en"
+                      ? "https://medium.com/therecharge"
+                      : "https://medium.com/therecharge-kr",
+                    "_blank"
+                  );
                 }}
               >
                 <img src="/footer2.png" />
@@ -442,10 +467,10 @@ function Gnb({
               <div
                 className="logo"
                 onClick={() =>
-                (window.location =
-                  i18n.language == "en"
-                    ? "https://t.me/therecharge_official"
-                    : "https://t.me/therecharge_officialkr")
+                  (window.location =
+                    i18n.language == "en"
+                      ? "https://t.me/therecharge_official"
+                      : "https://t.me/therecharge_officialkr")
                 }
               >
                 <img src="/footer4.png" />
