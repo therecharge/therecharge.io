@@ -267,11 +267,11 @@ function Defi({
       style={
         modalPoolOpen || modalSwapOpen
           ? {
-            position: "fixed",
-            top: "-20px",
-            width: "100%",
-            backgroundColor: "#02051c",
-          }
+              position: "fixed",
+              top: "-20px",
+              width: "100%",
+              backgroundColor: "#02051c",
+            }
           : {}
       }
     >
@@ -383,8 +383,9 @@ function Defi({
                               {...cell.getCellProps()}
                               onClick={() => {
                                 setParams({
-                                  type: `${myPools[row.index].type.split(" ")[0]
-                                    }`,
+                                  type: `${
+                                    myPools[row.index].type.split(" ")[0]
+                                  }`,
                                   isLP: false,
                                 });
 
@@ -463,15 +464,21 @@ function Defi({
             </div>
             <div className="container">
               <div className="left box">
-                <div className="title Roboto_40pt_Black">
+                <div
+                  className="title Roboto_40pt_Black"
+                  style={{ zIndex: "2" }}
+                >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
-                <div className="text Roboto_20pt_Regular_Gray">
+                <div
+                  className="text Roboto_20pt_Regular_Gray"
+                  style={{ zIndex: "2" }}
+                >
                   Total Circulating Supply in ERC20
                 </div>
                 <div className="logo1">
@@ -524,15 +531,21 @@ function Defi({
             </div>
             <div className="container">
               <div className="left box">
-                <div className="title Roboto_40pt_Black">
+                <div
+                  className="title Roboto_40pt_Black"
+                  style={{ zIndex: "2" }}
+                >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
-                <div className="text Roboto_20pt_Regular_Gray">
+                <div
+                  className="text Roboto_20pt_Regular_Gray"
+                  style={{ zIndex: "2" }}
+                >
                   Total Circulating Supply in HRC20
                 </div>
                 <div className="logo2">
@@ -585,8 +598,16 @@ function Defi({
             </div>
             <div className="container">
               <div className="left box">
-                <div className="title Roboto_40pt_Black">0 RCG</div>
-                <div className="text Roboto_20pt_Regular_Gray">
+                <div
+                  className="title Roboto_40pt_Black"
+                  style={{ zIndex: "2" }}
+                >
+                  0 RCG
+                </div>
+                <div
+                  className="text Roboto_20pt_Regular_Gray"
+                  style={{ zIndex: "2" }}
+                >
                   Total Circulating Supply in BEP20
                 </div>
                 <div className="logo3">
