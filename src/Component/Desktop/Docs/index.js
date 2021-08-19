@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ReactPaginate from "react-paginate";
 import commentList from "./commentList/index";
+import { HashLink } from 'react-router-hash-link';
 import Footer from "../../Components/Desktop/Footer";
 
 function Docs({ match }) {
@@ -21,6 +22,10 @@ function Docs({ match }) {
     });
   };
 
+  const setLocation = () => {
+    window.history.replaceState({}, '', '/doc/1');
+  };
+
   useEffect(() => {
     setViewNum(match.params.viewNum);
     setPageCount(commentList.length / perPage);
@@ -28,7 +33,9 @@ function Docs({ match }) {
 
   useEffect(() => {
     setViewNum(window.location.pathname.split("/")[2]);
-    window.scrollTo(0, 0);
+    if (window.location.href.includes("#")) {
+      setCurrentPage(0);
+    }
   }, [window.location.pathname])
 
   return (
@@ -47,7 +54,7 @@ function Docs({ match }) {
                 className="Roboto_30pt_Black_L "
                 onClick={() => {
                   setViewNum(1);
-                  window.scrollTo(0, 0);
+                  setLocation();
                   setCurrentPage(0);
                 }}
               >
@@ -63,7 +70,7 @@ function Docs({ match }) {
                     style={{ textDecoration: "none" }}
                     onClick={() => {
                       setViewNum(1);
-                      window.scrollTo(0, 0);
+                      setLocation();
                       setCurrentPage(0);
                     }}
                   >
@@ -76,7 +83,7 @@ function Docs({ match }) {
                     style={{ textDecoration: "none" }}
                     onClick={() => {
                       setViewNum(1);
-                      window.scrollTo(0, 0);
+                      setLocation();
                       setCurrentPage(1);
                     }}
                   >
@@ -89,7 +96,7 @@ function Docs({ match }) {
                     style={{ textDecoration: "none" }}
                     onClick={() => {
                       setViewNum(1);
-                      window.scrollTo(0, 0);
+                      setLocation();
                       setCurrentPage(2);
                     }}
                   >
@@ -102,7 +109,7 @@ function Docs({ match }) {
                     style={{ textDecoration: "none" }}
                     onClick={() => {
                       setViewNum(1);
-                      window.scrollTo(0, 0);
+                      setLocation();
                       setCurrentPage(3);
                     }}
                   >
@@ -115,7 +122,7 @@ function Docs({ match }) {
                     style={{ textDecoration: "none" }}
                     onClick={() => {
                       setViewNum(1);
-                      window.scrollTo(0, 0);
+                      setLocation();
                       setCurrentPage(4);
                     }}
                   >
@@ -128,7 +135,7 @@ function Docs({ match }) {
                     style={{ textDecoration: "none" }}
                     onClick={() => {
                       setViewNum(1);
-                      window.scrollTo(0, 0);
+                      setLocation();
                       setCurrentPage(5);
                     }}
                   >
@@ -143,33 +150,32 @@ function Docs({ match }) {
             </div>
             <div className="topic Roboto_30pt_Black_L unactive">
               <a
-                href="https://www.certik.org/projects/therecharge"
+                onClick={() => window.open("https://www.certik.org/projects/therecharge", "_blank")}
                 style={{ textDecoration: "none", color: "white" }}
               >
                 Token Audit
               </a>
             </div>
-            <div
-              className="topic Roboto_30pt_Black_L active"
-              onClick={() => {
-                setViewNum(2);
-                window.scrollTo(0, 0);
-              }}
-            >
-              <a style={{ textDecoration: "none", color: "white" }}>
-                Disclaimer
-              </a>
+            <div className="topic Roboto_30pt_Black_L active">
+              <HashLink
+                to={"/docs/2#disclaimer"}
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                <a>
+                  Disclaimer
+                </a>
+              </HashLink>
             </div>
-            <div
-              className="topic Roboto_30pt_Black_L active"
-              onClick={() => {
-                setViewNum(3);
-                window.scrollTo(0, 0);
-              }}
-            >
-              <a style={{ textDecoration: "none", color: "#ffffff" }}>
-                CI Download
-              </a>
+            <div className="topic Roboto_30pt_Black_L active">
+              <HashLink
+                to={"/docs/3#cidownload"}
+                className="topic Roboto_30pt_Black_L active"
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                <a>
+                  CI Download
+                </a>
+              </HashLink>
             </div>
           </div>
         </Subnav>
@@ -279,7 +285,7 @@ function Docs({ match }) {
             </div>
           </Section>
 
-          <Section id="docsSection2">
+          <Section id="cidownload">
             <div className={viewNum == 3 ? "active" : "hide"}>
               <div className="ciContent">
                 <div className="theme Roboto_50pt_Black_L">CI Download</div>
@@ -471,7 +477,7 @@ const Line = styled.div`
 
 const Content = styled.div`
   z-index: 3;
-  margin-top: 306px;
+  // margin-top: 306px;
   margin-left: 60px;
   color: #ffffff;
 
@@ -519,6 +525,9 @@ const Section = styled.div`
   flex-direction: column;
   .desc .active {
     display: block;
+  }
+  .active{
+    margin-top: 300px;
   }
   .hide {
     display: none;

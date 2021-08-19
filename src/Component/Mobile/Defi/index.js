@@ -9,7 +9,7 @@ import { withTranslation } from "react-i18next";
 /* Components */
 import ModalPool from "./modal_pool";
 import ModalSwap from "./modal_swap";
-import getPools from "./utils";
+// import getPools from "./utils";
 
 /* State */
 import { useRecoilState } from "recoil";
@@ -59,36 +59,36 @@ function Defi({
   const [modalPool2Open, setModalPool2Open] = useRecoilState(
     modalPool2OpenState
   );
-  const [chargerList, setChargerList] = useState([
-    {
-      type: "Flexible",
-      isLP: false,
-      address: "0xac66a0E8bf3de069Ffc043491CB8ca7b278529A0",
-    },
-    {
-      type: "Locked",
-      isLP: false,
-      address: "0xf1e99a4a9569A2Afd40e12b7686e31608Ebd2663",
-    },
-  ]);
-  const [chargerInfoList, setChargerInfoList] = useState([
-    {
-      name: "Fake Charger No.0",
-      apy: "100",
-      tvl: "100,000,000",
-      limit: "0",
-      balance: "1,000,000",
-      share: "100",
-      reward: "100,000",
-      period: "21.01.01 00:00:00 ~ 21.01.30 00:00:00(GMT)",
-      available: "7,000,000.00",
-      allowance: "0",
-      rewardSymbol: "RCGr",
-      stakeSymbol: "RCGs",
-      redemption: "2",
-      status: "1",
-    },
-  ]);
+  // const [chargerList, setChargerList] = useState([
+  //   {
+  //     type: "Flexible",
+  //     isLP: false,
+  //     address: "0xac66a0E8bf3de069Ffc043491CB8ca7b278529A0",
+  //   },
+  //   {
+  //     type: "Locked",
+  //     isLP: false,
+  //     address: "0xf1e99a4a9569A2Afd40e12b7686e31608Ebd2663",
+  //   },
+  // ]);
+  // const [chargerInfoList, setChargerInfoList] = useState([
+  //   {
+  //     name: "Fake Charger No.0",
+  //     apy: "100",
+  //     tvl: "100,000,000",
+  //     limit: "0",
+  //     balance: "1,000,000",
+  //     share: "100",
+  //     reward: "100,000",
+  //     period: "21.01.01 00:00:00 ~ 21.01.30 00:00:00(GMT)",
+  //     available: "7,000,000.00",
+  //     allowance: "0",
+  //     rewardSymbol: "RCGr",
+  //     stakeSymbol: "RCGs",
+  //     redemption: "2",
+  //     status: "1",
+  //   },
+  // ]);
 
   const [myPools, setMyPools] = useState(null);
   const [analytics, setAnalytics] = useState({
@@ -228,39 +228,39 @@ function Defi({
     loadMyPools();
   }, [account]);
 
-  const updateChargerInfoList = () => {
-    if (chargerList === undefined) return;
-    let newChargerList = [];
+  // const updateChargerInfoList = () => {
+  //   if (chargerList === undefined) return;
+  //   let newChargerList = [];
 
-    let promiseReturns = chargerList.map(async (charger, index) => {
-      let information = await getPools.getChargerInformations({
-        web3: web3,
-        chargerAddress: charger.address,
-        userAddress: account,
-      });
-      // Object.assign(newChargerList[index], information);
-      newChargerList[index] = information;
-      return newChargerList;
-    });
+  //   let promiseReturns = chargerList.map(async (charger, index) => {
+  //     let information = await getPools.getChargerInformations({
+  //       web3: web3,
+  //       chargerAddress: charger.address,
+  //       userAddress: account,
+  //     });
+  //     // Object.assign(newChargerList[index], information);
+  //     newChargerList[index] = information;
+  //     return newChargerList;
+  //   });
 
-    Promise.all(promiseReturns).then(() => {
-      setChargerInfoList(newChargerList);
-    });
-  };
-  useInterval(() => updateChargerInfoList(), 5000);
+  //   Promise.all(promiseReturns).then(() => {
+  //     setChargerInfoList(newChargerList);
+  //   });
+  // };
+  // useInterval(() => updateChargerInfoList(), 5000);
 
-  useEffect(() => {
-    updateChargerInfoList();
-  }, [chargerList]);
+  // useEffect(() => {
+  //   updateChargerInfoList();
+  // }, [chargerList]);
 
   // 월렛커넥트 -> web3 갱신 + userAccount 갱신 + chainId 갱신
   // -> ChargerList 갱신
   // -> ChargerInformation 갱신
-  React.useMemo(() => {
-    if (chainId < 1) return;
-    let ChargerList = getPools.getChargerList(chainId);
-    setChargerList(ChargerList);
-  }, [chainId]);
+  // React.useMemo(() => {
+  //   if (chainId < 1) return;
+  //   let ChargerList = getPools.getChargerList(chainId);
+  //   setChargerList(ChargerList);
+  // }, [chainId]);
 
   return (
     <Container
@@ -663,8 +663,8 @@ function Defi({
         connectWallet={connectWallet}
         onDisconnect={onDisconnect}
         account={account}
-        chargerList={chargerList}
-        chargerInfoList={chargerInfoList}
+        // chargerList={chargerList}
+        // chargerInfoList={chargerInfoList}
         modalPoolOpen={modalPoolOpen}
         setModalPoolOpen={setModalPoolOpen}
         modalPool2Open={modalPool2Open}
@@ -683,8 +683,8 @@ function Defi({
         account={account}
         chainId={chainId}
         toast={toast}
-        chargerList={chargerList}
-        chargerInfoList={chargerInfoList}
+        // chargerList={chargerList}
+        // chargerInfoList={chargerInfoList}
         redemption={analytics.general.RedemptionRate}
       />
     </Container>

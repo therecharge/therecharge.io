@@ -2,7 +2,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+//Component
+import ModalDecision from "./modal_decision";
+//Library
 import Web3 from "web3";
 import { fromWei, toWei } from "web3-utils";
 import { useRecoilState } from "recoil";
@@ -229,10 +231,10 @@ function ModalSwap({
                         (token === "ERC RCG"
                           ? "eth"
                           : token === "HRC RCG"
-                          ? "hrc"
-                          : token === "BEP RCG"
-                          ? "bnb"
-                          : "") +
+                            ? "hrc"
+                            : token === "BEP RCG"
+                              ? "bnb"
+                              : "") +
                         ".svg"
                       }
                       style={{ width: "15px", height: "15px" }}
@@ -243,8 +245,8 @@ function ModalSwap({
                 </span>
                 <div className="symbol Roboto_20pt_Medium_L">
                   {token === "ERC RCG" ||
-                  token === "HRC RCG" ||
-                  token === "BEP RCG"
+                    token === "HRC RCG" ||
+                    token === "BEP RCG"
                     ? rcg
                     : token}
                 </div>
@@ -844,7 +846,7 @@ function ModalSwap({
                           (
                             recipe.swapAmount -
                             (recipe.swapAmount / 100) *
-                              (redemption ? redemption / 100 : 1) -
+                            (redemption ? redemption / 100 : 1) -
                             selAsset.conversionFee[
                               selAsset.chainId[recipe.from]
                             ]
@@ -860,13 +862,11 @@ function ModalSwap({
           </div>
         </div>
       </div>
-      {modalDecisionOpen ? (
-        <div className={modalDecisionOpen ? "modalOn" : "modalOff"}>
+      {modalDecisionOpen ?
+        (<div className={modalDecisionOpen ? "modalOn" : "modalOff"}>
           <div
             className="background"
-            onClick={() => {
-              setModalDecisionOpen(false);
-            }}
+            onClick={() => { setModalDecisionOpen(false) }}
           ></div>
           <div
             className="modalScroll"
@@ -878,7 +878,9 @@ function ModalSwap({
             }}
           >
             <div className="decision">
-              <div className="theme Roboto_30pt_Black">{btnInfo}</div>
+              <div className="theme Roboto_30pt_Black">
+                {btnInfo}
+              </div>
               <div className="desc Roboto_20pt_Regular">
                 Do you want to proceed?
               </div>
@@ -915,10 +917,7 @@ function ModalSwap({
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <></>
-      )}
+        </div>) : <></>}
     </Container>
   );
 }
@@ -1339,6 +1338,7 @@ const Container = styled.div`
       opacity: 0.5;
     }
   }
+
   .modalOff {
     display: none;
   }
