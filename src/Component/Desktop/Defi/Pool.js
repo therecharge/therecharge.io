@@ -64,7 +64,7 @@ function Pool({
     modalDecisionOpenState
   );
   const [plAmount, setPlAmount] = useState("");
-  const [btnInfo, setBtnInfo] = useState("");
+  const [btn2Info, setBtn2Info] = useState("");
   const [sel, setSelCharger] = useState(0);
   const [chList, setChList] = useState([
     {
@@ -730,7 +730,7 @@ function Pool({
                         } else {
                           if (plAmount) {
                             setModalDecisionOpen(!modalDecisionOpen);
-                            setBtnInfo("Deposit");
+                            setBtn2Info("Deposit");
                             // await poolMethods.stake(plAmount);
                             // await toast(
                             //   userInfo.allowance > 0
@@ -791,7 +791,7 @@ function Pool({
                     //if in period => active || close
                     else {
                       setModalDecisionOpen(!modalDecisionOpen);
-                      setBtnInfo("Get Reward");
+                      setBtn2Info("Get Reward");
                       // await poolMethods.earn();
                       // await toast(
                       //   'Please approve "GET FILLED" in your private wallet'
@@ -831,7 +831,7 @@ function Pool({
                     //if user Balance > 0
                     else if (userInfo.balance > 0) {
                       setModalDecisionOpen(!modalDecisionOpen);
-                      setBtnInfo("Withdrawal");
+                      setBtn2Info("Withdrawal");
                       // await poolMethods.exit();
                       // await toast(
                       //   'Please approve "UNPLUG" in your private wallet'
@@ -887,7 +887,7 @@ function Pool({
                           await poolMethods.approve();
                         } else {
                           if (plAmount) {
-                            setBtnInfo("Deposit");
+                            setBtn2Info("Deposit");
                             setModalDecisionOpen(!modalDecisionOpen);
                             // await poolMethods.stake(plAmount);
                             // await toast(
@@ -945,7 +945,7 @@ function Pool({
                         toast("Please connect to wallet");
                       } else if (userInfo.balance > 0) {
                         setModalDecisionOpen(!modalDecisionOpen);
-                        setBtnInfo("Withdrawal");
+                        setBtn2Info("Withdrawal");
                         // await poolMethods.exit();
                         // await toast(
                         //   'Please approve "UNPLUG" in your private wallet'
@@ -1029,9 +1029,9 @@ function Pool({
         </div>
       </Loading>
       {modalDecisionOpen ? (
-        <div className={modalDecisionOpen ? "modalOn" : "modalOff"}>
+        <div className={modalDecisionOpen ? "modalOn2" : "modalOff2"}>
           <div
-            className="background"
+            className="background2"
             onClick={() => {
               setModalDecisionOpen(false);
             }}
@@ -1046,16 +1046,20 @@ function Pool({
             }}
           >
             <div className="decision">
-              <div className="theme Roboto_30pt_Black">{btnInfo}</div>
+              <div className="theme Roboto_30pt_Black">{btn2Info}</div>
               <div className="desc Roboto_20pt_Regular">
                 Do you want to proceed?
               </div>
               <div className="buttons">
                 <div
                   className="ok Roboto_20pt_Black"
-                  onClick={async () => {
-                    // handleDecision();
-                    if (btnInfo === "Deposit") {
+                  onClick=// {() => {
+                  //   setModalDecisionOpen(false);
+                  // }}
+                  {async () => {
+                    setModalDecisionOpen(false);
+                    // console.log(btnInfo);
+                    if (btn2Info === "Deposit") {
                       await poolMethods.stake(plAmount);
                       await toast(
                         userInfo.allowance > 0
@@ -1064,14 +1068,14 @@ function Pool({
                       );
                       setPlAmount("0");
                       setModalDecisionOpen(false);
-                    } else if (btnInfo === "Get Reward") {
+                    } else if (btn2Info === "Get Reward") {
                       await poolMethods.earn();
                       await toast(
                         'Please approve "GET FILLED" in your private wallet'
                       );
                       setPlAmount("0");
                       setModalDecisionOpen(false);
-                    } else if (btnInfo === "Withdrawal") {
+                    } else if (btn2Info === "Withdrawal") {
                       await poolMethods.exit();
                       await toast(
                         'Please approve "UNPLUG" in your private wallet'
@@ -1324,11 +1328,11 @@ const Container = styled.div`
       // opacity: 0.5;
     }
   }
-  .modalOff {
+  .modalOff2 {
     display: none;
   }
 
-  .modalOn {
+  .modalOn2 {
     display: flex;
     position: fixed;
     top: 0;
@@ -1339,7 +1343,7 @@ const Container = styled.div`
     align-items: center;
     z-index: 1;
 
-    .background {
+    .background2 {
       position: absolute;
       background-color: var(--midnight);
       top: 0;
