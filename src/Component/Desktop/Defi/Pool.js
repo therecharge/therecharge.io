@@ -279,25 +279,30 @@ function Pool({
   };
 
   const color = (number, i) => {
-    if (typeof number === "undefined") return "var(--gray-20)";
-    //i가 홀수인 경우
-    if (i % 2 === 1) {
-      if (number === "-") return "var(--gray-20)";
-      if (number === "999+") return "var(--green)";
-      number = Number(number.replace(",", ""));
-      let color = "var(--gray-20)";
-      if (number > 50) color = "var(--green)";
-      else if (number > 20) color = "var(--yellow)";
-      else if (number >= 0) color = "var(--red)";
+    try {
+      if (typeof number === "undefined") return "var(--gray-20)";
+      //i가 홀수인 경우
+      if (i % 2 === 1) {
+        if (number === "-") return "var(--gray-20)";
+        if (number === "999+") return "var(--green)";
+        number = Number(number.replace(",", ""));
+        let color = "var(--gray-20)";
+        if (number > 50) color = "var(--green)";
+        else if (number > 20) color = "var(--yellow)";
+        else if (number >= 0) color = "var(--red)";
 
-      return color;
-    }
-    //i가 짝수인 경우
-    else {
-      if (number === "-") return "var(--gray-20)";
-      return "var(--white)";
+        return color;
+      }
+      //i가 짝수인 경우
+      else {
+        if (number === "-") return "var(--gray-20)";
+        return "var(--white)";
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
+
   const data = React.useMemo(() => chList, [chList]);
   const columns = React.useMemo(
     () => [
@@ -481,12 +486,12 @@ function Pool({
             </p>
           </div>
         </div>
-        <div
+        {/* <div
           onClick={() => switchChain()}
           style={{ backgroundColor: "red", color: "white" }}
         >
           Huobi ECO Chain Mainnet
-        </div>
+        </div> */}
       </div>
       <div className="data">
         <div className="list">
@@ -1053,9 +1058,7 @@ function Pool({
               <div className="buttons">
                 <div
                   className="ok Roboto_20pt_Black"
-                  onClick=// {() => {
-                  //   setModalDecisionOpen(false);
-                  // }}
+                  onClick=// }} //   setModalDecisionOpen(false); // {() => {
                   {async () => {
                     setModalDecisionOpen(false);
                     // console.log(btnInfo);
