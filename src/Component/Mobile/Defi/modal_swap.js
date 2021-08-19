@@ -563,12 +563,21 @@ function ModalSwap({
 
   useEffect(() => {
     if (
-      recipe.from === "Binance Smart Chain" ||
-      recipe.to === "Binance Smart Chain"
+      (recipe.from === "Binance Smart Chain" &&
+        recipe.to === "Huobi ECO Chain") ||
+      (recipe.from === "Huobi ECO Chain" && recipe.to === "Binance Smart Chain")
     ) {
       loadMethods(
         selAsset.tokenAddress[selAsset.chainId[recipe.from]],
         "0x05A21AECa80634097e4acE7D4E589bdA0EE30b25"
+      );
+    } else if (
+      (recipe.from === "Binance Smart Chain" && recipe.to === "Ethereum") ||
+      (recipe.from === "Ethereum" && recipe.to === "Binance Smart Chain")
+    ) {
+      loadMethods(
+        selAsset.tokenAddress[selAsset.chainId[recipe.from]],
+        "0x45c0b31Bc83D4C5E430b15D790596878dF31c30e"
       );
     } else {
       loadMethods(selAsset.tokenAddress[selAsset.chainId[recipe.from]]);
