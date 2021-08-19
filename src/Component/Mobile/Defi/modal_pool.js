@@ -169,19 +169,23 @@ function ModalPool({
               className="modal2"
               style={modalPool2Open ? { display: "flex" } : { display: "none" }}
             >
-              <Pool
-                web3={web3}
-                connectWallet={connectWallet}
-                onDisconnect={onDisconnect}
-                handleModal2={() => {
-                  setModalPool2Open(!modalPool2Open);
-                }}
-                account={account}
-                setParams={setParams}
-                params={params}
-                chainId={chainId}
-                toast={toast}
-              />
+              {modalPool2Open ? (
+                <Pool
+                  web3={web3}
+                  connectWallet={connectWallet}
+                  onDisconnect={onDisconnect}
+                  handleModal2={() => {
+                    setModalPool2Open(!modalPool2Open);
+                  }}
+                  account={account}
+                  setParams={setParams}
+                  params={params}
+                  chainId={chainId}
+                  toast={toast}
+                />
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>
