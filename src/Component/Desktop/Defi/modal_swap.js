@@ -901,9 +901,9 @@ function ModalSwap({
         </div>
       </div>
       {modalDecisionOpen ? (
-        <div className={modalDecisionOpen ? "modalOn" : "modalOff"}>
+        <div className={modalDecisionOpen ? "modalOn2" : "modalOff2"}>
           <div
-            className="background"
+            className="background2"
             onClick={() => {
               setModalDecisionOpen(false);
             }}
@@ -1381,11 +1381,11 @@ const Container = styled.div`
       opacity: 0.5;
     }
   }
-  .modalOff {
+  .modalOff2 {
     display: none;
   }
 
-  .modalOn {
+  .modalOn2 {
     display: flex;
     position: fixed;
     top: 0;
@@ -1397,7 +1397,7 @@ const Container = styled.div`
     z-index: 1;
   
 
-  .background {
+  .background2 {
     position: absolute;
     background-color: var(--midnight);
     top: 0;

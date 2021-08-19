@@ -658,35 +658,43 @@ function Defi({
             </div> */}
         </div>
       </Content>
-      <ModalPool
-        web3={web3}
-        connectWallet={connectWallet}
-        onDisconnect={onDisconnect}
-        account={account}
-        chargerList={chargerList}
-        chargerInfoList={chargerInfoList}
-        modalPoolOpen={modalPoolOpen}
-        setModalPoolOpen={setModalPoolOpen}
-        modalPool2Open={modalPool2Open}
-        setModalPool2Open={setModalPool2Open}
-        params={params}
-        setParams={setParams}
-        chainId={chainId}
-        toast={toast}
-      />
-      <ModalSwap
-        web3={web3}
-        modalSwapOpen={modalSwapOpen}
-        handleModalSwap={handleModalSwap}
-        connectWallet={connectWallet}
-        onDisconnect={onDisconnect}
-        account={account}
-        chainId={chainId}
-        toast={toast}
-        chargerList={chargerList}
-        chargerInfoList={chargerInfoList}
-        redemption={analytics.general.RedemptionRate}
-      />
+      {modalPoolOpen ? (
+        <ModalPool
+          web3={web3}
+          connectWallet={connectWallet}
+          onDisconnect={onDisconnect}
+          account={account}
+          chargerList={chargerList}
+          chargerInfoList={chargerInfoList}
+          modalPoolOpen={modalPoolOpen}
+          setModalPoolOpen={setModalPoolOpen}
+          modalPool2Open={modalPool2Open}
+          setModalPool2Open={setModalPool2Open}
+          params={params}
+          setParams={setParams}
+          chainId={chainId}
+          toast={toast}
+        />
+      ) : (
+        <></>
+      )}
+      {modalSwapOpen ? (
+        <ModalSwap
+          web3={web3}
+          modalSwapOpen={modalSwapOpen}
+          handleModalSwap={handleModalSwap}
+          connectWallet={connectWallet}
+          onDisconnect={onDisconnect}
+          account={account}
+          chainId={chainId}
+          toast={toast}
+          chargerList={chargerList}
+          chargerInfoList={chargerInfoList}
+          redemption={analytics.general.RedemptionRate}
+        />
+      ) : (
+        <></>
+      )}
     </Container>
   );
 }
