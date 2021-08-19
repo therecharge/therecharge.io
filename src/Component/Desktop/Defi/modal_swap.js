@@ -767,14 +767,9 @@ function ModalSwap({
                     />
                   </div>
                   <div className="caution Roboto_16pt_Medium">
-                    {`Conversion Fee: ${
-                      recipe.from === "Binance Smart Chain" ||
-                      recipe.to === "Binance Smart Chain"
-                        ? selAsset.conversionFee[
-                            selAsset.chainId["Binance Smart Chain"]
-                          ]
-                        : selAsset.conversionFee[selAsset.chainId[recipe.from]]
-                    } ${selAsset.symbol}`}
+                    {`Conversion Fee: ${recipe.to === "Ethereum" ? 5 : 0.5} ${
+                      selAsset.symbol
+                    }`}
                   </div>
                   <PercentBtns className="Roboto_20pt_Regular">
                     <div
@@ -860,15 +855,7 @@ function ModalSwap({
                         {redemption ? redemption / 100 : 0} %
                       </div>
                       <div className="detail">
-                        {recipe.from === "Binance Smart Chain" ||
-                        recipe.to === "Binance Smart Chain"
-                          ? selAsset.conversionFee[
-                              selAsset.chainId["Binance Smart Chain"]
-                            ]
-                          : selAsset.conversionFee[
-                              selAsset.chainId[recipe.from]
-                            ]}{" "}
-                        {selAsset.symbol}
+                        {recipe.to === "Ethereum" ? 5 : 0.5} {selAsset.symbol}
                       </div>
                       <div className="detail">
                         {makeNum(recipe.swapAmount ? recipe.swapAmount : 0)}{" "}
@@ -889,14 +876,7 @@ function ModalSwap({
                             recipe.swapAmount -
                             (recipe.swapAmount / 100) *
                               (redemption ? redemption / 100 : 1) -
-                            (recipe.from === "Binance Smart Chain" ||
-                            recipe.to === "Binance Smart Chain"
-                              ? selAsset.conversionFee[
-                                  selAsset.chainId["Binance Smart Chain"]
-                                ]
-                              : selAsset.conversionFee[
-                                  selAsset.chainId[recipe.from]
-                                ])
+                            (recipe.to === "Ethereum" ? 5 : 0.5)
                           ).toString()
                         )}{" "}
                         {selAsset.symbol}
