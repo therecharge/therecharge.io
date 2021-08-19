@@ -6,9 +6,6 @@ import { fromWei, toWei, toBN } from "web3-utils";
 import { RotateCircleLoading } from "react-loadingg";
 import Table from "../../../lib/Table";
 // import CountUp from "react-countup";
-//Component
-import ModalDecision from "./modal_decision";
-//Library
 import { useRecoilState } from "recoil";
 import { poolInfoState, selState, periodState } from "../../../store/pool";
 import {
@@ -67,7 +64,7 @@ function Pool({
     modalDecisionOpenState
   );
   const [plAmount, setPlAmount] = useState("");
-  const [btnInfo, setBtnInfo] = useState("");
+  const [btn2Info, setBtn2Info] = useState("");
   const [sel, setSelCharger] = useState(0);
   const [chList, setChList] = useState([
     {
@@ -257,8 +254,8 @@ function Pool({
   const switchChain = async () => {
     try {
       await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x80' }],
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: "0x80" }],
       });
     } catch (switchError) {
       // This error code indicates that the chain has not been added to MetaMask.
@@ -282,25 +279,30 @@ function Pool({
   };
 
   const color = (number, i) => {
-    if (typeof number === "undefined") return "var(--gray-20)";
-    //i가 홀수인 경우
-    if (i % 2 === 1) {
-      if (number === "-") return "var(--gray-20)";
-      if (number === "999+") return "var(--green)";
-      number = Number(number.replace(",", ""));
-      let color = "var(--gray-20)";
-      if (number > 50) color = "var(--green)";
-      else if (number > 20) color = "var(--yellow)";
-      else if (number >= 0) color = "var(--red)";
+    try {
+      if (typeof number === "undefined") return "var(--gray-20)";
+      //i가 홀수인 경우
+      if (i % 2 === 1) {
+        if (number === "-") return "var(--gray-20)";
+        if (number === "999+") return "var(--green)";
+        number = Number(number.replace(",", ""));
+        let color = "var(--gray-20)";
+        if (number > 50) color = "var(--green)";
+        else if (number > 20) color = "var(--yellow)";
+        else if (number >= 0) color = "var(--red)";
 
-      return color;
-    }
-    //i가 짝수인 경우
-    else {
-      if (number === "-") return "var(--gray-20)";
-      return "var(--white)";
+        return color;
+      }
+      //i가 짝수인 경우
+      else {
+        if (number === "-") return "var(--gray-20)";
+        return "var(--white)";
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
+
   const data = React.useMemo(() => chList, [chList]);
   const columns = React.useMemo(
     () => [
@@ -391,12 +393,8 @@ function Pool({
   useEffect(() => {
     if (!account) return;
     if (chList[sel].address === "0x00") return;
-    try {
-      loadUserInfo();
-      loadMethods(poolInfo.token[0], poolInfo.token[1], chList[sel].address);
-    } catch (err) {
-      console.log(err);
-    }
+    loadUserInfo();
+    loadMethods(poolInfo.token[0], poolInfo.token[1], chList[sel].address);
   }, [account]);
 
   const useInterval = (callback, delay) => {
@@ -488,12 +486,12 @@ function Pool({
             </p>
           </div>
         </div>
-        <div
+        {/* <div
           onClick={() => switchChain()}
           style={{ backgroundColor: "red", color: "white" }}
         >
           Huobi ECO Chain Mainnet
-        </div>
+        </div> */}
       </div>
       <div className="data">
         <div className="list">
@@ -737,7 +735,7 @@ function Pool({
                         } else {
                           if (plAmount) {
                             setModalDecisionOpen(!modalDecisionOpen);
-                            setBtnInfo("Deposit");
+                            setBtn2Info("Deposit");
                             // await poolMethods.stake(plAmount);
                             // await toast(
                             //   userInfo.allowance > 0
@@ -798,7 +796,7 @@ function Pool({
                     //if in period => active || close
                     else {
                       setModalDecisionOpen(!modalDecisionOpen);
-                      setBtnInfo("Get Reward");
+                      setBtn2Info("Get Reward");
                       // await poolMethods.earn();
                       // await toast(
                       //   'Please approve "GET FILLED" in your private wallet'
@@ -838,7 +836,7 @@ function Pool({
                     //if user Balance > 0
                     else if (userInfo.balance > 0) {
                       setModalDecisionOpen(!modalDecisionOpen);
-                      setBtnInfo("Withdrawal");
+                      setBtn2Info("Withdrawal");
                       // await poolMethods.exit();
                       // await toast(
                       //   'Please approve "UNPLUG" in your private wallet'
@@ -894,7 +892,7 @@ function Pool({
                           await poolMethods.approve();
                         } else {
                           if (plAmount) {
-                            setBtnInfo("Deposit");
+                            setBtn2Info("Deposit");
                             setModalDecisionOpen(!modalDecisionOpen);
                             // await poolMethods.stake(plAmount);
                             // await toast(
@@ -952,7 +950,7 @@ function Pool({
                         toast("Please connect to wallet");
                       } else if (userInfo.balance > 0) {
                         setModalDecisionOpen(!modalDecisionOpen);
-                        setBtnInfo("Withdrawal");
+                        setBtn2Info("Withdrawal");
                         // await poolMethods.exit();
                         // await toast(
                         //   'Please approve "UNPLUG" in your private wallet'
@@ -1035,11 +1033,13 @@ function Pool({
           <div className="text Roboto_30pt_Black">Loading…</div>
         </div>
       </Loading>
-      {modalDecisionOpen ?
-        (<div className={modalDecisionOpen ? "modalOn" : "modalOff"}>
+      {modalDecisionOpen ? (
+        <div className={modalDecisionOpen ? "modalOn2" : "modalOff2"}>
           <div
-            className="background"
-            onClick={() => { setModalDecisionOpen(false) }}
+            className="background2"
+            onClick={() => {
+              setModalDecisionOpen(false);
+            }}
           ></div>
           <div
             className="modalScroll"
@@ -1051,18 +1051,17 @@ function Pool({
             }}
           >
             <div className="decision">
-              <div className="theme Roboto_30pt_Black">
-                {btnInfo}
-              </div>
+              <div className="theme Roboto_30pt_Black">{btn2Info}</div>
               <div className="desc Roboto_20pt_Regular">
                 Do you want to proceed?
               </div>
               <div className="buttons">
                 <div
                   className="ok Roboto_20pt_Black"
-                  onClick={async () => {
-                    // handleDecision();
-                    if (btnInfo === "Deposit") {
+                  onClick={async () => { // }} //   setModalDecisionOpen(false); // {() => {
+                    setModalDecisionOpen(false);
+                    // console.log(btnInfo);
+                    if (btn2Info === "Deposit") {
                       await poolMethods.stake(plAmount);
                       await toast(
                         userInfo.allowance > 0
@@ -1071,14 +1070,14 @@ function Pool({
                       );
                       setPlAmount("0");
                       setModalDecisionOpen(false);
-                    } else if (btnInfo === "Get Reward") {
+                    } else if (btn2Info === "Get Reward") {
                       await poolMethods.earn();
                       await toast(
                         'Please approve "GET FILLED" in your private wallet'
                       );
                       setPlAmount("0");
                       setModalDecisionOpen(false);
-                    } else if (btnInfo === "Withdrawal") {
+                    } else if (btn2Info === "Withdrawal") {
                       await poolMethods.exit();
                       await toast(
                         'Please approve "UNPLUG" in your private wallet'
@@ -1101,7 +1100,10 @@ function Pool({
               </div>
             </div>
           </div>
-        </div>) : <></>}
+        </div>
+      ) : (
+        <></>
+      )}
     </Container>
   );
 }
@@ -1328,12 +1330,11 @@ const Container = styled.div`
       // opacity: 0.5;
     }
   }
-
-  .modalOff {
+  .modalOff2 {
     display: none;
   }
 
-  .modalOn {
+  .modalOn2 {
     display: flex;
     position: fixed;
     top: 0;
@@ -1343,76 +1344,75 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 1;
-  
 
-  .background {
-    position: absolute;
-    background-color: var(--midnight);
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-  }
-
-  .modalScroll {
-    // background-color: white;
-  }
-
-  .modalScroll::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-  }
-
-  .decision {
-    display: flex;
-    flex-direction: column;
-    width: 600px;
-    height: 255px;
-    object-fit: contain;
-    border-radius: 20px;
-    background-color: rgba(0, 0, 0, 1);
-    align-items: center;
-    z-index: 2;
-    display: flex;
-
-    .theme {
-      margin-top: 40px;
+    .background2 {
+      position: absolute;
+      background-color: var(--midnight);
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
     }
 
-    .desc {
-      margin: 40px 0;
+    .modalScroll {
+      // background-color: white;
     }
 
-    .buttons {
+    .modalScroll::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
+    }
+
+    .decision {
       display: flex;
-      margin-bottom: 40px;
+      flex-direction: column;
+      width: 600px;
+      height: 255px;
+      object-fit: contain;
+      border-radius: 20px;
+      background-color: rgba(0, 0, 0, 1);
+      align-items: center;
+      z-index: 2;
+      display: flex;
 
-      .ok {
-        width: 100px;
-        height: 30px;
-        margin-right: 40px;
-        border-radius: 10px;
-        background-color: var(--purple);
-        cursor: pointer;
-
-        &:hover {
-          box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
-        }
+      .theme {
+        margin-top: 40px;
       }
 
-      .cancel {
-        width: 100px;
-        height: 30px;
-        border-radius: 10px;
-        background-color: var(--gray-20);
-        cursor: pointer;
+      .desc {
+        margin: 40px 0;
+      }
 
-        &:hover {
-          box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
+      .buttons {
+        display: flex;
+        margin-bottom: 40px;
+
+        .ok {
+          width: 100px;
+          height: 30px;
+          margin-right: 40px;
+          border-radius: 10px;
+          background-color: var(--purple);
+          cursor: pointer;
+
+          &:hover {
+            box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
+          }
+        }
+
+        .cancel {
+          width: 100px;
+          height: 30px;
+          border-radius: 10px;
+          background-color: var(--gray-20);
+          cursor: pointer;
+
+          &:hover {
+            box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
+          }
         }
       }
     }
   }
-}
 `;
 
 const PercentBtns = styled.div`

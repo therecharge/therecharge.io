@@ -236,16 +236,16 @@ function Defi({
       style={
         modalPoolOpen || modalSwapOpen
           ? {
-            position: "fixed",
-            top: "-20px",
-            width: "100%",
-            backgroundColor: "#02051c",
-          }
+              position: "fixed",
+              top: "-20px",
+              width: "100%",
+              backgroundColor: "#02051c",
+            }
           : {}
       }
     >
-      <Content id="station">
-        <div className="first">
+      <Content>
+        <div className="first" id="station" style={{ paddingTop: "100px" }}>
           <div className="theme Roboto_50pt_Black">Station</div>
           <div className="contents">
             <div className="content">
@@ -269,8 +269,8 @@ function Defi({
           </div>
         </div>
       </Content>
-      <Content id="mypools">
-        <div className="second">
+      <Content>
+        <div className="second" id="mypools" style={{ paddingTop: "100px" }}>
           <div className="theme Roboto_50pt_Black">My pools</div>
           {!account ? (
             <div className="contents">
@@ -353,8 +353,9 @@ function Defi({
                               {...cell.getCellProps()}
                               onClick={() => {
                                 setParams({
-                                  type: `${myPools[row.index].type.split(" ")[0]
-                                    }`,
+                                  type: `${
+                                    myPools[row.index].type.split(" ")[0]
+                                  }`,
                                   isLP: false,
                                 });
 
@@ -380,8 +381,8 @@ function Defi({
           )}
         </div>
       </Content>
-      <Content id="analytics">
-        <div className="third">
+      <Content>
+        <div className="third" id="analytics" style={{ paddingTop: "100px" }}>
           <div className="theme Roboto_50pt_Black">Analytics</div>
           <div className="subTheme Roboto_30pt_Medium">
             Overview of Recharge Ecosystem
@@ -434,17 +435,21 @@ function Defi({
             </div>
             <div className="container">
               <div className="left box">
-                <div className="title Roboto_30pt_Medium"
-                  style={{ zIndex: "2" }}>
+                <div
+                  className="title Roboto_30pt_Medium"
+                  style={{ zIndex: "2" }}
+                >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
-                <div className="text Roboto_16pt_Regular_Gray"
-                  style={{ zIndex: "2" }}>
+                <div
+                  className="text Roboto_16pt_Regular_Gray"
+                  style={{ zIndex: "2" }}
+                >
                   Total Circulating Supply in ERC20
                 </div>
                 <div className="logo1">
@@ -497,17 +502,21 @@ function Defi({
             </div>
             <div className="container">
               <div className="left box">
-                <div className="title Roboto_30pt_Medium"
-                  style={{ zIndex: "2" }}>
+                <div
+                  className="title Roboto_30pt_Medium"
+                  style={{ zIndex: "2" }}
+                >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
-                <div className="text Roboto_16pt_Regular_Gray"
-                  style={{ zIndex: "2" }}>
+                <div
+                  className="text Roboto_16pt_Regular_Gray"
+                  style={{ zIndex: "2" }}
+                >
                   Total Circulating Supply in HRC20
                 </div>
                 <div className="logo2">
@@ -560,10 +569,16 @@ function Defi({
             </div>
             <div className="container">
               <div className="left box">
-                <div className="title Roboto_30pt_Medium"
-                  style={{ zIndex: "2" }}>0 RCG</div>
-                <div className="text Roboto_16pt_Regular_Gray"
-                  style={{ zIndex: "2" }}>
+                <div
+                  className="title Roboto_30pt_Medium"
+                  style={{ zIndex: "2" }}
+                >
+                  0 RCG
+                </div>
+                <div
+                  className="text Roboto_16pt_Regular_Gray"
+                  style={{ zIndex: "2" }}
+                >
                   Total Circulating Supply in BEP20
                 </div>
                 <div className="logo3">
@@ -614,33 +629,42 @@ function Defi({
             </div> */}
         </div>
       </Content>
-      <ModalPool
-        web3={web3}
-        modalPoolOpen={modalPoolOpen}
-        handleModalPool={handleModalPool}
-        connectWallet={connectWallet}
-        onDisconnect={onDisconnect}
-        params={params}
-        setParams={setParams}
-        account={account}
-        setSelCharger={setSelCharger}
-        sel={sel}
-        chainId={chainId}
-        toast={toast}
-      />
-      <ModalSwap
-        web3={web3}
-        modalSwapOpen={modalSwapOpen}
-        handleModalSwap={handleModalSwap}
-        connectWallet={connectWallet}
-        onDisconnect={onDisconnect}
-        account={account}
-        chainId={chainId}
-        toast={toast}
-        chargerList={chargerList}
-        chargerInfoList={chargerInfoList}
-        redemption={analytics.general.RedemptionRate}
-      />
+      {modalPoolOpen ? (
+        <ModalPool
+          web3={web3}
+          modalPoolOpen={modalPoolOpen}
+          handleModalPool={handleModalPool}
+          connectWallet={connectWallet}
+          onDisconnect={onDisconnect}
+          params={params}
+          setParams={setParams}
+          account={account}
+          setSelCharger={setSelCharger}
+          sel={sel}
+          chainId={chainId}
+          toast={toast}
+        />
+      ) : (
+        <></>
+      )}
+      {modalSwapOpen ? (
+        <ModalSwap
+          web3={web3}
+          modalSwapOpen={modalSwapOpen}
+          handleModalSwap={handleModalSwap}
+          connectWallet={connectWallet}
+          onDisconnect={onDisconnect}
+          account={account}
+          chainId={chainId}
+          toast={toast}
+          chargerList={chargerList}
+          chargerInfoList={chargerInfoList}
+          redemption={analytics.general.RedemptionRate}
+        />
+      ) : (
+        <></>
+      )}
+
       <Footer />
     </Container>
   );
@@ -648,31 +672,30 @@ function Defi({
 
 const Container = styled.div`
   margin: auto auto;
+  margin-top: 105px;
   display: flex;
   flex-direction: column;
   min-width: 1088px;
   width: 100%;
-  `;
+`;
 const Content = styled.div`
   display: flex;
   margin: auto auto;
   margin-bottom: 20px;
   width: 1088px;
-  
+
   height: fit-content; // 조정 필요
-  
+
   color: var(--white);
-  
+
   .first {
     display: flex;
     flex-direction: column;
     margin: auto;
-    margin-top: 100px;
     width: 1088px;
-    
+
     .theme {
       margin: auto auto;
-      margin-top: 60px;
       margin-bottom: 80px;
       text-shadow: 0 0 1px white, 0 0 15px white;
     }
@@ -727,7 +750,6 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     margin: auto;
-    margin-top: 100px;
 
     .theme {
       margin: auto auto;
@@ -769,7 +791,6 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     margin: auto;
-    margin-top: 100px;
 
     .theme {
       margin: auto;

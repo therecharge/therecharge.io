@@ -31,7 +31,7 @@ function ModalPool({
 
   return (
     <Container>
-      <div className={modalPoolOpen ? "modalOn" : "modalOff"}>
+      <div className={modalPoolOpen === true ? "modalOn" : "modalOff"}>
         <Link to="/defi">
           <div
             className="background"
