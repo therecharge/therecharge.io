@@ -47,7 +47,7 @@ function ModalSwap({
     swapAmount: "",
     // use for network logo image of loadSwitchBox according to 'from' or 'to'
     networkList: {
-      // "Binance Smart Chain": "bnb",
+      "Binance Smart Chain": "bnb",
       Ethereum: "eth",
       "Huobi ECO Chain": "hrc",
       PiggyCell: "piggy",
@@ -64,14 +64,17 @@ function ModalSwap({
     chainId: {
       Ethereum: 1,
       "Huobi ECO Chain": 128,
+      "Binance Smart Chain": 56,
     },
     tokenAddress: {
       1: "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
       128: "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+      56: "0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
     },
     conversionFee: {
       1: 0.5,
       128: 5,
+      56: 0.5,
     },
   });
   const assetsInfo = {
@@ -82,14 +85,17 @@ function ModalSwap({
       chainId: {
         Ethereum: 1,
         "Huobi ECO Chain": 128,
+        "Binance Smart Chain": 56,
       },
       tokenAddress: {
         1: "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
         128: "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+        56: "0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
       },
       conversionFee: {
         1: 0.5,
         128: 5,
+        56: 0.5,
       },
     },
     ETH: {
@@ -104,7 +110,7 @@ function ModalSwap({
     },
     BNB: {
       logo: "bnb",
-      name: "Binance Smart Chain Network",
+      name: "Binance Smart Chain",
       symbol: "BNB",
     },
     FUP: {
@@ -114,14 +120,17 @@ function ModalSwap({
       chainId: {
         Ethereum: 1,
         "Huobi ECO Chain": 128,
+        "Binance Smart Chain": 56,
       },
       tokenAddress: {
         1: "0x",
         128: "0x",
+        56: "0x",
       },
       conversionFee: {
         1: 0.5,
         128: 5,
+        56: 0.5,
       },
     },
   };
@@ -136,7 +145,7 @@ function ModalSwap({
     "BNB",
     "FUP",
   ];
-  const networkList = ["Ethereum", "Huobi ECO Chain"];
+  const networkList = ["Ethereum", "Huobi ECO Chain", "Binance Smart Chain"];
   const [tokensBalance, setTokensBalance] = useState({
     "ERC RCG": 0,
     "HRC RCG": 0,
@@ -381,6 +390,7 @@ function ModalSwap({
                                 })
                               : setRecipe({
                                   ...recipe,
+                                  from: netList[index],
                                 })
                             : netList[index] == recipe.from
                             ? setRecipe({
@@ -391,6 +401,7 @@ function ModalSwap({
                               })
                             : setRecipe({
                                 ...recipe,
+                                to: netList[index],
                               });
                           direction == "from"
                             ? handleDropdown1()
@@ -443,6 +454,7 @@ function ModalSwap({
       const swap = async (swapAmount) => {
         try {
           // console.log("Type of swapAmount :", typeof swapAmount);
+
           await swapM
             .transfer(bridgeAddress, toWei(swapAmount, "ether"))
             .send({ from: account });
@@ -495,6 +507,7 @@ function ModalSwap({
 
     let RCGeth,
       RCGht,
+      RCGbep,
       balanceRCG,
       balanceHRCRCG,
       balanceBEPRCG,
@@ -512,22 +525,22 @@ function ModalSwap({
       "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b"
     );
 
-    // RCGbep = new ???.eth.Contract(
-    //   ERC20_ABI,
-    //   "???"
-    // );
+    RCGbep = new BNB.eth.Contract(
+      ERC20_ABI,
+      "0x2D94172436D869c1e3c094BeaD272508faB0d9E3"
+    );
 
     if (account) {
       balanceRCG = await RCGeth.methods.balanceOf(account).call();
       balanceHRCRCG = await RCGht.methods.balanceOf(account).call();
-      balanceBEPRCG = 0;
+      balanceBEPRCG = await RCGbep.methods.balanceOf(account).call();
       balanceETH = await ETH.eth.getBalance(account);
       balanceHT = await HECO.eth.getBalance(account);
       balanceBNB = await BNB.eth.getBalance(account);
 
       balanceRCG = makeNum(weiToEther(balanceRCG));
       balanceHRCRCG = makeNum(weiToEther(balanceHRCRCG));
-      // balanceBEPRCG = makeNum(weiToEther(balanceBEPRCG));
+      balanceBEPRCG = makeNum(weiToEther(balanceBEPRCG));
       balanceETH = makeNum(weiToEther(balanceETH));
       balanceHT = makeNum(weiToEther(balanceHT));
       balanceBNB = makeNum(weiToEther(balanceBNB));
@@ -567,8 +580,18 @@ function ModalSwap({
   useInterval(() => loadBalance(), 5000);
 
   useEffect(() => {
-    loadMethods(selAsset.tokenAddress[selAsset.chainId[recipe.from]]);
-  }, [recipe.from, chainId]);
+    if (
+      recipe.from === "Binance Smart Chain" ||
+      recipe.to === "Binance Smart Chain"
+    ) {
+      loadMethods(
+        selAsset.tokenAddress[selAsset.chainId[recipe.from]],
+        "0x05A21AECa80634097e4acE7D4E589bdA0EE30b25"
+      );
+    } else {
+      loadMethods(selAsset.tokenAddress[selAsset.chainId[recipe.from]]);
+    }
+  }, [recipe.from, recipe.to, chainId]);
 
   return (
     <Container>
@@ -736,7 +759,12 @@ function ModalSwap({
                   </div>
                   <div className="caution Roboto_16pt_Medium">
                     {`Conversion Fee: ${
-                      selAsset.conversionFee[selAsset.chainId[recipe.from]]
+                      recipe.from === "Binance Smart Chain" ||
+                      recipe.to === "Binance Smart Chain"
+                        ? selAsset.conversionFee[
+                            selAsset.chainId["Binance Smart Chain"]
+                          ]
+                        : selAsset.conversionFee[selAsset.chainId[recipe.from]]
                     } ${selAsset.symbol}`}
                   </div>
                   <PercentBtns className="Roboto_20pt_Regular">
@@ -823,7 +851,14 @@ function ModalSwap({
                         {redemption ? redemption / 100 : 0} %
                       </div>
                       <div className="detail">
-                        {selAsset.conversionFee[selAsset.chainId[recipe.from]]}{" "}
+                        {recipe.from === "Binance Smart Chain" ||
+                        recipe.to === "Binance Smart Chain"
+                          ? selAsset.conversionFee[
+                              selAsset.chainId["Binance Smart Chain"]
+                            ]
+                          : selAsset.conversionFee[
+                              selAsset.chainId[recipe.from]
+                            ]}{" "}
                         {selAsset.symbol}
                       </div>
                       <div className="detail">
@@ -845,9 +880,14 @@ function ModalSwap({
                             recipe.swapAmount -
                             (recipe.swapAmount / 100) *
                               (redemption ? redemption / 100 : 1) -
-                            selAsset.conversionFee[
-                              selAsset.chainId[recipe.from]
-                            ]
+                            (recipe.from === "Binance Smart Chain" ||
+                            recipe.to === "Binance Smart Chain"
+                              ? selAsset.conversionFee[
+                                  selAsset.chainId["Binance Smart Chain"]
+                                ]
+                              : selAsset.conversionFee[
+                                  selAsset.chainId[recipe.from]
+                                ])
                           ).toString()
                         )}{" "}
                         {selAsset.symbol}
@@ -888,6 +928,7 @@ function ModalSwap({
                   onClick={async () => {
                     // handleDecision();
                     if (btnInfo === "Swap") {
+                      console.log("레시피 확인: ", recipe.from, recipe.to);
                       await toast(
                         // poolMethods.allowance > 0
                         'Please approve "SWAP" in your private wallet'
@@ -898,6 +939,7 @@ function ModalSwap({
                         ...recipe,
                         swapAmount: "0",
                       });
+
                       setModalDecisionOpen(false);
                     }
                   }}
