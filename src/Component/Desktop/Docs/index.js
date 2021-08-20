@@ -45,37 +45,48 @@ function Docs({ match }) {
           <div className="theme Roboto_50pt_Black_L">Documents</div>
           <div className="nav">
             <div className="topic">
-              <a
-                style={{
-                  textDecoration: "none",
-                  color: "white",
-                  cursor: "pointer",
-                }}
-                className="Roboto_30pt_Black_L "
-                onClick={() => {
-                  setViewNum(1);
-                  setLocation();
-                  setCurrentPage(0);
-                }}
+              <HashLink
+                to={"/docs/1#whitepaper"}
+                style={{ textDecoration: "none", color: "white" }}
+
               >
-                Whitepaper
-              </a>
+                <a
+                  style={{
+                    textDecoration: "none",
+                    color: "white",
+                    cursor: "pointer",
+                  }}
+                  className="Roboto_30pt_Black_L "
+                  onClick={() => {
+                    setViewNum(1);
+                    setLocation();
+                    setCurrentPage(0);
+                  }}
+                >
+                  Whitepaper
+                </a>
+              </HashLink>
               <div
                 className="drop "
                 style={viewNum == 1 ? { maxHeight: "236px" } : {}}
               >
                 <div className="text active">
-                  <a
-                    className={currentPage == 0 ? "active" : ""}
-                    style={{ textDecoration: "none" }}
-                    onClick={() => {
-                      setViewNum(1);
-                      setLocation();
-                      setCurrentPage(0);
-                    }}
+                  <HashLink
+                    to={"/docs/1#whitepaper"}
+                    style={{ textDecoration: "none", color: "white" }}
                   >
-                    Background
-                  </a>
+                    <a
+                      className={currentPage == 0 ? "active" : ""}
+                      style={{ textDecoration: "none" }}
+                      onClick={() => {
+                        setViewNum(1);
+                        setLocation();
+                        setCurrentPage(0);
+                      }}
+                    >
+                      Background
+                    </a>
+                  </HashLink>
                 </div>
                 <div className="text active">
                   <a
@@ -161,20 +172,15 @@ function Docs({ match }) {
                 to={"/docs/2#disclaimer"}
                 style={{ textDecoration: "none", color: "white" }}
               >
-                <a>
-                  Disclaimer
-                </a>
+                <a>Disclaimer</a>
               </HashLink>
             </div>
             <div className="topic Roboto_30pt_Black_L active">
               <HashLink
                 to={"/docs/3#cidownload"}
-                className="topic Roboto_30pt_Black_L active"
                 style={{ textDecoration: "none", color: "white" }}
               >
-                <a>
-                  CI Download
-                </a>
+                <a>CI Download</a>
               </HashLink>
             </div>
           </div>
