@@ -122,11 +122,7 @@ function Gnb({
           </Toast>
         </ToastHub>
         <div className="dropdown">
-          <div
-            className={
-              sidemenuOpen.about ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
-            }
-          >
+          <div className={sidemenuOpen.about ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"}>
             <a
               href={"/"}
               onClick={() => {
@@ -438,12 +434,9 @@ function Gnb({
               <div
                 className="logo"
                 onClick={() => {
-                  window.open(
-                    i18n.language == "en"
-                      ? "https://medium.com/therecharge"
-                      : "https://medium.com/therecharge-kr",
-                    "_blank"
-                  );
+                  window.open(i18n.language == "en"
+                    ? "https://medium.com/therecharge"
+                    : "https://medium.com/therecharge-kr", "_blank");
                 }}
               >
                 <img src="/footer2.png" />

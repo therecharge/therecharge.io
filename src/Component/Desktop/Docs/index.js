@@ -48,6 +48,7 @@ function Docs({ match }) {
               <HashLink
                 to={"/docs/1#whitepaper"}
                 style={{ textDecoration: "none", color: "white" }}
+
               >
                 <a
                   style={{
