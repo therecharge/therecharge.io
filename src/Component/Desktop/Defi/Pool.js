@@ -1058,7 +1058,8 @@ function Pool({
               <div className="buttons">
                 <div
                   className="ok Roboto_20pt_Black"
-                  onClick={async () => { // }} //   setModalDecisionOpen(false); // {() => {
+                  onClick=// }} //   setModalDecisionOpen(false); // {() => {
+                  {async () => {
                     setModalDecisionOpen(false);
                     // console.log(btnInfo);
                     if (btn2Info === "Deposit") {
