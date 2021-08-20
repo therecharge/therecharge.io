@@ -10,7 +10,6 @@ function Station({}) {
   return (
     <Container>
       <Content>
-        <a> Station</a>
         <Slider />
         <Line />
         <List />

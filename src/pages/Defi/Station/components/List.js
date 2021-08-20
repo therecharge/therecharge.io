@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as DropdownClose } from "./List/dropdown-close.svg";
+import { ReactComponent as DropdownOpen } from "./List/dropdown-open.svg";
+//components
+import WalletConnect from "../../../../Component/Components/Common/WalletConnect";
 
 function List({ type, list }) {
   const [t] = useTranslation();
@@ -61,12 +64,14 @@ function Row({
   status = "Inactive",
   name = "Charger No.000000",
   apy = "10000.00",
-  chargerAddress,
 }) {
+  const [isOpen, setOpen] = useState(false);
+
   const Container = styled.div`
     display: flex;
+    flex-direction: column;
     mix-width: 620px;
-    height: 120px;
+    min-height: 120px;
     background-color: #1c1e35;
     margin-bottom: 20px;
     border-radius: 10px;
@@ -88,6 +93,36 @@ function Row({
       margin-right: 40px;
       margin-left: 0px;
     }
+  `;
+  const Title = styled.div`
+    display: flex;
+    width: 100%;
+    height: 120px;
+  `;
+  const Menu = styled.div`
+    margin-top: -20px;
+    display: flex;
+    // display: none;
+    width: 100%;
+    flex-direction: column;
+    .innerMenu {
+      width: 100%;
+      background-color: #262840;
+      display: flex;
+      flex-basis: auto;
+      flex-direction: column;
+      padding: 40px 60px 40px 60px;
+    }
+  `;
+  const PoolInfo = styled.div`
+    gap: 8px;
+  `;
+  const UserInfo = styled.div`
+    margin-top: 8px;
+  `;
+  const Pannel = styled.div`
+    margin-top: 8px;
+    border-radius: 0 0 10px 10px;
   `;
 
   function Status({ status }) {
@@ -112,7 +147,7 @@ function Row({
   }
   function Name({ status, name }) {
     function color() {
-      if (status != "Active") return "#7E7E7E";
+      if (status != "Active") return "var(--gray-30)";
     }
     return (
       <p className="Roboto_30pt_Black name" style={{ color: color() }}>
@@ -121,25 +156,78 @@ function Row({
     );
   }
 
-  function Apy({ apy }) {
-    return <p className="Roboto_30pt_Black apy">{apy}</p>;
+  function Apy({ status, apy }) {
+    function color() {
+      if (status != "Active") return "var(--gray-30)";
+      if (apy >= 100) return "var(--green)";
+      if (apy >= 50) return "var(--red)";
+      return "var(--yellow)";
+    }
+    return (
+      <p className="Roboto_30pt_Black apy" style={{ color: color() }}>
+        {status != "Inactive" ? apy + "%" : "-"}
+      </p>
+    );
   }
 
   function Btn({ status, isOpen }) {
+    if (isOpen) return <DropdownOpen className="btn" />;
+    else
+      return (
+        <DropdownClose
+          className="btn"
+          fill={status == "Inactive" ? "#7E7E7E" : "#fff"}
+        />
+      );
+  }
+
+  function Info({ left, right }) {
+    const Container = styled.div`
+      display: flex;
+      color: white;
+      .left {
+        margin: auto auto;
+        margin-left: 0;
+      }
+      .right {
+        margin: auto auto;
+        margin-right: 0;
+      }
+    `;
     return (
-      <DropdownClose
-        className="btn"
-        fill={status == "Inactive" ? "#7E7E7E" : "#fff"}
-      />
+      <Container>
+        <div className="left Roboto_30pt_Light">{left}</div>
+        <div className="right Roboto_30pt_Black">{right}</div>
+      </Container>
     );
   }
 
   return (
     <Container>
-      <Status status={status} />
-      <Name status={status} name={name} />
-      <Apy status={status} apy={apy} />
-      <Btn status={status} isOpen={false} />
+      <Title onClick={() => setOpen(!isOpen)}>
+        <Status status={status} />
+        <Name status={status} name={name} />
+        <Apy status={status} apy={apy} />
+        <Btn status={status} isOpen={isOpen} />
+      </Title>
+      <Menu style={{ display: isOpen ? "flex" : "none" }}>
+        <PoolInfo className="innerMenu">
+          <Info left="APY" right="100%" />
+          <Info left="TVL" right="$ 100,000,000" />
+          <Info left="LIMIT" right="UNLIMITED" />
+        </PoolInfo>
+        <UserInfo className="innerMenu">
+          <Info left="MY BAL" right="100%" />
+          <Info left="Share" right="$ 100,000,000" />
+          <Info left="Reward" right="UNLIMITED" />
+          <WalletConnect />
+        </UserInfo>
+        <Pannel className="innerMenu">
+          <Info left="APY" right="100%" />
+          <Info left="TVL" right="$ 100,000,000" />
+          <Info left="LIMIT" right="UNLIMITED" />
+        </Pannel>
+      </Menu>
     </Container>
   );
 }
