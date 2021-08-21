@@ -1,18 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import Asset from "./components/Asset";
+import AssetSwap from "./components/AssetSwap";
 
 function Swap({}) {
   const [t] = useTranslation();
   return (
     <Container>
       <Content>
-        <a>Swap</a>
-        {/*GNB*/}
-        {/*Station*/}
-        {/*My pools*/}
-        {/*Analytics*/}
-        {/*Footer*/}
+        <Asset />
+        <Line />
+        <span className="Roboto_40pt_Black swap-title">Swap</span>
+        <AssetSwap />
       </Content>
     </Container>
   );
@@ -23,14 +23,25 @@ const Container = styled.div`
   height: 100%;
 `;
 const Content = styled.div`
+  flex-direction: column;
   margin-top: 100px;
   display: flex;
   width: 100%;
-  max-width: 1188px;
+  max-width: 1088px;
   height: 100%;
   a {
     color: white;
   }
+  .swap-title {
+    margin-top: 40px;
+  }
 `;
 
+const Line = styled.div`
+  height: 2px;
+  margin: 40px 10px 0px 10px;
+  width: auto;
+  background-color: #9314b2;
+  box-shadow: 0px 0px 20px 2px white;
+`;
 export default React.memo(Swap);

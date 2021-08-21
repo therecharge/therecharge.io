@@ -1,0 +1,25 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="50"
+  height="50"
+  viewBox="0 0 50 50"
+>
+  <g id="img_fub_50px" transform="translate(-456 -888)">
+    <circle
+      id="타원_63"
+      data-name="타원 63"
+      cx="25"
+      cy="25"
+      r="25"
+      transform="translate(456 888)"
+      fill="#fff"
+    />
+    <text
+      id="FUP"
+      transform="translate(463 920)"
+      font-size="19"
+      font-family="Roboto-Medium, Roboto"
+      font-weight="500"
+    ><tspan x="0" y="0">FUP</tspan></text>
+  </g>
+</svg>

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as PopupClose } from "./assets/popup-close.svg";
+import WalletConnect from "../../../../../Component/Components/Common/WalletConnect";
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
 export default function Popup({ close = () => {} }) {
@@ -35,6 +36,22 @@ export default function Popup({ close = () => {} }) {
           Caution!: Recharge transaction, regardless of mainnet type <br />
           will incur 2% of carbon redemption.
         </span>
+        <WalletConnect
+          need="2"
+          bgColor="#9314B2"
+          border="2px solid #9314B2"
+          radius="20px"
+          notConnected="Connect Wallet for PLUG-IN"
+          wrongNetwork="Change network for PLUG-IN"
+          text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
+          onClick={() => console.log(1)}
+        />
+        <InfoContainer>
+          <Info left="Current Redemption Rate" right="00.00%" />
+          <Info left="RCG to Stake" right="3,000,000 RCG" />
+          <Info left="RCG to Redeem" right="3,000,000 RCG" />
+          <Info left="Net RCG to Stake" right="3,000,000 RCG" />
+        </InfoContainer>
       </Content>
     </Container>
   );
@@ -55,8 +72,8 @@ function Info({ left, right }) {
   `;
   return (
     <Container>
-      <div className="left Roboto_30pt_Light">{left}</div>
-      <div className="right Roboto_30pt_Black">{right}</div>
+      <div className="left Roboto_20pt_Light">{left}</div>
+      <div className="right Roboto_20pt_Black">{right}</div>
     </Container>
   );
 }
@@ -111,6 +128,7 @@ const Content = styled.div`
   .popup-caution {
     color: #d62828;
     line-height: 26px;
+    margin-bottom: 80px;
   }
 `;
 const QuickSelect = styled.div`
@@ -133,4 +151,10 @@ const QuickSelect = styled.div`
       margin: auto auto;
     }
   }
+`;
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  gap: 12px;
 `;

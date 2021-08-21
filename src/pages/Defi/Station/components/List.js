@@ -19,13 +19,29 @@ function List({ /*type, list,*/ params }) {
       address: "0x00",
       name: "Now Loading",
       apy: "000",
-      info: {},
+      period: [1625022000, 14400],
+      redemtion: 200,
+      symbol: ["RCG", "RCG"],
+      token: [
+        "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+        "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+      ],
+      tvl: 0,
+      type: "flexible",
     },
     {
-      address: "0x00",
-      name: "",
-      apy: "",
-      info: {},
+      address: "0x0",
+      apy: 0.0,
+      name: "Loading...",
+      period: [1625022000, 14400],
+      redemtion: 200,
+      symbol: ["RCG", "RCG"],
+      token: [
+        "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+        "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+      ],
+      tvl: 0,
+      type: "flexible",
     },
   ]);
   const [sel, setSelCharger] = useState(0);
@@ -87,7 +103,7 @@ function List({ /*type, list,*/ params }) {
   useEffect(async () => {
     // setOnLoading(true);
     try {
-      if (chList[0].name === "Now Loading") await loadChargerList();
+      await loadChargerList();
     } catch (err) {
       console.log(err);
     }
@@ -101,9 +117,9 @@ function List({ /*type, list,*/ params }) {
           <p className="Roboto_40pt_Black">Charger List</p>
         </Title>
         <RowContainer>
-          <Row status="Active" name="Test" apy="100" />
+          {/* <Row status="Active" name="Test" apy="100" />
           <Row status="Inactive" />
-          <Row status="Active" />
+          <Row status="Active" /> */}
           {console.log(chList)}
           {chList.map((charger, index) => {
             return (
@@ -172,14 +188,24 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   width: 1088px;
+
   img {
     height: 60px;
     margin: auto;
+    @media (min-width: 1088px) {
+      margin: 0;
+      align-items: flex-end
+    }
   }
   p {
     color: white;
     margin: auto;
     margin-top: 20px;
+
+    @media (min-width: 1088px) {
+      margin: 0;
+      margin-left: 20px;
+      margin-bottom: 0px;
   }
 `;
 
@@ -189,6 +215,8 @@ const Title = styled.div`
   @media (min-width: 1088px) {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
   }
 `;
 

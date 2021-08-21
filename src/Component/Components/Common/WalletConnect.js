@@ -39,13 +39,19 @@ function ConnectWallet({
     height: 70px;
     border: ${border};
     border-radius: ${radius};
+    margin-bottom: 20px;
     span {
       margin: auto auto;
       display: table-cell;
+
+      @media (min-width: 1088px) {
+        font-size: 20px;
+      }
     }
 
     @media (min-width: 1088px) {
       width: 310px;
+      margin: auto;
     }
   `;
   /* Setting WalletConnect */

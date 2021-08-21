@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import { ReactComponent as DropdownClose } from "./assets/dropdown-close.svg";
 import { ReactComponent as DropdownOpen } from "./assets/dropdown-open.svg";
 import WalletConnect from "../../../../../Component/Components/Common/WalletConnect";
@@ -20,13 +21,48 @@ export default function Row({
   status = "Inactive",
   name = "Charger No.000000",
   apy = "10000.00",
-  info = "",
+  info,
 }) {
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
   const [requireNetwork] = useRecoilState(requireNetworkState);
   const [isOpen, setOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    address: "0x00",
+    balance: "0",
+    reward: "0",
+    allowance: "0",
+    share: 0,
+  });
+
+  const loadUserInfo = async () => {
+    let ret = {
+      address: "0x00",
+      balance: "0",
+      reward: "0",
+      allowance: "0",
+      share: 0,
+    };
+    if (account && info) {
+      try {
+        let { data } = await axios.get(
+          `https://bridge.therecharge.io/charger/info/${info.address}/${account}`
+        );
+        setUserInfo(data.account);
+        ret = data.account;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    console.log(ret);
+    return ret;
+  };
+
+  useEffect(() => {
+    if (!account) return;
+    loadUserInfo();
+  }, [account]);
 
   return (
     <Container>
@@ -46,15 +82,24 @@ export default function Row({
       <Menu style={{ display: isOpen ? "flex" : "none" }}>
         <div className="part">
           <PoolInfo className="innerMenu">
-            <Info left="APY" right="100%" />
-            <Info left="TVL" right="$ 100,000,000" />
+            <Info left="APY" right={apy} />
+            <Info left="TVL" right={`${info.tvl} ${info.symbol[0]}`} />
             <Info left="LIMIT" right="UNLIMITED" />
           </PoolInfo>
           {account && network == requireNetwork ? (
             <UserInfo className="innerMenu">
-              <Info className="hide" left="MY BAL" right="100%" />
-              <Info left="Share" right="$ 100,000,000" />
-              <Info left="Reward" right="UNLIMITED" />
+              <Info
+                className="hide"
+                left="MY BAL"
+                right={`${makeNum(userInfo.balance)} ${
+                  info ? info.symbol[0] : ""
+                }`}
+              />
+              <Info left="Share" right={`${makeNum(userInfo.share)}%`} />
+              <Info
+                left="Reward"
+                right={`${userInfo.reward} ${info ? info.symbol[1] : ""}`}
+              />
             </UserInfo>
           ) : (
             <UserInfo className="innerMenu">
@@ -67,34 +112,41 @@ export default function Row({
           )}
         </div>
         <Pannel className="innerMenu">
-          <WalletConnect
-            need="2"
-            bgColor="#9314B2"
-            border="2px solid #9314B2"
-            radius="20px"
-            notConnected="Connect Wallet for PLUG-IN"
-            wrongNetwork="Change network for PLUG-IN"
-            text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
-            onClick={() => setPopupOpen(true)}
+          <Info
+            direction="column"
+            left="Period"
+            right={info ? info.timeStamp : ""}
           />
-          <WalletConnect
-            need="2"
-            disable={true}
-            bgColor="#FFB900"
-            border=""
-            radius="20px"
-            text="GET FILLED"
-            onClick={() => console.log(1)}
-          />
-          <WalletConnect
-            need="2"
-            disable={true}
-            bgColor="#2D00EA"
-            border=""
-            radius="20px"
-            text="UNPLUG"
-            onClick={() => console.log(1)}
-          />
+          <Wallets>
+            <WalletConnect
+              need="2"
+              bgColor="#9314B2"
+              border="2px solid #9314B2"
+              radius="20px"
+              notConnected="Connect Wallet for PLUG-IN"
+              wrongNetwork="Change network for PLUG-IN"
+              text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
+              onClick={() => setPopupOpen(true)}
+            />
+            <WalletConnect
+              need="2"
+              disable={true}
+              bgColor="#FFB900"
+              border=""
+              radius="20px"
+              text="GET FILLED"
+              onClick={() => console.log(1)}
+            />
+            <WalletConnect
+              need="2"
+              disable={true}
+              bgColor="#2D00EA"
+              border=""
+              radius="20px"
+              text="UNPLUG"
+              onClick={() => console.log(1)}
+            />
+          </Wallets>
         </Pannel>
       </Menu>
     </Container>
@@ -163,13 +215,29 @@ function Info({ left, right, direction = "" }) {
     display: flex;
     color: white;
     flex-direction: ${direction};
+    margin-bottom: ${direction ? "64px" : ""};
     .left {
       margin: auto auto;
-      margin-left: 0;
+      margin-left: ${direction ? "" : 0};
+      margin-bottom: ${direction ? "16px" : ""};
+
+      @media (min-width: 1088px) {
+        margin-left: 0px;
+        margin-bottom: 0px;
+      }
     }
     .right {
       margin: auto auto;
-      margin-right: 0;
+      margin-right: ${direction ? "" : 0};
+
+      @media (min-width: 1088px) {
+        margin-right: 0px;
+      }
+    }
+
+    @media (min-width: 1088px) {
+      display: flex;
+      flex-direction: row;
     }
   `;
   return (
@@ -178,6 +246,16 @@ function Info({ left, right, direction = "" }) {
       <div className="right Roboto_30pt_Black">{right}</div>
     </Container>
   );
+}
+
+function makeNum(str, decimal = 4) {
+  let newStr = str;
+  if (typeof newStr === "number") newStr = str.toString();
+  let arr = newStr.split(".");
+  if (arr.length == 1 || arr[0].length > 8) return arr[0];
+  else {
+    return arr[0] + "." + arr[1].substr(0, decimal);
+  }
 }
 
 const Container = styled.div`
@@ -252,21 +330,29 @@ const PoolInfo = styled.div`
   }
 `;
 const UserInfo = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  justify-content: space-between;
   margin-top: 8px;
 
   @media (min-width: 1088px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 540px;
     margin-top: 0px;
     margin-left: 8px;
   }
 `;
-const Pannel = styled.div`
-  margin-top: 8px;
-  gap: 8px;
-  border-radius: 0 0 10px 10px;
-
+const Wallets = styled.div`
   @media (min-width: 1088px) {
     display: flex;
     flex-direction: row;
   }
+`;
+const Pannel = styled.div`
+  margin-top: 8px;
+  gap: 16px;
+  border-radius: 0 0 10px 10px;
 `;
