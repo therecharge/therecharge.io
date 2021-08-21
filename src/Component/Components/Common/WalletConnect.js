@@ -13,7 +13,10 @@ import {
   requireNetworkState,
 } from "../../../store/web3";
 
-function ConnectWallet({ text = "Wallet Connect" }) {
+function ConnectWallet({
+  notConnected = "Wallet Connect",
+  wrongNetwork = "Wrong Network!",
+}) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [provider, setProvder] = useRecoilState(providerState);
   const [account, setAccount] = useRecoilState(accountState);
@@ -125,7 +128,7 @@ function ConnectWallet({ text = "Wallet Connect" }) {
     connectEventHandler(provider);
   }
   function getAccount() {
-    if (!isChainCorrect()) return "Wrong Network";
+    if (!isChainCorrect()) return wrongNetwork;
     // console.log(network, requireNetwork);
     let ret = account.slice(0, 8) + "..." + account.slice(-6);
     return ret;
@@ -136,7 +139,9 @@ function ConnectWallet({ text = "Wallet Connect" }) {
         account && !isChainCorrect() ? changeNetwork() : connect()
       }
     >
-      <span className="Roboto_30pt_Black">{account ? getAccount() : text}</span>
+      <span className="Roboto_30pt_Black">
+        {account ? getAccount() : notConnected}
+      </span>
     </Button>
   );
 }
