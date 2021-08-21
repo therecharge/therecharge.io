@@ -1,8 +1,14 @@
-export default function Image({ type }) {
+export default function Image({ params }) {
   return (
     <img
       src={
-        type === "locked" ? "/ic_lockedstaking.svg" : "/ic_flexiblestaking.svg"
+        params.type === "Locked"
+          ? params.isLP
+            ? "/ic_lockedstaking_lp.svg"
+            : "/ic_lockedstaking.svg"
+          : params.isLP
+          ? "/ic_flexiblestaking_lp.svg"
+          : "/ic_flexiblestaking.svg"
       }
     />
   );

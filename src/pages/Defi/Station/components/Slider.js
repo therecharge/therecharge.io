@@ -2,15 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
-function Slider({}) {
+function Slider({ setParams }) {
   const [t] = useTranslation();
   return (
     <Container>
       <Content>
-        <Button type="flexible" text="Flexible Staking" />
-        <Button type="flexible" text="LP Flexible Staking" />
-        <Button type="locked" text="Locked Staking" />
-        <Button type="locked" text="LP Locked Staking" />
+        <Button setParams={setParams} type="Flexible" text="Flexible Staking" />
+        <Button
+          setParams={setParams}
+          type="Flexible"
+          text="LP Flexible Staking"
+        />
+        <Button setParams={setParams} type="Locked" text="Locked Staking" />
+        <Button setParams={setParams} type="Locked" text="LP Locked Staking" />
       </Content>
     </Container>
   );
@@ -19,10 +23,14 @@ const Container = styled.div`
   margin-top: 40px;
   display: flex;
   width: 100%;
+
+  @media (min-width: 1088px) {
+    justify-content: center;
+  }
 `;
 const Content = styled.div`
   display: flex;
-  max-width: 1188px;
+  max-width: 1088px;
   white-space: nowrap;
   overflow: auto;
   a {
@@ -32,7 +40,7 @@ const Content = styled.div`
 
 export default React.memo(Slider);
 
-function Button({ type, text }) {
+function Button({ type, text, setParams }) {
   const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -49,13 +57,50 @@ function Button({ type, text }) {
       margin: auto auto;
       margin-top: 20px;
     }
+    @media (min-width: 1088px) {
+      min-width: 260px;
+    }
   `;
+  let params;
+  if (type === "Locked") {
+    if (text.includes("LP")) {
+      params = {
+        type: "Locked",
+        isLP: true,
+        address: "0x",
+      };
+    } else {
+      params = {
+        type: "Locked",
+        isLP: false,
+        address: "0x",
+      };
+    }
+  } else {
+    if (text.includes("LP")) {
+      params = {
+        type: "Flexible",
+        isLP: true,
+        address: "0x",
+      };
+    } else {
+      params = {
+        type: "Flexible",
+        isLP: false,
+        address: "0x",
+      };
+    }
+  }
   return (
-    <Container>
+    <Container onClick={() => setParams(params)}>
       <img
         src={
-          type === "locked"
-            ? "/ic_lockedstaking.svg"
+          type === "Locked"
+            ? text.includes("LP")
+              ? "/ic_lockedstaking_lp.svg"
+              : "/ic_lockedstaking.svg"
+            : text.includes("LP")
+            ? "/ic_flexiblestaking_lp.svg"
             : "/ic_flexiblestaking.svg"
         }
       />

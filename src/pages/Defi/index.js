@@ -26,7 +26,7 @@ const Content = styled.div`
   margin-top: 100px;
   display: flex;
   width: 100%;
-  max-width: 1188px;
+  max-width: 1088px;
   height: 100%;
   a {
     color: white;

@@ -3,9 +3,14 @@ import styled from "styled-components";
 import { ReactComponent as DropdownClose } from "./assets/dropdown-close.svg";
 import { ReactComponent as DropdownOpen } from "./assets/dropdown-open.svg";
 import WalletConnect from "../../../../../Component/Components/Common/WalletConnect";
+import Popup from "./popup";
 //store
 import { useRecoilState } from "recoil";
-import { accountState } from "../../../../../store/web3";
+import {
+  accountState,
+  networkState,
+  requireNetworkState,
+} from "../../../../../store/web3";
 // Row Component structure
 //  1)state
 //  2)style
@@ -15,12 +20,23 @@ export default function Row({
   status = "Inactive",
   name = "Charger No.000000",
   apy = "10000.00",
+  info = "",
 }) {
   const [account] = useRecoilState(accountState);
+  const [network] = useRecoilState(networkState);
+  const [requireNetwork] = useRecoilState(requireNetworkState);
   const [isOpen, setOpen] = useState(false);
+  const [isPopupOpen, setPopupOpen] = useState(false);
 
   return (
     <Container>
+      {isPopupOpen && (
+        <Popup
+          close={() => {
+            setPopupOpen(false);
+          }}
+        />
+      )}
       <Title onClick={() => setOpen(!isOpen)}>
         <Status status={status} />
         <Name status={status} name={name} />
@@ -28,26 +44,57 @@ export default function Row({
         <Btn status={status} isOpen={isOpen} />
       </Title>
       <Menu style={{ display: isOpen ? "flex" : "none" }}>
-        <PoolInfo className="innerMenu">
-          <Info left="APY" right="100%" />
-          <Info left="TVL" right="$ 100,000,000" />
-          <Info left="LIMIT" right="UNLIMITED" />
-        </PoolInfo>
-        {account ? (
-          <UserInfo className="innerMenu">
-            <Info className="hide" left="MY BAL" right="100%" />
-            <Info left="Share" right="$ 100,000,000" />
-            <Info left="Reward" right="UNLIMITED" />
-          </UserInfo>
-        ) : (
-          <UserInfo className="innerMenu">
-            <WalletConnect notConnected="plz Connect Wallet for Approve" />
-          </UserInfo>
-        )}
+        <div className="part">
+          <PoolInfo className="innerMenu">
+            <Info left="APY" right="100%" />
+            <Info left="TVL" right="$ 100,000,000" />
+            <Info left="LIMIT" right="UNLIMITED" />
+          </PoolInfo>
+          {account && network == requireNetwork ? (
+            <UserInfo className="innerMenu">
+              <Info className="hide" left="MY BAL" right="100%" />
+              <Info left="Share" right="$ 100,000,000" />
+              <Info left="Reward" right="UNLIMITED" />
+            </UserInfo>
+          ) : (
+            <UserInfo className="innerMenu">
+              <WalletConnect
+                need="2"
+                notConnected="Connect Wallet for data"
+                wrongNetwork="Change network for data"
+              />
+            </UserInfo>
+          )}
+        </div>
         <Pannel className="innerMenu">
-          <Info left="APY" right="100%" />
-          <Info left="TVL" right="$ 100,000,000" />
-          <Info left="LIMIT" right="UNLIMITED" />
+          <WalletConnect
+            need="2"
+            bgColor="#9314B2"
+            border="2px solid #9314B2"
+            radius="20px"
+            notConnected="Connect Wallet for PLUG-IN"
+            wrongNetwork="Change network for PLUG-IN"
+            text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
+            onClick={() => setPopupOpen(true)}
+          />
+          <WalletConnect
+            need="2"
+            disable={true}
+            bgColor="#FFB900"
+            border=""
+            radius="20px"
+            text="GET FILLED"
+            onClick={() => console.log(1)}
+          />
+          <WalletConnect
+            need="2"
+            disable={true}
+            bgColor="#2D00EA"
+            border=""
+            radius="20px"
+            text="UNPLUG"
+            onClick={() => console.log(1)}
+          />
         </Pannel>
       </Menu>
     </Container>
@@ -88,13 +135,14 @@ function Name({ status, name }) {
 function Apy({ status, apy }) {
   function color() {
     if (status != "Active") return "var(--gray-30)";
+    if (apy == "999+") return "var(--green)";
     if (apy >= 100) return "var(--green)";
     if (apy >= 50) return "var(--red)";
     return "var(--yellow)";
   }
   return (
     <p className="Roboto_30pt_Black apy" style={{ color: color() }}>
-      {status != "Inactive" ? apy + "%" : "-"}
+      {status != "Inactive" ? (apy == "999+" ? "999+" : apy + "%") : "-"}
     </p>
   );
 }
@@ -110,10 +158,11 @@ function Btn({ status, isOpen }) {
     );
 }
 
-function Info({ left, right }) {
+function Info({ left, right, direction = "" }) {
   const Container = styled.div`
     display: flex;
     color: white;
+    flex-direction: ${direction};
     .left {
       margin: auto auto;
       margin-left: 0;
@@ -134,7 +183,7 @@ function Info({ left, right }) {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  mix-width: 620px;
+  max-width: 1088px;
   min-height: 120px;
   background-color: #1c1e35;
   margin-bottom: 20px;
@@ -157,6 +206,13 @@ const Container = styled.div`
     margin-right: 40px;
     margin-left: 0px;
   }
+  .disable {
+    background-color: #484848;
+    span {
+      color: #7e7e7e;
+    }
+    border: ;
+  }
 `;
 const Title = styled.div`
   display: flex;
@@ -177,14 +233,40 @@ const Menu = styled.div`
     flex-direction: column;
     padding: 40px 60px 40px 60px;
   }
+  .part {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 1088px) {
+      display: flex;
+      flex-direction: row;
+    }
+  }
 `;
+
 const PoolInfo = styled.div`
   gap: 8px;
+
+  @media (min-width: 1088px) {
+    width: 540px;
+  }
 `;
 const UserInfo = styled.div`
   margin-top: 8px;
+
+  @media (min-width: 1088px) {
+    width: 540px;
+    margin-top: 0px;
+    margin-left: 8px;
+  }
 `;
 const Pannel = styled.div`
   margin-top: 8px;
+  gap: 8px;
   border-radius: 0 0 10px 10px;
+
+  @media (min-width: 1088px) {
+    display: flex;
+    flex-direction: row;
+  }
 `;

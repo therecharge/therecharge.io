@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 // Components
@@ -7,12 +7,18 @@ import List from "./components/List";
 
 function Station({}) {
   const [t] = useTranslation();
+  const [params, setParams] = useState({
+    type: "Flexible",
+    isLP: false,
+    address: "0x", // useless?
+  });
+
   return (
     <Container>
       <Content>
-        <Slider />
+        <Slider setParams={setParams} />
         <Line />
-        <List />
+        <List params={params} />
       </Content>
     </Container>
   );
@@ -20,13 +26,14 @@ function Station({}) {
 const Container = styled.div`
   margin-top: 100px;
   display: flex;
+  justify-content: center;
   width: 100vw;
   height: 100vh;
 `;
 const Content = styled.div`
   display: flex;
   width: 100%;
-  max-width: 1188px;
+  max-width: 1088px;
   height: 100%;
   flex-direction: column;
   a {

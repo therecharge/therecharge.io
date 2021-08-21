@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import { changeNetwork } from "./utils/Wallets";
 //store
 import { useRecoilState } from "recoil";
 import {
@@ -14,8 +15,16 @@ import {
 } from "../../../store/web3";
 
 function ConnectWallet({
+  need = "0", // 1 = Need wallet Connect, 2 = Need correct network
+  disable = false,
   notConnected = "Wallet Connect",
   wrongNetwork = "Wrong Network!",
+  text = undefined,
+  w = "100%",
+  radius = "210px",
+  border = "2px solid #ffb900",
+  bgColor = "",
+  onClick = () => {},
 }) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [provider, setProvder] = useRecoilState(providerState);
@@ -23,6 +32,22 @@ function ConnectWallet({
   const [network, setNetwork] = useRecoilState(networkState);
   const [requireNetwork] = useRecoilState(requireNetworkState);
 
+  const Button = styled.div`
+    display: flex;
+    background-color: ${bgColor};
+    width: ${w};
+    height: 70px;
+    border: ${border};
+    border-radius: ${radius};
+    span {
+      margin: auto auto;
+      display: table-cell;
+    }
+
+    @media (min-width: 1088px) {
+      width: 310px;
+    }
+  `;
   /* Setting WalletConnect */
   const providerOptions = {
     metamask: {
@@ -60,30 +85,6 @@ function ConnectWallet({
     providerOptions,
   });
 
-  function changeNetwork() {
-    console.log("Change!");
-    let rpc = {
-      0x80: {
-        id: 1,
-        jsonrpc: "2.0",
-        method: "wallet_addEthereumChain",
-        params: [
-          {
-            chainId: "0x80",
-            chainName: "Heco Chain",
-            rpcUrls: ["https://http-mainnet.hecochain.com"],
-            nativeCurrency: {
-              name: "HT",
-              symbol: "HT",
-              decimals: 18,
-            },
-            blockExplorerUrls: ["https://hecoinfo.com/"],
-          },
-        ],
-      },
-    };
-    window.ethereum.request(rpc[requireNetwork]);
-  }
   async function onDisconnect(event) {
     if (!event && web3 && web3.currentProvider && web3.currentProvider.close) {
       await web3.currentProvider.close();
@@ -128,34 +129,58 @@ function ConnectWallet({
     connectEventHandler(provider);
   }
   function getAccount() {
-    if (!isChainCorrect()) return wrongNetwork;
+    if (text) return text;
     // console.log(network, requireNetwork);
     let ret = account.slice(0, 8) + "..." + account.slice(-6);
     return ret;
   }
+  function isDisable() {
+    if (!disable) return false;
+    switch (need) {
+      case "0":
+        return false;
+      case "1":
+        if (account) return false;
+      case "2":
+        if (account && isChainCorrect()) return false;
+    }
+    return true;
+  }
   return (
     <Button
-      onClick={() =>
-        account && !isChainCorrect() ? changeNetwork() : connect()
-      }
+      className={isDisable() ? "disable" : ""}
+      onClick={() => {
+        switch (need) {
+          case "0":
+            onClick();
+            break;
+          case "1":
+            account ? onClick() : connect();
+            break;
+          case "2":
+            if (account && isChainCorrect()) onClick();
+            else if (!account) connect();
+            else if (!isChainCorrect()) changeNetwork(requireNetwork);
+            break;
+        }
+      }}
     >
       <span className="Roboto_30pt_Black">
-        {account ? getAccount() : notConnected}
+        {need === "0" && text}
+        {need === "1" &&
+          !isDisable() &&
+          (account ? getAccount() : notConnected)}
+        {need === "2" &&
+          !isDisable() &&
+          (account
+            ? isChainCorrect()
+              ? getAccount()
+              : wrongNetwork
+            : notConnected)}
+        {isDisable() && text}
       </span>
     </Button>
   );
 }
-
-const Button = styled.div`
-  display: flex;
-  width: 100%;
-  height: 70px;
-  border: 2px solid #ffb900;
-  border-radius: 210px;
-  span {
-    margin: auto auto;
-    display: table-cell;
-  }
-`;
 
 export default ConnectWallet;
