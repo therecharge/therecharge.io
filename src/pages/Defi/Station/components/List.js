@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 //components
 import Image from "./List/image.js";
 import Row from "./List/row.js";
-import WalletConnect from "../../../../Component/Components/Common/WalletConnect";
 
 function List({ type, list }) {
   const [t] = useTranslation();
