@@ -50,6 +50,7 @@ function List({ /*type, list,*/ params }) {
 
   const loadChargerList = async () => {
     try {
+      // GET Pool list(Charging list) from back by staking type(Flexible/Locked and LP or not)
       let { data } = await axios.get(
         `https://bridge.therecharge.io/charger/list/type/${params.type.toLowerCase()}`
       );
@@ -60,12 +61,21 @@ function List({ /*type, list,*/ params }) {
             address: "0x00",
             name: "No supplied pool",
             apy: "0",
-            info: {},
+            period: [1625022000, 14400],
+            redemtion: 200,
+            symbol: ["RCG", "RCG"],
+            token: [
+              "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+              "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+            ],
+            tvl: 0,
+            type: "flexible",
           },
         ]);
         return;
       }
 
+      // GET each Pool information from back
       let returnValue = await Promise.all(
         data.map(async (d) => {
           try {
@@ -100,6 +110,7 @@ function List({ /*type, list,*/ params }) {
     return;
   };
 
+  // Whenever Staking type is changed, reload Pool list
   useEffect(async () => {
     // setOnLoading(true);
     try {
@@ -120,7 +131,6 @@ function List({ /*type, list,*/ params }) {
           {/* <Row status="Active" name="Test" apy="100" />
           <Row status="Inactive" />
           <Row status="Active" /> */}
-          {console.log(chList)}
           {chList.map((charger, index) => {
             return (
               <Row
@@ -167,7 +177,7 @@ const loadPoolPeriod = (startTime, duration) => {
   return ret;
 };
 
-const loadActiveStatus = ({ type, tvl, period, limit }) => {
+const loadActiveStatus = ({ tvl, period, limit }) => {
   if (period[0] + period[1] >= new Date().getTime() / 1000) {
     if (!limit || limit > tvl) {
       return "Active";
