@@ -3,8 +3,9 @@ import styled from "styled-components";
 import ReactPaginate from "react-paginate";
 import commentList from "./commentList/index";
 import Footer from "../../Components/Desktop/Footer";
+import { withTranslation } from "react-i18next";
 
-function Docs({ match }) {
+function Docs({ match, t }) {
   const [pageCount, setPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [viewNum, setViewNum] = useState(1);
@@ -169,6 +170,14 @@ function Docs({ match }) {
             >
               <a style={{ textDecoration: "none", color: "#ffffff" }}>
                 CI Download
+              </a>
+            </div>
+            <div className="topic Roboto_30pt_Black_L unactive">
+              <a
+                onClick={() => window.open(t("Docs/userGuide"), "_blank")}
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                User Guide
               </a>
             </div>
           </div>
@@ -566,4 +575,4 @@ const Background = styled.div`
   background-position: right 0px;
 `;
 
-export default Docs;
+export default withTranslation()(Docs);

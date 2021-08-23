@@ -319,6 +319,18 @@ function Gnb({ connectWallet, account, onDisconnect }) {
                   <a>CI Download</a>
                 </div>
               </Link>
+              <div>
+                <a
+                  onClick={() => {
+                    window.open(t("Docs/userGuide"), "_blank");
+                    setModalPoolOpen(false);
+                    setModalPool2Open(false);
+                    setModalSwapOpen(false);
+                  }}
+                >
+                  User Guide
+                </a>
+              </div>
             </div>
           </div>
 
