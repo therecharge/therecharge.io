@@ -20,12 +20,13 @@ function ConnectWallet({
   notConnected = "Wallet Connect",
   wrongNetwork = "Wrong Network!",
   text = undefined,
-  m = "",
   w = "540px",
+  m = "",
   radius = "210px",
   border = "2px solid #ffb900",
   bgColor = "",
-  onClick = () => {},
+  onClick = () => { },
+  fontsize = ""
 }) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [provider, setProvder] = useRecoilState(providerState);
@@ -41,21 +42,21 @@ function ConnectWallet({
     height: 80px;
     border: ${border};
     border-radius: ${radius};
-    margin-bottom: 20px;
+    cursor: pointer;
     span {
       margin: auto auto;
       display: table-cell;
-
+      
       @media (min-width: 1088px) {
-        font-size: 20px;
+        font-size: ${account ? fontsize : (text === "APPROVE" || text === "PLUG-IN" ? "20px" : fontsize)};
       }
     }
 
     @media (min-width: 1088px) {
-      width: 310px;
+      width: ${border === "3px solid #9314B2" ? "540px" : notConnected === "Connect Wallet for data" ? "420px" : "310px"};
       margin: auto;
     }
-  `;
+`;
   /* Setting WalletConnect */
   const providerOptions = {
     metamask: {

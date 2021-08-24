@@ -52,6 +52,7 @@ function Button({ type, text, setParams }) {
     height: 350px;
     background-color: #1c1e35;
     margin: 0px 10px 0px 10px;
+    cursor: pointer;
     img {
       margin: auto auto;
       margin-bottom: 0px;
@@ -106,8 +107,8 @@ function Button({ type, text, setParams }) {
               ? "/ic_lockedstaking_lp.svg"
               : "/ic_lockedstaking.svg"
             : text.includes("LP")
-            ? "/ic_flexiblestaking_lp.svg"
-            : "/ic_flexiblestaking.svg"
+              ? "/ic_flexiblestaking_lp.svg"
+              : "/ic_flexiblestaking.svg"
         }
       />
       <p className="Roboto_30pt_Black">{text}</p>

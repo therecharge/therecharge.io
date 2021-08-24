@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+//components
 import Asset from "./components/Asset";
 import AssetSwap from "./components/AssetSwap";
 
-function Swap({}) {
+function Swap({ }) {
   const [t] = useTranslation();
+
   return (
     <Container>
       <Content>
@@ -17,6 +19,7 @@ function Swap({}) {
     </Container>
   );
 }
+
 const Container = styled.div`
   display: flex;
   width: 100%;
@@ -36,7 +39,6 @@ const Content = styled.div`
     margin-top: 40px;
   }
 `;
-
 const Line = styled.div`
   height: 2px;
   margin: 40px 10px 0px 10px;

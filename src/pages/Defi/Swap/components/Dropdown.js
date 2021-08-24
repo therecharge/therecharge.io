@@ -10,6 +10,19 @@ export default function Dropdown({
   title = "FROM",
 }) {
   const [open, setOpen] = useState(false);
+
+  /**
+   * 토큰 리스트
+   * FROM LIST: 고정 -> RCG_ht, RCG_eth, RCG_bnb, FUP
+   * TO LIST: from에 따라 변동
+   * 
+   * 체인지 버튼 필요:아직없음
+   * 
+   * selected: 리스트에서 선택한 토큰
+   * unselected: 리스트에서 선택한 토큰 제외한 나머지 토큰들
+   * 
+   * swap 버튼 필요:아직없음
+   */
   return (
     <Container>
       <Title className="Roboto_40pt_Black">{title}</Title>

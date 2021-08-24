@@ -5,11 +5,18 @@ import Dropdown from "./Dropdown";
 
 function AssetSwap({ setParams }) {
   const [t] = useTranslation();
+
   return (
     <Container>
       <Content>
-        <Dropdown />
-        <Dropdown />
+        {/* from 
+            Image -> token image
+            symbol -> token symbol
+            network -> swap에 필요한 네트워크 연결
+            */}
+        <Dropdown /*Image={ } symbol={ } network={ }*/ title={"FROM"} />
+        {/* to */}
+        <Dropdown /*Image={ } symbol={ } network={ }*/ title={"TO"} />
       </Content>
     </Container>
   );
@@ -31,6 +38,22 @@ const Content = styled.div`
   width: 100%;
   height: 100%;
   margin: 40px 40px 40px 40px;
+`;
+const UserInfo = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 8px;
+
+  @media (min-width: 1088px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 540px;
+    margin-top: 0px;
+    margin-left: 8px;
+  }
 `;
 
 export default React.memo(AssetSwap);
