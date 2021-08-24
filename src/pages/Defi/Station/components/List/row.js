@@ -1,17 +1,22 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { fromWei, toWei, toBN } from "web3-utils";
 import { ReactComponent as DropdownClose } from "./assets/dropdown-close.svg";
 import { ReactComponent as DropdownOpen } from "./assets/dropdown-open.svg";
 import WalletConnect from "../../../../../Component/Components/Common/WalletConnect";
 import Popup from "./popup";
 //store
 import { useRecoilState } from "recoil";
+import { poolInfoState, selState, periodState } from "../../../../../store/pool";
 import {
+  web3State,
   accountState,
   networkState,
   requireNetworkState,
 } from "../../../../../store/web3";
+const ERC20_ABI = require("../../../../../Component/Desktop/Defi/abis/ERC20ABI.json");
+const POOL_ABI = require("../../../../../Component/Desktop/Defi/abis/poolABI.json");
 // Row Component structure
 //  1)state
 //  2)style
@@ -22,12 +27,47 @@ export default function Row({
   name = "Charger No.000000",
   apy = "10000.00",
   info,
+  params,
 }) {
+  const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
   const [requireNetwork] = useRecoilState(requireNetworkState);
+  const [poolInfo, setPoolInfo] = useRecoilState(poolInfoState);
+  const [period, setPeriod] = useRecoilState(periodState);
   const [isOpen, setOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [plAmount, setPlAmount] = useState("");
+  const [btnInfo, setBtnInfo] = useState("");
+  const [sel, setSelCharger] = useState(0);
+  const [chList, setChList] = useState([
+    {
+      address: "0x00",
+      name: "Now Loading",
+      apy: "000",
+    },
+    {
+      address: "0x00",
+      name: "",
+      apy: "",
+    },
+  ]);
+  const [poolMethods, setPoolMethods] = useState({
+    isSet: true,
+    available: 0,
+    approve: () => {
+      return;
+    },
+    stake: () => {
+      return;
+    },
+    earn: () => {
+      return;
+    },
+    exit: () => {
+      return;
+    },
+  });
   const [userInfo, setUserInfo] = useState({
     address: "0x00",
     balance: "0",
@@ -35,6 +75,99 @@ export default function Row({
     allowance: "0",
     share: 0,
   });
+
+  const loadMethods = async (
+    stakeTokenAddress,
+    rewardTokenAddress,
+    chargerAddress
+  ) => {
+    let ret = {};
+    const stakeI = new web3.eth.Contract(ERC20_ABI, stakeTokenAddress);
+    const stakeM = stakeI.methods;
+    const rewardI = new web3.eth.Contract(ERC20_ABI, rewardTokenAddress);
+    const rewardM = rewardI.methods;
+    const poolI = new web3.eth.Contract(POOL_ABI, chargerAddress);
+    const poolM = poolI.methods;
+
+    // const [balance] = await stakeM.balanceOf(account).call();
+    let balance = await stakeM.balanceOf(account).call();
+    const approve = (tokenM, to, amount, account) => {
+      if (typeof amount != "string") amount = String(amount);
+      tokenM.approve(to, toWei(amount, "ether")).send({ from: account });
+    };
+    const stake = (poolM, amount, account) => {
+      if (typeof amount != "string") amount = String(amount);
+      poolM.stake(toWei(amount, "ether")).send({ from: account });
+    };
+    const earn = (poolM, account) => {
+      poolM.getReward().send({ from: account });
+    };
+    const exit = (poolM, account) => {
+      poolM.exit().send({ from: account });
+    };
+    // fromWei(balance, "ether")
+    ret = {
+      available: fromWei(balance, "ether"),
+      approve: async () =>
+        await approve(stakeM, chargerAddress, "999999999", account),
+      stake: async (amount) =>
+        userInfo.allowance > 0
+          ? await stake(poolM, amount, account)
+          : await approve(stakeM, chargerAddress, "999999999", account),
+      earn: async () => await earn(poolM, account),
+      exit: async () => await exit(poolM, account),
+    };
+
+    setPoolMethods(ret);
+    return ret;
+  };
+
+  const weiToEther = (wei) => {
+    return fromWei(wei, "ether");
+  };
+
+  const SetPercent = (x) => {
+    setPlAmount((poolMethods.available / 100) * x);
+  };
+
+  const loadPoolInfo = async () => {
+    let ret = {};
+    if (chList[sel].address === "0x00") return;
+    try {
+      let { data } = await axios.get(
+        `https://bridge.therecharge.io/charger/info/${chList[sel].address}`
+      );
+      let tempTime = loadPoolPeriod(data.period[0], data.period[1]);
+      setPoolInfo(data);
+      setPeriod(tempTime);
+      ret = data;
+    } catch (err) {
+      console.log(err);
+    }
+    return ret;
+  };
+
+  const loadPoolPeriod = (startTime, duration) => {
+    let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00(GMT)";
+
+    const endTime = Number(startTime) + Number(duration);
+
+    const formatter = (timestamp) => {
+      var d = new Date(Number(timestamp) * 1000);
+      const z = (x) => {
+        return x.toString().padStart(2, "0");
+      };
+      return `${new String(d.getFullYear()).substr(2, 3)}.${z(
+        d.getMonth() + 1
+      )}.${z(d.getDate())} ${z(d.getHours())}:${z(d.getMinutes())}:${z(
+        d.getSeconds()
+      )}`;
+    };
+
+    ret = `${formatter(startTime)} ~ ${formatter(endTime)}`;
+
+    return ret;
+  };
 
   const loadUserInfo = async () => {
     let ret = {
@@ -64,6 +197,14 @@ export default function Row({
     loadUserInfo();
   }, [account]);
 
+  useEffect(() => {
+    if (!account) return;
+    if (chList[sel].address === "0x00") return;
+    loadUserInfo();
+    loadMethods(poolInfo.token[0], poolInfo.token[1], chList[sel].address);
+  }, [account]);
+
+
   return (
     <Container>
       {isPopupOpen && (
@@ -73,7 +214,8 @@ export default function Row({
           }}
         />
       )}
-      <Title onClick={() => setOpen(!isOpen)}>
+      <Title onClick={() => setOpen(!isOpen)}
+        style={{ cursor: "pointer" }}>
         <Status status={status} />
         <Name status={status} name={name} />
         <Apy status={status} apy={apy} />
@@ -91,9 +233,8 @@ export default function Row({
               <Info
                 className="hide"
                 left="MY BAL"
-                right={`${makeNum(userInfo.balance)} ${
-                  info ? info.symbol[0] : ""
-                }`}
+                right={`${makeNum(userInfo.balance)} ${info ? info.symbol[0] : ""
+                  }`}
               />
               <Info left="Share" right={`${makeNum(userInfo.share)}%`} />
               <Info
@@ -119,39 +260,236 @@ export default function Row({
             left="Period"
             right={info ? info.timeStamp : ""}
           />
-          <Wallets>
-            <WalletConnect
-              need="2"
-              bgColor="#9314B2"
-              border="2px solid #9314B2"
-              radius="20px"
-              w="540px"
-              notConnected="Connect Wallet for PLUG-IN"
-              wrongNetwork="Change network for PLUG-IN"
-              text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
-              onClick={() => setPopupOpen(true)}
-            />
-            <WalletConnect
-              need="2"
-              disable={true}
-              bgColor="#FFB900"
-              border=""
-              radius="20px"
-              w="540px"
-              text="GET FILLED"
-              onClick={() => console.log(1)}
-            />
-            <WalletConnect
-              need="2"
-              disable={true}
-              bgColor="#2D00EA"
-              border=""
-              radius="20px"
-              w="540px"
-              text="UNPLUG"
-              onClick={() => console.log(1)}
-            />
-          </Wallets>
+          {params.type === "Flexible" ?
+            (<Wallets>
+              <WalletConnect
+                need="2"
+                bgColor={
+                  (poolInfo.period[0] > new Date().getTime() / 1000) |
+                    (poolInfo.period[0] + poolInfo.period[1] <
+                      new Date().getTime() / 1000)
+                    ? "var(--gray-30)"
+                    : !poolInfo.limit || poolInfo.limit > poolInfo.tvl
+                      ? "var(--purple)"
+                      : "var(--gray-30)"}
+                border=""
+                radius="20px"
+                w="540px"
+                fontsize="30px"
+                notConnected="Connect Wallet for PLUG-IN"
+                wrongNetwork="Change network for PLUG-IN"
+                text={userInfo.allowance !== "0" ? "PLUG-IN" : "APPROVE"} //어프로브 안되어 있으면 APPROVE로 대체 필요함.
+                onClick={async () => {
+                  //if out of period => inactive
+                  if (
+                    poolInfo.period[0] > new Date().getTime() / 1000 ||
+                    poolInfo.period[0] + poolInfo.period[1] <
+                    new Date().getTime() / 1000
+                  ) {
+                    alert("This pool is inactive")
+                    // toast("This pool is inactive");
+                  }
+                  // else if (!account) {
+                  //   alert("Please connect to wallet")
+                  //   // toast("Please connect to wallet");
+                  // }
+                  //if in period => active || close
+                  else {
+                    // if active
+                    if (!poolInfo.limit || poolInfo.limit > poolInfo.tvl) {
+                      if (userInfo.allowance == "0") {
+                        await poolMethods.approve();
+                      } else {
+                        // if (plAmount) {
+                        setPopupOpen(!isPopupOpen)
+                        setBtnInfo("Deposit");
+                        // await poolMethods.stake(plAmount);
+                        // await toast(
+                        //   userInfo.allowance > 0
+                        //     ? 'Please approve "PLUG-IN" in your private wallet'
+                        //     : 'Please approve "Transfer Limit" in your private wallet'
+                        // );
+                        // } else alert("Please enter the amount of Staking")
+                        // toast("Please enter the amount of Staking");
+                      }
+                    }
+                    //if close
+                    else {
+                      alert("This pool is closed")
+                      // toast("This pool is closed");
+                    }
+                  }
+                }}
+              />
+              <WalletConnect
+                need="0"
+                disable={true}
+                bgColor={
+                  poolInfo.period[0] > new Date().getTime() / 1000 ||
+                    poolInfo.period[0] + poolInfo.period[1] <
+                    new Date().getTime() / 1000
+                    ? "var(--gray-30)"
+                    : "var(--yellow)"
+                }
+                border=""
+                radius="20px"
+                w="540px"
+                fontsize="30px"
+                text="GET FILLED"
+                onClick={async () => {
+                  //if out of period => inactive
+                  if (
+                    poolInfo.period[0] > new Date().getTime() / 1000 ||
+                    poolInfo.period[0] + poolInfo.period[1] <
+                    new Date().getTime() / 1000
+                  ) {
+                    alert("This pool is inactive")
+                    // toast("This pool is inactive");
+                  } else if (!account) {
+                    alert("Please connect to wallet")
+                    // toast("Please connect to wallet");
+                  }
+                  //if in period => active || close
+                  else {
+                    setPopupOpen(!isPopupOpen);
+                    setBtnInfo("Get Reward");
+                    // await poolMethods.earn();
+                    // await toast(
+                    //   'Please approve "GET FILLED" in your private wallet'
+                    // );
+                  }
+                }}
+              />
+              <WalletConnect
+                need="0"
+                disable={true}
+                bgColor={
+                  userInfo.balance > 0
+                    ? "var(--ultramarine-blue)"
+                    : "var(--gray-30)"
+                }
+                border=""
+                radius="20px"
+                w="540px"
+                fontsize="30px"
+                text="UNPLUG"
+                onClick={async () => {
+                  if (!account) {
+                    alert("Please connect to wallet")
+                    // toast("Please connect to wallet");
+                  }
+                  //if user Balance > 0
+                  else if (userInfo.balance > 0) {
+                    setPopupOpen(!isPopupOpen);
+                    setBtnInfo("Withdrawal");
+                    // await poolMethods.exit();
+                    // await toast(
+                    //   'Please approve "UNPLUG" in your private wallet'
+                    // );
+                  }
+                  //if user Balance <= 0
+                  else {
+                    alert("There is no withdrawable amount")
+                    // toast("There is no withdrawable amount");
+                  }
+                }}
+              />
+            </Wallets>)
+            : (<Wallets>
+              <WalletConnect
+                need="2"
+                bgColor={
+                  (poolInfo.period[0] > new Date().getTime() / 1000) |
+                    (poolInfo.period[0] + poolInfo.period[1] <
+                      new Date().getTime() / 1000)
+                    ? "var(--gray-30)"
+                    : !poolInfo.limit || poolInfo.limit > poolInfo.tvl
+                      ? "var(--purple)"
+                      : "var(--gray-30)"}
+                border=""
+                radius="20px"
+                w="540px"
+                fontsize="30px"
+                notConnected="Connect Wallet for PLUG-IN"
+                wrongNetwork="Change network for PLUG-IN"
+                text={userInfo.allowance !== "0" ? "PLUG-IN" : "APPROVE"} //어프로브 안되어 있으면 APPROVE로 대체 필요함.
+                onClick={async () => {
+                  //if out of period => inactive
+                  if (
+                    poolInfo.period[0] > new Date().getTime() / 1000 ||
+                    poolInfo.period[0] + poolInfo.period[1] <
+                    new Date().getTime() / 1000
+                  ) {
+                    alert("This pool is inactive")
+                    // toast("This pool is inactive");
+                  }
+                  // else if (!account) {
+                  //   alert("Please connect to wallet")
+                  //   // toast("Please connect to wallet");
+                  // }
+                  //if in period => active || close
+                  else {
+                    // if active
+                    if (!poolInfo.limit || poolInfo.limit > poolInfo.tvl) {
+                      if (userInfo.allowance == "0") {
+                        await poolMethods.approve();
+                      } else {
+                        // if (plAmount) {
+                        setPopupOpen(!isPopupOpen)
+                        setBtnInfo("Deposit");
+                        // await poolMethods.stake(plAmount);
+                        // await toast(
+                        //   userInfo.allowance > 0
+                        //     ? 'Please approve "PLUG-IN" in your private wallet'
+                        //     : 'Please approve "Transfer Limit" in your private wallet'
+                        // );
+                        // } else alert("Please enter the amount of Staking")
+                        // toast("Please enter the amount of Staking");
+                      }
+                    }
+                    //if close
+                    else {
+                      alert("This pool is closed")
+                      // toast("This pool is closed");
+                    }
+                  }
+                }}
+              />
+              <WalletConnect
+                need="0"
+                disable={true}
+                bgColor={
+                  userInfo.balance > 0
+                    ? "var(--ultramarine-blue)"
+                    : "var(--gray-30)"
+                }
+                border=""
+                radius="20px"
+                w="540px"
+                fontsize="30px"
+                text="UNPLUG"
+                onClick={async () => {
+                  if (!account) {
+                    alert("Please connect to wallet")
+                    // toast("Please connect to wallet");
+                  }
+                  //if user Balance > 0
+                  else if (userInfo.balance > 0) {
+                    setPopupOpen(!isPopupOpen);
+                    setBtnInfo("Withdrawal");
+                    // await poolMethods.exit();
+                    // await toast(
+                    //   'Please approve "UNPLUG" in your private wallet'
+                    // );
+                  }
+                  //if user Balance <= 0
+                  else {
+                    alert("There is no withdrawable amount")
+                    // toast("There is no withdrawable amount");
+                  }
+                }}
+              />
+            </Wallets>)}
         </Pannel>
       </Menu>
     </Container>
@@ -351,7 +689,10 @@ const UserInfo = styled.div`
   }
 `;
 const Wallets = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: auto;
+  gap: 20px;
   @media (min-width: 1088px) {
     display: flex;
     flex-direction: row;

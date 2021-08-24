@@ -139,6 +139,7 @@ function List({ /*type, list,*/ params }) {
                 name={charger.name}
                 apy={charger.apy}
                 info={charger}
+                params={params}
               />
             );
           })}

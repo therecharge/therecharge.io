@@ -4,7 +4,7 @@ import { ReactComponent as PopupClose } from "./assets/popup-close.svg";
 import WalletConnect from "../../../../../Component/Components/Common/WalletConnect";
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
-export default function Popup({ close = () => {} }) {
+export default function Popup({ close = () => { } }) {
   return (
     <Container>
       <Content>
@@ -21,16 +21,16 @@ export default function Popup({ close = () => {} }) {
           <input className="popup-input" type="number" />
         </div>
         <QuickSelect>
-          <div>
+          <div style={{ cursor: "pointer" }}>
             <span className="Roboto_20pt_Regular">25%</span>
           </div>
-          <div>
+          <div style={{ cursor: "pointer" }}>
             <span className="Roboto_20pt_Regular">50%</span>
           </div>
-          <div>
+          <div style={{ cursor: "pointer" }}>
             <span className="Roboto_20pt_Regular">75%</span>
           </div>
-          <div className="sel-max">
+          <div className="sel-max" style={{ cursor: "pointer" }}>
             <span className="Roboto_20pt_Regular">MAX</span>
           </div>
         </QuickSelect>
@@ -42,7 +42,7 @@ export default function Popup({ close = () => {} }) {
           <WalletConnect
             need="2"
             bgColor="#9314B2"
-            border="2px solid #9314B2"
+            border="3px solid #9314B2"
             w="540px"
             radius="20px"
             notConnected="Connect Wallet for PLUG-IN"
@@ -86,10 +86,11 @@ const Container = styled.div`
   position: fixed;
   display: flex;
   width: 100%;
-  heigh: 100vh;
+  height: 100vh;
   left: 0px;
   top: 100px;
   padding: 80px;
+  overflow: auto;
   padding-bottom: 180px;
   background-color: black;
 
@@ -116,7 +117,7 @@ const Content = styled.div`
   flex-direction: column;
   height: fit-content;
   width: 100%;
-  overflow: auto;
+  
   span {
     margin: 0 auto;
   }
@@ -187,6 +188,6 @@ const InfoContainer = styled.div`
 
   @media (min-width: 1088px) {
     width: 540px;
-    margin: auto;
+    margin: 80px auto;
   }
 `;

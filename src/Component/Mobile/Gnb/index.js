@@ -101,20 +101,20 @@ function Gnb({
                 onClick={
                   account
                     ? async () => {
-                        await onDisconnect();
-                        // await toast("코인 지갑의 연결이 해제되었어요.");
-                      }
+                      await onDisconnect();
+                      // await toast("코인 지갑의 연결이 해제되었어요.");
+                    }
                     : async () => {
-                        await connectWallet();
-                        // await toast("코인 지갑이 연결되었어요.");
-                      }
+                      await connectWallet();
+                      // await toast("코인 지갑이 연결되었어요.");
+                    }
                 }
               >
                 <span className="Roboto_35pt_Bold">
                   {account
                     ? account.substring(0, 8) +
-                      "..." +
-                      account.substring(36, 42)
+                    "..." +
+                    account.substring(36, 42)
                     : "Wallet Connect"}
                 </span>
               </ConnectWallet>
@@ -304,7 +304,7 @@ function Gnb({
             <div>
               <a
                 className="Roboto_25pt_Regular"
-                href="/defi#station"
+                href="/defi/station"
                 onClick={() => {
                   setMenuOpen(false);
                 }}
@@ -467,10 +467,10 @@ function Gnb({
               <div
                 className="logo"
                 onClick={() =>
-                  (window.location =
-                    i18n.language == "en"
-                      ? "https://t.me/therecharge_official"
-                      : "https://t.me/therecharge_officialkr")
+                (window.location =
+                  i18n.language == "en"
+                    ? "https://t.me/therecharge_official"
+                    : "https://t.me/therecharge_officialkr")
                 }
               >
                 <img src="/footer4.png" />
