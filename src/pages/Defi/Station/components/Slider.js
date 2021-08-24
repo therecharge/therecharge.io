@@ -36,6 +36,10 @@ const Content = styled.div`
   a {
     color: white;
   }
+
+  @media (min-width: 1088px) {
+    gap: 10px;
+  }
 `;
 
 export default React.memo(Slider);
@@ -59,6 +63,8 @@ function Button({ type, text, setParams }) {
     }
     @media (min-width: 1088px) {
       min-width: 260px;
+      margin: 0;
+      // gap: 5px;
     }
   `;
   let params;

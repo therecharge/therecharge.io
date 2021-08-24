@@ -107,6 +107,8 @@ export default function Row({
                 need="2"
                 notConnected="Connect Wallet for data"
                 wrongNetwork="Change network for data"
+                m="auto"
+                w="540px"
               />
             </UserInfo>
           )}
@@ -123,6 +125,7 @@ export default function Row({
               bgColor="#9314B2"
               border="2px solid #9314B2"
               radius="20px"
+              w="540px"
               notConnected="Connect Wallet for PLUG-IN"
               wrongNetwork="Change network for PLUG-IN"
               text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
@@ -134,6 +137,7 @@ export default function Row({
               bgColor="#FFB900"
               border=""
               radius="20px"
+              w="540px"
               text="GET FILLED"
               onClick={() => console.log(1)}
             />
@@ -143,6 +147,7 @@ export default function Row({
               bgColor="#2D00EA"
               border=""
               radius="20px"
+              w="540px"
               text="UNPLUG"
               onClick={() => console.log(1)}
             />
@@ -346,9 +351,11 @@ const UserInfo = styled.div`
   }
 `;
 const Wallets = styled.div`
+  margin: auto;
   @media (min-width: 1088px) {
     display: flex;
     flex-direction: row;
+    gap: 10px;
   }
 `;
 const Pannel = styled.div`

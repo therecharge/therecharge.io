@@ -9,15 +9,17 @@ export default function Popup({ close = () => {} }) {
     <Container>
       <Content>
         <PopupClose onClick={close} className="popup-close" />
-        <span className="Roboto_40pt_Black popup-title">STAKING</span>
-        <span className="Roboto_30pt_Regular popup-name">
-          Charger No.000000
-        </span>
-        <span className="Roboto_30pt_Regular popup-apy">1000.00%</span>
-        <span className="Roboto_20pt_Regular popup-available">
-          Available: 100,000,000 RCG
-        </span>
-        <input className="popup-input" type="number" />
+        <div className="group1">
+          <span className="Roboto_40pt_Black popup-title">STAKING</span>
+          <span className="Roboto_30pt_Regular popup-name">
+            Charger No.000000
+          </span>
+          <span className="Roboto_30pt_Regular popup-apy">1000.00%</span>
+          <span className="Roboto_20pt_Regular popup-available">
+            Available: 100,000,000 RCG
+          </span>
+          <input className="popup-input" type="number" />
+        </div>
         <QuickSelect>
           <div>
             <span className="Roboto_20pt_Regular">25%</span>
@@ -36,16 +38,19 @@ export default function Popup({ close = () => {} }) {
           Caution!: Recharge transaction, regardless of mainnet type <br />
           will incur 2% of carbon redemption.
         </span>
-        <WalletConnect
-          need="2"
-          bgColor="#9314B2"
-          border="2px solid #9314B2"
-          radius="20px"
-          notConnected="Connect Wallet for PLUG-IN"
-          wrongNetwork="Change network for PLUG-IN"
-          text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
-          onClick={() => console.log(1)}
-        />
+        <div className="wallet">
+          <WalletConnect
+            need="2"
+            bgColor="#9314B2"
+            border="2px solid #9314B2"
+            w="540px"
+            radius="20px"
+            notConnected="Connect Wallet for PLUG-IN"
+            wrongNetwork="Change network for PLUG-IN"
+            text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
+            onClick={() => console.log(1)}
+          />
+        </div>
         <InfoContainer>
           <Info left="Current Redemption Rate" right="00.00%" />
           <Info left="RCG to Stake" right="3,000,000 RCG" />
@@ -79,19 +84,39 @@ function Info({ left, right }) {
 }
 const Container = styled.div`
   position: fixed;
+  display: flex;
   width: 100%;
-  height: 100%;
-  top: 100px;
+  heigh: 100vh;
   left: 0px;
+  top: 100px;
   padding: 80px;
   padding-bottom: 180px;
   background-color: black;
+
+  @media (min-width: 1088px) {
+    width: 1088px;
+    heigh: 818px;
+    top: 130px;
+    left: auto;
+  }
+
+  .group1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .wallet {
+    width: 540px;
+    margin: auto;
+  }
 `;
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: fit-content;
   width: 100%;
+  overflow: auto;
   span {
     margin: 0 auto;
   }
@@ -155,6 +180,13 @@ const QuickSelect = styled.div`
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 540px;
+  margin: 0 auto;
   margin-top: 40px;
   gap: 12px;
+
+  @media (min-width: 1088px) {
+    width: 540px;
+    margin: auto;
+  }
 `;

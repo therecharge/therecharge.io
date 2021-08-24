@@ -20,7 +20,8 @@ function ConnectWallet({
   notConnected = "Wallet Connect",
   wrongNetwork = "Wrong Network!",
   text = undefined,
-  w = "100%",
+  m = "",
+  w = "540px",
   radius = "210px",
   border = "2px solid #ffb900",
   bgColor = "",
@@ -36,7 +37,8 @@ function ConnectWallet({
     display: flex;
     background-color: ${bgColor};
     width: ${w};
-    height: 70px;
+    margin: ${m};
+    height: 80px;
     border: ${border};
     border-radius: ${radius};
     margin-bottom: 20px;
