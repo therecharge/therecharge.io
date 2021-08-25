@@ -69,19 +69,21 @@ function Asset({ setParams }) {
     );
 
     if (account) {
-      [balanceRCG,
+      [
+        balanceRCG,
         balanceHRCRCG,
         balanceBEPRCG,
         balanceETH,
         balanceHT,
-        balanceBNB] = await Promise.all([
-          RCGeth.methods.balanceOf(account).call(),
-          RCGht.methods.balanceOf(account).call(),
-          RCGbep.methods.balanceOf(account).call(),
-          ETH.eth.getBalance(account),
-          HECO.eth.getBalance(account),
-          BNB.eth.getBalance(account)
-        ]);
+        balanceBNB,
+      ] = await Promise.all([
+        RCGeth.methods.balanceOf(account).call(),
+        RCGht.methods.balanceOf(account).call(),
+        RCGbep.methods.balanceOf(account).call(),
+        ETH.eth.getBalance(account),
+        HECO.eth.getBalance(account),
+        BNB.eth.getBalance(account),
+      ]);
 
       balanceRCG = makeNum(weiToEther(balanceRCG));
       balanceHRCRCG = makeNum(weiToEther(balanceHRCRCG));
@@ -105,31 +107,45 @@ function Asset({ setParams }) {
   useEffect(() => {
     if (!account) return;
     loadBalance();
-  }, [account])
+  }, [account]);
 
   return (
     <Container>
       <Content>
         <span className="Roboto_40pt_Black">My Asset</span>
-        {account && network == requireNetwork
-          ? (<List>
-            <Balance Image={RCGeth} symbol="RCG" balance={tokensBalance["ERC RCG"]} />
-            <Balance Image={RCGht} symbol="RCG" balance={tokensBalance["HRC RCG"]} />
-            <Balance Image={RCGbnb} symbol="RCG" balance={tokensBalance["BEP RCG"]} />
+        {account && network == requireNetwork ? (
+          <List>
+            <Balance
+              Image={RCGeth}
+              symbol="RCG"
+              balance={tokensBalance["ERC RCG"]}
+            />
+            <Balance
+              Image={RCGht}
+              symbol="RCG"
+              balance={tokensBalance["HRC RCG"]}
+            />
+            <Balance
+              Image={RCGbnb}
+              symbol="RCG"
+              balance={tokensBalance["BEP RCG"]}
+            />
             <Balance Image={ETH} symbol="ETH" balance={tokensBalance.ETH} />
             <Balance Image={HT} symbol="HT" balance={tokensBalance.HT} />
             <Balance Image={BNB} symbol="BNB" balance={tokensBalance.BNB} />
             <Balance Image={FUP} symbol="FUP" balance={tokensBalance.FUP} />
-          </List>)
-          : <List>
+          </List>
+        ) : (
+          <List>
             <WalletConnect
               need="2"
               notConnected="Connect Wallet for My Asset"
               wrongNetwork="Change network for My Asset"
               m="auto"
-              w="540px"
+              w="500px"
             />
-          </List>}
+          </List>
+        )}
       </Content>
     </Container>
   );
@@ -143,7 +159,7 @@ const makeNum = (str, decimal = 4) => {
   else {
     return arr[0] + "." + arr[1].substr(0, decimal);
   }
-}
+};
 const weiToEther = (wei) => {
   return fromWei(wei, "ether");
 };
@@ -159,7 +175,7 @@ const Container = styled.div`
   }
 `;
 const Content = styled.div`
-  margin: 20px 60px 20px 60px;
+  margin: 20px 60px;
   width: 100%;
   display: flex;
   gap: 20px;
