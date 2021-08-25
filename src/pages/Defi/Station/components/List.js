@@ -234,7 +234,7 @@ const Title = styled.div`
 const RowContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 40px 50px 0px 50px;
+  margin: 40px 30px 0px 30px;
 
   @media (min-width: 1088px) {
     margin: 0px;

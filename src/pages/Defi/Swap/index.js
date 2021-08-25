@@ -26,9 +26,9 @@ const Container = styled.div`
   height: 100%;
 `;
 const Content = styled.div`
+  display: flex;
   flex-direction: column;
   margin-top: 100px;
-  display: flex;
   width: 100%;
   max-width: 1088px;
   height: 100%;
