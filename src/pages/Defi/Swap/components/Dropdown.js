@@ -8,6 +8,9 @@ export default function Dropdown({
   symbol = "RCG",
   network = "(Ethereum Network)",
   title = "FROM",
+  recipe,
+  setRecipe,
+  unselectedList
 }) {
   const [open, setOpen] = useState(false);
 
@@ -38,13 +41,44 @@ export default function Dropdown({
           </Btn>
         </Selected>
         <ListContainer>
-          <UnSelected>
-            <Image />
-            <Coin>
-              <Upside className="Roboto_30pt_Regular">{symbol}</Upside>
-              <Downside className="Roboto_30pt_Light">{network}</Downside>
-            </Coin>
-          </UnSelected>
+          {open &&
+            unselectedList.map((token, i) => {
+              let direction = title.toLowerCase();
+              if (recipe[direction].index !== i) {
+                let Image = token[2]
+                return (
+                  <UnSelected onClick={() => {
+                    if (direction === "from") {
+                      setRecipe({
+                        ...recipe,
+                        from: {
+                          token: token[0],
+                          network: token[1],
+                          image: token[2],
+                          index: i
+                        }
+                      })
+                    } else {
+                      setRecipe({
+                        ...recipe,
+                        to: {
+                          token: token[0],
+                          network: token[1],
+                          image: token[2],
+                          index: i
+                        }
+                      })
+                    }
+                  }}>
+                    <Image />
+                    <Coin>
+                      <Upside className="Roboto_30pt_Regular">{token[0]}</Upside>
+                      <Downside className="Roboto_30pt_Light">{token[1]}</Downside>
+                    </Coin>
+                  </UnSelected>
+                )
+              }
+            })}
         </ListContainer>
       </List>
     </Container>
