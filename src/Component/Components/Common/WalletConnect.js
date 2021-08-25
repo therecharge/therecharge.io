@@ -22,11 +22,12 @@ function ConnectWallet({
   text = undefined,
   w = "540px",
   m = "",
+  h = "80px",
   radius = "210px",
   border = "2px solid #ffb900",
   bgColor = "",
-  onClick = () => { },
-  fontsize = ""
+  onClick = () => {},
+  fontsize = "",
 }) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [provider, setProvder] = useRecoilState(providerState);
@@ -39,24 +40,36 @@ function ConnectWallet({
     background-color: ${bgColor};
     width: ${w};
     margin: ${m};
-    height: 80px;
+    height: ${h};
     border: ${border};
     border-radius: ${radius};
     cursor: pointer;
     span {
       margin: auto auto;
       display: table-cell;
-      
+
       @media (min-width: 1088px) {
-        font-size: ${account ? fontsize : (text === "APPROVE" || text === "PLUG-IN" ? "20px" : fontsize)};
+        font-size: ${account
+          ? fontsize
+          : text === "APPROVE" || text === "PLUG-IN"
+          ? "20px"
+          : fontsize};
       }
     }
 
     @media (min-width: 1088px) {
-      width: ${border === "3px solid #9314B2" ? "540px" : notConnected === "Connect Wallet for data" ? "420px" : "310px"};
+      width: ${border === "3px solid #9314B2"
+        ? "540px"
+        : border === "4px solid #9314B2"
+        ? "474px"
+        : notConnected === "Connect Wallet for data"
+        ? "420px"
+        : "310px"};
       margin: auto;
+      margin-top: ${border === "4px solid #9314B2" ? "40px" : ""};
+      height: ${border === "4px solid #9314B2" ? "60px" : ""};
     }
-`;
+  `;
   /* Setting WalletConnect */
   const providerOptions = {
     metamask: {

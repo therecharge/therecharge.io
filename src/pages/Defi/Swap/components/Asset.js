@@ -172,6 +172,9 @@ const Container = styled.div`
   background-color: #1c1e35;
   @media (min-width: 1088px) {
     justify-content: center;
+    width: 354px;
+    height: 670px;
+    margin: 40px 0 0 0;
   }
 `;
 const Content = styled.div`

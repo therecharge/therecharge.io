@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import Asset from "./components/Asset";
 import AssetSwap from "./components/AssetSwap";
 
-function Swap({ }) {
+function Swap({}) {
   const [t] = useTranslation();
 
   return (
@@ -22,6 +22,7 @@ function Swap({ }) {
 
 const Container = styled.div`
   display: flex;
+  justify-content: center;
   width: 100%;
   height: 100%;
 `;
@@ -37,6 +38,14 @@ const Content = styled.div`
   }
   .swap-title {
     margin-top: 40px;
+
+    @media (min-width: 1088px) {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1088px) {
+    flex-direction: row;
   }
 `;
 const Line = styled.div`
@@ -45,5 +54,9 @@ const Line = styled.div`
   width: auto;
   background-color: #9314b2;
   box-shadow: 0px 0px 20px 2px white;
+
+  @media (min-width: 1088px) {
+    display: none;
+  }
 `;
 export default React.memo(Swap);

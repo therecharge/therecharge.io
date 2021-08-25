@@ -35,10 +35,7 @@ export default function Dropdown({
     <Container>
       <Title className="Roboto_40pt_Black">{title}</Title>
       <List>
-        <Selected
-          style={{ margin: "40px 0", cursor: "pointer" }}
-          onClick={() => setOpen(!open)}
-        >
+        <Selected onClick={() => setOpen(!open)}>
           <Image style={{ width: "80px", height: "80px" }} />
           <Coin>
             <Upside className="Roboto_30pt_Bold">{symbol}</Upside>
@@ -115,6 +112,9 @@ const Container = styled.div`
   flex-direction: column;
   gap: 20px;
   //   width: 100%;
+  @media (min-width: 1088px) {
+    gap: 16px;
+  }
 `;
 const Upside = styled.div`
   margin: auto 0;
@@ -137,10 +137,19 @@ const List = styled.div`
     margin: auto 0;
     margin-left: 60px;
   }
+  @media (min-width: 1088px) {
+    padding: 20px 40px;
+    min-height: 100px;
+  }
 `;
 const Selected = styled.div`
+  margin: 40px 0;
+  cursor: pointer;
   display: flex;
   width: 100%;
+  @media (min-width: 1088px) {
+    margin: 0;
+  }
 `;
 const Coin = styled.div`
   display: flex;

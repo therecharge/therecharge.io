@@ -135,12 +135,13 @@ function AssetSwap({ setParams }) {
         <WalletConnect
           need="2"
           bgColor="var(--purple)"
-          border=""
+          border="4px solid #9314B2"
           notConnected="Connect Wallet for swap"
           wrongNetwork="Change network for swap"
           m="80px auto"
           radius="20px"
           w="540px"
+          // h="60px"
           fontsize="30px"
           notConnected="Connect Wallet for PLUG-IN"
           wrongNetwork="Change network for PLUG-IN"
@@ -159,6 +160,9 @@ const Container = styled.div`
 
   @media (min-width: 1088px) {
     justify-content: center;
+    width: 714px;
+    height: 670px;
+    margin: 40px 0px 0px 20px;
   }
 `;
 const Content = styled.div`
