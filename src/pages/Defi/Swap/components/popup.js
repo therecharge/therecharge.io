@@ -1,24 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as PopupClose } from "./assets/popup-close.svg";
+import { ReactComponent as PopupArrow } from "./assets/swap_popup_arrow.svg";
 import WalletConnect from "../../../../Component/Components/Common/WalletConnect";
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
-export default function Popup({ close = () => {} }) {
+export default function Popup({ close = () => { }, recipe }) {
+  let FromImg = recipe.from.image
+  let ToImg = recipe.to.image
   return (
     <Container>
       <Content>
-        <PopupClose onClick={close} className="popup-close" />
+        <PopupClose onClick={close} className="popup-close" style={{ position: "absolute", right: "0" }} />
         <div className="group1">
-          <span className="Roboto_40pt_Black popup-title">STAKING</span>
-          <span className="Roboto_30pt_Regular popup-name">
-            Charger No.000000
-          </span>
-          <span className="Roboto_30pt_Regular popup-apy">1000.00%</span>
-          <span className="Roboto_20pt_Regular popup-available">
-            Available: 100,000,000 RCG
-          </span>
-          <input className="popup-input" type="number" />
+          <span className="Roboto_40pt_Black popup-title">SWAP</span>
+          <div className="popup-image">
+            <FromImg style={{ height: "80px", width: "80px" }} />
+            <PopupArrow style={{ height: "16px", width: "30px" }} />
+            <ToImg style={{ height: "80px", width: "80px" }} />
+          </div>
+          <label>
+            Available: 7,000,000.00 RCG
+            <input className="popup-input" type="number" name="swapAmount" />
+          </label>
         </div>
         <QuickSelect>
           <div style={{ cursor: "pointer" }}>
@@ -35,8 +39,7 @@ export default function Popup({ close = () => {} }) {
           </div>
         </QuickSelect>
         <span className="Roboto_20pt_Regular popup-caution">
-          Caution!: Recharge transaction, regardless of mainnet type <br />
-          will incur 2% of carbon redemption.
+          Conversion Fee: xxxx RCG
         </span>
         <div className="wallet">
           <WalletConnect
@@ -45,17 +48,16 @@ export default function Popup({ close = () => {} }) {
             border="3px solid #9314B2"
             w="540px"
             radius="20px"
-            notConnected="Connect Wallet for PLUG-IN"
-            wrongNetwork="Change network for PLUG-IN"
-            text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
+            text="SWAP" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
             onClick={() => console.log(1)}
           />
         </div>
         <InfoContainer>
           <Info left="Current Redemption Rate" right="00.00%" />
-          <Info left="RCG to Stake" right="3,000,000 RCG" />
+          <Info left="Current Conversion Fee" right="3,000,000 RCG" />
+          <Info left="RCG to Swap" right="3,000,000 RCG" />
           <Info left="RCG to Redeem" right="3,000,000 RCG" />
-          <Info left="Net RCG to Stake" right="3,000,000 RCG" />
+          <Info left="Net RCG to Swap" right="3,000,000 RCG" />
         </InfoContainer>
       </Content>
     </Container>
@@ -105,6 +107,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 75px;
   }
 
   .wallet {
@@ -117,26 +120,23 @@ const Content = styled.div`
   flex-direction: column;
   height: fit-content;
   width: 100%;
+  position: relative;
 
   span {
     margin: 0 auto;
   }
-  .popup-close {
-    margin: 0 auto;
-    margin-right: 0px;
+  .popup-image {
+    display: flex;
+    margin: 40px;
+    align-items: center;
+    width: 100%;
+    justify-content: space-evenly;
   }
-  .popup-title {
-    margin-top: 50px;
-  }
-  .popup-name {
+  label {
+    color: white;
+    text-align: center;
     margin-top: 40px;
-  }
-  .popup-apy {
-    margin-top: 8px;
-    color: #0eef6d;
-  }
-  .popup-available {
-    margin-top: 80px;
+    font-size: 20pt;
   }
   .popup-input {
     margin-top: 16px;

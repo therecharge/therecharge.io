@@ -12,10 +12,6 @@ export default function Dropdown({
   recipe,
   setRecipe,
   unselectedList,
-  unselectedList1,
-  unselectedList2,
-  unselectedList3,
-  unselectedList4,
 }) {
   const [open, setOpen] = useState(false);
 
@@ -54,6 +50,7 @@ export default function Dropdown({
                 return (
                   <UnSelected
                     style={{ cursor: "pointer", height: "100px" }}
+                    // 글로벌 상태 requiredNetwork 설정 필요
                     onClick={() => {
                       if (direction === "from") {
                         setRecipe({

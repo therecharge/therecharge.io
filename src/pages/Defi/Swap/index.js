@@ -4,28 +4,23 @@ import { useTranslation } from "react-i18next";
 //components
 import Asset from "./components/Asset";
 import AssetSwap from "./components/AssetSwap";
-import Popup from "./components/popup";
+// import Popup from "./components/popup";
 
-function Swap({}) {
+function Swap({ }) {
   const [t] = useTranslation();
 
-  const [isPopupOpen, setPopupOpen] = useState(false);
+  // const [isPopupOpen, setPopupOpen] = useState(false);
+
+
   return (
     <Container>
       <Content>
-        {isPopupOpen && (
-          <Popup
-            close={() => {
-              setPopupOpen(false);
-            }}
-          />
-        )}
         <span className="Roboto_50pt_Black swap-title1">Recharge Swap</span>
         <div className="content">
           <Asset />
           <Line />
           <span className="Roboto_40pt_Black swap-title">Swap</span>
-          <AssetSwap isPopupOpen={isPopupOpen} setPopupOpen={setPopupOpen} />
+          <AssetSwap />
         </div>
       </Content>
     </Container>
