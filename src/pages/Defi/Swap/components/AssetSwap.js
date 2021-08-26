@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Dropdown from "./Dropdown";
 import WalletConnect from "../../../../Component/Components/Common/WalletConnect";
+
 import { ReactComponent as RCGeth } from "./assets/RCGETH.svg";
 import { ReactComponent as RCGbnb } from "./assets/RCGBNB.svg";
 import { ReactComponent as RCGht } from "./assets/RCGHT.svg";
@@ -10,7 +11,7 @@ import { ReactComponent as FUP } from "./assets/FUP.svg";
 import { ReactComponent as Active } from "./assets/swap_arrow.svg";
 import { ReactComponent as Inactive } from "./assets/swap_arrow_deactive.svg";
 
-function AssetSwap({ setParams }) {
+function AssetSwap({ setParams, isPopupOpen, setPopupOpen }) {
   const [t] = useTranslation();
   const [recipe, setRecipe] = useState({
     from: {
@@ -81,6 +82,7 @@ function AssetSwap({ setParams }) {
           unselectedList={fromList}
           title="FROM"
         />
+
         <Arrow
           style={
             recipe.from.token === "PiggyCell Point"
@@ -146,6 +148,7 @@ function AssetSwap({ setParams }) {
           notConnected="Connect Wallet for PLUG-IN"
           wrongNetwork="Change network for PLUG-IN"
           text="SWAP"
+          onClick={() => setPopupOpen(!isPopupOpen)}
         />
       </Content>
     </Container>
