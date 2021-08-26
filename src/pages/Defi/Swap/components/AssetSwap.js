@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Dropdown from "./Dropdown";
 import WalletConnect from "../../../../Component/Components/Common/WalletConnect";
+import Popup from "./popup";
 
 import { ReactComponent as RCGeth } from "./assets/RCGETH.svg";
 import { ReactComponent as RCGbnb } from "./assets/RCGBNB.svg";
@@ -11,8 +12,9 @@ import { ReactComponent as FUP } from "./assets/FUP.svg";
 import { ReactComponent as Active } from "./assets/swap_arrow.svg";
 import { ReactComponent as Inactive } from "./assets/swap_arrow_deactive.svg";
 
-function AssetSwap({ setParams, isPopupOpen, setPopupOpen }) {
+function AssetSwap() {
   const [t] = useTranslation();
+  const [isPopupOpen, setPopupOpen] = useState(false);
   const [recipe, setRecipe] = useState({
     from: {
       token: "RCG",
@@ -73,6 +75,14 @@ function AssetSwap({ setParams, isPopupOpen, setPopupOpen }) {
   return (
     <Container>
       <Content>
+        {isPopupOpen && (
+          <Popup
+            recipe={recipe}
+            close={() => {
+              setPopupOpen(false);
+            }}
+          />
+        )}
         <Dropdown
           recipe={recipe}
           setRecipe={setRecipe}
@@ -87,27 +97,27 @@ function AssetSwap({ setParams, isPopupOpen, setPopupOpen }) {
           style={
             recipe.from.token === "PiggyCell Point"
               ? {
-                  width: "60px",
-                  height: "60px",
-                  margin: "40px auto",
-                  cursor: "not-allowed",
-                }
+                width: "60px",
+                height: "60px",
+                margin: "40px auto",
+                cursor: "not-allowed",
+              }
               : {
-                  width: "60px",
-                  height: "60px",
-                  margin: "40px auto",
-                  cursor: "pointer",
-                }
+                width: "60px",
+                height: "60px",
+                margin: "40px auto",
+                cursor: "pointer",
+              }
           }
           onClick={() => {
             recipe.from.token === "PiggyCell Point"
               ? console.log("")
               : setRecipe({
-                  ...recipe,
-                  from: recipe.to,
-                  to: recipe.from,
-                  swapAmount: "",
-                });
+                ...recipe,
+                from: recipe.to,
+                to: recipe.from,
+                swapAmount: "",
+              });
           }}
         >
           {recipe.from.token !== "PiggyCell Point" ? <Active /> : <Inactive />}
@@ -122,16 +132,13 @@ function AssetSwap({ setParams, isPopupOpen, setPopupOpen }) {
             recipe.from.index === 0
               ? toList1
               : recipe.from.index === 1
-              ? toList2
-              : recipe.from.index === 2
-              ? toList3
-              : recipe.from.index === 3
-              ? toList4
-              : []
+                ? toList2
+                : recipe.from.index === 2
+                  ? toList3
+                  : recipe.from.index === 3
+                    ? toList4
+                    : []
           }
-          unselectedList2={toList2}
-          unselectedList3={toList3}
-          unselectedList4={toList4}
           title="TO"
         />
         <WalletConnect
@@ -145,8 +152,6 @@ function AssetSwap({ setParams, isPopupOpen, setPopupOpen }) {
           w="540px"
           // h="60px"
           fontsize="30px"
-          notConnected="Connect Wallet for PLUG-IN"
-          wrongNetwork="Change network for PLUG-IN"
           text="SWAP"
           onClick={() => setPopupOpen(!isPopupOpen)}
         />
