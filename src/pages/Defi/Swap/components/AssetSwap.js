@@ -161,7 +161,7 @@ const Container = styled.div`
   @media (min-width: 1088px) {
     justify-content: center;
     width: 714px;
-    height: 670px;
+    height: 704px;
     margin: 40px 0px 0px 20px;
   }
 `;
@@ -171,6 +171,11 @@ const Content = styled.div`
   width: 100%;
   height: fit-content;
   margin: 40px 40px 40px 40px;
+
+  @media (min-width: 1088px) {
+    padding: 60px 0;
+    margin: 0 120px;
+  }
 `;
 const Arrow = styled.div`
   display: flex;

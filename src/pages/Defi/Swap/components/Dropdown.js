@@ -33,13 +33,15 @@ export default function Dropdown({
    */
   return (
     <Container>
-      <Title className="Roboto_40pt_Black">{title}</Title>
+      <Title className="Roboto_30pt_Black">{title}</Title>
       <List>
         <Selected onClick={() => setOpen(!open)}>
-          <Image style={{ width: "80px", height: "80px" }} />
+          <div className="img">
+            <Image style={{ width: "100%", height: "100%" }} />
+          </div>
           <Coin>
             <Upside className="Roboto_30pt_Bold">{symbol}</Upside>
-            <Downside className="Roboto_16pt_Regular">{network}</Downside>
+            <Downside className="Roboto_15pt_Regular">{network}</Downside>
           </Coin>
           <Btn>{open ? <Close fill="white" /> : <Open fill="white" />}</Btn>
         </Selected>
@@ -51,7 +53,7 @@ export default function Dropdown({
                 let Image = token[2];
                 return (
                   <UnSelected
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", height: "100px" }}
                     onClick={() => {
                       if (direction === "from") {
                         setRecipe({
@@ -90,10 +92,12 @@ export default function Dropdown({
                     }}
                   >
                     <div className="unselected">
-                      <Image style={{ width: "80px", height: "80px" }} />
+                      <div className="img">
+                        <Image style={{ width: "100%", height: "100%" }} />
+                      </div>
                       <Coin>
                         <Upside className="Roboto_30pt_Bold">{token[0]}</Upside>
-                        <Downside className="Roboto_16pt_Regular">
+                        <Downside className="Roboto_15pt_Regular">
                           {token[1]}
                         </Downside>
                       </Coin>
@@ -116,6 +120,7 @@ const Container = styled.div`
     gap: 16px;
   }
 `;
+
 const Upside = styled.div`
   margin: auto 0;
   margin-bottom: 0px;
@@ -123,8 +128,16 @@ const Upside = styled.div`
 const Downside = styled.div`
   margin: auto 0;
   margin-top: 0px;
+
+  // @media (min-width: 1088px) {
+  //   font-size: 10px;
+  // }
 `;
-const Title = styled.div``;
+const Title = styled.div`
+  // @media (min-width: 1088px) {
+  //   font-size: 30px;
+  // }
+`;
 const List = styled.div`
   display: flex;
   flex-direction: column;
@@ -135,7 +148,7 @@ const List = styled.div`
   // gap: 20px;
   svg {
     margin: auto 0;
-    margin-left: 60px;
+    // margin-left: 60px;
   }
   @media (min-width: 1088px) {
     padding: 20px 40px;
@@ -149,7 +162,19 @@ const Selected = styled.div`
   width: 100%;
   @media (min-width: 1088px) {
     margin: 0;
+    // margin-top: 0px;
   }
+
+  .img{
+    margin-left: 40px;
+    width: 80px;
+    height: 80px;
+  
+    @media (min-width: 1088px) {
+      margin-left: 0;
+      width: 60px;
+    height: 60px;
+    }
 `;
 const Coin = styled.div`
   display: flex;
@@ -160,15 +185,33 @@ const Btn = styled.div`
   margin: auto 0;
   margin-left: auto;
   margin-right: 40px;
+
+  @media (min-width: 1088px) {
+    margin-right: 0px;
+  }
 `;
-const ListContainer = styled.div``;
+const ListContainer = styled.div`
+  margin-top: 20px;
+`;
 const UnSelected = styled.div`
   display: flex;
   width: 100%;
+  // margin-top: 20px;
 
   .unselected {
     display: flex;
-
     margin: 20px 0;
+
+    .img {
+      margin-left: 40px;
+      width: 80px;
+      height: 80px;
+
+      @media (min-width: 1088px) {
+        margin-left: 0;
+        width: 60px;
+        height: 60px;
+      }
+    }
   }
 `;

@@ -7,15 +7,27 @@ export default function Balance({
 }) {
   return (
     <Container>
-      <Image />
-      <Left className="Roboto_30pt_Regular">{symbol}</Left>
-      <Right className="Roboto_30pt_Light">{balance}</Right>
+      <div className="img">
+        <Image style={{ width: "100%", height: "100%" }} />
+      </div>
+      <Left className="Roboto_20pt_Regular">{symbol}</Left>
+      <Right className="Roboto_20pt_Light">{balance}</Right>
     </Container>
   );
 }
 const Container = styled.div`
   display: flex;
   width: 100%;
+
+  .img {
+    width: 60px;
+    height: 60px;
+
+    @media (min-width: 1088px) {
+      width: 30px;
+      height: 30px;
+    }
+  }
 `;
 const Left = styled.div`
   margin: auto 0;

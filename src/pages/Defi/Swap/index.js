@@ -11,10 +11,13 @@ function Swap({}) {
   return (
     <Container>
       <Content>
-        <Asset />
-        <Line />
-        <span className="Roboto_40pt_Black swap-title">Swap</span>
-        <AssetSwap />
+        <span className="Roboto_50pt_Black swap-title1">Recharge Swap</span>
+        <div className="content">
+          <Asset />
+          <Line />
+          <span className="Roboto_40pt_Black swap-title">Swap</span>
+          <AssetSwap />
+        </div>
       </Content>
     </Container>
   );
@@ -36,6 +39,16 @@ const Content = styled.div`
   a {
     color: white;
   }
+  .swap-title1 {
+    display: none;
+    text-align: center;
+    margin: 120px 0 80px 0;
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+
+    @media (min-width: 1088px) {
+      display: block;
+    }
+  }
   .swap-title {
     margin-top: 40px;
 
@@ -44,8 +57,13 @@ const Content = styled.div`
     }
   }
 
-  @media (min-width: 1088px) {
-    flex-direction: row;
+  .content {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 1088px) {
+      flex-direction: row;
+    }
   }
 `;
 const Line = styled.div`

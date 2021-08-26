@@ -12,6 +12,7 @@ import { ReactComponent as ETH } from "./assets/ETH.svg";
 import { ReactComponent as HT } from "./assets/HT.svg";
 import { ReactComponent as BNB } from "./assets/BNB.svg";
 import { ReactComponent as FUP } from "./assets/FUP.svg";
+import { ReactComponent as FUP1 } from "./assets/FUP1.svg";
 //store
 import { useRecoilState } from "recoil";
 import {
@@ -33,7 +34,7 @@ function Asset({ setParams }) {
     ETH: 0,
     HT: 0,
     BNB: 0,
-    FUP: 0,
+    FUP1: 0,
   });
 
   const loadBalance = async () => {
@@ -112,7 +113,8 @@ function Asset({ setParams }) {
   return (
     <Container>
       <Content>
-        <span className="Roboto_40pt_Black">My Asset</span>
+        <span className="Roboto_30pt_Black">My Asset</span>
+        <Line />
         {account && network == requireNetwork ? (
           <List>
             <Balance
@@ -133,7 +135,7 @@ function Asset({ setParams }) {
             <Balance Image={ETH} symbol="ETH" balance={tokensBalance.ETH} />
             <Balance Image={HT} symbol="HT" balance={tokensBalance.HT} />
             <Balance Image={BNB} symbol="BNB" balance={tokensBalance.BNB} />
-            <Balance Image={FUP} symbol="FUP" balance={tokensBalance.FUP} />
+            <Balance Image={FUP1} symbol="FUP" balance={tokensBalance.FUP1} />
           </List>
         ) : (
           <List>
@@ -141,6 +143,7 @@ function Asset({ setParams }) {
               need="2"
               notConnected="Connect Wallet for My Asset"
               wrongNetwork="Change network for My Asset"
+              text="PLUG-IN"
               m="auto"
               w="500px"
             />
@@ -173,18 +176,32 @@ const Container = styled.div`
   @media (min-width: 1088px) {
     justify-content: center;
     width: 354px;
-    height: 670px;
+    height: 704px;
     margin: 40px 0 0 0;
   }
 `;
 const Content = styled.div`
-  margin: 20px 60px;
+  margin: 60px 60px;
   width: 100%;
   display: flex;
   gap: 20px;
   flex-direction: column;
   span {
     margin: 0 auto;
+  }
+  @media (min-width: 1088px) {
+    gap: 0px;
+  }
+`;
+
+const Line = styled.div`
+  display: none;
+  @media (min-width: 1088px) {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 20px 0;
+    background-color: #fff;
   }
 `;
 const List = styled.div`
