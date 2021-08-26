@@ -29,6 +29,21 @@ function AssetSwap() {
       index: 0,
     },
     swapAmount: "",
+    chainId: {
+      "(Ethereum Network)": 1,
+      "(Huobi ECO Chain Network)": 128,
+      "(Binance Smart Chain Network)": 56,
+    },
+    tokenAddress: {
+      1: "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
+      128: "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+      56: "0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
+    },
+    conversionFee: {
+      1: 5,
+      128: 0.5,
+      56: 0.5,
+    },
   });
 
   const fromList = [
@@ -51,33 +66,13 @@ function AssetSwap() {
   ];
   const toList4 = [["RCG", "(Huobi ECO Chain Network)", RCGht]];
 
-  const [selAsset, setSelAsset] = useState({
-    logo: "rcg",
-    name: "Recharge",
-    symbol: "RCG",
-    chainId: {
-      Ethereum: 1,
-      "Huobi ECO Chain": 128,
-      "Binance Smart Chain": 56,
-    },
-    tokenAddress: {
-      1: "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
-      128: "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
-      56: "0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
-    },
-    conversionFee: {
-      1: 0.5,
-      128: 5,
-      56: 0.5,
-    },
-  });
-
   return (
     <Container>
       <Content>
         {isPopupOpen && (
           <Popup
             recipe={recipe}
+            setRecipe={setRecipe}
             close={() => {
               setPopupOpen(false);
             }}
