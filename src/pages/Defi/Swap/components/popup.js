@@ -1,17 +1,131 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ReactComponent as PopupClose } from "./assets/popup-close.svg";
 import { ReactComponent as PopupArrow } from "./assets/swap_popup_arrow.svg";
 import WalletConnect from "../../../../Component/Components/Common/WalletConnect";
+import { fromWei, toWei } from "web3-utils";
+//store
+import { useRecoilState } from "recoil";
+import {
+  web3State,
+  accountState,
+  providerState,
+  networkState,
+  requireNetworkState,
+} from "../../../../store/web3";
+
+const ERC20_ABI = require("../../../../Component/Desktop/Defi/abis/ERC20ABI.json");
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
-export default function Popup({ close = () => { }, recipe }) {
-  let FromImg = recipe.from.image
-  let ToImg = recipe.to.image
+export default function Popup({ close = () => { }, recipe, setRecipe }) {
+  const [account, setAccount] = useRecoilState(accountState);
+  const [web3, setWeb3] = useRecoilState(web3State);
+  const [poolMethods, setPoolMethods] = useState({
+    redemption: 2,
+    available: 0,
+    allowance: 0,
+    approve: () => {
+      return;
+    },
+    swap: () => {
+      return;
+    },
+  });
+
+  const SetPercent = (x) => {
+    setRecipe({
+      ...recipe,
+      swapAmount: makeNum((poolMethods.available / 100) * Number(x)),
+    });
+  };
+
+  const loadMethods = async (
+    swapTokenAddress,
+    bridgeAddress = "0xaBC71F46FA0D80bCC7D36D662Edbe9930271B414"
+  ) => {
+    if (!account) return;
+    try {
+      let ret = {};
+      const swapI = new web3.eth.Contract(ERC20_ABI, swapTokenAddress);
+      const swapM = swapI.methods;
+
+      let [balance, allowed] = await Promise.all([
+        await swapM.balanceOf(account).call(),
+        await swapM.allowance(account, bridgeAddress).call()
+      ]);
+      // let balance = await swapM.balanceOf(account).call();
+      // let allowed = await swapM.allowance(account, bridgeAddress).call();
+
+      allowed = Number(allowed);
+
+      const approve = (tokenM, to, amount, account) => {
+        if (typeof amount != "string") amount = String(amount);
+        tokenM.approve(to, toWei(amount, "ether")).send({ from: account });
+      };
+      const swap = async (swapAmount) => {
+        try {
+          await swapM
+            .transfer(bridgeAddress, toWei(swapAmount, "ether"))
+            .send({ from: account });
+        } catch (err) {
+          console.log(err);
+        }
+      };
+
+      ret = {
+        available: fromWei(balance, "ether"),
+        allowance: allowed,
+        approve: async () =>
+          await approve(swapM, bridgeAddress, "999999999", account),
+        swap: async (swapAmount) => {
+          // methods.allowance !== 0
+          await swap(swapAmount);
+          // : await approve(swapM, bridgeAddress, "999999999", account);
+        },
+      };
+
+      setPoolMethods({
+        ...poolMethods,
+        ...ret,
+      });
+    } catch (err) {
+      console.log(err);
+      setPoolMethods({
+        ...poolMethods,
+        available: 0,
+        allowance: 0,
+      });
+    }
+  };
+
+  let FromImg = recipe.from.image;
+  let ToImg = recipe.to.image;
+
+  useEffect(() => {
+    if (recipe.from.network === "(Binance Smart Chain Network)") {
+      loadMethods(
+        recipe.tokenAddress[recipe.chainId[recipe.from.network]],
+        "0x05A21AECa80634097e4acE7D4E589bdA0EE30b25"
+      );
+    } else {
+      loadMethods(recipe.tokenAddress[recipe.chainId[recipe.from.network]]);
+    }
+  }, [account]);
+
   return (
     <Container>
       <Content>
-        <PopupClose onClick={close} className="popup-close" style={{ position: "absolute", right: "0" }} />
+        <PopupClose
+          onClick={() => {
+            close();
+            setRecipe({
+              ...recipe,
+              swapAmount: ""
+            })
+          }}
+          className="popup-close"
+          style={{ position: "absolute", right: "0" }}
+        />
         <div className="group1">
           <span className="Roboto_40pt_Black popup-title">SWAP</span>
           <div className="popup-image">
@@ -20,26 +134,74 @@ export default function Popup({ close = () => { }, recipe }) {
             <ToImg style={{ height: "80px", width: "80px" }} />
           </div>
           <label>
-            Available: 7,000,000.00 RCG
-            <input className="popup-input" type="number" name="swapAmount" />
+            Available:
+            {`${makeNum(
+              (poolMethods.available - Number(recipe.swapAmount)).toString()
+            )} ${recipe.from.token}`}
+            <input
+              className="popup-input"
+              type="number"
+              name="swapAmount"
+              placeholder="Enter the amount of swap"
+              value={recipe.swapAmount}
+              onChange={(e) => {
+                if (Number(e.target.value) < 0) {
+                  return setRecipe({
+                    ...recipe,
+                    swapAmount: "0",
+                  });
+                }
+                if (poolMethods.available - Number(e.target.value) >= 0) {
+                  return setRecipe({
+                    ...recipe,
+                    swapAmount: makeNum(e.target.value),
+                  });
+                }
+                setRecipe({
+                  ...recipe,
+                  swapAmount: makeNum(poolMethods.available),
+                });
+              }}
+            />
           </label>
         </div>
         <QuickSelect>
-          <div style={{ cursor: "pointer" }}>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              SetPercent(25);
+            }}
+          >
             <span className="Roboto_20pt_Regular">25%</span>
           </div>
-          <div style={{ cursor: "pointer" }}>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              SetPercent(50);
+            }}
+          >
             <span className="Roboto_20pt_Regular">50%</span>
           </div>
-          <div style={{ cursor: "pointer" }}>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              SetPercent(75);
+            }}
+          >
             <span className="Roboto_20pt_Regular">75%</span>
           </div>
-          <div className="sel-max" style={{ cursor: "pointer" }}>
+          <div
+            className="sel-max"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              SetPercent(100);
+            }}
+          >
             <span className="Roboto_20pt_Regular">MAX</span>
           </div>
         </QuickSelect>
         <span className="Roboto_20pt_Regular popup-caution">
-          Conversion Fee: xxxx RCG
+          {`Conversion Fee: ${recipe.conversionFee[recipe.chainId[recipe.to.network]]} ${recipe.from.token}`}
         </span>
         <div className="wallet">
           <WalletConnect
@@ -49,15 +211,24 @@ export default function Popup({ close = () => { }, recipe }) {
             w="540px"
             radius="20px"
             text="SWAP" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
-            onClick={() => console.log(1)}
+            onClick={() => { poolMethods.swap(recipe.swapAmount) }}
           />
         </div>
         <InfoContainer>
-          <Info left="Current Redemption Rate" right="00.00%" />
-          <Info left="Current Conversion Fee" right="3,000,000 RCG" />
-          <Info left="RCG to Swap" right="3,000,000 RCG" />
-          <Info left="RCG to Redeem" right="3,000,000 RCG" />
-          <Info left="Net RCG to Swap" right="3,000,000 RCG" />
+          <Info left="Current Redemption Rate" right={`${poolMethods.redemption}%`} />
+          <Info left="Current Conversion Fee" right={`${recipe.conversionFee[recipe.chainId[recipe.to.network]]} ${recipe.from.token}`} />
+          <Info left={`${recipe.from.token} to Swap`} right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${recipe.from.token}`} />
+          <Info left={`${recipe.from.token} to Redeem`} right={`${makeNum(((recipe.swapAmount / 100) * (poolMethods.redemption ? poolMethods.redemption / 100 : 1)).toString())} ${recipe.from.token}`} />
+          <Info
+            left={`Net ${recipe.from.token} to Swap`}
+            right={`${makeNum(
+              (
+                recipe.swapAmount -
+                (recipe.swapAmount / 100) *
+                (poolMethods.redemption ? poolMethods.redemption / 100 : 1) -
+                (recipe.conversionFee[recipe.chainId[recipe.to.network]])
+              ).toString()
+            )} ${recipe.from.token}`} />
         </InfoContainer>
       </Content>
     </Container>
@@ -83,7 +254,19 @@ function Info({ left, right }) {
       <div className="right Roboto_20pt_Black">{right}</div>
     </Container>
   );
-}
+};
+function makeNum(str, decimal = 4) {
+  let newStr = str;
+  if (typeof newStr === "number") newStr = str.toString();
+  let arr = newStr.split(".");
+  if (arr.length == 1 || arr[0].length > 8) return arr[0];
+  else {
+    return arr[0] + "." + arr[1].substr(0, decimal);
+  }
+};
+const weiToEther = (wei) => {
+  return fromWei(wei, "ether");
+};
 const Container = styled.div`
   position: fixed;
   display: flex;

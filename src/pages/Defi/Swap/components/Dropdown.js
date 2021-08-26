@@ -4,6 +4,10 @@ import { ReactComponent as RCGeth } from "./assets/RCGETH.svg";
 import { ReactComponent as RCGht } from "./assets/RCGHT.svg";
 import { ReactComponent as Open } from "./assets/dropdown-close.svg";
 import { ReactComponent as Close } from "./assets/dropdown-open.svg";
+//store
+import { useRecoilState } from "recoil";
+import { requireNetworkState } from "../../../../store/web3";
+
 export default function Dropdown({
   Image = RCGeth,
   symbol = "RCG",
@@ -14,19 +18,8 @@ export default function Dropdown({
   unselectedList,
 }) {
   const [open, setOpen] = useState(false);
+  const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
 
-  /**
-   * 토큰 리스트
-   * FROM LIST: 고정 -> RCG_ht, RCG_eth, RCG_bnb, FUP
-   * TO LIST: from에 따라 변동
-   *
-   * 체인지 버튼 필요:아직없음
-   *
-   * selected: 리스트에서 선택한 토큰
-   * unselected: 리스트에서 선택한 토큰 제외한 나머지 토큰들
-   *
-   * swap 버튼 필요:아직없음
-   */
   return (
     <Container>
       <Title className="Roboto_30pt_Black">{title}</Title>
@@ -54,6 +47,7 @@ export default function Dropdown({
                     onClick={() => {
                       if (direction === "from") {
                         setRecipe({
+                          ...recipe,
                           from: {
                             token: token[0],
                             network: token[1],
@@ -73,6 +67,7 @@ export default function Dropdown({
                             index: 0,
                           },
                         });
+                        setRequireNetwork(recipe.chainId[token[1]]);
                         setOpen(!open);
                       } else {
                         setRecipe({

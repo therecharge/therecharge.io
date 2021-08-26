@@ -1,6 +1,9 @@
 export function changeNetwork(requireNetwork) {
-  console.log("Change!");
   let rpc = {
+    0x1: {
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: "0x1" }],
+    },
     0x80: {
       id: 1,
       jsonrpc: "2.0",
@@ -8,7 +11,7 @@ export function changeNetwork(requireNetwork) {
       params: [
         {
           chainId: "0x80",
-          chainName: "Heco Chain",
+          chainName: "Huobi ECO Chain",
           rpcUrls: ["https://http-mainnet.hecochain.com"],
           nativeCurrency: {
             name: "HT",
@@ -19,6 +22,24 @@ export function changeNetwork(requireNetwork) {
         },
       ],
     },
+    0x38: {
+      id: 1,
+      jsonrpc: "2.0",
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          chainId: "0x38",
+          chainName: "Binance Smart Chain",
+          rpcUrls: ["https://bsc-dataseed.binance.org"],
+          nativeCurrency: {
+            name: "BNB",
+            symbol: "BNB",
+            decimals: 18,
+          },
+          blockExplorerUrls: ["https://bscscan.com//"],
+        },
+      ],
+    }
   };
   window.ethereum.request(rpc[requireNetwork]);
 }

@@ -26,7 +26,7 @@ function ConnectWallet({
   radius = "210px",
   border = "2px solid #ffb900",
   bgColor = "",
-  onClick = () => {},
+  onClick = () => { },
   fontsize = "",
 }) {
   const [web3, setWeb3] = useRecoilState(web3State);
@@ -50,21 +50,21 @@ function ConnectWallet({
 
       @media (min-width: 1088px) {
         font-size: ${account
-          ? fontsize
-          : text === "APPROVE" || text === "PLUG-IN"
-          ? "20px"
-          : fontsize};
+      ? fontsize
+      : text === "APPROVE" || text === "PLUG-IN"
+        ? "20px"
+        : fontsize};
       }
     }
 
     @media (min-width: 1088px) {
       width: ${border === "3px solid #9314B2"
-        ? "540px"
-        : border === "4px solid #9314B2"
+      ? "540px"
+      : border === "4px solid #9314B2"
         ? "474px"
         : notConnected === "Connect Wallet for data"
-        ? "420px"
-        : "310px"};
+          ? "420px"
+          : "310px"};
       margin: auto;
       margin-top: ${border === "4px solid #9314B2" ? "40px" : ""};
       height: ${border === "4px solid #9314B2" ? "60px" : ""};
@@ -122,11 +122,11 @@ function ConnectWallet({
       console.log("info", info);
     });
     provider.on("accountsChanged", async (accounts) => {
-      console.log(accounts);
+      // console.log(accounts);
       setAccount(accounts[0]);
     });
     provider.on("chainChanged", async (chainId) => {
-      console.log(chainId);
+      // console.log(chainId);
       setNetwork(chainId);
     });
     provider.on("disconnect", async (error) => {
