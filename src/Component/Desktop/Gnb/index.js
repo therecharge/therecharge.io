@@ -319,6 +319,7 @@ function Gnb({ connectWallet, account, onDisconnect }) {
                   <a>CI Download</a>
                 </div>
               </Link>
+              </HashLink>
               <div>
                 <a
                   onClick={() => {
