@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { fromWei, toWei, toBN } from "web3-utils";
@@ -8,7 +8,11 @@ import WalletConnect from "../../../../../Component/Components/Common/WalletConn
 import Popup from "./popup";
 //store
 import { useRecoilState } from "recoil";
-import { poolInfoState, selState, periodState } from "../../../../../store/pool";
+import {
+  poolInfoState,
+  selState,
+  periodState,
+} from "../../../../../store/pool";
 import {
   web3State,
   accountState,
@@ -35,12 +39,25 @@ export default function Row({
   const [requireNetwork] = useRecoilState(requireNetworkState);
   const [poolInfo, setPoolInfo] = useRecoilState(poolInfoState);
   const [period, setPeriod] = useRecoilState(periodState);
+  const [onLoading, setOnLoading] = useState(false);
   const [isOpen, setOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [plAmount, setPlAmount] = useState("");
   const [btnInfo, setBtnInfo] = useState("");
   const [sel, setSelCharger] = useState(0);
   const [chList, setChList] = useState([
+    {
+      address: "0x00",
+      name: "Now Loading",
+      apy: "000",
+    },
+    {
+      address: "0x00",
+      name: "",
+      apy: "",
+    },
+  ]);
+  const [selChList, setSelChList] = useState([
     {
       address: "0x00",
       name: "Now Loading",
@@ -130,6 +147,52 @@ export default function Row({
     setPlAmount((poolMethods.available / 100) * x);
   };
 
+  const loadChargerList = async () => {
+    try {
+      let { data } = await axios.get(
+        `https://bridge.therecharge.io/charger/list/type/${params.type.toLowerCase()}`
+      );
+      // pool 미제공 시 data 값 확인 후 분기 처리
+      if (data.length === 0) {
+        setChList([
+          {
+            address: "0x00",
+            name: "No supplied pool",
+            apy: "0",
+          },
+        ]);
+        setSelChList([
+          {
+            address: "0x00",
+            name: "No supplied pool",
+            apy: "0",
+          },
+        ]);
+        return;
+      }
+      let temp = data.map((d) => {
+        return {
+          ...d,
+          name: `${d.name.substring(0, 13)}`,
+          apy: d.apy > 0 ? (d.apy > 1000 ? "999+" : `${d.apy.toFixed(4)}`) : 0,
+        };
+      });
+      let temp2 = data.map((d) => {
+        return {
+          ...d,
+          name: d.name,
+          // d.apy > 1000 ? "999+" : `${d.apy.toFixed(4)}`,
+        };
+      });
+      setChList(temp);
+      setSelChList(temp2);
+    } catch (err) {
+      console.log(err);
+      console.log("There are no supplied pools");
+    }
+    return;
+  };
+
   const loadPoolInfo = async () => {
     let ret = {};
     if (chList[sel].address === "0x00") return;
@@ -192,6 +255,37 @@ export default function Row({
     return ret;
   };
 
+  const updateChargerInfoList = () => {
+    loadChargerList();
+    // loadPoolInfo();
+    // if (account) {
+    //   loadUserInfo();
+    //   loadMethods(poolInfo.token[0], poolInfo.token[1], chList[sel].address);
+    // }
+  };
+
+  const useInterval = (callback, delay) => {
+    const savedCallback = useRef();
+
+    // Remember the latest callback.
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+
+    // Set up the interval.
+    useEffect(() => {
+      function tick() {
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+  };
+
+  useInterval(() => updateChargerInfoList(), 5000);
+
   useEffect(() => {
     if (!account) return;
     loadUserInfo();
@@ -204,6 +298,40 @@ export default function Row({
     loadMethods(poolInfo.token[0], poolInfo.token[1], chList[sel].address);
   }, [account]);
 
+  useEffect(async () => {
+    try {
+      if (!account && chList[0].name !== "Now Loading") {
+        await loadPoolInfo();
+      } else if (account && chList[sel].address !== "0x00") {
+        let ret = await Promise.all([loadPoolInfo(), loadUserInfo()]);
+        console.log("test ret :", ret);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [chList]);
+
+  useEffect(async () => {
+    setOnLoading(true);
+    try {
+      if (!account) {
+        await loadPoolInfo();
+      } else if (chList[sel].address !== "0x00") {
+        await Promise.all([loadPoolInfo(), loadUserInfo()]);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [sel]);
+
+  useEffect(async () => {
+    setOnLoading(true);
+    try {
+      if (chList[0].name === "Now Loading") await loadChargerList();
+    } catch (err) {
+      console.log(err);
+    }
+  }, [params]);
 
   return (
     <Container>
@@ -214,8 +342,7 @@ export default function Row({
           }}
         />
       )}
-      <Title onClick={() => setOpen(!isOpen)}
-        style={{ cursor: "pointer" }}>
+      <Title onClick={() => setOpen(!isOpen)} style={{ cursor: "pointer" }}>
         <Status status={status} />
         <Name status={status} name={name} />
         <Apy status={status} apy={apy} />
@@ -233,8 +360,9 @@ export default function Row({
               <Info
                 className="hide"
                 left="MY BAL"
-                right={`${makeNum(userInfo.balance)} ${info ? info.symbol[0] : ""
-                  }`}
+                right={`${makeNum(userInfo.balance)} ${
+                  info ? info.symbol[0] : ""
+                }`}
               />
               <Info left="Share" right={`${makeNum(userInfo.share)}%`} />
               <Info
@@ -260,18 +388,19 @@ export default function Row({
             left="Period"
             right={info ? info.timeStamp : ""}
           />
-          {params.type === "Flexible" ?
-            (<Wallets>
+          {params.type === "Flexible" ? (
+            <Wallets>
               <WalletConnect
                 need="2"
                 bgColor={
                   (poolInfo.period[0] > new Date().getTime() / 1000) |
-                    (poolInfo.period[0] + poolInfo.period[1] <
-                      new Date().getTime() / 1000)
+                  (poolInfo.period[0] + poolInfo.period[1] <
+                    new Date().getTime() / 1000)
                     ? "var(--gray-30)"
                     : !poolInfo.limit || poolInfo.limit > poolInfo.tvl
-                      ? "var(--purple)"
-                      : "var(--gray-30)"}
+                    ? "var(--purple)"
+                    : "var(--gray-30)"
+                }
                 border=""
                 radius="20px"
                 w="540px"
@@ -284,9 +413,9 @@ export default function Row({
                   if (
                     poolInfo.period[0] > new Date().getTime() / 1000 ||
                     poolInfo.period[0] + poolInfo.period[1] <
-                    new Date().getTime() / 1000
+                      new Date().getTime() / 1000
                   ) {
-                    alert("This pool is inactive")
+                    alert("This pool is inactive");
                     // toast("This pool is inactive");
                   }
                   // else if (!account) {
@@ -301,7 +430,7 @@ export default function Row({
                         await poolMethods.approve();
                       } else {
                         // if (plAmount) {
-                        setPopupOpen(!isPopupOpen)
+                        setPopupOpen(!isPopupOpen);
                         setBtnInfo("Deposit");
                         // await poolMethods.stake(plAmount);
                         // await toast(
@@ -315,7 +444,7 @@ export default function Row({
                     }
                     //if close
                     else {
-                      alert("This pool is closed")
+                      alert("This pool is closed");
                       // toast("This pool is closed");
                     }
                   }
@@ -326,7 +455,7 @@ export default function Row({
                 disable={true}
                 bgColor={
                   poolInfo.period[0] > new Date().getTime() / 1000 ||
-                    poolInfo.period[0] + poolInfo.period[1] <
+                  poolInfo.period[0] + poolInfo.period[1] <
                     new Date().getTime() / 1000
                     ? "var(--gray-30)"
                     : "var(--yellow)"
@@ -341,12 +470,12 @@ export default function Row({
                   if (
                     poolInfo.period[0] > new Date().getTime() / 1000 ||
                     poolInfo.period[0] + poolInfo.period[1] <
-                    new Date().getTime() / 1000
+                      new Date().getTime() / 1000
                   ) {
-                    alert("This pool is inactive")
+                    alert("This pool is inactive");
                     // toast("This pool is inactive");
                   } else if (!account) {
-                    alert("Please connect to wallet")
+                    alert("Please connect to wallet");
                     // toast("Please connect to wallet");
                   }
                   //if in period => active || close
@@ -375,7 +504,7 @@ export default function Row({
                 text="UNPLUG"
                 onClick={async () => {
                   if (!account) {
-                    alert("Please connect to wallet")
+                    alert("Please connect to wallet");
                     // toast("Please connect to wallet");
                   }
                   //if user Balance > 0
@@ -389,23 +518,25 @@ export default function Row({
                   }
                   //if user Balance <= 0
                   else {
-                    alert("There is no withdrawable amount")
+                    alert("There is no withdrawable amount");
                     // toast("There is no withdrawable amount");
                   }
                 }}
               />
-            </Wallets>)
-            : (<Wallets>
+            </Wallets>
+          ) : (
+            <Wallets>
               <WalletConnect
                 need="2"
                 bgColor={
                   (poolInfo.period[0] > new Date().getTime() / 1000) |
-                    (poolInfo.period[0] + poolInfo.period[1] <
-                      new Date().getTime() / 1000)
+                  (poolInfo.period[0] + poolInfo.period[1] <
+                    new Date().getTime() / 1000)
                     ? "var(--gray-30)"
                     : !poolInfo.limit || poolInfo.limit > poolInfo.tvl
-                      ? "var(--purple)"
-                      : "var(--gray-30)"}
+                    ? "var(--purple)"
+                    : "var(--gray-30)"
+                }
                 border=""
                 radius="20px"
                 w="540px"
@@ -418,9 +549,9 @@ export default function Row({
                   if (
                     poolInfo.period[0] > new Date().getTime() / 1000 ||
                     poolInfo.period[0] + poolInfo.period[1] <
-                    new Date().getTime() / 1000
+                      new Date().getTime() / 1000
                   ) {
-                    alert("This pool is inactive")
+                    alert("This pool is inactive");
                     // toast("This pool is inactive");
                   }
                   // else if (!account) {
@@ -435,7 +566,7 @@ export default function Row({
                         await poolMethods.approve();
                       } else {
                         // if (plAmount) {
-                        setPopupOpen(!isPopupOpen)
+                        setPopupOpen(!isPopupOpen);
                         setBtnInfo("Deposit");
                         // await poolMethods.stake(plAmount);
                         // await toast(
@@ -449,7 +580,7 @@ export default function Row({
                     }
                     //if close
                     else {
-                      alert("This pool is closed")
+                      alert("This pool is closed");
                       // toast("This pool is closed");
                     }
                   }
@@ -470,7 +601,7 @@ export default function Row({
                 text="UNPLUG"
                 onClick={async () => {
                   if (!account) {
-                    alert("Please connect to wallet")
+                    alert("Please connect to wallet");
                     // toast("Please connect to wallet");
                   }
                   //if user Balance > 0
@@ -484,12 +615,13 @@ export default function Row({
                   }
                   //if user Balance <= 0
                   else {
-                    alert("There is no withdrawable amount")
+                    alert("There is no withdrawable amount");
                     // toast("There is no withdrawable amount");
                   }
                 }}
               />
-            </Wallets>)}
+            </Wallets>
+          )}
         </Pannel>
       </Menu>
     </Container>
