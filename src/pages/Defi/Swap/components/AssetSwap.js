@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next";
 import Dropdown from "./Dropdown";
 import WalletConnect from "../../../../Component/Components/Common/WalletConnect";
 import Popup from "./popup";
+//store
+import { useRecoilState } from "recoil";
+import { requireNetworkState } from "../../../../store/web3";
 
 import { ReactComponent as RCGeth } from "./assets/RCGETH.svg";
 import { ReactComponent as RCGbnb } from "./assets/RCGBNB.svg";
@@ -14,6 +17,7 @@ import { ReactComponent as Inactive } from "./assets/swap_arrow_deactive.svg";
 
 function AssetSwap() {
   const [t] = useTranslation();
+  const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [recipe, setRecipe] = useState({
     from: {
@@ -87,7 +91,6 @@ function AssetSwap() {
           unselectedList={fromList}
           title="FROM"
         />
-
         <Arrow
           style={
             recipe.from.token === "PiggyCell Point"
@@ -104,16 +107,17 @@ function AssetSwap() {
                 cursor: "pointer",
               }
           }
-          onClick={() => {
-            recipe.from.token === "PiggyCell Point"
-              ? console.log("")
-              : setRecipe({
+          onClick={recipe.from.token === "PiggyCell Point"
+            ? () => { }
+            : () => {
+              setRecipe({
                 ...recipe,
                 from: recipe.to,
                 to: recipe.from,
                 swapAmount: "",
               });
-          }}
+              setRequireNetwork(recipe.chainId[recipe.to.network]);
+            }}
         >
           {recipe.from.token !== "PiggyCell Point" ? <Active /> : <Inactive />}
         </Arrow>

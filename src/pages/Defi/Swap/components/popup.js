@@ -135,35 +135,34 @@ export default function Popup({ close = () => { }, recipe, setRecipe }) {
           </div>
           <label>
             Available:
-            {`${makeNum(
+            {` ${makeNum(
               (poolMethods.available - Number(recipe.swapAmount)).toString()
             )} ${recipe.from.token}`}
-            <input
-              className="popup-input"
-              type="number"
-              name="swapAmount"
-              placeholder="Enter the amount of swap"
-              value={recipe.swapAmount}
-              onChange={(e) => {
-                if (Number(e.target.value) < 0) {
-                  return setRecipe({
-                    ...recipe,
-                    swapAmount: "0",
-                  });
-                }
-                if (poolMethods.available - Number(e.target.value) >= 0) {
-                  return setRecipe({
-                    ...recipe,
-                    swapAmount: makeNum(e.target.value),
-                  });
-                }
-                setRecipe({
-                  ...recipe,
-                  swapAmount: makeNum(poolMethods.available),
-                });
-              }}
-            />
           </label>
+          <input
+            className="popup-input"
+            type="number"
+            placeholder="Enter the amount of swap"
+            value={recipe.swapAmount}
+            onChange={(e) => {
+              if (Number(e.target.value) < 0) {
+                return setRecipe({
+                  ...recipe,
+                  swapAmount: "0",
+                });
+              }
+              if (poolMethods.available - Number(e.target.value) >= 0) {
+                return setRecipe({
+                  ...recipe,
+                  swapAmount: makeNum(e.target.value),
+                });
+              }
+              setRecipe({
+                ...recipe,
+                swapAmount: makeNum(poolMethods.available),
+              });
+            }}
+          />
         </div>
         <QuickSelect>
           <div
@@ -278,6 +277,7 @@ const Container = styled.div`
   overflow: auto;
   padding-bottom: 180px;
   background-color: black;
+  z-index: 5;
 
   @media (min-width: 1088px) {
     width: 1088px;
@@ -333,6 +333,12 @@ const Content = styled.div`
     font-weight: bold;
     font-size: 30pt;
     color: white;
+
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
   .popup-caution {
     color: #d62828;
