@@ -235,10 +235,10 @@ function ModalSwap({
                         (token === "ERC RCG"
                           ? "eth"
                           : token === "HRC RCG"
-                          ? "hrc"
-                          : token === "BEP RCG"
-                          ? "bnb"
-                          : "") +
+                            ? "hrc"
+                            : token === "BEP RCG"
+                              ? "bnb"
+                              : "") +
                         ".svg"
                       }
                       style={{ width: "15px", height: "15px" }}
@@ -249,8 +249,8 @@ function ModalSwap({
                 </span>
                 <div className="symbol Roboto_30pt_Medium">
                   {token === "ERC RCG" ||
-                  token === "HRC RCG" ||
-                  token === "BEP RCG"
+                    token === "HRC RCG" ||
+                    token === "BEP RCG"
                     ? rcg
                     : token}
                 </div>
@@ -276,11 +276,11 @@ function ModalSwap({
             selAsset.logo === "piggy"
               ? {}
               : (direction == "from" ? dropdownOpen1 : dropdownOpen2)
-              ? {
+                ? {
                   borderRadius: "20px 20px 0 0",
                   boxShadow: "0 0 15px 0 var(--purple)",
                 }
-              : {}
+                : {}
           }
         >
           <div
@@ -289,8 +289,8 @@ function ModalSwap({
               selAsset.logo === "piggy"
                 ? {}
                 : (direction == "from" ? dropdownOpen1 : dropdownOpen2)
-                ? {}
-                : {}
+                  ? {}
+                  : {}
             }
             onMouseOver={() => {
               direction == "from" ? setRollState1(true) : setRollState2(true);
@@ -307,16 +307,15 @@ function ModalSwap({
                 <img
                   src={
                     "/swap_" +
-                    `${
-                      recipe.networkList[
-                        direction == "from"
-                          ? selAsset.logo === "piggy"
-                            ? "PiggyCell"
-                            : recipe.from
-                          : selAsset.logo === "piggy"
-                          ? "Huobi ECO Chain"
-                          : recipe.to
-                      ]
+                    `${recipe.networkList[
+                    direction == "from"
+                      ? selAsset.logo === "piggy"
+                        ? "PiggyCell"
+                        : recipe.from
+                      : selAsset.logo === "piggy"
+                        ? "Huobi ECO Chain"
+                        : recipe.to
+                    ]
                     }` +
                     ".svg"
                   }
@@ -330,8 +329,8 @@ function ModalSwap({
                       ? "PiggyCell"
                       : recipe.from
                     : selAsset.logo === "piggy"
-                    ? "Huobi ECO Chain"
-                    : recipe.to}
+                      ? "Huobi ECO Chain"
+                      : recipe.to}
                 </div>
                 <div className="Roboto_30pt_Bold">
                   {direction == "from" && selAsset.logo === "piggy"
@@ -347,8 +346,8 @@ function ModalSwap({
                   (direction == "from" ? dropdownOpen1 : dropdownOpen2)
                     ? "/ic_swap_rollup.svg"
                     : (direction == "from" ? rollState1 : rollState2)
-                    ? "/ic_swap_rolldown_mouseover.svg"
-                    : "/swap_dropdown.svg"
+                      ? "/ic_swap_rolldown_mouseover.svg"
+                      : "/swap_dropdown.svg"
                 }
                 style={{ width: "16px", height: "9px" }}
               />
@@ -358,8 +357,8 @@ function ModalSwap({
                 selAsset.logo === "piggy"
                   ? ""
                   : (direction == "from" ? dropdownOpen1 : dropdownOpen2)
-                  ? "test"
-                  : "inactive"
+                    ? "test"
+                    : "inactive"
               }
             ></div>
             <div
@@ -373,53 +372,53 @@ function ModalSwap({
               {selAsset.logo === "piggy"
                 ? ""
                 : netList.map((chain, index) => {
-                    return (
-                      <div
-                        className="dropdownContent"
-                        onClick={() => {
-                          direction === "from"
-                            ? netList[index] === recipe.to
-                              ? setRecipe({
-                                  ...recipe,
-                                  from: recipe.to,
-                                  to: recipe.from,
-                                  swapAmount: "",
-                                })
-                              : setRecipe({
-                                  ...recipe,
-                                  from: netList[index],
-                                })
-                            : netList[index] == recipe.from
+                  return (
+                    <div
+                      className="dropdownContent"
+                      onClick={() => {
+                        direction === "from"
+                          ? netList[index] === recipe.to
                             ? setRecipe({
-                                ...recipe,
-                                from: recipe.to,
-                                to: recipe.from,
-                                swapAmount: "",
-                              })
+                              ...recipe,
+                              from: recipe.to,
+                              to: recipe.from,
+                              swapAmount: "",
+                            })
                             : setRecipe({
-                                ...recipe,
-                                to: netList[index],
-                              });
-                          direction == "from"
-                            ? handleDropdown1()
-                            : handleDropdown2();
-                        }}
-                      >
-                        <div className="logo">
-                          <img
-                            src={
-                              "/swap_" + `${recipe.networkList[chain]}` + ".svg"
-                            }
-                            style={{ width: "80px", height: "80px" }}
-                          />
-                        </div>
-                        <div className="name">
-                          <div className="Roboto_30pt_Bold">{chain}</div>
-                          <div className="Roboto_30pt_Bold">Network</div>
-                        </div>
+                              ...recipe,
+                              from: netList[index],
+                            })
+                          : netList[index] == recipe.from
+                            ? setRecipe({
+                              ...recipe,
+                              from: recipe.to,
+                              to: recipe.from,
+                              swapAmount: "",
+                            })
+                            : setRecipe({
+                              ...recipe,
+                              to: netList[index],
+                            });
+                        direction == "from"
+                          ? handleDropdown1()
+                          : handleDropdown2();
+                      }}
+                    >
+                      <div className="logo">
+                        <img
+                          src={
+                            "/swap_" + `${recipe.networkList[chain]}` + ".svg"
+                          }
+                          style={{ width: "80px", height: "80px" }}
+                        />
                       </div>
-                    );
-                  })}
+                      <div className="name">
+                        <div className="Roboto_30pt_Bold">{chain}</div>
+                        <div className="Roboto_30pt_Bold">Network</div>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>
@@ -428,7 +427,7 @@ function ModalSwap({
   }
   const loadMethods = async (
     swapTokenAddress,
-    bridgeAddress = "0x3c2465d88C6546eac6F9aa6f79081Ad874CA2E8b"
+    bridgeAddress = "0xaBC71F46FA0D80bCC7D36D662Edbe9930271B414"
   ) => {
     if (!account) return;
     try {
@@ -563,12 +562,21 @@ function ModalSwap({
 
   useEffect(() => {
     if (
-      recipe.from === "Binance Smart Chain" ||
-      recipe.to === "Binance Smart Chain"
+      (recipe.from === "Binance Smart Chain" &&
+        recipe.to === "Huobi ECO Chain") ||
+      (recipe.from === "Huobi ECO Chain" && recipe.to === "Binance Smart Chain")
     ) {
       loadMethods(
         selAsset.tokenAddress[selAsset.chainId[recipe.from]],
         "0x05A21AECa80634097e4acE7D4E589bdA0EE30b25"
+      );
+    } else if (
+      (recipe.from === "Binance Smart Chain" && recipe.to === "Ethereum") ||
+      (recipe.from === "Ethereum" && recipe.to === "Binance Smart Chain")
+    ) {
+      loadMethods(
+        selAsset.tokenAddress[selAsset.chainId[recipe.from]],
+        "0x45c0b31Bc83D4C5E430b15D790596878dF31c30e"
       );
     } else {
       loadMethods(selAsset.tokenAddress[selAsset.chainId[recipe.from]]);
@@ -581,9 +589,9 @@ function ModalSwap({
         <Link to="/defi">
           <div
             className="background"
-            // onClick={() => {
-            //   setModalSwapOpen(!modalSwapOpen);
-            // }}
+          // onClick={() => {
+          //   setModalSwapOpen(!modalSwapOpen);
+          // }}
           ></div>
         </Link>
         <div
@@ -651,21 +659,21 @@ function ModalSwap({
                         style={
                           selAsset.logo === "piggy"
                             ? {
-                                width: "60px",
-                                height: "60px",
-                                cursor: "not-allowed",
-                              }
+                              width: "60px",
+                              height: "60px",
+                              cursor: "not-allowed",
+                            }
                             : { width: "60px", height: "60px" }
                         }
                         onClick={() => {
                           selAsset.logo === "piggy"
                             ? console.log("nothing happen")
                             : setRecipe({
-                                ...recipe,
-                                from: recipe.to,
-                                to: recipe.from,
-                                swapAmount: "",
-                              });
+                              ...recipe,
+                              from: recipe.to,
+                              to: recipe.from,
+                              swapAmount: "",
+                            });
                         }}
                       />
                     </div>
@@ -741,14 +749,8 @@ function ModalSwap({
                     </div>
                   </PercentBtns>
                   <div className="caution Roboto_20pt_Medium_L">
-                    {`Conversion Fee: ${
-                      recipe.from === "Binance Smart Chain" ||
-                      recipe.to === "Binance Smart Chain"
-                        ? selAsset.conversionFee[
-                            selAsset.chainId["Binance Smart Chain"]
-                          ]
-                        : selAsset.conversionFee[selAsset.chainId[recipe.from]]
-                    } ${selAsset.symbol}`}
+                    {`Conversion Fee: ${recipe.to === "Ethereum" ? 5 : 0.5} ${selAsset.symbol
+                      }`}
                   </div>
                   <div className="buttons">
                     <TwoBtns
@@ -799,15 +801,7 @@ function ModalSwap({
                         {redemption ? redemption / 100 : 0} %
                       </div>
                       <div className="detail">
-                        {recipe.from === "Binance Smart Chain" ||
-                        recipe.to === "Binance Smart Chain"
-                          ? selAsset.conversionFee[
-                              selAsset.chainId["Binance Smart Chain"]
-                            ]
-                          : selAsset.conversionFee[
-                              selAsset.chainId[recipe.from]
-                            ]}{" "}
-                        {selAsset.symbol}
+                        {recipe.to === "Ethereum" ? 5 : 0.5} {selAsset.symbol}
                       </div>
                       <div className="detail">
                         {makeNum(recipe.swapAmount ? recipe.swapAmount : 0)}{" "}
@@ -827,15 +821,8 @@ function ModalSwap({
                           (
                             recipe.swapAmount -
                             (recipe.swapAmount / 100) *
-                              (redemption ? redemption / 100 : 1) -
-                            (recipe.from === "Binance Smart Chain" ||
-                            recipe.to === "Binance Smart Chain"
-                              ? selAsset.conversionFee[
-                                  selAsset.chainId["Binance Smart Chain"]
-                                ]
-                              : selAsset.conversionFee[
-                                  selAsset.chainId[recipe.from]
-                                ])
+                            (redemption ? redemption / 100 : 1) -
+                            (recipe.to === "Ethereum" ? 5 : 0.5)
                           ).toString()
                         )}{" "}
                         {selAsset.symbol}

@@ -430,7 +430,7 @@ function ModalSwap({
   }
   const loadMethods = async (
     swapTokenAddress,
-    bridgeAddress = "0x3c2465d88C6546eac6F9aa6f79081Ad874CA2E8b"
+    bridgeAddress = "0xaBC71F46FA0D80bCC7D36D662Edbe9930271B414"
   ) => {
     if (!account) return;
     try {
@@ -580,12 +580,21 @@ function ModalSwap({
 
   useEffect(() => {
     if (
-      recipe.from === "Binance Smart Chain" ||
-      recipe.to === "Binance Smart Chain"
+      (recipe.from === "Binance Smart Chain" &&
+        recipe.to === "Huobi ECO Chain") ||
+      (recipe.from === "Huobi ECO Chain" && recipe.to === "Binance Smart Chain")
     ) {
       loadMethods(
         selAsset.tokenAddress[selAsset.chainId[recipe.from]],
         "0x05A21AECa80634097e4acE7D4E589bdA0EE30b25"
+      );
+    } else if (
+      (recipe.from === "Binance Smart Chain" && recipe.to === "Ethereum") ||
+      (recipe.from === "Ethereum" && recipe.to === "Binance Smart Chain")
+    ) {
+      loadMethods(
+        selAsset.tokenAddress[selAsset.chainId[recipe.from]],
+        "0x45c0b31Bc83D4C5E430b15D790596878dF31c30e"
       );
     } else {
       loadMethods(selAsset.tokenAddress[selAsset.chainId[recipe.from]]);
@@ -899,9 +908,9 @@ function ModalSwap({
         </div>
       </div>
       {modalDecisionOpen ? (
-        <div className={modalDecisionOpen ? "modalOn" : "modalOff"}>
+        <div className={modalDecisionOpen ? "modalOn2" : "modalOff2"}>
           <div
-            className="background"
+            className="background2"
             onClick={() => {
               setModalDecisionOpen(false);
             }}
@@ -1379,11 +1388,11 @@ const Container = styled.div`
       opacity: 0.5;
     }
   }
-  .modalOff {
+  .modalOff2 {
     display: none;
   }
 
-  .modalOn {
+  .modalOn2 {
     display: flex;
     position: fixed;
     top: 0;
@@ -1395,7 +1404,7 @@ const Container = styled.div`
     z-index: 1;
   
 
-  .background {
+  .background2 {
     position: absolute;
     background-color: var(--midnight);
     top: 0;

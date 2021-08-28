@@ -14,7 +14,9 @@ function Footer({ t }) {
         <div className="sns">
           <div
             className="logo"
-            onClick={() => window.open(t("Footer/sns/github"), "_blank")}
+            onClick={() =>
+              window.open(t("Footer/sns/github"), "_blank")
+            }
           >
             <img src="/footer1.png" alt="" />
           </div>
@@ -71,7 +73,7 @@ function Footer({ t }) {
           @ 2021 Recharge Labs Ltd.
         </div>
       </div>
-    </Container>
+    </Container >
   );
 }
 const Container = styled.div`
