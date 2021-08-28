@@ -151,6 +151,11 @@ const Content = styled.div`
     font-size: 30pt;
     color: white;
   }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
   .popup-caution {
     color: #d62828;
     line-height: 26px;

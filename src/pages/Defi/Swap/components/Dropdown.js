@@ -23,9 +23,13 @@ export default function Dropdown({
   return (
     <Container>
       <Title className="Roboto_30pt_Black">{title}</Title>
-      <List>
-        <Selected onClick={() => setOpen(!open)}>
-          <div className="img">
+      <List style={open ? { borderRadius: "20px 20px 0px 0px" } : { borderRadius: "20px" }} >
+        <Selected style={open
+          ? { borderRadius: "20px 20px 0px 0px", border: "1px solid #9314B2", padding: "39px 0px" }
+          : { borderRadius: "20px" }}
+          onClick={() => setOpen(!open)}>
+          <div className="img"
+            style={open ? { marginLeft: "39px" } : {}}>
             <Image style={{ width: "100%", height: "100%" }} />
           </div>
           <Coin>
@@ -34,15 +38,44 @@ export default function Dropdown({
           </Coin>
           <Btn>{open ? <Close fill="white" /> : <Open fill="white" />}</Btn>
         </Selected>
-        <ListContainer>
+        {open ? <Line /> : <></>}
+        <ListContainer style={open
+          ? { borderRadius: "0px 0px 20px 20px", border: "1px solid #9314B2" }
+          : { borderRadius: "20px" }}>
           {open &&
             unselectedList.map((token, i) => {
               let direction = title.toLowerCase();
+              let j = 0;
               if (recipe[direction].index !== i) {
                 let Image = token[2];
+                switch (recipe[direction].index) {
+                  case 0:
+                    j = i - 1
+                    break;
+                  case 1:
+                    if (i > 0) j = i - 1
+                    else j = i
+                    break;
+                  case 2:
+                    if (i === 3) j = 2
+                    else j = i
+                    break;
+                  default:
+                    j = i
+                    break;
+                }
                 return (
                   <UnSelected
-                    style={{ cursor: "pointer", height: "100px" }}
+                    style={{
+                      cursor: "pointer",
+                      backgroundColor:
+                        (j % 2) !== 0
+                          ? "#35374B"
+                          : "#1C1E35",
+                      borderRadius:
+                        direction === "to" && j === 0 ? "0px 0px 20px 20px" :
+                          j === 2 ? "0px 0px 20px 20px" : "0px"
+                    }}
                     // 글로벌 상태 requiredNetwork 설정 필요
                     onClick={() => {
                       if (direction === "from") {
@@ -85,7 +118,7 @@ export default function Dropdown({
                   >
                     <div className="unselected">
                       <div className="img">
-                        <Image style={{ width: "100%", height: "100%" }} />
+                        <Image style={{ width: "80px", height: "80px" }} />
                       </div>
                       <Coin>
                         <Upside className="Roboto_30pt_Bold">{token[0]}</Upside>
@@ -136,7 +169,7 @@ const List = styled.div`
   justify-content: center;
   background-color: #35374b;
   min-height: 160px;
-  border-radius: 20px;
+  position: relative;
   // gap: 20px;
   svg {
     margin: auto 0;
@@ -148,24 +181,25 @@ const List = styled.div`
   }
 `;
 const Selected = styled.div`
-  margin: 40px 0;
+  padding: 40px 0;
+  box-sizing: border-box;
   cursor: pointer;
   display: flex;
   width: 100%;
+
   @media (min-width: 1088px) {
     margin: 0;
-    // margin-top: 0px;
   }
 
   .img{
     margin-left: 40px;
-    width: 80px;
-    height: 80px;
+    width: 78px;
+    height: 78px;
   
     @media (min-width: 1088px) {
       margin-left: 0;
       width: 60px;
-    height: 60px;
+      height: 60px;
     }
 `;
 const Coin = styled.div`
@@ -182,12 +216,26 @@ const Btn = styled.div`
     margin-right: 0px;
   }
 `;
+const Line = styled.div`
+  height: 3px;
+  position: absolute;
+  left: 1px;
+  top 158px;
+  z-index: 2;
+  width: calc(100% - 2px);
+  background-color: #1C1E35;
+`
 const ListContainer = styled.div`
-  margin-top: 20px;
+  position: absolute;
+  left: 0;
+  top: 160px;
+  z-index: 1;
+  width: 100%;
 `;
 const UnSelected = styled.div`
   display: flex;
   width: 100%;
+  align-items: center;
   // margin-top: 20px;
 
   .unselected {

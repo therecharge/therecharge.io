@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+// import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 //components
 import Image from "./List/image.js";
 import Row from "./List/row.js";
-import {
-  poolInfoState,
-  selState,
-  periodState,
-} from "../../../../store/pool.js";
+// import {
+//   poolInfoState,
+//   selState,
+//   periodState,
+// } from "../../../../store/pool.js";
 
 function List({ /*type, list,*/ params }) {
   const [t] = useTranslation();
@@ -44,9 +44,9 @@ function List({ /*type, list,*/ params }) {
       type: "flexible",
     },
   ]);
-  const [sel, setSelCharger] = useState(0);
-  const [poolInfo, setPoolInfo] = useRecoilState(poolInfoState);
-  const [period, setPeriod] = useRecoilState(periodState);
+  // const [sel, setSelCharger] = useState(0);
+  // const [poolInfo, setPoolInfo] = useRecoilState(poolInfoState);
+  // const [period, setPeriod] = useRecoilState(periodState);
 
   const loadChargerList = async () => {
     try {
@@ -128,9 +128,6 @@ function List({ /*type, list,*/ params }) {
           <p className="Roboto_40pt_Black">Charger List</p>
         </Title>
         <RowContainer>
-          {/* <Row status="Active" name="Test" apy="100" />
-          <Row status="Inactive" />
-          <Row status="Active" /> */}
           {chList.map((charger, index) => {
             return (
               <Row
@@ -147,16 +144,6 @@ function List({ /*type, list,*/ params }) {
       </Content>
     </Container>
   );
-}
-
-function makeNum(str, decimal = 4) {
-  let newStr = str;
-  if (typeof newStr === "number") newStr = str.toString();
-  let arr = newStr.split(".");
-  if (arr.length == 1 || arr[0].length > 8) return arr[0];
-  else {
-    return arr[0] + "." + arr[1].substr(0, decimal);
-  }
 }
 
 const loadPoolPeriod = (startTime, duration) => {
