@@ -32,31 +32,21 @@ export default function Row({
   apy = "10000.00",
   info,
   params,
+  chList,
+  sel,
 }) {
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
   const [requireNetwork] = useRecoilState(requireNetworkState);
   const [poolInfo, setPoolInfo] = useRecoilState(poolInfoState);
-  // const [period, setPeriod] = useRecoilState(periodState);
+  const [period, setPeriod] = useRecoilState(periodState);
   const [onLoading, setOnLoading] = useState(false);
   const [isOpen, setOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [plAmount, setPlAmount] = useState("");
   const [btnInfo, setBtnInfo] = useState("");
-  // const [sel, setSelCharger] = useState(0);
-  // const [chList, setChList] = useState([
-  //   {
-  //     address: "0x00",
-  //     name: "Now Loading",
-  //     apy: "000",
-  //   },
-  //   {
-  //     address: "0x00",
-  //     name: "",
-  //     apy: "",
-  //   },
-  // ]);
+
   // const [selChList, setSelChList] = useState([
   //   {
   //     address: "0x00",
@@ -170,6 +160,45 @@ export default function Row({
     return ret;
   };
 
+  const loadPoolInfo = async () => {
+    let ret = {};
+    if (chList[sel].address === "0x00") return;
+    try {
+      let { data } = await axios.get(
+        `https://bridge.therecharge.io/charger/info/${chList[sel].address}`
+      );
+      let tempTime = loadPoolPeriod(data.period[0], data.period[1]);
+      setPoolInfo(data);
+      setPeriod(tempTime);
+      ret = data;
+    } catch (err) {
+      console.log(err);
+    }
+    return ret;
+  };
+
+  const loadPoolPeriod = (startTime, duration) => {
+    let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00(GMT)";
+
+    const endTime = Number(startTime) + Number(duration);
+
+    const formatter = (timestamp) => {
+      var d = new Date(Number(timestamp) * 1000);
+      const z = (x) => {
+        return x.toString().padStart(2, "0");
+      };
+      return `${new String(d.getFullYear()).substr(2, 3)}.${z(
+        d.getMonth() + 1
+      )}.${z(d.getDate())} ${z(d.getHours())}:${z(d.getMinutes())}:${z(
+        d.getSeconds()
+      )}`;
+    };
+
+    ret = `${formatter(startTime)} ~ ${formatter(endTime)}`;
+
+    return ret;
+  };
+
   // const updateChargerInfoList = () => {
   //   // loadChargerList();
   //   // loadPoolInfo();
@@ -206,38 +235,38 @@ export default function Row({
     loadUserInfo();
   }, [account]);
 
-  // useEffect(() => {
-  //   if (!account) return;
-  //   if (chList[sel].address === "0x00") return;
-  //   loadUserInfo();
-  //   loadMethods(poolInfo.token[0], poolInfo.token[1], chList[sel].address);
-  // }, [account]);
+  useEffect(() => {
+    if (!account) return;
+    if (chList[sel].address === "0x00") return;
+    loadUserInfo();
+    loadMethods(poolInfo.token[0], poolInfo.token[1], chList[sel].address);
+  }, [account]);
 
-  // useEffect(async () => {
-  //   try {
-  //     if (!account && chList[0].name !== "Now Loading") {
-  //       await loadPoolInfo();
-  //     } else if (account && chList[sel].address !== "0x00") {
-  //       let ret = await Promise.all([loadPoolInfo(), loadUserInfo()]);
-  //       console.log("test ret :", ret);
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [chList]);
+  useEffect(async () => {
+    try {
+      if (!account && chList[0].name !== "Now Loading") {
+        await loadPoolInfo();
+      } else if (account && chList[sel].address !== "0x00") {
+        let ret = await Promise.all([loadPoolInfo(), loadUserInfo()]);
+        console.log("test ret :", ret);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [chList, userInfo.allowance]);
 
-  // useEffect(async () => {
-  //   setOnLoading(true);
-  //   try {
-  //     if (!account) {
-  //       await loadPoolInfo();
-  //     } else if (chList[sel].address !== "0x00") {
-  //       await Promise.all([loadPoolInfo(), loadUserInfo()]);
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [sel]);
+  useEffect(async () => {
+    setOnLoading(true);
+    try {
+      if (!account) {
+        await loadPoolInfo();
+      } else if (chList[sel].address !== "0x00") {
+        await Promise.all([loadPoolInfo(), loadUserInfo()]);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [sel]);
 
   // useEffect(async () => {
   //   setOnLoading(true);
@@ -255,6 +284,9 @@ export default function Row({
           close={() => {
             setPopupOpen(false);
           }}
+          chList={chList}
+          poolMethods={poolMethods}
+          poolInfo={poolInfo}
         />
       )}
       <Title onClick={() => setOpen(!isOpen)} style={{ cursor: "pointer" }}>
@@ -275,8 +307,9 @@ export default function Row({
               <Info
                 className="hide"
                 left="MY BAL"
-                right={`${makeNum(userInfo.balance)} ${info ? info.symbol[0] : ""
-                  }`}
+                right={`${makeNum(userInfo.balance)} ${
+                  info ? info.symbol[0] : ""
+                }`}
               />
               <Info left="Share" right={`${makeNum(userInfo.share)}%`} />
               <Info
@@ -308,12 +341,12 @@ export default function Row({
                 need="2"
                 bgColor={
                   (poolInfo.period[0] > new Date().getTime() / 1000) |
-                    (poolInfo.period[0] + poolInfo.period[1] <
-                      new Date().getTime() / 1000)
+                  (poolInfo.period[0] + poolInfo.period[1] <
+                    new Date().getTime() / 1000)
                     ? "var(--gray-30)"
                     : !poolInfo.limit || poolInfo.limit > poolInfo.tvl
-                      ? "var(--purple)"
-                      : "var(--gray-30)"
+                    ? "var(--purple)"
+                    : "var(--gray-30)"
                 }
                 border=""
                 radius="20px"
@@ -327,7 +360,7 @@ export default function Row({
                   if (
                     poolInfo.period[0] > new Date().getTime() / 1000 ||
                     poolInfo.period[0] + poolInfo.period[1] <
-                    new Date().getTime() / 1000
+                      new Date().getTime() / 1000
                   ) {
                     alert("This pool is inactive");
                     // toast("This pool is inactive");
@@ -369,7 +402,7 @@ export default function Row({
                 disable={true}
                 bgColor={
                   poolInfo.period[0] > new Date().getTime() / 1000 ||
-                    poolInfo.period[0] + poolInfo.period[1] <
+                  poolInfo.period[0] + poolInfo.period[1] <
                     new Date().getTime() / 1000
                     ? "var(--gray-30)"
                     : "var(--yellow)"
@@ -384,7 +417,7 @@ export default function Row({
                   if (
                     poolInfo.period[0] > new Date().getTime() / 1000 ||
                     poolInfo.period[0] + poolInfo.period[1] <
-                    new Date().getTime() / 1000
+                      new Date().getTime() / 1000
                   ) {
                     alert("This pool is inactive");
                     // toast("This pool is inactive");
@@ -444,12 +477,12 @@ export default function Row({
                 need="2"
                 bgColor={
                   (poolInfo.period[0] > new Date().getTime() / 1000) |
-                    (poolInfo.period[0] + poolInfo.period[1] <
-                      new Date().getTime() / 1000)
+                  (poolInfo.period[0] + poolInfo.period[1] <
+                    new Date().getTime() / 1000)
                     ? "var(--gray-30)"
                     : !poolInfo.limit || poolInfo.limit > poolInfo.tvl
-                      ? "var(--purple)"
-                      : "var(--gray-30)"
+                    ? "var(--purple)"
+                    : "var(--gray-30)"
                 }
                 border=""
                 radius="20px"
@@ -463,7 +496,7 @@ export default function Row({
                   if (
                     poolInfo.period[0] > new Date().getTime() / 1000 ||
                     poolInfo.period[0] + poolInfo.period[1] <
-                    new Date().getTime() / 1000
+                      new Date().getTime() / 1000
                   ) {
                     alert("This pool is inactive");
                     // toast("This pool is inactive");

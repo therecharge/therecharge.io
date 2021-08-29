@@ -44,6 +44,7 @@ function List({ /*type, list,*/ params }) {
       type: "flexible",
     },
   ]);
+  const [sel, setSelCharger] = useState(0);
   // const [sel, setSelCharger] = useState(0);
   // const [poolInfo, setPoolInfo] = useRecoilState(poolInfoState);
   // const [period, setPeriod] = useRecoilState(periodState);
@@ -130,14 +131,22 @@ function List({ /*type, list,*/ params }) {
         <RowContainer>
           {chList.map((charger, index) => {
             return (
-              <Row
-                key={index}
-                status={charger.status}
-                name={charger.name}
-                apy={charger.apy}
-                info={charger}
-                params={params}
-              />
+              <div
+                onClick={() => {
+                  setSelCharger(index);
+                }}
+              >
+                <Row
+                  key={index}
+                  status={charger.status}
+                  name={charger.name}
+                  apy={charger.apy}
+                  info={charger}
+                  params={params}
+                  chList={chList}
+                  sel={sel}
+                />
+              </div>
             );
           })}
         </RowContainer>
