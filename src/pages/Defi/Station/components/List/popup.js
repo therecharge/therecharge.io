@@ -5,55 +5,53 @@ import WalletConnect from "../../../../../Component/Components/Common/WalletConn
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
 export default function Popup({
-  close = () => {},
-  chList,
+  close = () => { },
+  name,
+  apy,
+  info,
   poolMethods,
-  poolInfo,
 }) {
   const [plAmount, setPlAmount] = useState("");
 
-  function makeNum(str, decimal = 4) {
-    let newStr = str;
-    if (typeof newStr === "number") newStr = str.toString();
-    let arr = newStr.split(".");
-    if (arr.length == 1 || arr[0].length > 8) return arr[0];
-    else {
-      return arr[0] + "." + arr[1].substr(0, decimal);
-    }
-  }
-
   const SetPercent = (x) => {
-    setPlAmount((poolMethods.available / 100) * x);
+    setPlAmount(makeNum((poolMethods.available / 100) * x));
   };
   return (
     <Container>
       <Content>
-        <PopupClose onClick={close} className="popup-close" />
+        <PopupClose
+          onClick={() => {
+            close();
+            setPlAmount("");
+          }}
+          className="popup-close"
+        />
         <div className="group1">
-          {console.log(chList)}
           <span className="Roboto_40pt_Black popup-title">STAKING</span>
           <span className="Roboto_30pt_Regular popup-name">
-            {chList[0].name}
+            {name}
           </span>
           <span className="Roboto_30pt_Regular popup-apy">
-            {chList[0].apy}%
+            {apy} %
           </span>
           <span className="Roboto_20pt_Regular popup-available">
             Available:{" "}
-            {`${makeNum((poolMethods.available - plAmount).toString())} ${
-              poolInfo.symbol[0]
-            }`}
+            {`${makeNum((poolMethods.available - plAmount).toString())} ${info.symbol[0]}`}
           </span>
           <input
             className="popup-input"
             type="number"
+            placeholder="Enter the amount of stake"
             value={plAmount}
             onChange={(e) => {
-              if (poolMethods.available - e.target.value >= 0)
+              if (Number(e.target.value) < 0) {
+                return setPlAmount("0");
+              } else if (poolMethods.available >= Number(e.target.value)) {
                 return setPlAmount(makeNum(e.target.value, 8));
-              setPlAmount(poolMethods.available);
+              } else {
+                return setPlAmount(makeNum(poolMethods.available));
+              }
             }}
-            placeholder="Enter the amount of stake"
           />
         </div>
         <QuickSelect>
@@ -105,14 +103,16 @@ export default function Popup({
             notConnected="Connect Wallet for PLUG-IN"
             wrongNetwork="Change network for PLUG-IN"
             text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
-            onClick={() => console.log(1)}
+            onClick={() => {
+              poolMethods.stake(plAmount);
+            }}
           />
         </div>
         <InfoContainer>
-          <Info left="Current Redemption Rate" right="00.00%" />
-          <Info left="RCG to Stake" right="3,000,000 RCG" />
-          <Info left="RCG to Redeem" right="3,000,000 RCG" />
-          <Info left="Net RCG to Stake" right="3,000,000 RCG" />
+          <Info left="Current Redemption Rate" right="2.00%" />
+          <Info left="RCG to Stake" right={`${plAmount} RCG`} />
+          <Info left="RCG to Redeem" right={`${makeNum(plAmount * 2 / 100)} RCG`} />
+          <Info left="Net RCG to Stake" right={`${makeNum(plAmount - (plAmount * 2 / 100))} RCG`} />
         </InfoContainer>
       </Content>
     </Container>
@@ -138,6 +138,15 @@ function Info({ left, right }) {
       <div className="right Roboto_20pt_Black">{right}</div>
     </Container>
   );
+}
+function makeNum(str, decimal = 4) {
+  let newStr = str;
+  if (typeof newStr === "number") newStr = str.toString();
+  let arr = newStr.split(".");
+  if (arr.length == 1 || arr[0].length > 8) return arr[0];
+  else {
+    return arr[0] + "." + arr[1].substr(0, decimal);
+  }
 }
 const Container = styled.div`
   position: fixed;

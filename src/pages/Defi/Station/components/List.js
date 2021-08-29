@@ -132,19 +132,22 @@ function List({ /*type, list,*/ params }) {
           {chList.map((charger, index) => {
             return (
               <div
+                // sel 하면 안됨 -> 2개 이상 오픈했을 경우에는?
+                // 각 row에서 디테일 오픈 시 각자 loadmethod 되도록 해야하지 않을까?
+                // 미리 전체 로드할 때 과부하 가능성 있음
                 onClick={() => {
                   setSelCharger(index);
                 }}
               >
                 <Row
                   key={index}
-                  status={charger.status}
+                  status={charger.status} // active or not
                   name={charger.name}
                   apy={charger.apy}
                   info={charger}
-                  params={params}
-                  chList={chList}
-                  sel={sel}
+                  params={params} // 버튼에 대한 분기처리 때문에 필요
+                // chList={chList} // 전체 리스트 왜?
+                // sel={sel} // 선택 해야만 하는가?
                 />
               </div>
             );

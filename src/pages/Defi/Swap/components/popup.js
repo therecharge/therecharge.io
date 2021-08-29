@@ -9,17 +9,14 @@ import { useRecoilState } from "recoil";
 import {
   web3State,
   accountState,
-  providerState,
-  networkState,
-  requireNetworkState,
 } from "../../../../store/web3";
 
 const ERC20_ABI = require("../../../../Component/Desktop/Defi/abis/ERC20ABI.json");
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
 export default function Popup({ close = () => { }, recipe, setRecipe }) {
-  const [account, setAccount] = useRecoilState(accountState);
   const [web3, setWeb3] = useRecoilState(web3State);
+  const [account, setAccount] = useRecoilState(accountState);
   const [poolMethods, setPoolMethods] = useState({
     redemption: 2,
     available: 0,
@@ -262,9 +259,6 @@ function makeNum(str, decimal = 4) {
   else {
     return arr[0] + "." + arr[1].substr(0, decimal);
   }
-};
-const weiToEther = (wei) => {
-  return fromWei(wei, "ether");
 };
 const Container = styled.div`
   position: fixed;
