@@ -12,44 +12,33 @@ import Row from "./List/row.js";
 //   periodState,
 // } from "../../../../store/pool.js";
 
-function List({ /*type, list,*/ params }) {
+const loading_data = [
+  {
+    address: "0x0",
+    apy: 0.0,
+    name: "Loading List..",
+    period: [1625022000, 14400],
+    redemtion: 200,
+    symbol: ["RCG", "RCG"],
+    token: [
+      "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+      "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+    ],
+    tvl: 0,
+    type: "flexible",
+  },
+]
+
+function List({ /*type, list,*/ params, toast }) {
   const [t] = useTranslation();
-  const [chList, setChList] = useState([
-    {
-      address: "0x00",
-      name: "Now Loading",
-      apy: "000",
-      period: [1625022000, 14400],
-      redemtion: 200,
-      symbol: ["RCG", "RCG"],
-      token: [
-        "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
-        "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
-      ],
-      tvl: 0,
-      type: "flexible",
-    },
-    {
-      address: "0x0",
-      apy: 0.0,
-      name: "Loading...",
-      period: [1625022000, 14400],
-      redemtion: 200,
-      symbol: ["RCG", "RCG"],
-      token: [
-        "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
-        "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
-      ],
-      tvl: 0,
-      type: "flexible",
-    },
-  ]);
+  const [chList, setChList] = useState(loading_data);
   const [sel, setSelCharger] = useState(0);
   // const [sel, setSelCharger] = useState(0);
   // const [poolInfo, setPoolInfo] = useRecoilState(poolInfoState);
   // const [period, setPeriod] = useRecoilState(periodState);
 
   const loadChargerList = async () => {
+    setChList(loading_data);
     try {
       // GET Pool list(Charging list) from back by staking type(Flexible/Locked and LP or not)
       let { data } = await axios.get(
@@ -60,7 +49,7 @@ function List({ /*type, list,*/ params }) {
         setChList([
           {
             address: "0x00",
-            name: "No supplied pool",
+            name: "There is currently no Charger List available.",
             apy: "0",
             period: [1625022000, 14400],
             redemtion: 200,
@@ -91,8 +80,8 @@ function List({ /*type, list,*/ params }) {
               name: `${data.name.substring(0, 13)}`,
               apy:
                 data.apy > 0
-                  ? data.apy > 1000
-                    ? "999+"
+                  ? data.apy == "10000"
+                    ? "9999+"
                     : `${data.apy.toFixed(4)}`
                   : 0,
               status: status,
@@ -138,6 +127,8 @@ function List({ /*type, list,*/ params }) {
                 onClick={() => {
                   // setSelCharger(index);
                 }}
+                className={params.isLP ? "disable" : ""}
+
               >
                 <Row
                   key={index}
@@ -146,6 +137,7 @@ function List({ /*type, list,*/ params }) {
                   apy={charger.apy}
                   info={charger}
                   params={params} // 버튼에 대한 분기처리 때문에 필요
+                  toast={toast}
                 // chList={chList} // 전체 리스트 왜?
                 // sel={sel} // 선택 해야만 하는가?
                 />
@@ -178,14 +170,15 @@ const loadPoolPeriod = (startTime, duration) => {
 };
 
 const loadActiveStatus = ({ tvl, period, limit }) => {
+  if (period[0] > new Date().getTime() / 1000 || period[0] + period[1] < new Date().getTime() / 1000) {
+    return "Inactive";
+  }
   if (period[0] + period[1] >= new Date().getTime() / 1000) {
     if (!limit || limit > tvl) {
       return "Active";
     } else {
       return "Close";
     }
-  } else {
-    return "Inactive";
   }
 };
 
@@ -206,6 +199,8 @@ const Content = styled.div`
       margin: 0;
       align-items: flex-end
     }
+  }
+  div{
   }
   p {
     color: white;
@@ -235,9 +230,15 @@ const RowContainer = styled.div`
   flex-direction: column;
   margin: 40px 30px 0px 30px;
 
+
   @media (min-width: 1088px) {
     margin: 0px;
     margin-top: 40px;
+  }
+
+  .disable {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 `;
 

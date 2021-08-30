@@ -23,13 +23,14 @@ export default function Dropdown({
   return (
     <Container>
       <Title className="Roboto_30pt_Black">{title}</Title>
-      <List style={open ? { borderRadius: "20px 20px 0px 0px" } : { borderRadius: "20px" }} >
+      <List style={open ? { borderRadius: "20px 20px 0px 0px", border: "1px solid #9314B2", } : { borderRadius: "20px" }} >
         <Selected style={open
-          ? { borderRadius: "20px 20px 0px 0px", border: "1px solid #9314B2", padding: "39px 0px" }
+          ? { borderRadius: "20px 20px 0px 0px", padding: "39px 0px" }
           : { borderRadius: "20px" }}
           onClick={() => setOpen(!open)}>
           <div className="img"
-            style={open ? { marginLeft: "39px" } : {}}>
+          // style={open ? { marginLeft: "39px" } : {}}
+          >
             <Image style={{ width: "100%", height: "100%" }} />
           </div>
           <Coin>
@@ -118,7 +119,7 @@ export default function Dropdown({
                   >
                     <div className="unselected">
                       <div className="img">
-                        <Image style={{ width: "80px", height: "80px" }} />
+                        <Image style={{ width: "100%", height: "100%" }} />
                       </div>
                       <Coin>
                         <Upside className="Roboto_30pt_Bold">{token[0]}</Upside>
@@ -176,8 +177,11 @@ const List = styled.div`
     // margin-left: 60px;
   }
   @media (min-width: 1088px) {
-    padding: 0px 40px;
+    padding: 0px 0px 0px 40px;
     min-height: 100px;
+    svg {
+      width: 50px;
+    }
   }
 `;
 const Selected = styled.div`
@@ -213,17 +217,20 @@ const Btn = styled.div`
   margin-right: 40px;
 
   @media (min-width: 1088px) {
-    margin-right: 0px;
+    margin-right: 40px;
   }
 `;
 const Line = styled.div`
   height: 3px;
   position: absolute;
   left: 1px;
-  top 158px;
+  top: 158px;
   z-index: 2;
   width: calc(100% - 2px);
   background-color: #1C1E35;
+  @media (min-width: 1088px) {
+    top: 137px;
+  }
 `
 const ListContainer = styled.div`
   position: absolute;
@@ -231,6 +238,10 @@ const ListContainer = styled.div`
   top: 160px;
   z-index: 1;
   width: 100%;
+
+  @media (min-width: 1088px) {
+    top: 139px;
+  }
 `;
 const UnSelected = styled.div`
   display: flex;
@@ -248,7 +259,7 @@ const UnSelected = styled.div`
       height: 80px;
 
       @media (min-width: 1088px) {
-        margin-left: 0;
+        margin-left: 40px;
         width: 60px;
         height: 60px;
       }

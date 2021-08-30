@@ -115,7 +115,7 @@ function Asset({ setParams }) {
       <Content>
         <span className="Roboto_30pt_Black">My Asset</span>
         <Line />
-        {account && network == requireNetwork ? (
+        {account ? (
           <List>
             <Balance
               Image={RCGeth}

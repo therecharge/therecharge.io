@@ -15,7 +15,7 @@ import { ReactComponent as FUP } from "./assets/FUP.svg";
 import { ReactComponent as Active } from "./assets/swap_arrow.svg";
 import { ReactComponent as Inactive } from "./assets/swap_arrow_deactive.svg";
 
-function AssetSwap() {
+function AssetSwap({ toast }) {
   const [t] = useTranslation();
   const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
   const [isPopupOpen, setPopupOpen] = useState(false);
@@ -80,6 +80,7 @@ function AssetSwap() {
             close={() => {
               setPopupOpen(false);
             }}
+            toast={toast}
           />
         )}
         <Dropdown
@@ -144,6 +145,7 @@ function AssetSwap() {
           need="2"
           bgColor="var(--purple)"
           border="4px solid #9314B2"
+          hcolor=""
           notConnected="Connect Wallet for swap"
           wrongNetwork="Change network for swap"
           m="80px auto"
@@ -186,6 +188,11 @@ const Content = styled.div`
 `;
 const Arrow = styled.div`
   display: flex;
+
+  &:hover{
+    border-radius : 5px;
+    box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
+  }
 `;
 
 export default React.memo(AssetSwap);

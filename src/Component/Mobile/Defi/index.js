@@ -5,7 +5,9 @@ import { useSortBy, useTable } from "react-table";
 import styled from "styled-components";
 import axios from "axios";
 import { RotateCircleLoading } from "react-loadingg";
+import { HashLink } from 'react-router-hash-link';
 import { withTranslation } from "react-i18next";
+import WalletConnect from "../../../Component/Components/Common/WalletConnect";
 /* Components */
 import ModalPool from "./modal_pool";
 import ModalSwap from "./modal_swap";
@@ -267,11 +269,11 @@ function Defi({
       style={
         modalPoolOpen || modalSwapOpen
           ? {
-              position: "fixed",
-              top: "-20px",
-              width: "100%",
-              backgroundColor: "#02051c",
-            }
+            position: "fixed",
+            top: "-20px",
+            width: "100%",
+            backgroundColor: "#02051c",
+          }
           : {}
       }
     >
@@ -280,19 +282,29 @@ function Defi({
           <div className="theme Roboto_50pt_Black">Station</div>
           <div className="contents">
             <div className="content">
-              <div className="box" onClick={() => handleModalPool()}>
+              <HashLink
+                className="box"
+                to={'/defi/station'}
+                style={{ textDecoration: 'none' }}
+              // onClick={() => handleModalPool()}
+              >
                 <img src="/ic_chargingstation.svg" />
                 <div className="name Roboto_40pt_Black">Charging Station</div>
-              </div>
+              </HashLink>
               <div className="text Roboto_25pt_Regular">
                 {t("De-Fi/Station/charging-station")}
               </div>
             </div>
             <div className="content" style={{ marginTop: "80px" }}>
-              <div className="box" onClick={() => handleModalSwap()}>
+              <HashLink
+                className="box"
+                to={'/defi/swap'}
+                style={{ textDecoration: 'none' }}
+              // onClick={() => handleModalSwap()}
+              >
                 <img src="/ic_rechargingswap.svg" />
                 <div className="name Roboto_40pt_Black">Recharge swap</div>
-              </div>
+              </HashLink>
               <div className="text Roboto_25pt_Regular">
                 {t("De-Fi/Station/recharge-swap")}
               </div>
@@ -309,14 +321,13 @@ function Defi({
                 {t("De-Fi/Station/MyPool/ask-connect")}
               </div>
 
-              <div
-                className="walletConnect Roboto_20pt_Regular"
-                onClick={async () => {
-                  await connectWallet();
-                }}
-              >
-                <p>{account ? "" : "Wallet Connect"}</p>
-              </div>
+              <WalletConnect
+                need="2"
+                notConnected="Connect Wallet for data"
+                wrongNetwork="Change network for data"
+                m="auto"
+                w="540px"
+              />
             </div>
           ) : myPools === null ? (
             <Loading style={{ display: onLoading ? "" : "none" }}>
@@ -334,7 +345,7 @@ function Defi({
                 className="content Roboto_40pt_Black"
                 style={{ width: "356px" }}
               >
-                {t("De-Fi/MyPool/no-pool")}
+                {t("De-Fi/Station/MyPool/no-pool")}
               </div>
             </div>
           ) : (
@@ -383,9 +394,8 @@ function Defi({
                               {...cell.getCellProps()}
                               onClick={() => {
                                 setParams({
-                                  type: `${
-                                    myPools[row.index].type.split(" ")[0]
-                                  }`,
+                                  type: `${myPools[row.index].type.split(" ")[0]
+                                    }`,
                                   isLP: false,
                                 });
 
@@ -470,8 +480,8 @@ function Defi({
                 >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>
@@ -537,8 +547,8 @@ function Defi({
                 >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>

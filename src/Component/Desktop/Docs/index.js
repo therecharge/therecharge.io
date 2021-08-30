@@ -15,7 +15,7 @@ function Docs({ match, t }) {
 
   function handlePage(data) {
     setCurrentPage(data.selected);
-    window.scrollTo(0, 0);
+    document.getElementById("header").scrollIntoView();
   }
   const currentComment = (pages) => {
     return pages.slice(currentPage, currentPage + perPage).map((page) => {
@@ -25,6 +25,7 @@ function Docs({ match, t }) {
 
   const setLocation = () => {
     window.history.replaceState({}, '', '/doc/1');
+    document.getElementById("header").scrollIntoView();
   };
 
   useEffect(() => {
@@ -41,7 +42,7 @@ function Docs({ match, t }) {
 
   return (
     <Container>
-      <div className="header">
+      <div id="header" className="header">
         <Subnav>
           <div className="theme Roboto_50pt_Black_L">Documents</div>
           <div className="nav">
@@ -49,7 +50,6 @@ function Docs({ match, t }) {
               <HashLink
                 to={"/docs/1#whitepaper"}
                 style={{ textDecoration: "none", color: "white" }}
-
               >
                 <a
                   style={{

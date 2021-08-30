@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -25,9 +25,11 @@ function ConnectWallet({
   h = "80px",
   radius = "210px",
   border = "2px solid #ffb900",
-  bgColor = "",
-  onClick = () => { },
+  bgColor,
+  hcolor = "var(--yellow)",
   fontsize = "",
+  fontClass = "",
+  onClick = () => { },
 }) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [provider, setProvder] = useRecoilState(providerState);
@@ -35,41 +37,6 @@ function ConnectWallet({
   const [network, setNetwork] = useRecoilState(networkState);
   const [requireNetwork] = useRecoilState(requireNetworkState);
 
-  const Button = styled.div`
-    display: flex;
-    background-color: ${bgColor};
-    width: ${w};
-    margin: ${m};
-    height: ${h};
-    border: ${border};
-    border-radius: ${radius};
-    cursor: pointer;
-    span {
-      margin: auto auto;
-      display: table-cell;
-
-      @media (min-width: 1088px) {
-        font-size: ${account
-      ? fontsize
-      : text === "APPROVE" || text === "PLUG-IN"
-        ? "20px"
-        : fontsize};
-      }
-    }
-
-    @media (min-width: 1088px) {
-      width: ${border === "3px solid #9314B2"
-      ? "540px"
-      : border === "4px solid #9314B2"
-        ? "474px"
-        : notConnected === "Connect Wallet for data"
-          ? "420px"
-          : "310px"};
-      margin: auto;
-      margin-top: ${border === "4px solid #9314B2" ? "40px" : ""};
-      height: ${border === "4px solid #9314B2" ? "60px" : ""};
-    }
-  `;
   /* Setting WalletConnect */
   const providerOptions = {
     metamask: {
@@ -170,6 +137,18 @@ function ConnectWallet({
   }
   return (
     <Button
+      // props={
+      text={undefined}
+      w={w}
+      m={m}
+      h={h}
+      radius={radius}
+      border={border}
+      bgColor={bgColor}
+      hcolor={hcolor}
+      fontsize={fontsize}
+      fontClass={fontClass}
+      // }
       className={isDisable() ? "disable" : ""}
       onClick={() => {
         switch (need) {
@@ -187,7 +166,7 @@ function ConnectWallet({
         }
       }}
     >
-      <span className="Roboto_30pt_Black">
+      <span className={fontClass || "Roboto_30pt_Black"}>
         {need === "0" && text}
         {need === "1" &&
           !isDisable() &&
@@ -203,6 +182,51 @@ function ConnectWallet({
       </span>
     </Button>
   );
-}
+};
+
+const Button = styled.div`
+  ${props => {
+    return css`
+      display: flex;
+      background-color: ${props.bgColor};
+      width: ${props.w};
+      &:hover {
+        background-color: ${props.hcolor};
+        box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
+      }
+      margin: ${props.m};
+      height: ${props.h};
+      border: ${props.border};
+      border-radius: ${props.radius};
+      cursor: pointer;
+      span {
+        margin: auto auto;
+        display: table-cell;
+
+        @media (min-width: 1088px) {
+          font-size: ${props.account
+        ? props.fontsize
+        : props.text === "APPROVE" || props.text === "PLUG-IN"
+          ? "20px"
+          : props.fontsize
+      };
+        }
+      }
+
+      @media (min-width: 1088px) {
+        width: ${props.border === "3px solid #9314B2"
+        ? "540px"
+        : props.border === "4px solid #9314B2"
+          ? "474px"
+          : props.notConnected === "Connect Wallet for data"
+            ? "420px"
+            : "310px"};
+        // margin: auto;
+        margin-top: ${props.border === "4px solid #9314B2" ? "40px" : ""};
+        height: ${props.border === "4px solid #9314B2" ? "60px" : ""};
+      }
+    `
+  }};
+`;
 
 export default ConnectWallet;

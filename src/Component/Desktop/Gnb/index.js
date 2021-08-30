@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Language from "../../Components/Desktop/Language";
 import { HashLink } from 'react-router-hash-link';
+import WalletConnect from "../../../Component/Components/Common/WalletConnect";
 import { useRecoilState } from "recoil";
 import {
   modalPoolOpenState,
@@ -221,7 +222,31 @@ function Gnb({ connectWallet, account, onDisconnect }) {
                 }}
               >
                 <div>
-                  <a>Station</a>
+                  <a style={{ fontWeight: '600' }}>Station</a>
+                </div>
+              </HashLink>
+              <HashLink
+                to={"/defi/station"}
+                onClick={() => {
+                  setModalPoolOpen(false);
+                  setModalPool2Open(false);
+                  setModalSwapOpen(false);
+                }}
+              >
+                <div style={{ marginLeft: '10px' }}>
+                  <a>Charging Station</a>
+                </div>
+              </HashLink>
+              <HashLink
+                to={"/defi/swap"}
+                onClick={() => {
+                  setModalPoolOpen(false);
+                  setModalPool2Open(false);
+                  setModalSwapOpen(false);
+                }}
+              >
+                <div style={{ marginLeft: '10px' }}>
+                  <a>Recharge Swap</a>
                 </div>
               </HashLink>
               <HashLink
@@ -336,23 +361,17 @@ function Gnb({ connectWallet, account, onDisconnect }) {
 
         </Nav>
         <Language />
-        <ConnectWallet
-          onClick={
-            account
-              ? () => {
-                onDisconnect();
-              }
-              : () => {
-                connectWallet();
-              }
-          }
-        >
-          <span>
-            {account
-              ? account.substring(0, 8) + "..." + account.substring(36, 42)
-              : "Wallet Connect"}
-          </span>
-        </ConnectWallet>
+        <WalletConnectContainer>
+
+          <WalletConnect
+            need="2"
+            notConnected="Connect Wallet"
+            wrongNetwork="Change network"
+            h="40px"
+            fontsize="20px"
+            fontClass="Roboto_20pt_Light"
+          />
+        </WalletConnectContainer>
       </SubContainer>
     </Container>
   );
@@ -454,6 +473,11 @@ const ConnectWallet = styled.div`
     background-color: var(--yellow);
     color: var(--white);
   }
+`;
+const WalletConnectContainer = styled.div`
+  display: flex;
+  height: 40px;
+  margin: auto auto;
 `;
 
 export default Gnb;
