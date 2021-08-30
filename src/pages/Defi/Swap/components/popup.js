@@ -274,10 +274,12 @@ const Container = styled.div`
   z-index: 5;
 
   @media (min-width: 1088px) {
+    position: absolute;
     width: 1088px;
     heigh: 818px;
     top: 130px;
-    left: auto;
+    left: 50%;
+    transform: translate(-50%, 0%);
   }
 
   .group1 {

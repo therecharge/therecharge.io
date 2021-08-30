@@ -176,7 +176,7 @@ const List = styled.div`
     // margin-left: 60px;
   }
   @media (min-width: 1088px) {
-    padding: 20px 40px;
+    padding: 0px 40px;
     min-height: 100px;
   }
 `;
