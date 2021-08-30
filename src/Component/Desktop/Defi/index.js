@@ -19,6 +19,9 @@ import {
   modalSwapOpenState,
   modalPool2OpenState,
 } from "../../../store/modal";
+import {
+  accountState,
+} from "../../../store/web3";
 
 const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
   let newNum;
@@ -40,7 +43,7 @@ const weiToEther = (wei) => {
 function Defi({
   connectWallet,
   onDisconnect,
-  account,
+  // account,
   chainId,
   web3,
   toast,
@@ -49,6 +52,7 @@ function Defi({
   t,
 }) {
   const [onLoading, setOnLoading] = useState(true);
+  const [account] = useRecoilState(accountState);
   const [modalPoolOpen, setModalPoolOpen] = useRecoilState(modalPoolOpenState);
   const [modalSwapOpen, setModalSwapOpen] = useRecoilState(modalSwapOpenState);
   const [modalPool2Open, setModalPool2Open] = useRecoilState(
@@ -358,26 +362,17 @@ function Defi({
                       <tr {...row.getRowProps()} className="tableRow">
                         {row.cells.map((cell) => {
                           return (
-                            <td
-                              {...cell.getCellProps()}
-                              onClick={() => {
-                                setParams({
-                                  type: `${myPools[row.index].type.split(" ")[0]
-                                    }`,
-                                  isLP: false,
-                                });
-
-                                setModalPool2Open(!modalPool2Open);
-                                handleModalPool();
-                              }}
+                            <HashLink
+                              to={`/defi/station#${myPools[row.index].type.split(" ")[0]}`}
                               style={{
+                                display: "table-cell",
+                                textDecoration: "none",
                                 padding: "10px",
                                 textAlign: "center",
                                 cursor: "pointer",
-                              }}
-                            >
+                              }}>
                               {cell.render("Cell")}
-                            </td>
+                            </HashLink>
                           );
                         })}
                       </tr>

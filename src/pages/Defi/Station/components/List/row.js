@@ -203,7 +203,7 @@ export default function Row({
             <Info left="LIMIT" right="UNLIMITED" />
           </PoolInfo>
           {(account && network == requireNetwork) ? (
-            <UserInfo className="innerMenu">
+            <UserInfo account={account} className="innerMenu">
               <Info
                 className="hide"
                 left="MY BAL"
@@ -226,7 +226,7 @@ export default function Row({
                 // m="auto"
                 w="540px"
               />
-              {(network !== requireNetwork) &&
+              {(network && network !== requireNetwork) &&
                 <div className="warning">
                   Wrong, Network!
                 </div>}
@@ -523,7 +523,7 @@ const PoolInfo = styled.div`
 `;
 const UserInfo = styled.div`
   display: flex;
-  position: relative;
+  position: ${props => props.account ? "inherit" : "relative"};
   gap: 8px;
   flex-direction: column;
   justify-content: space-between;

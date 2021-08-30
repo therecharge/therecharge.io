@@ -13,6 +13,18 @@ function Station(props) {
     address: "0x", // useless?
   });
 
+  const loadFromMypools = () => {
+    let type = window.location.href.split("#")[1];
+    setParams({
+      ...params,
+      type: type
+    })
+  }
+
+  useEffect(() => {
+    loadFromMypools();
+  }, [])
+
   return (
     <Container>
       <Content>
