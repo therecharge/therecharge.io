@@ -99,7 +99,7 @@ export default function Row({
       if (typeof amount != "string") amount = String(amount);
       tokenM.approve(to, toWei(amount, "ether")).send({ from: account });
     };
-    const stake = async (amount) => {
+    const stake = async (poolM, amount, account) => {
       if (typeof amount !== "string") amount = String(amount);
       await poolM.stake(toWei(amount, "ether")).send({ from: account });
     };
@@ -109,15 +109,13 @@ export default function Row({
     const exit = (poolM, account) => {
       poolM.exit().send({ from: account });
     };
-    // fromWei(balance, "ether")
+
     ret = {
       available: fromWei(balance, "ether"),
       approve: async () =>
         await approve(stakeM, chargerAddress, "999999999", account),
-      stake: (amount) => stake(amount),
-      // userInfo.allowance > 0
-      // ? 
-      // : await approve(stakeM, chargerAddress, "999999999", account),
+      stake: async (amount) => await stake(poolM, amount, account),
+
       earn: async () => await earn(poolM, account),
       exit: async () => await exit(poolM, account),
     };
@@ -156,7 +154,7 @@ export default function Row({
     }, [delay]);
   };
 
-  useInterval(() => updateChargerInfoList(), 5000);
+  useInterval(() => updateChargerInfoList(), 10000);
 
   useEffect(() => {
     if (!account) return;

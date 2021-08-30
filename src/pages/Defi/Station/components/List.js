@@ -136,7 +136,7 @@ function List({ /*type, list,*/ params }) {
                 // 각 row에서 디테일 오픈 시 각자 loadmethod 되도록 해야하지 않을까?
                 // 미리 전체 로드할 때 과부하 가능성 있음
                 onClick={() => {
-                  setSelCharger(index);
+                  // setSelCharger(index);
                 }}
               >
                 <Row
