@@ -14,7 +14,7 @@ import {
 const ERC20_ABI = require("../../../../Component/Desktop/Defi/abis/ERC20ABI.json");
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
-export default function Popup({ close = () => { }, recipe, setRecipe }) {
+export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [account, setAccount] = useRecoilState(accountState);
   const [poolMethods, setPoolMethods] = useState({
@@ -85,6 +85,7 @@ export default function Popup({ close = () => { }, recipe, setRecipe }) {
         ...poolMethods,
         ...ret,
       });
+      console.log(ret)
     } catch (err) {
       console.log(err);
       setPoolMethods({
@@ -99,7 +100,7 @@ export default function Popup({ close = () => { }, recipe, setRecipe }) {
   let ToImg = recipe.to.image;
 
   useEffect(() => {
-    if (recipe.from.network === "(Binance Smart Chain Network)") {
+    if (recipe.to.network === "(Binance Smart Chain Network)") {
       loadMethods(
         recipe.tokenAddress[recipe.chainId[recipe.from.network]],
         "0x05A21AECa80634097e4acE7D4E589bdA0EE30b25"
@@ -107,7 +108,7 @@ export default function Popup({ close = () => { }, recipe, setRecipe }) {
     } else {
       loadMethods(recipe.tokenAddress[recipe.chainId[recipe.from.network]]);
     }
-  }, [account]);
+  }, [account, recipe.to.network]);
 
   return (
     <Container>
@@ -187,7 +188,6 @@ export default function Popup({ close = () => { }, recipe, setRecipe }) {
             <span className="Roboto_20pt_Regular">75%</span>
           </div>
           <div
-            className="sel-max"
             style={{ cursor: "pointer" }}
             onClick={() => {
               SetPercent(100);
@@ -203,11 +203,20 @@ export default function Popup({ close = () => { }, recipe, setRecipe }) {
           <WalletConnect
             need="2"
             bgColor="#9314B2"
+            hcolor=""
             border="3px solid #9314B2"
             w="540px"
             radius="20px"
             text="SWAP" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
-            onClick={() => { poolMethods.swap(recipe.swapAmount) }}
+            onClick={async () => {
+              if (recipe.swapAmount > 0) {
+                await close();
+                await toast('Please approve "SWAP" in your private wallet');
+                await poolMethods.swap(recipe.swapAmount)
+              } else {
+                toast("Please enter the amount of Swap");
+              }
+            }}
           />
         </div>
         <InfoContainer>
@@ -232,25 +241,25 @@ export default function Popup({ close = () => { }, recipe, setRecipe }) {
 }
 
 function Info({ left, right }) {
-  const Container = styled.div`
-    display: flex;
-    color: white;
-    .left {
-      margin: auto auto;
-      margin-left: 0;
-    }
-    .right {
-      margin: auto auto;
-      margin-right: 0;
-    }
-  `;
   return (
-    <Container>
+    <ContainerInfo>
       <div className="left Roboto_20pt_Light">{left}</div>
       <div className="right Roboto_20pt_Black">{right}</div>
-    </Container>
+    </ContainerInfo>
   );
 };
+const ContainerInfo = styled.div`
+  display: flex;
+  color: white;
+  .left {
+    margin: auto auto;
+    margin-left: 0;
+  }
+  .right {
+    margin: auto auto;
+    margin-right: 0;
+  }
+`;
 function makeNum(str, decimal = 4) {
   let newStr = str;
   if (typeof newStr === "number") newStr = str.toString();
@@ -302,7 +311,7 @@ const Content = styled.div`
   position: relative;
 
   span {
-    margin: 0 auto;
+    margin: auto;
   }
   .popup-image {
     display: flex;
@@ -360,6 +369,12 @@ const QuickSelect = styled.div`
     border-radius: 10px;
     span {
       margin: auto auto;
+    }
+  }
+  div:hover {
+    background-color: #ffffff;
+    span{
+      color: var(--black-30);
     }
   }
 `;

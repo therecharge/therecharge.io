@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 //components
@@ -6,8 +6,7 @@ import Asset from "./components/Asset";
 import AssetSwap from "./components/AssetSwap";
 // import Popup from "./components/popup";
 
-function Swap({ }) {
-  const [t] = useTranslation();
+function Swap(props) {
 
   // const [isPopupOpen, setPopupOpen] = useState(false);
 
@@ -20,7 +19,7 @@ function Swap({ }) {
           <Asset />
           <Line />
           <span className="Roboto_40pt_Black swap-title">Swap</span>
-          <AssetSwap />
+          <AssetSwap toast={props.toast} />
         </div>
       </Content>
     </Container>
@@ -37,6 +36,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 100px;
+  margin-bottom: 100px;
   width: 100%;
   max-width: 1088px;
   height: 100%;

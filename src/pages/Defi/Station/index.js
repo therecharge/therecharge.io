@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import Slider from "./components/Slider";
 import List from "./components/List";
 
-function Station({}) {
+function Station(props) {
   const [t] = useTranslation();
   const [params, setParams] = useState({
     type: "Flexible",
@@ -16,9 +16,10 @@ function Station({}) {
   return (
     <Container>
       <Content>
-        <Slider setParams={setParams} />
+        <span className="Roboto_50pt_Black pool-title1">Charging Station</span>
+        <Slider setParams={setParams} params={params} />
         <Line />
-        <List params={params} />
+        <List params={params} toast={props.toast} />
       </Content>
     </Container>
   );
@@ -38,6 +39,17 @@ const Content = styled.div`
   flex-direction: column;
   a {
     color: white;
+  }
+
+  .pool-title1 {
+    display: none;
+    text-align: center;
+    margin: 120px 0 80px 0;
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+
+    @media (min-width: 1088px) {
+      display: block;
+    }
   }
 `;
 const Line = styled.div`

@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
-function Defi({ }) {
-  const [t] = useTranslation();
+function Defi() {
+  // const [t] = useTranslation();
   return (
     <Container>
       <Content>

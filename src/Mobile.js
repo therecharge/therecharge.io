@@ -3,7 +3,7 @@ import Gnb from "./Component/Mobile/Gnb";
 import Home from "./Component/Mobile/Home";
 import About from "./Component/Mobile/About";
 import Recharge from "./Component/Mobile/Recharge";
-import Defi from "./pages/Defi";
+import Defi from "./Component/Mobile/Defi";
 import Station from "./pages/Defi/Station";
 import Swap from "./pages/Defi/Swap";
 import Docs from "./Component/Mobile/Docs";
@@ -216,8 +216,8 @@ const Mobile = React.memo(
 
         <Switch>
           <Route path="/docs/:viewNum" component={Docs}></Route>
-          <Route path="/defi/station" component={() => <Station />}></Route>
-          <Route path="/defi/swap" component={() => <Swap />}></Route>
+          <Route path="/defi/station" component={() => <Station toast={toast} />}></Route>
+          <Route path="/defi/swap" component={() => <Swap toast={toast} />}></Route>
           <Route
             path="/defi"
             component={() => (

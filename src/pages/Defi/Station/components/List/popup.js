@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as PopupClose } from "./assets/popup-close.svg";
 import WalletConnect from "../../../../../Component/Components/Common/WalletConnect";
+import { async } from "@aragon/ui/dist/ToastHub";
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
 export default function Popup({
@@ -10,6 +11,7 @@ export default function Popup({
   apy,
   info,
   poolMethods,
+  toast
 }) {
   const [plAmount, setPlAmount] = useState("");
 
@@ -80,7 +82,6 @@ export default function Popup({
             <span className="Roboto_20pt_Regular">75%</span>
           </div>
           <div
-            className="sel-max"
             style={{ cursor: "pointer" }}
             onClick={() => {
               SetPercent(100);
@@ -97,14 +98,22 @@ export default function Popup({
           <WalletConnect
             need="2"
             bgColor="#9314B2"
+            hcolor=""
             border="3px solid #9314B2"
             w="540px"
             radius="20px"
             notConnected="Connect Wallet for PLUG-IN"
             wrongNetwork="Change network for PLUG-IN"
             text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
-            onClick={() => {
-              poolMethods.stake(plAmount);
+            onClick={async () => {
+              if (plAmount > 0) {
+                await close();
+                await toast('Please approve "PLUG-IN" in your private wallet');
+                await poolMethods.stake(plAmount);
+              } else {
+                toast("Please enter the amount of Staking");
+              }
+
             }}
           />
         </div>
@@ -120,25 +129,25 @@ export default function Popup({
 }
 
 function Info({ left, right }) {
-  const Container = styled.div`
-    display: flex;
-    color: white;
-    .left {
-      margin: auto auto;
-      margin-left: 0;
-    }
-    .right {
-      margin: auto auto;
-      margin-right: 0;
-    }
-  `;
   return (
-    <Container>
+    <ContainerInfo>
       <div className="left Roboto_20pt_Light">{left}</div>
       <div className="right Roboto_20pt_Black">{right}</div>
-    </Container>
+    </ContainerInfo>
   );
 }
+const ContainerInfo = styled.div`
+  display: flex;
+  color: white;
+  .left {
+    margin: auto auto;
+    margin-left: 0;
+  }
+  .right {
+    margin: auto auto;
+    margin-right: 0;
+  }
+`;
 function makeNum(str, decimal = 4) {
   let newStr = str;
   if (typeof newStr === "number") newStr = str.toString();
@@ -185,7 +194,7 @@ const Content = styled.div`
   width: 100%;
 
   span {
-    margin: 0 auto;
+    margin: auto;
   }
   .popup-close {
     margin: 0 auto;
@@ -248,6 +257,13 @@ const QuickSelect = styled.div`
       margin: auto auto;
     }
   }
+  div:hover {
+    background-color: #ffffff;
+    span{
+      color: var(--black-30);
+    }
+  }
+
 `;
 const InfoContainer = styled.div`
   display: flex;

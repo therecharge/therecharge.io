@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { HashLink } from 'react-router-hash-link';
+import WalletConnect from "../../../Component/Components/Common/WalletConnect";
 import { ToastHub, Toast } from "@aragon/ui";
 import { useTranslation, withTranslation } from "react-i18next";
 
@@ -56,8 +58,8 @@ function Gnb({
             }}
           />
         ) : (
-          <a
-            href={"/"}
+          <HashLink
+            to={"/"}
             onClick={() => {
               // window.scrollTo(0, 0);
               setMenuOpen(false);
@@ -65,7 +67,7 @@ function Gnb({
             }}
           >
             <img src="/logo.png" />
-          </a>
+          </HashLink>
         )}
       </Logo>
       <div
@@ -97,40 +99,28 @@ function Gnb({
         <ToastHub>
           <Toast>
             {(toast) => (
-              <ConnectWallet
-                onClick={
-                  account
-                    ? async () => {
-                      await onDisconnect();
-                      // await toast("코인 지갑의 연결이 해제되었어요.");
-                    }
-                    : async () => {
-                      await connectWallet();
-                      // await toast("코인 지갑이 연결되었어요.");
-                    }
-                }
-              >
-                <span className="Roboto_35pt_Bold">
-                  {account
-                    ? account.substring(0, 8) +
-                    "..." +
-                    account.substring(36, 42)
-                    : "Wallet Connect"}
-                </span>
-              </ConnectWallet>
+              <WalletConnect
+                need="2"
+                notConnected="Connect Wallet"
+                wrongNetwork="Change network"
+                m="auto"
+                w="470px"
+                h="70px"
+                fontsize="20px"
+              />
             )}
           </Toast>
         </ToastHub>
         <div className="dropdown">
           <div className={sidemenuOpen.about ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"}>
-            <a
-              href={"/"}
+            <HashLink
+              to={"/"}
               onClick={() => {
                 setMenuOpen(false);
               }}
             >
               Home
-            </a>
+            </HashLink>
           </div>
         </div>
         <div className="dropdown">
@@ -157,48 +147,48 @@ function Gnb({
             }
           >
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/about#aboutSection1"
+                to={"/about#aboutSection1"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Ecosystem
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/about#aboutSection2"
+                to={"/about#aboutSection2"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Recharge Virtuous Cycle
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/about#aboutSection3"
+                to={"/about#aboutSection3"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Team members
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/about#aboutSection4"
+                to={"/about#aboutSection4"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Recharge is on
-              </a>
+              </HashLink>
             </div>
           </div>
         </div>
@@ -227,48 +217,48 @@ function Gnb({
             }
           >
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/recharge#rechargeSection1"
+                to={"/recharge#rechargeSection1"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Features
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/recharge#rechargeSection3"
+                to={"/recharge#rechargeSection3"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Distribution
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/recharge#rechargeSection4"
+                to={"/recharge#rechargeSection4"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Governance
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/recharge#rechargeSection5"
+                to={"/recharge#rechargeSection5"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Exchanges
-              </a>
+              </HashLink>
             </div>
           </div>
         </div>
@@ -298,40 +288,40 @@ function Gnb({
             }
           >
             <div>
-              <a
+              <HashLink
+                to={"/defi"}
                 className="Roboto_25pt_Regular"
-                href="/defi/station"
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 <span className="on">Station</span>
                 {/* <span className="off">Coming Soon</span> */}
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/defi#mypools"
+                to={"/defi#mypools"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 <span className="on">My Pools</span>
                 {/* <span className="off">Coming Soon</span> */}
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/defi#analytics"
+                to={"/defi#analytics"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Analytics
                 {/* <span className="off">Coming Soon</span> */}
-              </a>
+              </HashLink>
             </div>
           </div>
         </div>
@@ -359,15 +349,15 @@ function Gnb({
             }
           >
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/docs/1"
+                to={"/docs/1"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 WhitePaper
-              </a>
+              </HashLink>
             </div>
             <div>
               <a className="unactive Roboto_25pt_Regular">
@@ -387,28 +377,28 @@ function Gnb({
               </a>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
                 style={{ cursor: "pointer" }}
                 onClick={() => {
                   window.scrollTo(0, 0);
                   setMenuOpen(false);
                 }}
-                href="/docs/2"
+                to={"/docs/2"}
               >
                 Disclaimer
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/docs/3"
+                to={"/docs/3"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 CI Download
-              </a>
+              </HashLink>
             </div>
           </div>
         </div>
