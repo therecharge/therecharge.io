@@ -39,7 +39,8 @@ function Asset({ setParams }) {
 
   const loadBalance = async () => {
     const ETH = new Web3(
-      "https://mainnet.infura.io/v3/636c3521d0f648d5b1789cd9388a182f"
+      "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161" // ropsten
+      // "https://mainnet.infura.io/v3/636c3521d0f648d5b1789cd9388a182f" // 이더리움 메인넷
     );
     const HECO = new Web3("https://http-mainnet.hecochain.com");
     const BNB = new Web3("https://bsc-dataseed.binance.org/");
@@ -56,7 +57,7 @@ function Asset({ setParams }) {
 
     RCGeth = new ETH.eth.Contract(
       ERC20_ABI,
-      "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30"
+      "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F" // "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30" 이더리움 토큰주소
     );
 
     RCGht = new HECO.eth.Contract(
@@ -177,7 +178,7 @@ const Container = styled.div`
     justify-content: center;
     width: 354px;
     height: inherit;
-    margin: 40px 0 0 0;
+    margin: 0px 0 0 0;
   }
 `;
 const Content = styled.div`

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 // import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -21,8 +21,8 @@ const loading_data = [
     redemtion: 200,
     symbol: ["RCG", "RCG"],
     token: [
-      "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
-      "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+      "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F", // ropsten 토큰주소
+      "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F",
     ],
     tvl: 0,
     type: "flexible",
@@ -38,7 +38,6 @@ function List({ /*type, list,*/ params, toast }) {
   // const [period, setPeriod] = useRecoilState(periodState);
 
   const loadChargerList = async () => {
-    setChList(loading_data);
     try {
       // GET Pool list(Charging list) from back by staking type(Flexible/Locked and LP or not)
       let { data } = await axios.get(
@@ -55,8 +54,8 @@ function List({ /*type, list,*/ params, toast }) {
             redemtion: 200,
             symbol: ["RCG", "RCG"],
             token: [
-              "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
-              "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+              "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F",
+              "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F",
             ],
             tvl: 0,
             type: "flexible",
@@ -79,10 +78,10 @@ function List({ /*type, list,*/ params, toast }) {
               ...data,
               name: `${data.name.substring(0, 13)}`,
               apy:
-                data.apy > 0
-                  ? data.apy == "10000"
-                    ? "9999+"
-                    : `${data.apy.toFixed(4)}`
+                Number(data.apy) > 0
+                  ? Number(data.apy) >= 1000000
+                    ? "999999+"
+                    : `${makeNum(Number(data.apy))}`
                   : 0,
               status: status,
               timeStamp: tempTime,
@@ -103,6 +102,7 @@ function List({ /*type, list,*/ params, toast }) {
   // Whenever Staking type is changed, reload Pool list
   useEffect(async () => {
     // setOnLoading(true);
+    setChList(loading_data);
     try {
       await loadChargerList();
     } catch (err) {
@@ -110,12 +110,38 @@ function List({ /*type, list,*/ params, toast }) {
     }
   }, [params]);
 
+  const updateChargerInfoList = () => {
+    loadChargerList();
+  };
+
+  const useInterval = (callback, delay) => {
+    const savedCallback = useRef();
+
+    // Remember the latest callback.
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+
+    // Set up the interval.
+    useEffect(() => {
+      function tick() {
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+  };
+
+  // useInterval(() => updateChargerInfoList(), 10000);
+
   return (
     <Container>
       <Content>
         <Title>
           <Image params={params} />
-          <p className="Roboto_40pt_Black">Charger List</p>
+          <p className={window.innerWidth > 1088 ? "Roboto_30pt_Black" : "Roboto_40pt_Black"}>Charger List</p>
         </Title>
         <RowContainer>
           {chList.map((charger, index) => {
@@ -181,9 +207,19 @@ const loadActiveStatus = ({ tvl, period, limit }) => {
     }
   }
 };
+function makeNum(str, decimal = 4) {
+  let newStr = str;
+  if (typeof newStr === "number") newStr = str.toString();
+  let arr = newStr.split(".");
+  if (arr.length == 1 || arr[0].length > 8) return arr[0];
+  else {
+    return arr[0] + "." + arr[1].substr(0, decimal);
+  }
+};
 
 const Container = styled.div`
   margin-top: 40px;
+  margin-bottom: 120px;
   display: flex;
   width: 100%;
 `;

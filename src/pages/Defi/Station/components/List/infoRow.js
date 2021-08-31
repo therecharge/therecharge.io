@@ -3,8 +3,8 @@ import styled, { css } from "styled-components";
 export default function Info({ left, right, direction = "" }) {
   return (
     <Container direction={direction}>
-      <div className="left Roboto_30pt_Light">{left}</div>
-      <div className="right Roboto_30pt_Black">{right}</div>
+      <div className={`${window.innerWidth > 1088 ? "Roboto_20pt_Light" : "Roboto_30pt_Light"} left`}>{left}</div>
+      <div className={`${window.innerWidth > 1088 ? "Roboto_20pt_Black" : "Roboto_30pt_Black"} right`}>{right}</div>
     </Container>
   );
 }

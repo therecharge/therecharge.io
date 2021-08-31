@@ -4,6 +4,10 @@ export function changeNetwork(requireNetwork) {
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: "0x1" }],
     },
+    0x3: {
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: "0x3" }],
+    },
     0x80: {
       id: 1,
       jsonrpc: "2.0",

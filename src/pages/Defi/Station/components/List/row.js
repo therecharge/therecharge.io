@@ -15,6 +15,7 @@ import {
   networkState,
   requireNetworkState,
 } from "../../../../../store/web3";
+import { async } from "@aragon/ui/dist/ToastHub";
 const ERC20_ABI = require("../../../../../Component/Desktop/Defi/abis/ERC20ABI.json");
 const POOL_ABI = require("../../../../../Component/Desktop/Defi/abis/poolABI.json");
 // Row Component structure
@@ -58,6 +59,8 @@ export default function Row({
     reward: "0",
     allowance: "0",
     share: 0,
+    tvl: 0,
+    apy: 0
   });
 
   const loadUserInfo = async () => {
@@ -67,6 +70,8 @@ export default function Row({
       reward: "0",
       allowance: "0",
       share: 0,
+      tvl: 0,
+      apy: 0
     };
     if (account && info) {
       try {
@@ -77,12 +82,13 @@ export default function Row({
           ...data.account,
           balance: weiToEther(data.account.balance),
           reward: weiToEther(data.account.reward),
+          tvl: data.tvl,
+          apy: data.apy
         };
       } catch (err) {
         console.log(err);
       }
     }
-    console.log(ret);
     setUserInfo(ret);
     return ret;
   };
@@ -133,10 +139,13 @@ export default function Row({
     return ret;
   };
 
-  const updateChargerInfoList = () => {
+  const updateChargerInfoList = async () => {
+    if (info.address === "0x0") return;
     if (account && isOpen) {
-      loadUserInfo();
-      loadMethods(info.token[0], info.token[1], info.address);
+      await Promise.all([
+        loadUserInfo(),
+        loadMethods(info.token[0], info.token[1], info.address)
+      ])
     }
   };
 
@@ -158,16 +167,19 @@ export default function Row({
         return () => clearInterval(id);
       }
     }, [delay]);
+
   };
 
   useInterval(() => updateChargerInfoList(), 10000);
 
   useEffect(() => {
     if (!account) return;
-    loadUserInfo();
-  }, [account]);
+    if (isOpen)
+      loadUserInfo();
+  }, [account, isOpen]);
 
   useEffect(() => {
+    if (info.address === "0x0") return;
     if (isOpen && account) loadMethods(info.token[0], info.token[1], info.address);
   }, [isOpen]);
 
@@ -186,7 +198,7 @@ export default function Row({
       <Title
         onClick={() => {
           setOpen(!isOpen);
-          setRequireNetwork(128);
+          setRequireNetwork(3); // 이더리움으로 변경해야 함
         }}
         style={{ cursor: "pointer" }}
       >
@@ -198,8 +210,8 @@ export default function Row({
       {isOpen && <Menu>
         <div className="part">
           <PoolInfo className="innerMenu">
-            <Info left="APY" right={`${apy} %`} />
-            <Info left="TVL" right={`${info.tvl} ${info.symbol[0]}`} />
+            <Info left="APY" right={`${!account ? apy : userInfo.apy} %`} />
+            <Info left="TVL" right={`${!account ? info.tvl : userInfo.tvl} ${info.symbol[0]}`} />
             <Info left="LIMIT" right="UNLIMITED" />
           </PoolInfo>
           {(account && network == requireNetwork) ? (
@@ -225,6 +237,7 @@ export default function Row({
                 wrongNetwork="Change network for data"
                 // m="auto"
                 w="540px"
+                h="60px"
               />
               {(network && network !== requireNetwork) &&
                 <div className="warning">
@@ -242,16 +255,17 @@ export default function Row({
 
           <Wallets>
             <WalletConnect
-              need="2"
+              need={userInfo.address == "0x00" ? "3" : "2"}
+              disable={userInfo.address == "0x00" ? true : false}
               bgColor={status === "Active" ? "var(--purple)" : "var(--gray-30)"}
               border=""
               hcolor=""
               radius="20px"
               w="540px"
-              fontsize="30px"
+              fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
               notConnected="Connect Wallet for PLUG-IN"
               wrongNetwork="Change network for PLUG-IN"
-              text={userInfo.allowance !== "0" ? "PLUG-IN" : "APPROVE"} //어프로브 안되어 있으면 APPROVE로 대체 필요함.
+              text={userInfo.allowance !== "0" ? "PLUG-IN" : userInfo.address == "0x00" ? "Now Loading" : "APPROVE"} //어프로브 안되어 있으면 APPROVE로 대체 필요함.
               onClick={async () => {
                 if (status === "Inactive") {
                   toast("This pool is inactive");
@@ -288,7 +302,7 @@ export default function Row({
               hcolor=""
               radius="20px"
               w="540px"
-              fontsize="30px"
+              fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
               text="GET FILLED"
               onClick={async () => {
                 if (!account) {
@@ -318,7 +332,7 @@ export default function Row({
                 hcolor=""
                 radius="20px"
                 w="540px"
-                fontsize="30px"
+                fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
                 text="UNPLUG"
                 onClick={async () => {
                   if (!account) {
@@ -344,7 +358,7 @@ export default function Row({
               hcolor=""
               radius="20px"
               w="540px"
-              fontsize="30px"
+              fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
               text="UNPLUG"
               onClick={async () => {
                 // Locked인 경우에, period가 종료된 이후에 출금할 수 있음
@@ -397,7 +411,7 @@ function Name({ status, name }) {
     if (status != "Active") return "var(--gray-30)";
   }
   return (
-    <p className="Roboto_30pt_Black name" style={{ color: color() }}>
+    <p className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"} name`} style={{ color: color() }}>
       {name}
     </p>
   );
@@ -412,7 +426,7 @@ function Apy({ status, apy }) {
     return "var(--yellow)";
   }
   return (
-    <p className="Roboto_30pt_Black apy" style={{ color: color() }}>
+    <p className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"} apy`} style={{ color: color() }}>
       {status != "Inactive" ? (apy == "9999+" ? "9999+" : apy) + "%" : "-"}
     </p>
   );

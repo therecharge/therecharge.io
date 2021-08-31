@@ -286,7 +286,7 @@ const Container = styled.div`
     position: absolute;
     width: 1088px;
     heigh: 818px;
-    top: 130px;
+    top: 100px;
     left: 50%;
     transform: translate(-50%, 0%);
   }

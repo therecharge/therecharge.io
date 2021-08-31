@@ -12,7 +12,7 @@ import {
   modalPool2OpenState,
 } from "../../../store/modal";
 
-function Gnb({ connectWallet, account, onDisconnect }) {
+function Gnb() {
   const { t, i18n } = useTranslation();
   const [black, setBlack] = useState(false);
 

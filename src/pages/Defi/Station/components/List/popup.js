@@ -91,8 +91,8 @@ export default function Popup({
           </div>
         </QuickSelect>
         <span className="Roboto_20pt_Regular popup-caution">
-          Caution!: Recharge transaction, regardless of mainnet type <br />
-          will incur 2% of carbon redemption.
+          {`Caution!: Recharge transaction, regardless of mainnet type
+          will incur ${info.redemtion / 100}% of carbon redemption.`}
         </span>
         <div className="wallet">
           <WalletConnect
@@ -118,7 +118,7 @@ export default function Popup({
           />
         </div>
         <InfoContainer>
-          <Info left="Current Redemption Rate" right="2.00%" />
+          <Info left="Current Redemption Rate" right={`${info.redemtion / 100} %`} />
           <Info left="RCG to Stake" right={`${plAmount} RCG`} />
           <Info left="RCG to Redeem" right={`${makeNum(plAmount * 2 / 100)} RCG`} />
           <Info left="Net RCG to Stake" right={`${makeNum(plAmount - (plAmount * 2 / 100))} RCG`} />
@@ -172,7 +172,7 @@ const Container = styled.div`
   @media (min-width: 1088px) {
     width: 1088px;
     heigh: 818px;
-    top: 130px;
+    top: 100px;
     left: auto;
   }
 

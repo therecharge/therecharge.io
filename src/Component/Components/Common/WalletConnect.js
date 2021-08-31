@@ -32,10 +32,15 @@ function ConnectWallet({
   onClick = () => { },
 }) {
   const [web3, setWeb3] = useRecoilState(web3State);
-  const [provider, setProvder] = useRecoilState(providerState);
+  const [provider, setProvider] = useRecoilState(providerState);
   const [account, setAccount] = useRecoilState(accountState);
   const [network, setNetwork] = useRecoilState(networkState);
   const [requireNetwork] = useRecoilState(requireNetworkState);
+
+  // function isOnClickFunctionDetected() {
+  //   if (onClick.toString() == "()=>{}") return false;
+  //   return true;
+  // }
 
   /* Setting WalletConnect */
   const providerOptions = {
@@ -78,8 +83,17 @@ function ConnectWallet({
     if (!event && web3 && web3.currentProvider && web3.currentProvider.close) {
       await web3.currentProvider.close();
     }
-    await web3Modal.clearCachedProvider();
+    setAccount(undefined);
+    setProvider(undefined);
+    setNetwork(undefined);
+    // await web3Modal.clearCachedProvider();
+
+    // let els = document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')
+    // while (els.length>1) {
+    //     document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')[1].remove();
+    // }
   }
+  if (onClick.toString() == "() => {}") onClick = onDisconnect;
 
   function connectEventHandler(provider) {
     if (!provider.on) {
@@ -105,9 +119,14 @@ function ConnectWallet({
     return network == requireNetwork;
   }
   async function connect() {
+
+    while (window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]').length > 1) {
+      window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')[1].remove();
+    }
     // console.log("Connect!");
+    console.log("asdf", web3Modal)
     let provider = await web3Modal.connect();
-    setProvder(provider);
+    setProvider(provider);
     const web3 = new Web3(provider);
     setWeb3(web3);
     const accounts = await web3.eth.getAccounts();
@@ -166,7 +185,7 @@ function ConnectWallet({
         }
       }}
     >
-      <span className={fontClass || "Roboto_30pt_Black"}>
+      <span className={fontClass || window.innerWidth > 1088 ? "Roboto_20pt_Black" : "Roboto_30pt_Black"}>
         {need === "0" && text}
         {need === "1" &&
           !isDisable() &&
@@ -214,6 +233,10 @@ const Button = styled.div`
         }
       }
 
+      &.disable {
+        cursor: not-allowed;
+      }
+
       @media (min-width: 1088px) {
         width: ${props.border === "3px solid #9314B2"
         ? "540px"
@@ -230,4 +253,4 @@ const Button = styled.div`
   }};
 `;
 
-export default ConnectWallet;
+export default React.memo(ConnectWallet);
