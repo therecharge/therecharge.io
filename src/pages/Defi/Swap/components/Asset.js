@@ -113,7 +113,7 @@ function Asset({ setParams }) {
   return (
     <Container>
       <Content>
-        <span className="Roboto_30pt_Black">My Asset</span>
+        <span className="Roboto_30pt_Black theme">My Asset</span>
         <Line />
         {account ? (
           <List>
@@ -145,7 +145,7 @@ function Asset({ setParams }) {
               wrongNetwork="Change network for My Asset"
               text="PLUG-IN"
               m="auto"
-              w="500px"
+              w=""
             />
           </List>
         )}
@@ -176,7 +176,7 @@ const Container = styled.div`
   @media (min-width: 1088px) {
     justify-content: center;
     width: 354px;
-    height: 704px;
+    height: inherit;
     margin: 40px 0 0 0;
   }
 `;
@@ -186,7 +186,7 @@ const Content = styled.div`
   display: flex;
   gap: 20px;
   flex-direction: column;
-  span {
+  .theme {
     margin: 0 auto;
   }
   @media (min-width: 1088px) {
@@ -213,6 +213,14 @@ const List = styled.div`
   white-space: nowrap;
   overflow: auto;
   gap: 14px;
+  span {
+    width: 500px;
+  }
+  @media (min-width: 1088px) {
+    span {
+      width: 100%;
+    }
+  }
 `;
 
 export default React.memo(Asset);

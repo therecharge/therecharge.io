@@ -30,6 +30,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  min-width: fit-content;
   height: 100%;
 `;
 const Content = styled.div`

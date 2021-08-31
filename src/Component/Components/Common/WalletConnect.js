@@ -202,6 +202,7 @@ const Button = styled.div`
       span {
         margin: auto auto;
         display: table-cell;
+        white-space: break-spaces;
 
         @media (min-width: 1088px) {
           font-size: ${props.account

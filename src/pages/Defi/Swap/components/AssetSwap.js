@@ -148,7 +148,7 @@ function AssetSwap({ toast }) {
           hcolor=""
           notConnected="Connect Wallet for swap"
           wrongNetwork="Change network for swap"
-          m="80px auto"
+          m="auto"
           radius="20px"
           w="540px"
           // h="60px"
@@ -170,7 +170,7 @@ const Container = styled.div`
   @media (min-width: 1088px) {
     justify-content: center;
     width: 714px;
-    height: 704px;
+    // height: 704px;
     margin: 40px 0px 0px 20px;
   }
 `;
@@ -178,7 +178,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: fit-content;
+  height: 70vh;
   margin: 40px 40px 40px 40px;
 
   @media (min-width: 1088px) {

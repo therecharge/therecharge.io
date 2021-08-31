@@ -23,9 +23,9 @@ export default function Dropdown({
   return (
     <Container>
       <Title className="Roboto_30pt_Black">{title}</Title>
-      <List style={open ? { borderRadius: "20px 20px 0px 0px", border: "1px solid #9314B2", } : { borderRadius: "20px" }} >
+      <List style={open ? { borderRadius: "20px 20px 0px 0px", } : { borderRadius: "20px" }} >
         <Selected style={open
-          ? { borderRadius: "20px 20px 0px 0px", padding: "39px 0px" }
+          ? { borderRadius: "20px 20px 0px 0px", border: "1px solid #9314B2", padding: "39px 0px" }
           : { borderRadius: "20px" }}
           onClick={() => setOpen(!open)}>
           <div className="img"
@@ -177,7 +177,7 @@ const List = styled.div`
     // margin-left: 60px;
   }
   @media (min-width: 1088px) {
-    padding: 0px 0px 0px 40px;
+    // padding: 0px 0px 0px 40px;
     min-height: 100px;
     svg {
       width: 50px;
@@ -201,7 +201,7 @@ const Selected = styled.div`
     height: 78px;
   
     @media (min-width: 1088px) {
-      margin-left: 0;
+      // margin-left: 0;
       width: 60px;
       height: 60px;
     }
@@ -228,8 +228,11 @@ const Line = styled.div`
   z-index: 2;
   width: calc(100% - 2px);
   background-color: #1C1E35;
+  
   @media (min-width: 1088px) {
     top: 137px;
+    left: 2px;
+    width: calc(100% - 3px);
   }
 `
 const ListContainer = styled.div`
