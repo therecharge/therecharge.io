@@ -30,13 +30,14 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  min-width: fit-content;
   height: 100%;
 `;
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 100px;
-  margin-bottom: 100px;
+  margin-bottom: 20vh;
   width: 100%;
   max-width: 1088px;
   height: 100%;

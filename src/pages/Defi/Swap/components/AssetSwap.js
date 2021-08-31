@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Dropdown from "./Dropdown";
@@ -34,17 +34,17 @@ function AssetSwap({ toast }) {
     },
     swapAmount: "",
     chainId: {
-      "(Ethereum Network)": 1,
+      "(Ethereum Network)": 3, // ropsten으로 변경됨
       "(Huobi ECO Chain Network)": 128,
       "(Binance Smart Chain Network)": 56,
     },
     tokenAddress: {
-      1: "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
+      3: "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F", // "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30", // 기존 이더리움 토큰주소
       128: "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
       56: "0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
     },
     conversionFee: {
-      1: 5,
+      3: 5,
       128: 0.5,
       56: 0.5,
     },
@@ -54,7 +54,7 @@ function AssetSwap({ toast }) {
     ["RCG", "(Huobi ECO Chain Network)", RCGht],
     ["RCG", "(Ethereum Network)", RCGeth],
     ["RCG", "(Binance Smart Chain Network)", RCGbnb],
-    ["PiggyCell Point", "", FUP],
+    ["PiggyCell Point", "(Huobi ECO Chain Network)", FUP],
   ];
   const toList1 = [
     ["RCG", "(Ethereum Network)", RCGeth],
@@ -69,6 +69,10 @@ function AssetSwap({ toast }) {
     ["RCG", "(Ethereum Network)", RCGeth],
   ];
   const toList4 = [["RCG", "(Huobi ECO Chain Network)", RCGht]];
+
+  useEffect(() => {
+    setRequireNetwork(recipe.chainId[recipe.from.network])
+  }, [])
 
   return (
     <Container>
@@ -141,21 +145,38 @@ function AssetSwap({ toast }) {
           }
           title="TO"
         />
-        <WalletConnect
-          need="2"
-          bgColor="var(--purple)"
-          border="4px solid #9314B2"
-          hcolor=""
-          notConnected="Connect Wallet for swap"
-          wrongNetwork="Change network for swap"
-          m="80px auto"
-          radius="20px"
-          w="540px"
-          // h="60px"
-          fontsize="30px"
-          text="SWAP"
-          onClick={() => setPopupOpen(!isPopupOpen)}
-        />
+        {recipe.from.token !== "PiggyCell Point"
+          ? <WalletConnect
+            need="2"
+            bgColor="var(--purple)"
+            border="4px solid #9314B2"
+            hcolor=""
+            notConnected="Connect Wallet for swap"
+            wrongNetwork="Change network for swap"
+            m="auto"
+            radius="20px"
+            w="540px"
+            // h="60px"
+            fontsize="30px"
+            text="SWAP"
+            onClick={() => setPopupOpen(!isPopupOpen)}
+          />
+          : <WalletConnect
+            need="3"
+            bgColor="var(--gray-30)"
+            border="none"
+            hcolor=""
+            notConnected="Not supported yet"
+            wrongNetwork="Not supported yet"
+            m="auto"
+            radius="20px"
+            w="540px"
+            // h="60px"
+            fontsize="30px"
+            text="SWAP"
+            disable={true}
+          />
+        }
       </Content>
     </Container>
   );
@@ -170,15 +191,17 @@ const Container = styled.div`
   @media (min-width: 1088px) {
     justify-content: center;
     width: 714px;
-    height: 704px;
-    margin: 40px 0px 0px 20px;
+    // height: 704px;
+    height: 670px;
+    margin: 0px 0px 0px 20px;
   }
+  
 `;
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: fit-content;
+  height: 70vh;
   margin: 40px 40px 40px 40px;
 
   @media (min-width: 1088px) {

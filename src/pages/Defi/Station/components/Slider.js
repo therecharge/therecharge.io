@@ -40,23 +40,22 @@ const Content = styled.div`
   max-width: 1088px;
   white-space: nowrap;
   overflow: auto;
-
+  gap: 0px 20px;
+  border
   scrollbar-width: none;
   -ms-overflow-style: none;
-
   &::-webkit-scrollbar {
     display: none;
   }
-
-  gap: 0px 20px;
   a {
     color: white;
   }
-div{
-  &:hover{
-    background-color: var(--black-20);
+  div {
+    &:hover{
+      background-color: var(--black-20);
+      border-radius: 10px;
+    }
   }
-}
   .disable {
     cursor: not-allowed;
     opacity: 0.5;
@@ -115,7 +114,7 @@ function Button({ type, text, setParams }) {
                 : "/ic_flexiblestaking.svg"
           }
         />
-        <p className="Roboto_30pt_Black">{text}</p>
+        <p className={window.innerWidth > 1088 ? "Roboto_20pt_Black" : "Roboto_30pt_Black"}>{text}</p>
       </div>
     </ContainerButton>
   );
@@ -127,7 +126,7 @@ const ContainerButton = styled.div`
       min-width: 260px;
       height: 280px;
       background-color: var(--black-30);
-      // margin: 0px 10px 0px 10px;
+      border-radius: 10px;
       -ms-overflow-style: none; /* IE and Edge */
       scrollbar-width: none; /* Firefox */
     }

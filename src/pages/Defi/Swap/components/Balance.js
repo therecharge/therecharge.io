@@ -10,8 +10,8 @@ export default function Balance({
       <div className="img">
         <Image style={{ width: "100%", height: "100%" }} />
       </div>
-      <Left className="Roboto_25pt_Regular">{symbol}</Left>
-      <Right className="Roboto_25pt_Light">{balance}</Right>
+      <Left className={window.innerWidth > 1088 ? "Roboto_20pt_Regular" : "Roboto_25pt_Regular"}>{symbol}</Left>
+      <Right className={window.innerWidth > 1088 ? "Roboto_20pt_Light" : "Roboto_25pt_Light"}>{balance}</Right>
     </Container>
   );
 }

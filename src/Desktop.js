@@ -54,6 +54,7 @@ const Desktop = React.memo(
 
     async function onDisconnect(event) {
       toast(t("Disconnect/wallet"));
+      console.log("disconnect from desktop~~~~~")
       if (
         !event &&
         web3 &&

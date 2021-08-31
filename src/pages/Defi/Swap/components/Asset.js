@@ -39,7 +39,8 @@ function Asset({ setParams }) {
 
   const loadBalance = async () => {
     const ETH = new Web3(
-      "https://mainnet.infura.io/v3/636c3521d0f648d5b1789cd9388a182f"
+      "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161" // ropsten
+      // "https://mainnet.infura.io/v3/636c3521d0f648d5b1789cd9388a182f" // 이더리움 메인넷
     );
     const HECO = new Web3("https://http-mainnet.hecochain.com");
     const BNB = new Web3("https://bsc-dataseed.binance.org/");
@@ -56,7 +57,7 @@ function Asset({ setParams }) {
 
     RCGeth = new ETH.eth.Contract(
       ERC20_ABI,
-      "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30"
+      "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F" // "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30" 이더리움 토큰주소
     );
 
     RCGht = new HECO.eth.Contract(
@@ -113,7 +114,7 @@ function Asset({ setParams }) {
   return (
     <Container>
       <Content>
-        <span className="Roboto_30pt_Black">My Asset</span>
+        <span className="Roboto_30pt_Black theme">My Asset</span>
         <Line />
         {account ? (
           <List>
@@ -145,7 +146,7 @@ function Asset({ setParams }) {
               wrongNetwork="Change network for My Asset"
               text="PLUG-IN"
               m="auto"
-              w="500px"
+              w=""
             />
           </List>
         )}
@@ -176,8 +177,8 @@ const Container = styled.div`
   @media (min-width: 1088px) {
     justify-content: center;
     width: 354px;
-    height: 704px;
-    margin: 40px 0 0 0;
+    height: inherit;
+    margin: 0px 0 0 0;
   }
 `;
 const Content = styled.div`
@@ -186,7 +187,7 @@ const Content = styled.div`
   display: flex;
   gap: 20px;
   flex-direction: column;
-  span {
+  .theme {
     margin: 0 auto;
   }
   @media (min-width: 1088px) {
@@ -213,6 +214,14 @@ const List = styled.div`
   white-space: nowrap;
   overflow: auto;
   gap: 14px;
+  span {
+    width: 500px;
+  }
+  @media (min-width: 1088px) {
+    span {
+      width: 100%;
+    }
+  }
 `;
 
 export default React.memo(Asset);

@@ -23,9 +23,9 @@ export default function Dropdown({
   return (
     <Container>
       <Title className="Roboto_30pt_Black">{title}</Title>
-      <List style={open ? { borderRadius: "20px 20px 0px 0px", border: "1px solid #9314B2", } : { borderRadius: "20px" }} >
+      <List style={open ? { borderRadius: "20px 20px 0px 0px", } : { borderRadius: "20px" }} >
         <Selected style={open
-          ? { borderRadius: "20px 20px 0px 0px", padding: "39px 0px" }
+          ? { borderRadius: "20px 20px 0px 0px", border: "1px solid #9314B2", padding: "18px 0px" }
           : { borderRadius: "20px" }}
           onClick={() => setOpen(!open)}>
           <div className="img"
@@ -34,7 +34,7 @@ export default function Dropdown({
             <Image style={{ width: "100%", height: "100%" }} />
           </div>
           <Coin>
-            <Upside className="Roboto_30pt_Bold">{symbol}</Upside>
+            <Upside className={window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Bold"}>{symbol}</Upside>
             <Downside className="Roboto_15pt_Regular">{network}</Downside>
           </Coin>
           <Btn>{open ? <Close fill="white" /> : <Open fill="white" />}</Btn>
@@ -177,7 +177,7 @@ const List = styled.div`
     // margin-left: 60px;
   }
   @media (min-width: 1088px) {
-    padding: 0px 0px 0px 40px;
+    // padding: 0px 0px 0px 40px;
     min-height: 100px;
     svg {
       width: 50px;
@@ -185,7 +185,7 @@ const List = styled.div`
   }
 `;
 const Selected = styled.div`
-  padding: 40px 0;
+  padding: 20px 0;
   box-sizing: border-box;
   cursor: pointer;
   display: flex;
@@ -193,6 +193,7 @@ const Selected = styled.div`
 
   @media (min-width: 1088px) {
     margin: 0;
+    height: 100px;
   }
 
   .img{
@@ -201,7 +202,7 @@ const Selected = styled.div`
     height: 78px;
   
     @media (min-width: 1088px) {
-      margin-left: 0;
+      // margin-left: 0;
       width: 60px;
       height: 60px;
     }
@@ -228,8 +229,11 @@ const Line = styled.div`
   z-index: 2;
   width: calc(100% - 2px);
   background-color: #1C1E35;
+  
   @media (min-width: 1088px) {
-    top: 137px;
+    top: 98px;
+    left: 2px;
+    width: calc(100% - 3px);
   }
 `
 const ListContainer = styled.div`
@@ -240,7 +244,7 @@ const ListContainer = styled.div`
   width: 100%;
 
   @media (min-width: 1088px) {
-    top: 139px;
+    top: 100px;
   }
 `;
 const UnSelected = styled.div`
