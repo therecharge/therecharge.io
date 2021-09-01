@@ -21,8 +21,8 @@ const loading_data = [
     redemtion: 200,
     symbol: ["RCG", "RCG"],
     token: [
-      "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F", // ropsten 토큰주소
-      "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F",
+      "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30", // 이더리움 토큰주소
+      "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
     ],
     tvl: "-",
     type: "flexible",
@@ -54,8 +54,8 @@ function List({ /*type, list,*/ params, toast }) {
             redemtion: 200,
             symbol: ["RCG", "RCG"],
             token: [
-              "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F",
-              "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F",
+              "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
+              "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
             ],
             tvl: 0,
             type: "flexible",
@@ -79,7 +79,7 @@ function List({ /*type, list,*/ params, toast }) {
               name: `${data.name.substring(0, 50)}`,
               apy:
                 Number(data.apy) > 0
-                  ? Number(data.apy) >= 1000000
+                  ? Number(data.apy) >= 10000000
                     ? "+999999.99"
                     : `${makeNum(Number(data.apy), 2)}`
                   : 0,

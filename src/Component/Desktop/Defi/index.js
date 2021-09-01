@@ -193,6 +193,18 @@ function Defi({
     }
   };
 
+  const loadUniPrice = async () => {
+    try {
+      let { data } = await axios.post(`https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`, {
+        "query": "query{pairs(where:{id:\"0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc\"}) { token0Price token1Price }}"
+      })
+      let token
+      console.log(data.data.pairs[0])
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const handleLoading = () => {
     setOnLoading(false);
   };
@@ -226,6 +238,10 @@ function Defi({
     loadMyPools();
   }, [account]);
 
+  useEffect(() => {
+    loadUniPrice();
+  }, [])
+
   // useEffect(() => {
   //   handleLoading();
   // }, [myPools]);
@@ -241,11 +257,11 @@ function Defi({
       style={
         modalPoolOpen || modalSwapOpen
           ? {
-              position: "fixed",
-              top: "-20px",
-              width: "100%",
-              backgroundColor: "#02051c",
-            }
+            position: "fixed",
+            top: "-20px",
+            width: "100%",
+            backgroundColor: "#02051c",
+          }
           : {}
       }
     >
@@ -257,7 +273,7 @@ function Defi({
               <HashLink
                 className="box"
                 to={"/defi/station"}
-                // onClick={() => handleModalPool()}
+              // onClick={() => handleModalPool()}
               >
                 <img src="/ic_chargingstation.svg" />
                 <div className="name Roboto_40pt_Black">Charging Station</div>
@@ -270,7 +286,7 @@ function Defi({
               <HashLink
                 className="box"
                 to={"/defi/swap"}
-                // onClick={() => handleModalSwap()}
+              // onClick={() => handleModalSwap()}
               >
                 <img src="/ic_rechargingswap.svg" />
                 <div className="name Roboto_40pt_Black">Recharge swap</div>
@@ -364,9 +380,8 @@ function Defi({
                         {row.cells.map((cell) => {
                           return (
                             <HashLink
-                              to={`/defi/station#${
-                                myPools[row.index].type.split(" ")[0]
-                              }`}
+                              to={`/defi/station#${myPools[row.index].type.split(" ")[0]
+                                }`}
                               style={{
                                 display: "table-cell",
                                 textDecoration: "none",
@@ -448,8 +463,8 @@ function Defi({
                 >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>
@@ -521,8 +536,8 @@ function Defi({
                 >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>
@@ -599,8 +614,8 @@ function Defi({
                 >
                   {analytics.BEP.total
                     ? convertNum(weiToEther(convertNum(analytics.BEP.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>
