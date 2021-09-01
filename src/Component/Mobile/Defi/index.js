@@ -20,6 +20,7 @@ import {
   modalSwapOpenState,
   modalPool2OpenState,
 } from "../../../store/modal";
+import { accountState } from "../../../store/web3";
 
 const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
   let newNum;
@@ -41,7 +42,7 @@ const weiToEther = (wei) => {
 function Defi({
   connectWallet,
   onDisconnect,
-  account,
+  // account,
   chainId,
   web3,
   // modalPoolOpen,
@@ -56,6 +57,7 @@ function Defi({
   t,
 }) {
   const [onLoading, setOnLoading] = useState(true);
+  const [account] = useRecoilState(accountState);
   const [modalPoolOpen, setModalPoolOpen] = useRecoilState(modalPoolOpenState);
   const [modalSwapOpen, setModalSwapOpen] = useRecoilState(modalSwapOpenState);
   const [modalPool2Open, setModalPool2Open] = useRecoilState(
@@ -270,11 +272,11 @@ function Defi({
       style={
         modalPoolOpen || modalSwapOpen
           ? {
-              position: "fixed",
-              top: "-20px",
-              width: "100%",
-              backgroundColor: "#02051c",
-            }
+            position: "fixed",
+            top: "-20px",
+            width: "100%",
+            backgroundColor: "#02051c",
+          }
           : {}
       }
     >
@@ -287,7 +289,7 @@ function Defi({
                 className="box"
                 to={"/defi/station"}
                 style={{ textDecoration: "none" }}
-                // onClick={() => handleModalPool()}
+              // onClick={() => handleModalPool()}
               >
                 <img src="/ic_chargingstation.svg" />
                 <div className="name Roboto_40pt_Black">Charging Station</div>
@@ -301,7 +303,7 @@ function Defi({
                 className="box"
                 to={"/defi/swap"}
                 style={{ textDecoration: "none" }}
-                // onClick={() => handleModalSwap()}
+              // onClick={() => handleModalSwap()}
               >
                 <img src="/ic_rechargingswap.svg" />
                 <div className="name Roboto_40pt_Black">Recharge swap</div>
@@ -395,9 +397,8 @@ function Defi({
                               {...cell.getCellProps()}
                               onClick={() => {
                                 setParams({
-                                  type: `${
-                                    myPools[row.index].type.split(" ")[0]
-                                  }`,
+                                  type: `${myPools[row.index].type.split(" ")[0]
+                                    }`,
                                   isLP: false,
                                 });
 
@@ -482,8 +483,8 @@ function Defi({
                 >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>
@@ -555,8 +556,8 @@ function Defi({
                 >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>
@@ -633,8 +634,8 @@ function Defi({
                 >
                   {analytics.BEP.total
                     ? convertNum(weiToEther(convertNum(analytics.BEP.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>

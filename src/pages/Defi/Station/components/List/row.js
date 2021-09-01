@@ -15,7 +15,7 @@ import {
   networkState,
   requireNetworkState,
 } from "../../../../../store/web3";
-import { async } from "@aragon/ui/dist/ToastHub";
+// import { async } from "@aragon/ui/dist/ToastHub";
 const ERC20_ABI = require("../../../../../Component/Desktop/Defi/abis/ERC20ABI.json");
 const POOL_ABI = require("../../../../../Component/Desktop/Defi/abis/poolABI.json");
 // Row Component structure
@@ -95,7 +95,11 @@ export default function Row({
           balance: weiToEther(data.account.balance),
           reward: weiToEther(data.account.reward),
           tvl: data.tvl,
-          apy: data.apy,
+          apy: Number(data.apy) > 0
+            ? Number(data.apy) >= 10000000
+              ? "+999999.99"
+              : `${makeNum(Number(data.apy), 2)}`
+            : 0,
         };
       } catch (err) {
         console.log(err);
@@ -220,7 +224,7 @@ export default function Row({
       <Title
         onClick={() => {
           setOpen(!isOpen);
-          setRequireNetwork(3); // 이더리움으로 변경해야 함
+          setRequireNetwork(1);
         }}
         style={{ cursor: "pointer" }}
       >
