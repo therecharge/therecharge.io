@@ -30,8 +30,8 @@ function ConnectWallet({
   hcolor = "var(--yellow)",
   fontsize = "",
   fontClass = "",
-  onClick = () => {},
-  toast = () => {},
+  onClick = () => { },
+  toast = () => { },
 }) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [provider, setProvider] = useRecoilState(providerState);
@@ -96,6 +96,7 @@ function ConnectWallet({
     // }
   }
   function onClickEvent() {
+    console.log("~~~~~~onClickEvent~~~~~~");
     if (onClick.toString().length < 10) onDisconnect();
     else onClick();
   }
@@ -247,10 +248,10 @@ const Button = styled.div`
 
         @media (min-width: 1088px) {
           font-size: ${props.account
-            ? props.fontsize
-            : props.text === "APPROVE" || props.text === "PLUG-IN"
-            ? "20px"
-            : props.fontsize};
+        ? props.fontsize
+        : props.text === "APPROVE" || props.text === "PLUG-IN"
+          ? "20px"
+          : props.fontsize};
         }
       }
 
@@ -260,12 +261,12 @@ const Button = styled.div`
 
       @media (min-width: 1088px) {
         width: ${props.border === "3px solid #9314B2"
-          ? "540px"
-          : props.border === "4px solid #9314B2"
+        ? "540px"
+        : props.border === "4px solid #9314B2"
           ? "474px"
           : props.notConnected === "Connect Wallet for data"
-          ? "420px"
-          : "310px"};
+            ? "420px"
+            : "310px"};
         // margin: auto;
         margin-top: ${props.border === "4px solid #9314B2" ? "40px" : ""};
         height: ${props.border === "4px solid #9314B2" ? "60px" : ""};
