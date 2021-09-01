@@ -667,7 +667,7 @@ function ModalSwap({
                         }
                         onClick={() => {
                           selAsset.logo === "piggy"
-                            ? console.log("nothing happen")
+                            ? console.log("")
                             : setRecipe({
                               ...recipe,
                               from: recipe.to,

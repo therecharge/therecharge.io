@@ -140,7 +140,7 @@ function ConnectWallet({
         .remove();
     }
     // console.log("Connect!");
-    console.log("asdf", web3Modal);
+    // console.log("asdf", web3Modal);
     let provider = await web3Modal.connect();
     setProvider(provider);
     const web3 = new Web3(provider);

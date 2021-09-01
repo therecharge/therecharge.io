@@ -767,11 +767,11 @@ function ModalSwap({
                   </div>
                   <div className="caution Roboto_16pt_Medium">
                     {`Conversion Fee: ${recipe.from === "Binance Smart Chain" ||
-                        recipe.to === "Binance Smart Chain"
-                        ? selAsset.conversionFee[
-                        selAsset.chainId["Binance Smart Chain"]
-                        ]
-                        : selAsset.conversionFee[selAsset.chainId[recipe.from]]
+                      recipe.to === "Binance Smart Chain"
+                      ? selAsset.conversionFee[
+                      selAsset.chainId["Binance Smart Chain"]
+                      ]
+                      : selAsset.conversionFee[selAsset.chainId[recipe.from]]
                       } ${selAsset.symbol}`}
                   </div>
                   <PercentBtns className="Roboto_20pt_Regular">
@@ -935,7 +935,7 @@ function ModalSwap({
                   onClick={async () => {
                     // handleDecision();
                     if (btnInfo === "Swap") {
-                      console.log("레시피 확인: ", recipe.from, recipe.to);
+                      // console.log("레시피 확인: ", recipe.from, recipe.to);
                       await toast(
                         // poolMethods.allowance > 0
                         'Please approve "SWAP" in your private wallet'

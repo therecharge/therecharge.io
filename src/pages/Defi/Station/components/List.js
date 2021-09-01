@@ -94,7 +94,6 @@ function List({ /*type, list,*/ params, toast }) {
       setChList(returnValue);
     } catch (err) {
       console.log(err);
-      console.log("There are no supplied pools");
     }
     return;
   };
