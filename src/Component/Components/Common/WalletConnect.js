@@ -97,7 +97,12 @@ function ConnectWallet({
   }
   function onClickEvent() {
     console.log("~~~~~~onClickEvent~~~~~~");
-    if (onClick.toString().length < 10) onDisconnect();
+    console.log(onClick.toString().length);
+
+    if (onClick.toString().length < 10) {
+      console.log("came into statement")
+      onDisconnect();
+    }
     else onClick();
   }
 
