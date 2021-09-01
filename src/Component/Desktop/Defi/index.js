@@ -198,8 +198,8 @@ function Defi({
       let { data } = await axios.post(`https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`, {
         "query": "query{pairs(where:{id:\"0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc\"}) { token0Price token1Price }}"
       })
-      let token
-      console.log(data.data.pairs[0])
+      let tokenPrices = data.data.pairs[0]
+      console.log(tokenPrices)
     } catch (err) {
       console.log(err)
     }
