@@ -152,18 +152,21 @@ function AssetSwap({ toast }) {
         {recipe.from.token !== "PiggyCell Point" ? (
           <WalletConnect
             need="2"
-            bgColor="var(--purple)"
-            border="4px solid #9314B2"
+            bgColor="var(--gray-30)"
+            border="4px solid var(--gray-30)"
             hcolor=""
-            notConnected="Connect Wallet for swap"
-            wrongNetwork="Change network for swap"
+            // notConnected="Connect Wallet for swap"
+            notConnected="Connect Wallet for My Asset"
+            // wrongNetwork="Change network for swap"
+            wrongNetwork="'SWAP' will be open soon"
             m="40px auto"
             radius="20px"
             w="540px"
             // h="60px"
             fontsize="20px"
-            text="SWAP"
-            onClick={() => setPopupOpen(!isPopupOpen)}
+            text="'SWAP' will be open soon"
+            onClick={() => console.log("")}
+            // onClick={() => setPopupOpen(!isPopupOpen)}
           />
         ) : (
           <WalletConnect
@@ -178,7 +181,7 @@ function AssetSwap({ toast }) {
             w="540px"
             // h="60px"
             fontsize="20px"
-            text="SWAP"
+            text="'SWAP' will be open soon"
             disable={true}
           />
         )}

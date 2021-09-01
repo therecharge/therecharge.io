@@ -5,7 +5,7 @@ import { useSortBy, useTable } from "react-table";
 import styled from "styled-components";
 import axios from "axios";
 import { RotateCircleLoading } from "react-loadingg";
-import { HashLink } from 'react-router-hash-link';
+import { HashLink } from "react-router-hash-link";
 import { withTranslation } from "react-i18next";
 import WalletConnect from "../../../Component/Components/Common/WalletConnect";
 /* Components */
@@ -96,6 +96,7 @@ function Defi({
   const [analytics, setAnalytics] = useState({
     ERC: {},
     HRC: {},
+    BEP: {},
     general: {},
   });
 
@@ -269,11 +270,11 @@ function Defi({
       style={
         modalPoolOpen || modalSwapOpen
           ? {
-            position: "fixed",
-            top: "-20px",
-            width: "100%",
-            backgroundColor: "#02051c",
-          }
+              position: "fixed",
+              top: "-20px",
+              width: "100%",
+              backgroundColor: "#02051c",
+            }
           : {}
       }
     >
@@ -284,9 +285,9 @@ function Defi({
             <div className="content">
               <HashLink
                 className="box"
-                to={'/defi/station'}
-                style={{ textDecoration: 'none' }}
-              // onClick={() => handleModalPool()}
+                to={"/defi/station"}
+                style={{ textDecoration: "none" }}
+                // onClick={() => handleModalPool()}
               >
                 <img src="/ic_chargingstation.svg" />
                 <div className="name Roboto_40pt_Black">Charging Station</div>
@@ -298,9 +299,9 @@ function Defi({
             <div className="content" style={{ marginTop: "80px" }}>
               <HashLink
                 className="box"
-                to={'/defi/swap'}
-                style={{ textDecoration: 'none' }}
-              // onClick={() => handleModalSwap()}
+                to={"/defi/swap"}
+                style={{ textDecoration: "none" }}
+                // onClick={() => handleModalSwap()}
               >
                 <img src="/ic_rechargingswap.svg" />
                 <div className="name Roboto_40pt_Black">Recharge swap</div>
@@ -394,8 +395,9 @@ function Defi({
                               {...cell.getCellProps()}
                               onClick={() => {
                                 setParams({
-                                  type: `${myPools[row.index].type.split(" ")[0]
-                                    }`,
+                                  type: `${
+                                    myPools[row.index].type.split(" ")[0]
+                                  }`,
                                   isLP: false,
                                 });
 
@@ -480,8 +482,8 @@ function Defi({
                 >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -502,7 +504,9 @@ function Defi({
                 <div className="content le">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {analytics.ERC.redemption ? analytics.ERC.redemption : 0}{" "}
+                      {analytics.ERC.redemption
+                        ? makeNum(analytics.ERC.redemption)
+                        : 0}{" "}
                       RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
@@ -511,7 +515,7 @@ function Defi({
                   </div>
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      $ {analytics.ERC.price ? analytics.ERC.price : 0}
+                      $ {analytics.ERC.price ? makeNum(analytics.ERC.price) : 0}
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Current RCG Price($) ERC20 Uniswap
@@ -521,7 +525,9 @@ function Defi({
                 <div className="content">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {analytics.ERC.swapped ? analytics.ERC.swapped : 0}
+                      {analytics.ERC.swapped
+                        ? makeNum(analytics.ERC.swapped)
+                        : 0}
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       RCG (ERC20) Swapped in
@@ -529,7 +535,9 @@ function Defi({
                   </div>
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {analytics.ERC.conversion ? analytics.ERC.conversion : 0}{" "}
+                      {analytics.ERC.conversion
+                        ? makeNum(analytics.ERC.conversion)
+                        : 0}{" "}
                       RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
@@ -547,8 +555,8 @@ function Defi({
                 >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -569,7 +577,9 @@ function Defi({
                 <div className="content le">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {analytics.HRC.redemption ? analytics.HRC.redemption : 0}{" "}
+                      {analytics.HRC.redemption
+                        ? makeNum(analytics.HRC.redemption)
+                        : 0}{" "}
                       RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
@@ -578,7 +588,12 @@ function Defi({
                   </div>
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      $ {analytics.HRC.price ? analytics.HRC.price : 0}
+                      ${" "}
+                      {analytics.HRC.price
+                        ? analytics.HRC.price === "0"
+                          ? "-"
+                          : makeNum(analytics.HRC.price)
+                        : 0}
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Current RCG Price($) HRC20-Mdex
@@ -588,7 +603,9 @@ function Defi({
                 <div className="content">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {analytics.HRC.swapped ? analytics.HRC.swapped : 0}
+                      {analytics.HRC.swapped
+                        ? makeNum(analytics.HRC.swapped)
+                        : 0}
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       RCG (HRC20) Swapped in
@@ -596,7 +613,9 @@ function Defi({
                   </div>
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {analytics.HRC.conversion ? analytics.HRC.conversion : 0}{" "}
+                      {analytics.HRC.conversion
+                        ? makeNum(analytics.HRC.conversion)
+                        : 0}{" "}
                       RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
@@ -612,7 +631,12 @@ function Defi({
                   className="title Roboto_40pt_Black"
                   style={{ zIndex: "2" }}
                 >
-                  0 RCG
+                  {analytics.BEP.total
+                    ? convertNum(weiToEther(convertNum(analytics.BEP.total)), {
+                        unitSeparator: true,
+                      })
+                    : 0}{" "}
+                  RCG
                 </div>
                 <div
                   className="text Roboto_20pt_Regular_Gray"
@@ -630,13 +654,25 @@ function Defi({
               <div className="right box">
                 <div className="content le">
                   <div className="item">
-                    <div className="title Roboto_20pt_Black">0 RCG</div>
+                    <div className="title Roboto_20pt_Black">
+                      {analytics.BEP.redemption
+                        ? makeNum(analytics.BEP.redemption)
+                        : 0}{" "}
+                      RCG
+                    </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Carbon Redemption BEP20
                     </div>
                   </div>
                   <div className="item">
-                    <div className="title Roboto_20pt_Black">$ 0.00</div>
+                    <div className="title Roboto_20pt_Black">
+                      ${" "}
+                      {analytics.BEP.price
+                        ? analytics.BEP.price === "0"
+                          ? "-"
+                          : makeNum(analytics.BEP.price)
+                        : 0}
+                    </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Current RCG Price($) BEP20 Pancakeswap
                     </div>
@@ -644,13 +680,22 @@ function Defi({
                 </div>
                 <div className="content">
                   <div className="item">
-                    <div className="title Roboto_20pt_Black">0.00</div>
+                    <div className="title Roboto_20pt_Black">
+                      {analytics.BEP.swapped
+                        ? makeNum(analytics.BEP.swapped)
+                        : 0}
+                    </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       RCG (BEP20) Swapped in
                     </div>
                   </div>
                   <div className="item">
-                    <div className="title Roboto_20pt_Black">0.00 RCG</div>
+                    <div className="title Roboto_20pt_Black">
+                      {analytics.BEP.conversion
+                        ? makeNum(analytics.BEP.conversion)
+                        : 0}{" "}
+                      RCG
+                    </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Conversion Fee(BEP20)
                     </div>

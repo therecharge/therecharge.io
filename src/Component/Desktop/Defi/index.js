@@ -621,7 +621,9 @@ function Defi({
                 <div className="content le">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {analytics.BEP.redemption ? analytics.BEP.redemption : 0}{" "}
+                      {analytics.BEP.redemption
+                        ? makeNum(analytics.BEP.redemption)
+                        : 0}{" "}
                       RCG
                     </div>
                     <div className="text Roboto_16pt_Regular_Gray">
