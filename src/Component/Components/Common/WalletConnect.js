@@ -90,7 +90,7 @@ function ConnectWallet({
     setAccount(undefined);
     setProvider(undefined);
     setNetwork(undefined);
-    // await web3Modal.clearCachedProvider();
+    await web3Modal.clearCachedProvider();
 
     // let els = document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')
     // while (els.length>1) {
