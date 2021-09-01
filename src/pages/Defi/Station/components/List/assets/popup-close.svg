@@ -1,0 +1,27 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="29.698"
+  height="30.538"
+  viewBox="0 0 29.698 30.538"
+>
+  <g id="ic_menu_close" transform="translate(-640 -34.731)">
+    <rect
+      id="사각형_506"
+      data-name="사각형 506"
+      width="40"
+      height="2"
+      rx="1"
+      transform="translate(640 63.855) rotate(-45)"
+      fill="#fff"
+    />
+    <rect
+      id="사각형_507"
+      data-name="사각형 507"
+      width="40"
+      height="2"
+      rx="1"
+      transform="translate(641.414 34.731) rotate(45)"
+      fill="#fff"
+    />
+  </g>
+</svg>

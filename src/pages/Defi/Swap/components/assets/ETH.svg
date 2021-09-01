@@ -1,0 +1,62 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="50"
+  height="50"
+  viewBox="0 0 50 50"
+>
+  <g id="img_eth_50px" transform="translate(-456 -1349)">
+    <circle
+      id="타원_54"
+      data-name="타원 54"
+      cx="25"
+      cy="25"
+      r="25"
+      transform="translate(456 1349)"
+      fill="#fff"
+    />
+    <g id="img_erc20" transform="translate(471.385 1360.539)">
+      <path
+        id="패스_211"
+        data-name="패스 211"
+        d="M464.038,315.477V322.7l8.866-12.453Z"
+        transform="translate(-455.173 -293.854)"
+        fill="#232423"
+      />
+      <path
+        id="패스_212"
+        data-name="패스 212"
+        d="M464.038,219.982v9.27l8.866-5.244Z"
+        transform="translate(-455.173 -209.3)"
+        fill="#030504"
+      />
+      <path
+        id="패스_213"
+        data-name="패스 213"
+        d="M464.038,51.13V61.813l8.866,4.026Z"
+        transform="translate(-455.173 -51.13)"
+        fill="#232423"
+      />
+      <path
+        id="패스_214"
+        data-name="패스 214"
+        d="M332.774,315.477V322.7l-8.866-12.453Z"
+        transform="translate(-323.908 -293.854)"
+        fill="#6f7071"
+      />
+      <path
+        id="패스_215"
+        data-name="패스 215"
+        d="M332.777,219.982v9.27l-8.866-5.244Z"
+        transform="translate(-323.911 -209.3)"
+        fill="#272828"
+      />
+      <path
+        id="패스_216"
+        data-name="패스 216"
+        d="M332.777,51.13V61.813l-8.866,4.026Z"
+        transform="translate(-323.911 -51.13)"
+        fill="#6f7071"
+      />
+    </g>
+  </g>
+</svg>

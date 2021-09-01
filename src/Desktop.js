@@ -5,6 +5,8 @@ import About from "./Component/Desktop/About";
 import Recharge from "./Component/Desktop/Recharge";
 import Defi from "./Component/Desktop/Defi";
 import Docs from "./Component/Desktop/Docs";
+import Station from "./pages/Defi/Station";
+import Swap from "./pages/Defi/Swap";
 /* Libraries */
 import React, { useState, useEffect, useRef } from "react";
 import { Route, Switch } from "react-router-dom";
@@ -52,6 +54,7 @@ const Desktop = React.memo(
 
     async function onDisconnect(event) {
       toast(t("Disconnect/wallet"));
+      console.log("disconnect from desktop~~~~~")
       if (
         !event &&
         web3 &&
@@ -143,6 +146,18 @@ const Desktop = React.memo(
         <Switch>
           <Route path="/docs/:viewNum" component={Docs}></Route>
           <Route
+            path="/defi/station"
+            component={() => (
+              <Station toast={toast} />
+            )}>
+          </Route>
+          <Route
+            path="/defi/swap"
+            component={() => (
+              <Swap toast={toast} />
+            )}>
+          </Route>
+          <Route
             path="/defi"
             component={() => (
               <Defi
@@ -164,8 +179,8 @@ const Desktop = React.memo(
         <style jsx global>{`
             .desktop {
               display: flex;
-              // width: 100%;
               background-color: #02051c;
+              min-height: 100vh;
             }
             .home {
               width: 100%;
