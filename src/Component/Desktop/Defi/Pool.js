@@ -349,7 +349,6 @@ function Pool({
         await loadPoolInfo();
       } else if (account && chList[sel].address !== "0x00") {
         let ret = await Promise.all([loadPoolInfo(), loadUserInfo()]);
-        console.log("test ret :", ret);
       }
     } catch (err) {
       console.log(err);
@@ -472,11 +471,11 @@ function Pool({
             onClick={
               account
                 ? async () => {
-                    await onDisconnect();
-                  }
+                  await onDisconnect();
+                }
                 : async () => {
-                    await connectWallet();
-                  }
+                  await connectWallet();
+                }
             }
           >
             <p>
@@ -575,7 +574,7 @@ function Pool({
             <img
               src={
                 poolInfo.period[0] + poolInfo.period[1] >=
-                new Date().getTime() / 1000
+                  new Date().getTime() / 1000
                   ? !poolInfo.limit || poolInfo.limit > poolInfo.tvl
                     ? "/ic_logo_defi_active.svg"
                     : "/ic_logo_defi_close.svg"
@@ -587,7 +586,7 @@ function Pool({
               className="sign Roboto_20pt_Black_L"
               style={
                 poolInfo.period[0] + poolInfo.period[1] >=
-                new Date().getTime() / 1000
+                  new Date().getTime() / 1000
                   ? !poolInfo.limit || poolInfo.limit > poolInfo.tvl
                     ? { color: "#0eef6d" }
                     : { color: "#d62828" }
@@ -595,7 +594,7 @@ function Pool({
               }
             >
               {poolInfo.period[0] + poolInfo.period[1] >=
-              new Date().getTime() / 1000
+                new Date().getTime() / 1000
                 ? !poolInfo.limit || poolInfo.limit > poolInfo.tvl
                   ? "Active"
                   : "Close"
@@ -643,9 +642,8 @@ function Pool({
                 {userInfo.share.toFixed(4).toString().substr(0, 8)}%
               </div>
               <div className="detail">
-                {`${makeNum(weiToEther(userInfo.reward), 6)} ${
-                  poolInfo.symbol[1]
-                }`}
+                {`${makeNum(weiToEther(userInfo.reward), 6)} ${poolInfo.symbol[1]
+                  }`}
               </div>
             </div>
           </div>
@@ -660,9 +658,8 @@ function Pool({
               <div className="left Roboto_30pt_Black_R">STAKING</div>
               <div className="right Roboto_20pt_Regular">
                 Available:{" "}
-                {`${makeNum((poolMethods.available - plAmount).toString())} ${
-                  poolInfo.symbol[0]
-                }`}
+                {`${makeNum((poolMethods.available - plAmount).toString())} ${poolInfo.symbol[0]
+                  }`}
               </div>
             </div>
             <div className="inputBox">
@@ -720,7 +717,7 @@ function Pool({
                     if (
                       poolInfo.period[0] > new Date().getTime() / 1000 ||
                       poolInfo.period[0] + poolInfo.period[1] <
-                        new Date().getTime() / 1000
+                      new Date().getTime() / 1000
                     ) {
                       toast("This pool is inactive");
                     } else if (!account) {
@@ -756,19 +753,19 @@ function Pool({
                   }
                   style={
                     poolInfo.period[0] > new Date().getTime() / 1000 ||
-                    poolInfo.period[0] + poolInfo.period[1] <
+                      poolInfo.period[0] + poolInfo.period[1] <
                       new Date().getTime() / 1000
                       ? {
-                          backgroundColor: "var(--gray-30)",
-                          color: "var(--gray-20)",
-                          cursor: "not-allowed",
-                        }
+                        backgroundColor: "var(--gray-30)",
+                        color: "var(--gray-20)",
+                        cursor: "not-allowed",
+                      }
                       : !poolInfo.limit || poolInfo.limit > poolInfo.tvl
-                      ? {
+                        ? {
                           backgroundColor: "var(--purple)",
                           cursor: "pointer",
                         }
-                      : {
+                        : {
                           backgroundColor: "var(--gray-30)",
                           color: "var(--gray-20)",
                           cursor: "not-allowed",
@@ -787,7 +784,7 @@ function Pool({
                     if (
                       poolInfo.period[0] > new Date().getTime() / 1000 ||
                       poolInfo.period[0] + poolInfo.period[1] <
-                        new Date().getTime() / 1000
+                      new Date().getTime() / 1000
                     ) {
                       toast("This pool is inactive");
                     } else if (!account) {
@@ -808,17 +805,17 @@ function Pool({
                   }
                   style={
                     poolInfo.period[0] > new Date().getTime() / 1000 ||
-                    poolInfo.period[0] + poolInfo.period[1] <
+                      poolInfo.period[0] + poolInfo.period[1] <
                       new Date().getTime() / 1000
                       ? {
-                          backgroundColor: "var(--gray-30)",
-                          color: "var(--gray-20)",
-                          cursor: "not-allowed",
-                        }
+                        backgroundColor: "var(--gray-30)",
+                        color: "var(--gray-20)",
+                        cursor: "not-allowed",
+                      }
                       : {
-                          backgroundColor: "var(--yellow)",
-                          cursor: "pointer",
-                        }
+                        backgroundColor: "var(--yellow)",
+                        cursor: "pointer",
+                      }
                   }
                 >
                   <span
@@ -853,14 +850,14 @@ function Pool({
                   style={
                     userInfo.balance > 0
                       ? {
-                          backgroundColor: "var(--ultramarine-blue)",
-                          cursor: "pointer",
-                        }
+                        backgroundColor: "var(--ultramarine-blue)",
+                        cursor: "pointer",
+                      }
                       : {
-                          backgroundColor: "var(--gray-30)",
-                          color: "var(--gray-20)",
-                          cursor: "not-allowed",
-                        }
+                        backgroundColor: "var(--gray-30)",
+                        color: "var(--gray-20)",
+                        cursor: "not-allowed",
+                      }
                   }
                 >
                   <span>UNPLUG</span>
@@ -874,7 +871,7 @@ function Pool({
                     if (
                       poolInfo.period[0] > new Date().getTime() / 1000 ||
                       poolInfo.period[0] + poolInfo.period[1] <
-                        new Date().getTime() / 1000
+                      new Date().getTime() / 1000
                     ) {
                       toast("This pool is inactive");
                     }
@@ -914,19 +911,19 @@ function Pool({
                   }
                   style={
                     (poolInfo.period[0] > new Date().getTime() / 1000) |
-                    (poolInfo.period[0] + poolInfo.period[1] <
-                      new Date().getTime() / 1000)
+                      (poolInfo.period[0] + poolInfo.period[1] <
+                        new Date().getTime() / 1000)
                       ? {
-                          backgroundColor: "var(--gray-30)",
-                          color: "var(--gray-20)",
-                          cursor: "not-allowed",
-                        }
+                        backgroundColor: "var(--gray-30)",
+                        color: "var(--gray-20)",
+                        cursor: "not-allowed",
+                      }
                       : !poolInfo.limit || poolInfo.limit > poolInfo.tvl
-                      ? {
+                        ? {
                           backgroundColor: "var(--purple)",
                           cursor: "pointer",
                         }
-                      : {
+                        : {
                           backgroundColor: "var(--gray-30)",
                           color: "var(--gray-20)",
                           cursor: "not-allowed",
@@ -973,14 +970,14 @@ function Pool({
                     poolInfo.period[0] + poolInfo.period[1] <
                       new Date().getTime() / 1000 && userInfo.balance > 0
                       ? {
-                          backgroundColor: "var(--ultramarine-blue)",
-                          cursor: "pointer",
-                        }
+                        backgroundColor: "var(--ultramarine-blue)",
+                        cursor: "pointer",
+                      }
                       : {
-                          backgroundColor: "var(--gray-30)",
-                          color: "var(--gray-20)",
-                          cursor: "not-allowed",
-                        }
+                        backgroundColor: "var(--gray-30)",
+                        color: "var(--gray-20)",
+                        cursor: "not-allowed",
+                      }
                   }
                 >
                   <span>UNPLUG</span>
