@@ -93,7 +93,10 @@ function ConnectWallet({
     //     document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')[1].remove();
     // }
   }
-  if (onClick.toString().length < 10) onClick = onDisconnect;
+  function onClickEvent() {
+    if (onClick.toString().length < 30) onDisconnect();
+    else onClick();
+  }
 
   function connectEventHandler(provider) {
     if (!provider.on) {
@@ -175,13 +178,13 @@ function ConnectWallet({
       onClick={() => {
         switch (need) {
           case "0":
-            onClick();
+            onClickEvent();
             break;
           case "1":
-            account ? onClick() : connect();
+            account ? onClickEvent() : connect();
             break;
           case "2":
-            if (account && isChainCorrect()) onClick();
+            if (account && isChainCorrect()) onClickEvent();
             else if (!account) connect();
             else if (!isChainCorrect()) changeNetwork(requireNetwork);
             break;
