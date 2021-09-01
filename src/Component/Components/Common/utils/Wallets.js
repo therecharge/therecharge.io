@@ -1,11 +1,11 @@
 export function changeNetwork(requireNetwork) {
   let rpc = {
     0x1: {
-      method: 'wallet_switchEthereumChain',
+      method: "wallet_switchEthereumChain",
       params: [{ chainId: "0x1" }],
     },
     0x3: {
-      method: 'wallet_switchEthereumChain',
+      method: "wallet_switchEthereumChain",
       params: [{ chainId: "0x3" }],
     },
     0x80: {
@@ -43,7 +43,10 @@ export function changeNetwork(requireNetwork) {
           blockExplorerUrls: ["https://bscscan.com//"],
         },
       ],
-    }
+    },
   };
-  window.ethereum.request(rpc[requireNetwork]);
+  if (window.ethereum) window.ethereum.request(rpc[requireNetwork]);
+  else {
+    alert("Change Network not support.\r\nPlease change network your self");
+  }
 }

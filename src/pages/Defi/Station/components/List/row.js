@@ -274,6 +274,7 @@ export default function Row({
                   // m="auto"
                   w="540px"
                   h="60px"
+                  toast={toast}
                 />
                 {network && network !== requireNetwork && (
                   <div className="warning">Wrong, Network!</div>

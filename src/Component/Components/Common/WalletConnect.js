@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
+import { ToastHub, Toast } from "@aragon/ui";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { changeNetwork } from "./utils/Wallets";
 //store
@@ -30,6 +31,7 @@ function ConnectWallet({
   fontsize = "",
   fontClass = "",
   onClick = () => {},
+  toast = () => {},
 }) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [provider, setProvider] = useRecoilState(providerState);
@@ -103,22 +105,30 @@ function ConnectWallet({
       return;
     }
     provider.on("open", async (info) => {
+      toast("Wallet Connected!");
       console.log("info", info);
     });
     provider.on("accountsChanged", async (accounts) => {
       // console.log(accounts);
       setAccount(accounts[0]);
+      toast("Account Changed");
     });
     provider.on("chainChanged", async (chainId) => {
       // console.log(chainId);
       setNetwork(chainId);
+      toast("Chain Id Changed");
     });
     provider.on("disconnect", async (error) => {
       onDisconnect(true);
+      toast("Wallet lose connection.");
     });
   }
   function isChainCorrect() {
     // console.log(network, requireNetwork);
+    if (!window.ethereum) {
+      setNetwork(requireNetwork);
+      return true;
+    }
     return network == requireNetwork;
   }
   async function connect() {

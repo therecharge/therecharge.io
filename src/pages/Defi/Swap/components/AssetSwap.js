@@ -56,7 +56,7 @@ function AssetSwap({ toast }) {
     ["RCG", "(Huobi ECO Chain Network)", RCGht],
     ["RCG", "(Ethereum Network)", RCGeth],
     ["RCG", "(Binance Smart Chain Network)", RCGbnb],
-    ["PiggyCell Point", "(Huobi ECO Chain Network)", FUP],
+    ["PiggyCell Point", "", FUP],
   ];
   const toList1 = [
     ["RCG", "(Ethereum Network)", RCGeth],
