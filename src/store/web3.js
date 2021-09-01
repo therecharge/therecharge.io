@@ -25,5 +25,5 @@ export const networkState = atom({
 });
 export const requireNetworkState = atom({
   key: "requireNetwork",
-  default: 0x3,
+  default: 0x1,
 });
