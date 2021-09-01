@@ -8,7 +8,7 @@ import List from "./components/List";
 function Station(props) {
   const [t] = useTranslation();
   const [params, setParams] = useState({
-    type: "Flexible",
+    type: "Locked",
     isLP: false,
     address: "0x", // useless?
   });
