@@ -17,13 +17,13 @@ function Station(props) {
     let type = window.location.href.split("#")[1];
     setParams({
       ...params,
-      type: type
-    })
-  }
+      type: type,
+    });
+  };
 
   useEffect(() => {
     loadFromMypools();
-  }, [])
+  }, []);
 
   return (
     <Container>
@@ -37,11 +37,15 @@ function Station(props) {
   );
 }
 const Container = styled.div`
-  margin-top: 100px;
+  margin-top: 200px;
   display: flex;
   justify-content: center;
   width: 100vw;
   height: fit-content;
+
+  @media (min-width: 1088px) {
+    margin-top: 100px;
+  }
 `;
 const Content = styled.div`
   display: flex;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { HashLink } from 'react-router-hash-link';
+import { HashLink } from "react-router-hash-link";
 import WalletConnect from "../../../Component/Components/Common/WalletConnect";
 import { ToastHub, Toast } from "@aragon/ui";
 import { useTranslation, withTranslation } from "react-i18next";
@@ -103,7 +103,7 @@ function Gnb({
                 need="2"
                 notConnected="Connect Wallet"
                 wrongNetwork="Change network"
-                m="auto"
+                m="40px auto"
                 w="470px"
                 h="70px"
                 fontsize="20px"
@@ -112,7 +112,11 @@ function Gnb({
           </Toast>
         </ToastHub>
         <div className="dropdown">
-          <div className={sidemenuOpen.about ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"}>
+          <div
+            className={
+              sidemenuOpen.about ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
+            }
+          >
             <HashLink
               to={"/"}
               onClick={() => {
@@ -424,9 +428,12 @@ function Gnb({
               <div
                 className="logo"
                 onClick={() => {
-                  window.open(i18n.language == "en"
-                    ? "https://medium.com/therecharge"
-                    : "https://medium.com/therecharge-kr", "_blank");
+                  window.open(
+                    i18n.language == "en"
+                      ? "https://medium.com/therecharge"
+                      : "https://medium.com/therecharge-kr",
+                    "_blank"
+                  );
                 }}
               >
                 <img src="/footer2.png" />
@@ -450,10 +457,10 @@ function Gnb({
               <div
                 className="logo"
                 onClick={() =>
-                (window.location =
-                  i18n.language == "en"
-                    ? "https://t.me/therecharge_official"
-                    : "https://t.me/therecharge_officialkr")
+                  (window.location =
+                    i18n.language == "en"
+                      ? "https://t.me/therecharge_official"
+                      : "https://t.me/therecharge_officialkr")
                 }
               >
                 <img src="/footer4.png" />

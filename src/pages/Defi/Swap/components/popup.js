@@ -6,15 +6,12 @@ import WalletConnect from "../../../../Component/Components/Common/WalletConnect
 import { fromWei, toWei } from "web3-utils";
 //store
 import { useRecoilState } from "recoil";
-import {
-  web3State,
-  accountState,
-} from "../../../../store/web3";
+import { web3State, accountState } from "../../../../store/web3";
 
 const ERC20_ABI = require("../../../../Component/Desktop/Defi/abis/ERC20ABI.json");
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
-export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
+export default function Popup({ close = () => {}, recipe, setRecipe, toast }) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [account, setAccount] = useRecoilState(accountState);
   const [poolMethods, setPoolMethods] = useState({
@@ -48,7 +45,7 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
 
       let [balance, allowed] = await Promise.all([
         await swapM.balanceOf(account).call(),
-        await swapM.allowance(account, bridgeAddress).call()
+        await swapM.allowance(account, bridgeAddress).call(),
       ]);
       // let balance = await swapM.balanceOf(account).call();
       // let allowed = await swapM.allowance(account, bridgeAddress).call();
@@ -85,7 +82,7 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
         ...poolMethods,
         ...ret,
       });
-      console.log(ret)
+      console.log(ret);
     } catch (err) {
       console.log(err);
       setPoolMethods({
@@ -118,8 +115,8 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
             close();
             setRecipe({
               ...recipe,
-              swapAmount: ""
-            })
+              swapAmount: "",
+            });
           }}
           className="popup-close"
           style={{ position: "absolute", right: "0" }}
@@ -197,7 +194,9 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
           </div>
         </QuickSelect>
         <span className="Roboto_20pt_Regular popup-caution">
-          {`Conversion Fee: ${recipe.conversionFee[recipe.chainId[recipe.to.network]]} ${recipe.from.token}`}
+          {`Conversion Fee: ${
+            recipe.conversionFee[recipe.chainId[recipe.to.network]]
+          } ${recipe.from.token}`}
         </span>
         <div className="wallet">
           <WalletConnect
@@ -212,7 +211,7 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
               if (recipe.swapAmount > 0) {
                 await close();
                 await toast('Please approve "SWAP" in your private wallet');
-                await poolMethods.swap(recipe.swapAmount)
+                await poolMethods.swap(recipe.swapAmount);
               } else {
                 toast("Please enter the amount of Swap");
               }
@@ -220,20 +219,42 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
           />
         </div>
         <InfoContainer>
-          <Info left="Current Redemption Rate" right={`${poolMethods.redemption}%`} />
-          <Info left="Current Conversion Fee" right={`${recipe.conversionFee[recipe.chainId[recipe.to.network]]} ${recipe.from.token}`} />
-          <Info left={`${recipe.from.token} to Swap`} right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${recipe.from.token}`} />
-          <Info left={`${recipe.from.token} to Redeem`} right={`${makeNum(((recipe.swapAmount / 100) * (poolMethods.redemption ? poolMethods.redemption / 100 : 1)).toString())} ${recipe.from.token}`} />
+          <Info
+            left="Current Redemption Rate"
+            right={`${poolMethods.redemption}%`}
+          />
+          <Info
+            left="Current Conversion Fee"
+            right={`${
+              recipe.conversionFee[recipe.chainId[recipe.to.network]]
+            } ${recipe.from.token}`}
+          />
+          <Info
+            left={`${recipe.from.token} to Swap`}
+            right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${
+              recipe.from.token
+            }`}
+          />
+          <Info
+            left={`${recipe.from.token} to Redeem`}
+            right={`${makeNum(
+              (
+                (recipe.swapAmount / 100) *
+                (poolMethods.redemption ? poolMethods.redemption / 100 : 1)
+              ).toString()
+            )} ${recipe.from.token}`}
+          />
           <Info
             left={`Net ${recipe.from.token} to Swap`}
             right={`${makeNum(
               (
                 recipe.swapAmount -
                 (recipe.swapAmount / 100) *
-                (poolMethods.redemption ? poolMethods.redemption / 100 : 1) -
-                (recipe.conversionFee[recipe.chainId[recipe.to.network]])
+                  (poolMethods.redemption ? poolMethods.redemption / 100 : 1) -
+                recipe.conversionFee[recipe.chainId[recipe.to.network]]
               ).toString()
-            )} ${recipe.from.token}`} />
+            )} ${recipe.from.token}`}
+          />
         </InfoContainer>
       </Content>
     </Container>
@@ -247,7 +268,7 @@ function Info({ left, right }) {
       <div className="right Roboto_20pt_Black">{right}</div>
     </ContainerInfo>
   );
-};
+}
 const ContainerInfo = styled.div`
   display: flex;
   color: white;
@@ -268,7 +289,7 @@ function makeNum(str, decimal = 4) {
   else {
     return arr[0] + "." + arr[1].substr(0, decimal);
   }
-};
+}
 const Container = styled.div`
   position: fixed;
   display: flex;
@@ -338,8 +359,32 @@ const Content = styled.div`
     font-weight: bold;
     font-size: 30pt;
     color: white;
-
   }
+  input::-webkit-input-placeholder {
+    text-align: center;
+    font: Roboto, sans-serif;
+    // font-weight: bold;
+    font-size: 25pt;
+    color: white;
+    opacity: 0.5;
+  }
+  input:-ms-input-placeholder {
+    text-align: center;
+    font: Roboto, sans-serif;
+    // font-weight: bold;
+    font-size: 25pt;
+    color: white;
+    opacity: 0.5;
+  }
+  input::placeholder {
+    text-align: center;
+    font: Roboto, sans-serif;
+    // font-weight: bold;
+    font-size: 25pt;
+    color: white;
+    opacity: 0.5;
+  }
+
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -373,7 +418,7 @@ const QuickSelect = styled.div`
   }
   div:hover {
     background-color: #ffffff;
-    span{
+    span {
       color: var(--black-30);
     }
   }

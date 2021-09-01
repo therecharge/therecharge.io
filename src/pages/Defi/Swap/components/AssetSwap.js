@@ -17,7 +17,9 @@ import { ReactComponent as Inactive } from "./assets/swap_arrow_deactive.svg";
 
 function AssetSwap({ toast }) {
   const [t] = useTranslation();
-  const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
+  const [requireNetwork, setRequireNetwork] = useRecoilState(
+    requireNetworkState
+  );
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [recipe, setRecipe] = useState({
     from: {
@@ -71,8 +73,8 @@ function AssetSwap({ toast }) {
   const toList4 = [["RCG", "(Huobi ECO Chain Network)", RCGht]];
 
   useEffect(() => {
-    setRequireNetwork(recipe.chainId[recipe.from.network])
-  }, [])
+    setRequireNetwork(recipe.chainId[recipe.from.network]);
+  }, []);
 
   return (
     <Container>
@@ -100,29 +102,31 @@ function AssetSwap({ toast }) {
           style={
             recipe.from.token === "PiggyCell Point"
               ? {
-                width: "60px",
-                height: "60px",
-                margin: "40px auto",
-                cursor: "not-allowed",
-              }
+                  width: "60px",
+                  height: "60px",
+                  margin: "40px auto",
+                  cursor: "not-allowed",
+                }
               : {
-                width: "60px",
-                height: "60px",
-                margin: "40px auto",
-                cursor: "pointer",
-              }
+                  width: "60px",
+                  height: "60px",
+                  margin: "40px auto",
+                  cursor: "pointer",
+                }
           }
-          onClick={recipe.from.token === "PiggyCell Point"
-            ? () => { }
-            : () => {
-              setRecipe({
-                ...recipe,
-                from: recipe.to,
-                to: recipe.from,
-                swapAmount: "",
-              });
-              setRequireNetwork(recipe.chainId[recipe.to.network]);
-            }}
+          onClick={
+            recipe.from.token === "PiggyCell Point"
+              ? () => {}
+              : () => {
+                  setRecipe({
+                    ...recipe,
+                    from: recipe.to,
+                    to: recipe.from,
+                    swapAmount: "",
+                  });
+                  setRequireNetwork(recipe.chainId[recipe.to.network]);
+                }
+          }
         >
           {recipe.from.token !== "PiggyCell Point" ? <Active /> : <Inactive />}
         </Arrow>
@@ -136,47 +140,48 @@ function AssetSwap({ toast }) {
             recipe.from.index === 0
               ? toList1
               : recipe.from.index === 1
-                ? toList2
-                : recipe.from.index === 2
-                  ? toList3
-                  : recipe.from.index === 3
-                    ? toList4
-                    : []
+              ? toList2
+              : recipe.from.index === 2
+              ? toList3
+              : recipe.from.index === 3
+              ? toList4
+              : []
           }
           title="TO"
         />
-        {recipe.from.token !== "PiggyCell Point"
-          ? <WalletConnect
+        {recipe.from.token !== "PiggyCell Point" ? (
+          <WalletConnect
             need="2"
             bgColor="var(--purple)"
             border="4px solid #9314B2"
             hcolor=""
             notConnected="Connect Wallet for swap"
             wrongNetwork="Change network for swap"
-            m="auto"
+            m="40px auto"
             radius="20px"
             w="540px"
             // h="60px"
-            fontsize="30px"
+            fontsize="20px"
             text="SWAP"
             onClick={() => setPopupOpen(!isPopupOpen)}
           />
-          : <WalletConnect
+        ) : (
+          <WalletConnect
             need="3"
             bgColor="var(--gray-30)"
             border="none"
             hcolor=""
             notConnected="Not supported yet"
             wrongNetwork="Not supported yet"
-            m="auto"
+            m="40px auto"
             radius="20px"
             w="540px"
             // h="60px"
-            fontsize="30px"
+            fontsize="20px"
             text="SWAP"
             disable={true}
           />
-        }
+        )}
       </Content>
     </Container>
   );
@@ -195,13 +200,12 @@ const Container = styled.div`
     height: 670px;
     margin: 0px 0px 0px 20px;
   }
-  
 `;
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 70vh;
+  height: fit-content;
   margin: 40px 40px 40px 40px;
 
   @media (min-width: 1088px) {
@@ -212,8 +216,8 @@ const Content = styled.div`
 const Arrow = styled.div`
   display: flex;
 
-  &:hover{
-    border-radius : 5px;
+  &:hover {
+    border-radius: 5px;
     box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
   }
 `;

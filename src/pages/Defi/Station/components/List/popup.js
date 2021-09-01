@@ -6,12 +6,12 @@ import { async } from "@aragon/ui/dist/ToastHub";
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
 export default function Popup({
-  close = () => { },
+  close = () => {},
   name,
   apy,
   info,
   poolMethods,
-  toast
+  toast,
 }) {
   const [plAmount, setPlAmount] = useState("");
 
@@ -30,18 +30,16 @@ export default function Popup({
         />
         <div className="group1">
           <span className="Roboto_40pt_Black popup-title">STAKING</span>
-          <span className="Roboto_30pt_Regular popup-name">
-            {name}
-          </span>
-          <span className="Roboto_30pt_Regular popup-apy">
-            {apy} %
-          </span>
+          <span className="Roboto_30pt_Regular popup-name">{name}</span>
+          <span className="Roboto_30pt_Regular popup-apy">{apy} %</span>
           <span className="Roboto_20pt_Regular popup-available">
             Available:{" "}
-            {`${makeNum((poolMethods.available - plAmount).toString())} ${info.symbol[0]}`}
+            {`${makeNum((poolMethods.available - plAmount).toString())} ${
+              info.symbol[0]
+            }`}
           </span>
           <input
-            className="popup-input"
+            className="Roboto_20pt_Regular popup-input"
             type="number"
             placeholder="Enter the amount of stake"
             value={plAmount}
@@ -113,15 +111,25 @@ export default function Popup({
               } else {
                 toast("Please enter the amount of Staking");
               }
-
             }}
           />
         </div>
         <InfoContainer>
-          <Info left="Current Redemption Rate" right={`${info.redemtion / 100} %`} />
+          <Info
+            left="Current Redemption Rate"
+            right={`${info.redemtion / 100} %`}
+          />
           <Info left="RCG to Stake" right={`${plAmount} RCG`} />
-          <Info left="RCG to Redeem" right={`${makeNum(plAmount * 2 / 100)} RCG`} />
-          <Info left="Net RCG to Stake" right={`${makeNum(plAmount - (plAmount * 2 / 100))} RCG`} />
+          <Info
+            left="RCG to Redeem"
+            right={`${makeNum((plAmount * info.redemtion) / 100 / 100)} RCG`}
+          />
+          <Info
+            left="Net RCG to Stake"
+            right={`${makeNum(
+              plAmount - (plAmount * info.redemtion) / 100 / 100
+            )} RCG`}
+          />
         </InfoContainer>
       </Content>
     </Container>
@@ -226,6 +234,31 @@ const Content = styled.div`
     font-size: 30pt;
     color: white;
   }
+
+  input::-webkit-input-placeholder {
+    text-align: center;
+    font: Roboto, sans-serif;
+    // font-weight: bold;
+    font-size: 25pt;
+    color: white;
+    opacity: 0.5;
+  }
+  input:-ms-input-placeholder {
+    text-align: center;
+    font: Roboto, sans-serif;
+    // font-weight: bold;
+    font-size: 25pt;
+    color: white;
+    opacity: 0.5;
+  }
+  input::placeholder {
+    text-align: center;
+    font: Roboto, sans-serif;
+    // font-weight: bold;
+    font-size: 25pt;
+    color: white;
+    opacity: 0.5;
+  }
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -259,11 +292,10 @@ const QuickSelect = styled.div`
   }
   div:hover {
     background-color: #ffffff;
-    span{
+    span {
       color: var(--black-30);
     }
   }
-
 `;
 const InfoContainer = styled.div`
   display: flex;

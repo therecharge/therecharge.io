@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Language from "../../Components/Desktop/Language";
-import { HashLink } from 'react-router-hash-link';
+import { HashLink } from "react-router-hash-link";
 import WalletConnect from "../../../Component/Components/Common/WalletConnect";
 import { useRecoilState } from "recoil";
 import {
@@ -24,8 +24,6 @@ function Gnb() {
 
   // const homeSection = useScrollSection('home');
   // const aboutSection = useScrollSection('about');
-
-
 
   const listener = (e) => {
     if (window.scrollY > 0) {
@@ -222,7 +220,7 @@ function Gnb() {
                 }}
               >
                 <div>
-                  <a style={{ fontWeight: '600' }}>Station</a>
+                  <a style={{ fontWeight: "600" }}>Station</a>
                 </div>
               </HashLink>
               <HashLink
@@ -233,7 +231,7 @@ function Gnb() {
                   setModalSwapOpen(false);
                 }}
               >
-                <div style={{ marginLeft: '10px' }}>
+                <div style={{ marginLeft: "10px" }}>
                   <a>Charging Station</a>
                 </div>
               </HashLink>
@@ -245,7 +243,7 @@ function Gnb() {
                   setModalSwapOpen(false);
                 }}
               >
-                <div style={{ marginLeft: '10px' }}>
+                <div style={{ marginLeft: "10px" }}>
                   <a>Recharge Swap</a>
                 </div>
               </HashLink>
@@ -309,7 +307,10 @@ function Gnb() {
                 <a
                   style={{ cursor: "pointer" }}
                   onClick={() => {
-                    window.open("https://www.certik.org/projects/therecharge", "_blank")
+                    window.open(
+                      "https://www.certik.org/projects/therecharge",
+                      "_blank"
+                    );
                     setModalPoolOpen(false);
                     setModalPool2Open(false);
                     setModalSwapOpen(false);
@@ -358,15 +359,14 @@ function Gnb() {
               </div>
             </div>
           </div>
-
         </Nav>
         <Language />
         <WalletConnectContainer>
-
           <WalletConnect
             need="2"
             notConnected="Connect Wallet"
             wrongNetwork="Change network"
+            w="300px"
             h="40px"
             fontsize="20px"
             fontClass="Roboto_20pt_Light"

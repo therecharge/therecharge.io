@@ -4,10 +4,10 @@ export default function Image({ params }) {
       src={
         params.type === "Locked"
           ? params.isLP
-            ? "/ic_lockedstaking_lp.svg"
+            ? "/ic_lockedstaking_lp.png"
             : "/ic_lockedstaking.svg"
           : params.isLP
-          ? "/ic_flexiblestaking_lp.svg"
+          ? "/ic_flexiblestaking_lp.png"
           : "/ic_flexiblestaking.svg"
       }
     />

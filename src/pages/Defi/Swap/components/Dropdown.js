@@ -18,31 +18,73 @@ export default function Dropdown({
   unselectedList,
 }) {
   const [open, setOpen] = useState(false);
-  const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
+  const [requireNetwork, setRequireNetwork] = useRecoilState(
+    requireNetworkState
+  );
 
   return (
     <Container>
       <Title className="Roboto_30pt_Black">{title}</Title>
-      <List style={open ? { borderRadius: "20px 20px 0px 0px", } : { borderRadius: "20px" }} >
-        <Selected style={open
-          ? { borderRadius: "20px 20px 0px 0px", border: "1px solid #9314B2", padding: "18px 0px" }
-          : { borderRadius: "20px" }}
-          onClick={() => setOpen(!open)}>
-          <div className="img"
-          // style={open ? { marginLeft: "39px" } : {}}
+      <List
+        style={
+          open
+            ? window.innerWidth < 1088
+              ? {
+                  borderRadius: "20px 20px 0px 0px",
+                  border: "1px solid #9314B2",
+                }
+              : { borderRadius: "20px 20px 0px 0px" }
+            : { borderRadius: "20px" }
+        }
+      >
+        <Selected
+          style={
+            open
+              ? window.innerWidth >= 1088
+                ? {
+                    borderRadius: "20px 20px 0px 0px",
+                    border: "1px solid #9314B2",
+                    padding: "18px 0px",
+                  }
+                : {
+                    borderRadius: "20px 20px 0px 0px",
+                    padding: "18px 0px",
+                  }
+              : { borderRadius: "20px" }
+          }
+          onClick={() => setOpen(!open)}
+        >
+          <div
+            className="img"
+            // style={open ? { marginLeft: "39px" } : {}}
           >
             <Image style={{ width: "100%", height: "100%" }} />
           </div>
           <Coin>
-            <Upside className={window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Bold"}>{symbol}</Upside>
+            <Upside
+              className={
+                window.innerWidth > 1088
+                  ? "Roboto_25pt_Black"
+                  : "Roboto_30pt_Bold"
+              }
+            >
+              {symbol}
+            </Upside>
             <Downside className="Roboto_15pt_Regular">{network}</Downside>
           </Coin>
           <Btn>{open ? <Close fill="white" /> : <Open fill="white" />}</Btn>
         </Selected>
         {open ? <Line /> : <></>}
-        <ListContainer style={open
-          ? { borderRadius: "0px 0px 20px 20px", border: "1px solid #9314B2" }
-          : { borderRadius: "20px" }}>
+        <ListContainer
+          style={
+            open
+              ? {
+                  borderRadius: "0px 0px 20px 20px",
+                  border: "1px solid #9314B2",
+                }
+              : { borderRadius: "20px" }
+          }
+        >
           {open &&
             unselectedList.map((token, i) => {
               let direction = title.toLowerCase();
@@ -51,31 +93,31 @@ export default function Dropdown({
                 let Image = token[2];
                 switch (recipe[direction].index) {
                   case 0:
-                    j = i - 1
+                    j = i - 1;
                     break;
                   case 1:
-                    if (i > 0) j = i - 1
-                    else j = i
+                    if (i > 0) j = i - 1;
+                    else j = i;
                     break;
                   case 2:
-                    if (i === 3) j = 2
-                    else j = i
+                    if (i === 3) j = 2;
+                    else j = i;
                     break;
                   default:
-                    j = i
+                    j = i;
                     break;
                 }
                 return (
                   <UnSelected
                     style={{
                       cursor: "pointer",
-                      backgroundColor:
-                        (j % 2) !== 0
-                          ? "#35374B"
-                          : "#1C1E35",
+                      backgroundColor: j % 2 !== 0 ? "#35374B" : "#1C1E35",
                       borderRadius:
-                        direction === "to" && j === 0 ? "0px 0px 20px 20px" :
-                          j === 2 ? "0px 0px 20px 20px" : "0px"
+                        direction === "to" && j === 0
+                          ? "0px 0px 20px 20px"
+                          : j === 2
+                          ? "0px 0px 20px 20px"
+                          : "0px",
                     }}
                     // 글로벌 상태 requiredNetwork 설정 필요
                     onClick={() => {
@@ -222,20 +264,20 @@ const Btn = styled.div`
   }
 `;
 const Line = styled.div`
-  height: 3px;
+  height: 1px;
   position: absolute;
   left: 1px;
-  top: 158px;
+  top: 161px;
   z-index: 2;
   width: calc(100% - 2px);
-  background-color: #1C1E35;
-  
+  background-color: #1c1e35;
+
   @media (min-width: 1088px) {
-    top: 98px;
+    top: 100px;
     left: 2px;
     width: calc(100% - 3px);
   }
-`
+`;
 const ListContainer = styled.div`
   position: absolute;
   left: 0;

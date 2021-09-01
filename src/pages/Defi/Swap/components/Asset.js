@@ -147,6 +147,7 @@ function Asset({ setParams }) {
               text="PLUG-IN"
               m="auto"
               w=""
+              fontsize="20px"
             />
           </List>
         )}
