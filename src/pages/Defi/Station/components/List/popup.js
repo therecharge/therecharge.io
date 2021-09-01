@@ -19,120 +19,124 @@ export default function Popup({
     setPlAmount(makeNum((poolMethods.available / 100) * x));
   };
   return (
-    <Container>
-      <Content>
-        <PopupClose
-          onClick={() => {
-            close();
-            setPlAmount("");
-          }}
-          className="popup-close"
-        />
-        <div className="group1">
-          <span className="Roboto_40pt_Black popup-title">STAKING</span>
-          <span className="Roboto_30pt_Regular popup-name">{name}</span>
-          <span className="Roboto_30pt_Regular popup-apy">{apy} %</span>
-          <span className="Roboto_20pt_Regular popup-available">
-            Available:{" "}
-            {`${makeNum((poolMethods.available - plAmount).toString())} ${
-              info.symbol[0]
-            }`}
-          </span>
-          <input
-            className="Roboto_20pt_Regular popup-input"
-            type="number"
-            placeholder="Enter the amount of stake"
-            value={plAmount}
-            onChange={(e) => {
-              if (Number(e.target.value) < 0) {
-                return setPlAmount("0");
-              } else if (poolMethods.available >= Number(e.target.value)) {
-                return setPlAmount(makeNum(e.target.value, 8));
-              } else {
-                return setPlAmount(makeNum(poolMethods.available));
-              }
+    <Background>
+      <Container>
+        <Content>
+          <PopupClose
+            onClick={() => {
+              close();
+              setPlAmount("");
             }}
+            className="popup-close"
           />
-        </div>
-        <QuickSelect>
-          <div
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              SetPercent(25);
-            }}
-          >
-            <span className="Roboto_20pt_Regular">25%</span>
+          <div className="group1">
+            <span className="Roboto_40pt_Black popup-title">STAKING</span>
+            <span className="Roboto_30pt_Regular popup-name">{name}</span>
+            <span className="Roboto_30pt_Regular popup-apy">{apy} %</span>
+            <span className="Roboto_20pt_Regular popup-available">
+              Available:{" "}
+              {`${makeNum((poolMethods.available - plAmount).toString())} ${
+                info.symbol[0]
+              }`}
+            </span>
+            <input
+              className="Roboto_20pt_Regular popup-input"
+              type="number"
+              placeholder="Enter the amount of stake"
+              value={plAmount}
+              onChange={(e) => {
+                if (Number(e.target.value) < 0) {
+                  return setPlAmount("0");
+                } else if (poolMethods.available >= Number(e.target.value)) {
+                  return setPlAmount(makeNum(e.target.value, 8));
+                } else {
+                  return setPlAmount(makeNum(poolMethods.available));
+                }
+              }}
+            />
           </div>
-          <div
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              SetPercent(50);
-            }}
-          >
-            <span className="Roboto_20pt_Regular">50%</span>
-          </div>
-          <div
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              SetPercent(75);
-            }}
-          >
-            <span className="Roboto_20pt_Regular">75%</span>
-          </div>
-          <div
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              SetPercent(100);
-            }}
-          >
-            <span className="Roboto_20pt_Regular">MAX</span>
-          </div>
-        </QuickSelect>
-        <span className="Roboto_20pt_Regular popup-caution">
-          {`Caution!: Recharge transaction, regardless of mainnet type
+          <QuickSelect>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                SetPercent(25);
+              }}
+            >
+              <span className="Roboto_20pt_Regular">25%</span>
+            </div>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                SetPercent(50);
+              }}
+            >
+              <span className="Roboto_20pt_Regular">50%</span>
+            </div>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                SetPercent(75);
+              }}
+            >
+              <span className="Roboto_20pt_Regular">75%</span>
+            </div>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                SetPercent(100);
+              }}
+            >
+              <span className="Roboto_20pt_Regular">MAX</span>
+            </div>
+          </QuickSelect>
+          <span className="Roboto_20pt_Regular popup-caution">
+            {`Caution!: Recharge transaction, regardless of mainnet type
           will incur ${info.redemtion / 100}% of carbon redemption.`}
-        </span>
-        <div className="wallet">
-          <WalletConnect
-            need="2"
-            bgColor="#9314B2"
-            hcolor=""
-            border="3px solid #9314B2"
-            w="540px"
-            radius="20px"
-            notConnected="Connect Wallet for PLUG-IN"
-            wrongNetwork="Change network for PLUG-IN"
-            text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
-            onClick={async () => {
-              if (plAmount > 0) {
-                await close();
-                await toast('Please approve "PLUG-IN" in your private wallet');
-                await poolMethods.stake(plAmount);
-              } else {
-                toast("Please enter the amount of Staking");
-              }
-            }}
-          />
-        </div>
-        <InfoContainer>
-          <Info
-            left="Current Redemption Rate"
-            right={`${info.redemtion / 100} %`}
-          />
-          <Info left="RCG to Stake" right={`${plAmount} RCG`} />
-          <Info
-            left="RCG to Redeem"
-            right={`${makeNum((plAmount * info.redemtion) / 100 / 100)} RCG`}
-          />
-          <Info
-            left="Net RCG to Stake"
-            right={`${makeNum(
-              plAmount - (plAmount * info.redemtion) / 100 / 100
-            )} RCG`}
-          />
-        </InfoContainer>
-      </Content>
-    </Container>
+          </span>
+          <div className="wallet">
+            <WalletConnect
+              need="2"
+              bgColor="#9314B2"
+              hcolor=""
+              border="3px solid #9314B2"
+              w="540px"
+              radius="20px"
+              notConnected="Connect Wallet for PLUG-IN"
+              wrongNetwork="Change network for PLUG-IN"
+              text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
+              onClick={async () => {
+                if (plAmount > 0) {
+                  await close();
+                  await toast(
+                    'Please approve "PLUG-IN" in your private wallet'
+                  );
+                  await poolMethods.stake(plAmount);
+                } else {
+                  toast("Please enter the amount of Staking");
+                }
+              }}
+            />
+          </div>
+          <InfoContainer>
+            <Info
+              left="Current Redemption Rate"
+              right={`${info.redemtion / 100} %`}
+            />
+            <Info left="RCG to Stake" right={`${plAmount} RCG`} />
+            <Info
+              left="RCG to Redeem"
+              right={`${makeNum((plAmount * info.redemtion) / 100 / 100)} RCG`}
+            />
+            <Info
+              left="Net RCG to Stake"
+              right={`${makeNum(
+                plAmount - (plAmount * info.redemtion) / 100 / 100
+              )} RCG`}
+            />
+          </InfoContainer>
+        </Content>
+      </Container>
+    </Background>
   );
 }
 
@@ -165,6 +169,17 @@ function makeNum(str, decimal = 4) {
     return arr[0] + "." + arr[1].substr(0, decimal);
   }
 }
+const Background = styled.div`
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--midnight);
+  z-index: 2;
+`;
+
 const Container = styled.div`
   position: fixed;
   display: flex;
@@ -174,14 +189,19 @@ const Container = styled.div`
   top: 100px;
   padding: 80px;
   overflow: auto;
-  padding-bottom: 180px;
+  padding-bottom: 20px;
   background-color: black;
 
   @media (min-width: 1088px) {
-    width: 1088px;
-    heigh: 818px;
+    position: absolute;
+    border: 1px solid var(--black-20);
+    border-radius: 20px;
+    width: 714px;
+    height: fit-content;
+    border: 1px solid var(--black-20);
     top: 100px;
-    left: auto;
+    left: 50%;
+    transform: translate(-50%, 0%);
   }
 
   .group1 {
@@ -307,6 +327,6 @@ const InfoContainer = styled.div`
 
   @media (min-width: 1088px) {
     width: 540px;
-    margin: 80px auto;
+    margin: 20px auto;
   }
 `;

@@ -94,7 +94,7 @@ function ConnectWallet({
     // }
   }
   function onClickEvent() {
-    if (onClick.toString().length < 30) onDisconnect();
+    if (onClick.toString().length < 10) onDisconnect();
     else onClick();
   }
 

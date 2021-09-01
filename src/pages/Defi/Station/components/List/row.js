@@ -26,15 +26,17 @@ const POOL_ABI = require("../../../../../Component/Desktop/Defi/abis/poolABI.jso
 export default function Row({
   status = "Inactive",
   name = "Charger No.000000",
-  apy = "10000.00%",
+  apy = "- %",
   info,
   params,
-  toast
+  toast,
 }) {
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
-  const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
+  const [requireNetwork, setRequireNetwork] = useRecoilState(
+    requireNetworkState
+  );
   // const [onLoading, setOnLoading] = useState(false);
   const [isOpen, setOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
@@ -55,23 +57,33 @@ export default function Row({
   });
   const [userInfo, setUserInfo] = useState({
     address: "0x00",
-    balance: "0",
-    reward: "0",
+    balance: "-",
+    reward: "-",
     allowance: "0",
-    share: 0,
-    tvl: 0,
-    apy: 0
+    share: "-",
+    tvl: "-",
+    apy: "-",
   });
+
+  const loading_data = {
+    address: "0x00",
+    balance: "-",
+    reward: "-",
+    allowance: "0",
+    share: "-",
+    tvl: "-",
+    apy: "-",
+  };
 
   const loadUserInfo = async () => {
     let ret = {
       address: "0x00",
-      balance: "0",
-      reward: "0",
+      balance: "-",
+      reward: "-",
       allowance: "0",
-      share: 0,
-      tvl: 0,
-      apy: 0
+      share: "-",
+      tvl: "-",
+      apy: "-",
     };
     if (account && info) {
       try {
@@ -83,7 +95,7 @@ export default function Row({
           balance: weiToEther(data.account.balance),
           reward: weiToEther(data.account.reward),
           tvl: data.tvl,
-          apy: data.apy
+          apy: data.apy,
         };
       } catch (err) {
         console.log(err);
@@ -134,7 +146,7 @@ export default function Row({
 
     setPoolMethods({
       ...poolMethods,
-      ...ret
+      ...ret,
     });
     return ret;
   };
@@ -144,8 +156,8 @@ export default function Row({
     if (account && isOpen) {
       await Promise.all([
         loadUserInfo(),
-        loadMethods(info.token[0], info.token[1], info.address)
-      ])
+        loadMethods(info.token[0], info.token[1], info.address),
+      ]);
     }
   };
 
@@ -167,27 +179,37 @@ export default function Row({
         return () => clearInterval(id);
       }
     }, [delay]);
-
   };
 
   useInterval(() => updateChargerInfoList(), 10000);
 
   useEffect(() => {
     if (!account) return;
-    if (isOpen)
-      loadUserInfo();
+    if (isOpen) loadUserInfo();
   }, [account, isOpen]);
+
+  useEffect(async () => {
+    setUserInfo(loading_data);
+    try {
+      await loadUserInfo();
+    } catch (err) {
+      console.log(err);
+    }
+  }, [params]);
 
   useEffect(() => {
     if (info.address === "0x0") return;
-    if (isOpen && account) loadMethods(info.token[0], info.token[1], info.address);
+    if (isOpen && account)
+      loadMethods(info.token[0], info.token[1], info.address);
   }, [isOpen]);
 
   return (
     <Container>
       {isPopupOpen && (
         <Popup
-          close={() => { setPopupOpen(false) }}
+          close={() => {
+            setPopupOpen(false);
+          }}
           name={name}
           apy={apy}
           info={info}
@@ -207,125 +229,110 @@ export default function Row({
         <Apy status={status} apy={apy} />
         <Btn status={status} isOpen={isOpen} />
       </Title>
-      {isOpen && <Menu>
-        <div className="part">
-          <PoolInfo className="innerMenu">
-            <Info left="APY" right={`${!account ? apy : userInfo.apy} %`} />
-            <Info left="TVL" right={`${!account ? info.tvl : userInfo.tvl} ${info.symbol[0]}`} />
-            <Info left="LIMIT" right="UNLIMITED" />
-          </PoolInfo>
-          {(account && network == requireNetwork) ? (
-            <UserInfo account={account} className="innerMenu">
+      {isOpen && (
+        <Menu>
+          <div className="part">
+            <PoolInfo className="innerMenu">
+              <Info left="APY" right={`${!account ? apy : userInfo.apy} %`} />
               <Info
-                className="hide"
-                left="MY BAL"
-                right={`${makeNum(userInfo.balance)} ${info ? info.symbol[0] : ""}`}
+                left="TVL"
+                right={`${!account ? info.tvl : userInfo.tvl} ${
+                  info.symbol[0]
+                }`}
               />
-              <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
-              <Info
-                left="Reward"
-                right={`${makeNum(userInfo.reward)} ${info ? info.symbol[1] : ""}`}
-              />
-            </UserInfo>) : (
-            <UserInfo className="innerMenu" style={{
-              alignItems: "center",
-              justifyContent: "center"
-            }}>
-              <WalletConnect
-                need="2"
-                notConnected="Connect Wallet for data"
-                wrongNetwork="Change network for data"
-                // m="auto"
-                w="540px"
-                h="60px"
-              />
-              {(network && network !== requireNetwork) &&
-                <div className="warning">
-                  Wrong, Network!
-                </div>}
-            </UserInfo>
-          )}
-        </div>
-        <Pannel className="innerMenu">
-          <Info
-            direction="column"
-            left="Period"
-            right={info ? info.timeStamp + "(GMT)" : ""}
-          />
+              <Info left="LIMIT" right="UNLIMITED" />
+            </PoolInfo>
+            {account && network == requireNetwork ? (
+              <UserInfo account={account} className="innerMenu">
+                <Info
+                  className="hide"
+                  left="MY BAL"
+                  right={`${makeNum(userInfo.balance)} ${
+                    info ? info.symbol[0] : ""
+                  }`}
+                />
+                <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
+                <Info
+                  left="Reward"
+                  right={`${makeNum(userInfo.reward)} ${
+                    info ? info.symbol[1] : ""
+                  }`}
+                />
+              </UserInfo>
+            ) : (
+              <UserInfo
+                className="innerMenu"
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <WalletConnect
+                  need="2"
+                  notConnected="Connect Wallet for data"
+                  wrongNetwork="Change network for data"
+                  // m="auto"
+                  w="540px"
+                  h="60px"
+                />
+                {network && network !== requireNetwork && (
+                  <div className="warning">Wrong, Network!</div>
+                )}
+              </UserInfo>
+            )}
+          </div>
+          <Pannel className="innerMenu">
+            <Info
+              direction="column"
+              left="Period"
+              right={info ? info.timeStamp + "(GMT)" : ""}
+            />
 
-          <Wallets>
-            <WalletConnect
-              need={userInfo.address == "0x00" ? "3" : "2"}
-              disable={userInfo.address == "0x00" ? true : false}
-              bgColor={status === "Active" ? "var(--purple)" : "var(--gray-30)"}
-              border=""
-              hcolor=""
-              radius="20px"
-              w="540px"
-              fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
-              notConnected="Connect Wallet for PLUG-IN"
-              wrongNetwork="Change network for PLUG-IN"
-              text={userInfo.allowance !== "0" ? "PLUG-IN" : userInfo.address == "0x00" ? "Now Loading" : "APPROVE"} //어프로브 안되어 있으면 APPROVE로 대체 필요함.
-              onClick={async () => {
-                if (status === "Inactive") {
-                  toast("This pool is inactive");
-                } else if (status === "Active") {
-                  if (userInfo.allowance == "0") {
-                    poolMethods.approve();
+            <Wallets>
+              <WalletConnect
+                need={userInfo.address == "0x00" ? "3" : "2"}
+                disable={userInfo.address == "0x00" ? true : false}
+                bgColor={
+                  status === "Active" ? "var(--purple)" : "var(--gray-30)"
+                }
+                border=""
+                hcolor=""
+                radius="20px"
+                w="540px"
+                fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
+                notConnected="Connect Wallet for PLUG-IN"
+                wrongNetwork="Change network for PLUG-IN"
+                text={
+                  userInfo.allowance !== "0"
+                    ? "PLUG-IN"
+                    : userInfo.address == "0x00"
+                    ? "Now Loading"
+                    : "APPROVE"
+                } //어프로브 안되어 있으면 APPROVE로 대체 필요함.
+                onClick={async () => {
+                  if (status === "Inactive") {
+                    toast("This pool is inactive");
+                  } else if (status === "Active") {
+                    if (userInfo.allowance == "0") {
+                      poolMethods.approve();
+                    } else {
+                      setPopupOpen(!isPopupOpen);
+                    }
                   } else {
-                    setPopupOpen(!isPopupOpen);
-                    await toast(
-                      userInfo.allowance > 0
-                        ? 'Please approve "PLUG-IN" in your private wallet'
-                        : 'Please approve "Transfer Limit" in your private wallet'
-                    );
-                    // } else alert("Please enter the amount of Staking")
-                    toast("Please enter the amount of Staking");
+                    toast("This pool is closed");
                   }
-                } else {
-                  toast("This pool is closed");
-                }
-              }}
-            />
-            <WalletConnect
-              need="0"
-              disable={true}
-              bgColor={!account
-                ? "var(--gray-30)"
-                : status === "Inactive"
-                  ? "var(--gray-30)"
-                  : userInfo.reward > 0
-                    ? "var(--yellow)"
-                    : "var(--gray-30)"
-              }
-              border=""
-              hcolor=""
-              radius="20px"
-              w="540px"
-              fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
-              text="GET FILLED"
-              onClick={async () => {
-                if (!account) {
-                  toast("Please connect to wallet");
-                } else if (status === "Inactive") {
-                  toast("This pool is inactive");
-                } else if (userInfo.reward > 0) {
-                  poolMethods.earn();
-                  await toast(
-                    'Please approve "GET FILLED" in your private wallet'
-                  );
-                } else {
-                  toast("There is no withdrawable amount");
-                }
-              }}
-            />
-            {params.type === "Flexible" ? (
+                }}
+              />
               <WalletConnect
                 need="0"
                 disable={true}
                 bgColor={
-                  userInfo.balance > 0
-                    ? "var(--ultramarine-blue)"
+                  !account
+                    ? "var(--gray-30)"
+                    : status === "Inactive"
+                    ? "var(--gray-30)"
+                    : userInfo.reward > 0
+                    ? "var(--yellow)"
                     : "var(--gray-30)"
                 }
                 border=""
@@ -333,55 +340,86 @@ export default function Row({
                 radius="20px"
                 w="540px"
                 fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
-                text="UNPLUG"
+                text="GET FILLED"
                 onClick={async () => {
                   if (!account) {
                     toast("Please connect to wallet");
-                  } else if (userInfo.balance > 0) {
-                    poolMethods.exit();
+                  } else if (status === "Inactive") {
+                    toast("This pool is inactive");
+                  } else if (userInfo.reward > 0) {
+                    poolMethods.earn();
                     await toast(
-                      'Please approve "UNPLUG" in your private wallet'
+                      'Please approve "GET FILLED" in your private wallet'
                     );
                   } else {
                     toast("There is no withdrawable amount");
                   }
                 }}
               />
-            ) : (<WalletConnect
-              need="0"
-              disable={true}
-              bgColor={status === "Inactive" && userInfo.balance > 0
-                ? "var(--ultramarine-blue)"
-                : "var(--gray-30)"
-              }
-              border=""
-              hcolor=""
-              radius="20px"
-              w="540px"
-              fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
-              text="UNPLUG"
-              onClick={async () => {
-                // Locked인 경우에, period가 종료된 이후에 출금할 수 있음
-                if (!account) {
-                  toast("Please connect to wallet");
-                } else if (status === "Inactive") {
-                  if (userInfo.balance > 0) {
-                    poolMethods.exit();
-                    await toast(
-                      'Please approve "UNPLUG" in your private wallet'
-                    );
+              {params.type === "Flexible" ? (
+                <WalletConnect
+                  need="0"
+                  disable={true}
+                  bgColor={
+                    userInfo.balance > 0
+                      ? "var(--ultramarine-blue)"
+                      : "var(--gray-30)"
                   }
-                  else toast("There is no withdrawable amount");
-                } else {
-                  toast("Please try after the pool service period ends")
-                }
-              }}
-            />
-            )}
-          </Wallets>
-        </Pannel>
-      </Menu>
-      }
+                  border=""
+                  hcolor=""
+                  radius="20px"
+                  w="540px"
+                  fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
+                  text="UNPLUG"
+                  onClick={async () => {
+                    if (!account) {
+                      toast("Please connect to wallet");
+                    } else if (userInfo.balance > 0) {
+                      poolMethods.exit();
+                      await toast(
+                        'Please approve "UNPLUG" in your private wallet'
+                      );
+                    } else {
+                      toast("There is no withdrawable amount");
+                    }
+                  }}
+                />
+              ) : (
+                <WalletConnect
+                  need="0"
+                  disable={true}
+                  bgColor={
+                    status === "Inactive" && userInfo.balance > 0
+                      ? "var(--ultramarine-blue)"
+                      : "var(--gray-30)"
+                  }
+                  border=""
+                  hcolor=""
+                  radius="20px"
+                  w="540px"
+                  fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
+                  text="UNPLUG"
+                  onClick={async () => {
+                    // Locked인 경우에, period가 종료된 이후에 출금할 수 있음
+                    if (!account) {
+                      toast("Please connect to wallet");
+                    } else if (status === "Inactive") {
+                      if (userInfo.balance > 0) {
+                        poolMethods.exit();
+                        await toast(
+                          'Please approve "UNPLUG" in your private wallet'
+                        );
+                      } else toast("There is no withdrawable amount");
+                    } else {
+                      toast("Please try after the pool service period ends");
+                    }
+                  }}
+                />
+              )}
+            </Wallets>
+          </Pannel>
+        </Menu>
+      )}
     </Container>
   );
 }
@@ -411,7 +449,12 @@ function Name({ status, name }) {
     if (status != "Active") return "var(--gray-30)";
   }
   return (
-    <p className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"} name`} style={{ color: color() }}>
+    <p
+      className={`${
+        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+      } name`}
+      style={{ color: color() }}
+    >
       {name}
     </p>
   );
@@ -426,7 +469,12 @@ function Apy({ status, apy }) {
     return "var(--yellow)";
   }
   return (
-    <p className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"} apy`} style={{ color: color() }}>
+    <p
+      className={`${
+        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+      } apy`}
+      style={{ color: color() }}
+    >
       {status != "Inactive" ? (apy == "9999+" ? "9999+" : apy) + "%" : "-"}
     </p>
   );
@@ -451,7 +499,7 @@ function makeNum(str, decimal = 4) {
   else {
     return arr[0] + "." + arr[1].substr(0, decimal);
   }
-};
+}
 const weiToEther = (wei) => {
   return fromWei(wei, "ether");
 };
@@ -462,8 +510,6 @@ const Container = styled.div`
   max-width: 1088px;
   min-height: 120px;
   background-color: #1c1e35;
-
-  
 
   margin-bottom: 20px;
   border-radius: 10px;
@@ -498,10 +544,10 @@ const Title = styled.div`
   width: 100%;
   height: 120px;
 
-  &:hover{
+  &:hover {
     border-radius: 10px;
     background-color: var(--black-20);
-   }
+  }
 `;
 const Menu = styled.div`
   // margin-top: -20px;
@@ -537,7 +583,7 @@ const PoolInfo = styled.div`
 `;
 const UserInfo = styled.div`
   display: flex;
-  position: ${props => props.account ? "inherit" : "relative"};
+  position: ${(props) => (props.account ? "inherit" : "relative")};
   gap: 8px;
   flex-direction: column;
   justify-content: space-between;

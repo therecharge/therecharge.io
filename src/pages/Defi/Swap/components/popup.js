@@ -108,156 +108,160 @@ export default function Popup({ close = () => {}, recipe, setRecipe, toast }) {
   }, [account, recipe.to.network]);
 
   return (
-    <Container>
-      <Content>
-        <PopupClose
-          onClick={() => {
-            close();
-            setRecipe({
-              ...recipe,
-              swapAmount: "",
-            });
-          }}
-          className="popup-close"
-          style={{ position: "absolute", right: "0" }}
-        />
-        <div className="group1">
-          <span className="Roboto_40pt_Black popup-title">SWAP</span>
-          <div className="popup-image">
-            <FromImg style={{ height: "80px", width: "80px" }} />
-            <PopupArrow style={{ height: "16px", width: "30px" }} />
-            <ToImg style={{ height: "80px", width: "80px" }} />
-          </div>
-          <label>
-            Available:
-            {` ${makeNum(
-              (poolMethods.available - Number(recipe.swapAmount)).toString()
-            )} ${recipe.from.token}`}
-          </label>
-          <input
-            className="popup-input"
-            type="number"
-            placeholder="Enter the amount of swap"
-            value={recipe.swapAmount}
-            onChange={(e) => {
-              if (Number(e.target.value) < 0) {
-                return setRecipe({
-                  ...recipe,
-                  swapAmount: "0",
-                });
-              }
-              if (poolMethods.available - Number(e.target.value) >= 0) {
-                return setRecipe({
-                  ...recipe,
-                  swapAmount: makeNum(e.target.value),
-                });
-              }
+    <Background>
+      <Container>
+        <Content>
+          <PopupClose
+            onClick={() => {
+              close();
               setRecipe({
                 ...recipe,
-                swapAmount: makeNum(poolMethods.available),
+                swapAmount: "",
               });
             }}
+            className="popup-close"
+            style={{ position: "absolute", right: "0" }}
           />
-        </div>
-        <QuickSelect>
-          <div
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              SetPercent(25);
-            }}
-          >
-            <span className="Roboto_20pt_Regular">25%</span>
+          <div className="group1">
+            <span className="Roboto_40pt_Black popup-title">SWAP</span>
+            <div className="popup-image">
+              <FromImg style={{ height: "80px", width: "80px" }} />
+              <PopupArrow style={{ height: "16px", width: "30px" }} />
+              <ToImg style={{ height: "80px", width: "80px" }} />
+            </div>
+            <label>
+              Available:
+              {` ${makeNum(
+                (poolMethods.available - Number(recipe.swapAmount)).toString()
+              )} ${recipe.from.token}`}
+            </label>
+            <input
+              className="popup-input"
+              type="number"
+              placeholder="Enter the amount of swap"
+              value={recipe.swapAmount}
+              onChange={(e) => {
+                if (Number(e.target.value) < 0) {
+                  return setRecipe({
+                    ...recipe,
+                    swapAmount: "0",
+                  });
+                }
+                if (poolMethods.available - Number(e.target.value) >= 0) {
+                  return setRecipe({
+                    ...recipe,
+                    swapAmount: makeNum(e.target.value),
+                  });
+                }
+                setRecipe({
+                  ...recipe,
+                  swapAmount: makeNum(poolMethods.available),
+                });
+              }}
+            />
           </div>
-          <div
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              SetPercent(50);
-            }}
-          >
-            <span className="Roboto_20pt_Regular">50%</span>
-          </div>
-          <div
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              SetPercent(75);
-            }}
-          >
-            <span className="Roboto_20pt_Regular">75%</span>
-          </div>
-          <div
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              SetPercent(100);
-            }}
-          >
-            <span className="Roboto_20pt_Regular">MAX</span>
-          </div>
-        </QuickSelect>
-        <span className="Roboto_20pt_Regular popup-caution">
-          {`Conversion Fee: ${
-            recipe.conversionFee[recipe.chainId[recipe.to.network]]
-          } ${recipe.from.token}`}
-        </span>
-        <div className="wallet">
-          <WalletConnect
-            need="2"
-            bgColor="#9314B2"
-            hcolor=""
-            border="3px solid #9314B2"
-            w="540px"
-            radius="20px"
-            text="SWAP" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
-            onClick={async () => {
-              if (recipe.swapAmount > 0) {
-                await close();
-                await toast('Please approve "SWAP" in your private wallet');
-                await poolMethods.swap(recipe.swapAmount);
-              } else {
-                toast("Please enter the amount of Swap");
-              }
-            }}
-          />
-        </div>
-        <InfoContainer>
-          <Info
-            left="Current Redemption Rate"
-            right={`${poolMethods.redemption}%`}
-          />
-          <Info
-            left="Current Conversion Fee"
-            right={`${
+          <QuickSelect>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                SetPercent(25);
+              }}
+            >
+              <span className="Roboto_20pt_Regular">25%</span>
+            </div>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                SetPercent(50);
+              }}
+            >
+              <span className="Roboto_20pt_Regular">50%</span>
+            </div>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                SetPercent(75);
+              }}
+            >
+              <span className="Roboto_20pt_Regular">75%</span>
+            </div>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                SetPercent(100);
+              }}
+            >
+              <span className="Roboto_20pt_Regular">MAX</span>
+            </div>
+          </QuickSelect>
+          <span className="Roboto_20pt_Regular popup-caution">
+            {`Conversion Fee: ${
               recipe.conversionFee[recipe.chainId[recipe.to.network]]
             } ${recipe.from.token}`}
-          />
-          <Info
-            left={`${recipe.from.token} to Swap`}
-            right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${
-              recipe.from.token
-            }`}
-          />
-          <Info
-            left={`${recipe.from.token} to Redeem`}
-            right={`${makeNum(
-              (
-                (recipe.swapAmount / 100) *
-                (poolMethods.redemption ? poolMethods.redemption / 100 : 1)
-              ).toString()
-            )} ${recipe.from.token}`}
-          />
-          <Info
-            left={`Net ${recipe.from.token} to Swap`}
-            right={`${makeNum(
-              (
-                recipe.swapAmount -
-                (recipe.swapAmount / 100) *
-                  (poolMethods.redemption ? poolMethods.redemption / 100 : 1) -
+          </span>
+          <div className="wallet">
+            <WalletConnect
+              need="2"
+              bgColor="#9314B2"
+              hcolor=""
+              border="3px solid #9314B2"
+              w="540px"
+              radius="20px"
+              text="SWAP" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
+              onClick={async () => {
+                if (recipe.swapAmount > 0) {
+                  await close();
+                  await toast('Please approve "SWAP" in your private wallet');
+                  await poolMethods.swap(recipe.swapAmount);
+                } else {
+                  toast("Please enter the amount of Swap");
+                }
+              }}
+            />
+          </div>
+          <InfoContainer>
+            <Info
+              left="Current Redemption Rate"
+              right={`${poolMethods.redemption}%`}
+            />
+            <Info
+              left="Current Conversion Fee"
+              right={`${
                 recipe.conversionFee[recipe.chainId[recipe.to.network]]
-              ).toString()
-            )} ${recipe.from.token}`}
-          />
-        </InfoContainer>
-      </Content>
-    </Container>
+              } ${recipe.from.token}`}
+            />
+            <Info
+              left={`${recipe.from.token} to Swap`}
+              right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${
+                recipe.from.token
+              }`}
+            />
+            <Info
+              left={`${recipe.from.token} to Redeem`}
+              right={`${makeNum(
+                (
+                  (recipe.swapAmount / 100) *
+                  (poolMethods.redemption ? poolMethods.redemption / 100 : 1)
+                ).toString()
+              )} ${recipe.from.token}`}
+            />
+            <Info
+              left={`Net ${recipe.from.token} to Swap`}
+              right={`${makeNum(
+                (
+                  recipe.swapAmount -
+                  (recipe.swapAmount / 100) *
+                    (poolMethods.redemption
+                      ? poolMethods.redemption / 100
+                      : 1) -
+                  recipe.conversionFee[recipe.chainId[recipe.to.network]]
+                ).toString()
+              )} ${recipe.from.token}`}
+            />
+          </InfoContainer>
+        </Content>
+      </Container>
+    </Background>
   );
 }
 
@@ -290,6 +294,17 @@ function makeNum(str, decimal = 4) {
     return arr[0] + "." + arr[1].substr(0, decimal);
   }
 }
+const Background = styled.div`
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--midnight);
+  z-index: 2;
+`;
+
 const Container = styled.div`
   position: fixed;
   display: flex;
@@ -299,14 +314,16 @@ const Container = styled.div`
   top: 100px;
   padding: 80px;
   overflow: auto;
-  padding-bottom: 180px;
+  padding-bottom: 20px;
   background-color: black;
   z-index: 5;
 
   @media (min-width: 1088px) {
     position: absolute;
-    width: 1088px;
-    heigh: 818px;
+    border: 1px solid var(--black-20);
+    border-radius: 20px;
+    width: 714px;
+    height: fit-content;
     top: 100px;
     left: 50%;
     transform: translate(-50%, 0%);
@@ -433,6 +450,6 @@ const InfoContainer = styled.div`
 
   @media (min-width: 1088px) {
     width: 540px;
-    margin: 80px auto;
+    margin: 20px auto;
   }
 `;
