@@ -272,11 +272,11 @@ function Defi({
       style={
         modalPoolOpen || modalSwapOpen
           ? {
-            position: "fixed",
-            top: "-20px",
-            width: "100%",
-            backgroundColor: "#02051c",
-          }
+              position: "fixed",
+              top: "-20px",
+              width: "100%",
+              backgroundColor: "#02051c",
+            }
           : {}
       }
     >
@@ -289,7 +289,7 @@ function Defi({
                 className="box"
                 to={"/defi/station"}
                 style={{ textDecoration: "none" }}
-              // onClick={() => handleModalPool()}
+                // onClick={() => handleModalPool()}
               >
                 <img src="/ic_chargingstation.svg" />
                 <div className="name Roboto_40pt_Black">Charging Station</div>
@@ -303,7 +303,7 @@ function Defi({
                 className="box"
                 to={"/defi/swap"}
                 style={{ textDecoration: "none" }}
-              // onClick={() => handleModalSwap()}
+                // onClick={() => handleModalSwap()}
               >
                 <img src="/ic_rechargingswap.svg" />
                 <div className="name Roboto_40pt_Black">Recharge swap</div>
@@ -397,8 +397,9 @@ function Defi({
                               {...cell.getCellProps()}
                               onClick={() => {
                                 setParams({
-                                  type: `${myPools[row.index].type.split(" ")[0]
-                                    }`,
+                                  type: `${
+                                    myPools[row.index].type.split(" ")[0]
+                                  }`,
                                   isLP: false,
                                 });
 
@@ -433,8 +434,8 @@ function Defi({
             <div className="container">
               <div className="left box exception">
                 <div className="title Roboto_40pt_Black">
-                  {analytics.general.RedemptionRate
-                    ? analytics.general.RedemptionRate / 100
+                  {analytics.ERC.redemption
+                    ? makeNum(analytics.ERC.redemption) / 100
                     : 0}{" "}
                   %
                 </div>
@@ -483,8 +484,8 @@ function Defi({
                 >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -556,8 +557,8 @@ function Defi({
                 >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -634,8 +635,8 @@ function Defi({
                 >
                   {analytics.BEP.total
                     ? convertNum(weiToEther(convertNum(analytics.BEP.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
