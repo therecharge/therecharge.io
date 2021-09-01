@@ -29,7 +29,7 @@ function ConnectWallet({
   hcolor = "var(--yellow)",
   fontsize = "",
   fontClass = "",
-  onClick = () => { },
+  onClick = () => {},
 }) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [provider, setProvider] = useRecoilState(providerState);
@@ -93,7 +93,7 @@ function ConnectWallet({
     //     document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')[1].remove();
     // }
   }
-  if (onClick.toString() == "() => {}") onClick = onDisconnect;
+  if (onClick.toString().length < 10) onClick = onDisconnect;
 
   function connectEventHandler(provider) {
     if (!provider.on) {
@@ -119,12 +119,15 @@ function ConnectWallet({
     return network == requireNetwork;
   }
   async function connect() {
-
-    while (window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]').length > 1) {
-      window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')[1].remove();
+    while (
+      window.document.querySelectorAll("[id=WEB3_CONNECT_MODAL_ID]").length > 1
+    ) {
+      window.document
+        .querySelectorAll("[id=WEB3_CONNECT_MODAL_ID]")[1]
+        .remove();
     }
     // console.log("Connect!");
-    console.log("asdf", web3Modal)
+    console.log("asdf", web3Modal);
     let provider = await web3Modal.connect();
     setProvider(provider);
     const web3 = new Web3(provider);
@@ -185,7 +188,13 @@ function ConnectWallet({
         }
       }}
     >
-      <span className={fontClass || window.innerWidth > 1088 ? "Roboto_20pt_Black" : "Roboto_30pt_Black"}>
+      <span
+        className={
+          fontClass || window.innerWidth > 1088
+            ? "Roboto_20pt_Black"
+            : "Roboto_30pt_Black"
+        }
+      >
         {need === "0" && text}
         {need === "1" &&
           !isDisable() &&
@@ -201,10 +210,10 @@ function ConnectWallet({
       </span>
     </Button>
   );
-};
+}
 
 const Button = styled.div`
-  ${props => {
+  ${(props) => {
     return css`
       display: flex;
       background-color: ${props.bgColor};
@@ -225,11 +234,10 @@ const Button = styled.div`
 
         @media (min-width: 1088px) {
           font-size: ${props.account
-        ? props.fontsize
-        : props.text === "APPROVE" || props.text === "PLUG-IN"
-          ? "20px"
-          : props.fontsize
-      };
+            ? props.fontsize
+            : props.text === "APPROVE" || props.text === "PLUG-IN"
+            ? "20px"
+            : props.fontsize};
         }
       }
 
@@ -239,17 +247,17 @@ const Button = styled.div`
 
       @media (min-width: 1088px) {
         width: ${props.border === "3px solid #9314B2"
-        ? "540px"
-        : props.border === "4px solid #9314B2"
+          ? "540px"
+          : props.border === "4px solid #9314B2"
           ? "474px"
           : props.notConnected === "Connect Wallet for data"
-            ? "420px"
-            : "310px"};
+          ? "420px"
+          : "310px"};
         // margin: auto;
         margin-top: ${props.border === "4px solid #9314B2" ? "40px" : ""};
         height: ${props.border === "4px solid #9314B2" ? "60px" : ""};
       }
-    `
+    `;
   }};
 `;
 
