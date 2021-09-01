@@ -226,19 +226,17 @@ export default function Row({
       >
         <Status status={status} />
         <Name status={status} name={name} />
-        <Apy status={status} apy={apy} />
+        <Apy status={status} apy={!account ? apy : makeNum(userInfo.apy, 2)} />
         <Btn status={status} isOpen={isOpen} />
       </Title>
       {isOpen && (
         <Menu>
           <div className="part">
             <PoolInfo className="innerMenu">
-              <Info left="APY" right={`${!account ? apy : userInfo.apy} %`} />
+              <Info left="APY" right={`${!account ? apy : makeNum(userInfo.apy, 2)} %`} />
               <Info
                 left="TVL"
-                right={`${!account ? info.tvl : userInfo.tvl} ${
-                  info.symbol[0]
-                }`}
+                right={`${!account ? info.tvl : userInfo.tvl} ${info.symbol[0]}`}
               />
               <Info left="LIMIT" right="UNLIMITED" />
             </PoolInfo>
@@ -247,16 +245,14 @@ export default function Row({
                 <Info
                   className="hide"
                   left="MY BAL"
-                  right={`${makeNum(userInfo.balance)} ${
-                    info ? info.symbol[0] : ""
-                  }`}
+                  right={`${makeNum(userInfo.balance)} ${info ? info.symbol[0] : ""
+                    }`}
                 />
                 <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
                 <Info
                   left="Reward"
-                  right={`${makeNum(userInfo.reward)} ${
-                    info ? info.symbol[1] : ""
-                  }`}
+                  right={`${makeNum(userInfo.reward)} ${info ? info.symbol[1] : ""
+                    }`}
                 />
               </UserInfo>
             ) : (
@@ -307,8 +303,8 @@ export default function Row({
                   userInfo.allowance !== "0"
                     ? "PLUG-IN"
                     : userInfo.address == "0x00"
-                    ? "Now Loading ..."
-                    : "APPROVE"
+                      ? "Now Loading ..."
+                      : "APPROVE"
                 } //어프로브 안되어 있으면 APPROVE로 대체 필요함.
                 onClick={async () => {
                   if (status === "Inactive") {
@@ -339,10 +335,10 @@ export default function Row({
                   !account
                     ? "var(--gray-30)"
                     : status === "Inactive"
-                    ? "var(--gray-30)"
-                    : userInfo.reward > 0
-                    ? "var(--yellow)"
-                    : "var(--gray-30)"
+                      ? "var(--gray-30)"
+                      : userInfo.reward > 0
+                        ? "var(--yellow)"
+                        : "var(--gray-30)"
                 }
                 border=""
                 hcolor=""
@@ -459,9 +455,8 @@ function Name({ status, name }) {
   }
   return (
     <p
-      className={`${
-        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
-      } name`}
+      className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+        } name`}
       style={{ color: color() }}
     >
       {name}
@@ -472,19 +467,18 @@ function Name({ status, name }) {
 function Apy({ status, apy }) {
   function color() {
     if (status != "Active") return "var(--gray-30)";
-    if (apy == "9999+") return "var(--green)";
+    if (apy == "+999999.99") return "var(--green)";
     if (apy >= 100) return "var(--green)";
     if (apy >= 50) return "var(--red)";
     return "var(--yellow)";
   }
   return (
     <p
-      className={`${
-        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
-      } apy`}
+      className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+        } apy`}
       style={{ color: color() }}
     >
-      {status != "Inactive" ? (apy == "9999+" ? "9999+" : apy) + "%" : "-"}
+      {status != "Inactive" ? (apy == "+999999.99" ? "+999999.99" : apy) + "%" : "-"}
     </p>
   );
 }

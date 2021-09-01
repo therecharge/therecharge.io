@@ -80,8 +80,8 @@ function List({ /*type, list,*/ params, toast }) {
               apy:
                 Number(data.apy) > 0
                   ? Number(data.apy) >= 1000000
-                    ? "999999+"
-                    : `${makeNum(Number(data.apy))}`
+                    ? "+999999.99"
+                    : `${makeNum(Number(data.apy), 2)}`
                   : 0,
               status: status,
               timeStamp: tempTime,
