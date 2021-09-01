@@ -183,22 +183,26 @@ function Defi({
     try {
       const [analData, priceData] = await Promise.all([
         axios.get(`https://bridge.therecharge.io/analytics`),
-        axios.post(`https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`, {
-          "query": "query{pairs(where:{id:\"0x9c20be0f142fb34f10e33338026fb1dd9e308da3\"}) { token0Price token1Price }}"
-        })
-      ])
+        axios.post(
+          `https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`,
+          {
+            query:
+              'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
+          }
+        ),
+      ]);
       // let { data } = await axios.get(`https://bridge.therecharge.io/analytics`);
-      let { token0Price, token1Price } = priceData.data.data.pairs[0]
-      token0Price = makeNum(token0Price)
-      token1Price = makeNum(token1Price)
+      let { token0Price, token1Price } = priceData.data.data.pairs[0];
+      token0Price = makeNum(token0Price);
+      token1Price = makeNum(token1Price);
       // console.log(token0Price);
       // console.log(token1Price);
       setAnalytics({
         ...analData.data,
         ERC: {
           ...analData.data.ERC,
-          price: token0Price // 이더리움 유니스왑 실시간 가격
-        }
+          price: token0Price, // 이더리움 유니스왑 실시간 가격
+        },
       });
       /**
        * ERC: {},
@@ -262,11 +266,11 @@ function Defi({
       style={
         modalPoolOpen || modalSwapOpen
           ? {
-            position: "fixed",
-            top: "-20px",
-            width: "100%",
-            backgroundColor: "#02051c",
-          }
+              position: "fixed",
+              top: "-20px",
+              width: "100%",
+              backgroundColor: "#02051c",
+            }
           : {}
       }
     >
@@ -278,7 +282,7 @@ function Defi({
               <HashLink
                 className="box"
                 to={"/defi/station"}
-              // onClick={() => handleModalPool()}
+                // onClick={() => handleModalPool()}
               >
                 <img src="/ic_chargingstation.svg" />
                 <div className="name Roboto_40pt_Black">Charging Station</div>
@@ -291,7 +295,7 @@ function Defi({
               <HashLink
                 className="box"
                 to={"/defi/swap"}
-              // onClick={() => handleModalSwap()}
+                // onClick={() => handleModalSwap()}
               >
                 <img src="/ic_rechargingswap.svg" />
                 <div className="name Roboto_40pt_Black">Recharge swap</div>
@@ -385,8 +389,9 @@ function Defi({
                         {row.cells.map((cell) => {
                           return (
                             <HashLink
-                              to={`/defi/station#${myPools[row.index].type.split(" ")[0]
-                                }`}
+                              to={`/defi/station#${
+                                myPools[row.index].type.split(" ")[0]
+                              }`}
                               style={{
                                 display: "table-cell",
                                 textDecoration: "none",
@@ -418,8 +423,8 @@ function Defi({
             <div className="container">
               <div className="left box exception">
                 <div className="title Roboto_30pt_Medium">
-                  {analytics.general.RedemptionRate
-                    ? analytics.general.RedemptionRate / 100
+                  {analytics.ERC.redemption
+                    ? makeNum(analytics.ERC.redemption) / 100
                     : 0}{" "}
                   %
                 </div>
@@ -468,8 +473,8 @@ function Defi({
                 >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -541,8 +546,8 @@ function Defi({
                 >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -619,8 +624,8 @@ function Defi({
                 >
                   {analytics.BEP.total
                     ? convertNum(weiToEther(convertNum(analytics.BEP.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
