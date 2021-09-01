@@ -1,0 +1,56 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="50"
+  height="50"
+  viewBox="0 0 50 50"
+>
+  <g id="img_bnb_50px" transform="translate(-456 -1433)">
+    <circle
+      id="타원_56"
+      data-name="타원 56"
+      cx="25"
+      cy="25"
+      r="25"
+      transform="translate(456 1433)"
+      fill="#fff"
+    />
+    <g id="img_bep20" transform="translate(467.539 1444.538)" opacity="0.999">
+      <path
+        id="패스_186"
+        data-name="패스 186"
+        d="M144.98,382.3l-3.261,3.258-3.258-3.258,3.258-3.258Z"
+        transform="translate(-138.462 -367.881)"
+        fill="#f0b90b"
+      />
+      <path
+        id="패스_187"
+        data-name="패스 187"
+        d="M183.21,313.743l5.583,5.586,3.258-3.258-8.84-8.84-8.84,8.84,3.258,3.258Z"
+        transform="translate(-168.787 -307.23)"
+        fill="#f0b90b"
+      />
+      <path
+        id="패스_188"
+        data-name="패스 188"
+        d="M285.37,379.046l-3.258,3.258,3.258,3.258,3.255-3.258Z"
+        transform="translate(-259.778 -367.881)"
+        fill="#f0b90b"
+      />
+      <path
+        id="패스_189"
+        data-name="패스 189"
+        d="M183.21,420.555l-5.583-5.583-3.258,3.255,8.84,8.84,8.84-8.84-3.258-3.255Z"
+        transform="translate(-168.787 -398.221)"
+        fill="#f0b90b"
+      />
+      <rect
+        id="사각형_168"
+        data-name="사각형 168"
+        width="4.607"
+        height="4.607"
+        transform="translate(11.165 14.423) rotate(-45)"
+        fill="#f0b90b"
+      />
+    </g>
+  </g>
+</svg>

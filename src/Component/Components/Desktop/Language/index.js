@@ -22,41 +22,51 @@ function Language(props) {
   };
   return (
     <Container>
-      <Flag
-        src={getImagePath(lang)}
-        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-      />
-      <Dropdown className={isDropdownOpen ? "" : "hide"}>
-        <Row
-          onClick={() => {
-            i18n.changeLanguage("en");
-            setIsDropdownOpen(!isDropdownOpen);
-          }}
-        >
-          <img src="/lang/ic-eng.svg" />
-          <span className={lang == "en" ? "bold" : ""}>ENG</span>
-        </Row>
-        <Row
-          onClick={() => {
-            i18n.changeLanguage("ko");
-            setIsDropdownOpen(!isDropdownOpen);
-          }}
-        >
-          <img src="/lang/ic-kor.svg" />
-          <span className={lang == "ko" ? "bold" : ""}>KOR</span>
-        </Row>
-      </Dropdown>
+      <div className="dropdown">
+        <Flag
+          src={getImagePath(lang)}
+        // onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        />
+        <Dropdown className="dropdownContent">
+          <Row
+            onClick={() => {
+              i18n.changeLanguage("en");
+              setIsDropdownOpen(!isDropdownOpen);
+            }}
+          >
+            <img src="/lang/ic-eng.svg" />
+            <span className={lang == "en" ? "bold" : ""}>ENG</span>
+          </Row>
+          <Row
+            onClick={() => {
+              i18n.changeLanguage("ko");
+              setIsDropdownOpen(!isDropdownOpen);
+            }}
+          >
+            <img src="/lang/ic-kor.svg" />
+            <span className={lang == "ko" ? "bold" : ""}>KOR</span>
+          </Row>
+        </Dropdown>
+      </div>
     </Container>
   );
 }
 
 const Container = styled.div`
   display: flex;
-  margin: auto auto;
-  margin-left: 27px;
-  margin-right: 40px;
-  .hide {
+  .dropdown {
+    height: 60px;
+    display: flex;
+    margin: auto auto;
+    padding-left: 27px;
+    padding-right: 40px;
+    align-items: center;
+  }
+  .dropdownContent {
     display: none;
+  }
+  .dropdown:hover .dropdownContent {
+    display: flex;
   }
 `;
 const Flag = styled.img`
@@ -66,9 +76,8 @@ const Flag = styled.img`
 const Dropdown = styled.div`
   position: fixed;
   display: flex;
-  // display: none;
-  top: 67px;
   flex-direction: column;
+  top: 75px;
   width: 100px;
   height: 80px;
   background-color: black;

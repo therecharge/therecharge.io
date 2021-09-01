@@ -4,6 +4,8 @@ import Home from "./Component/Mobile/Home";
 import About from "./Component/Mobile/About";
 import Recharge from "./Component/Mobile/Recharge";
 import Defi from "./Component/Mobile/Defi";
+import Station from "./pages/Defi/Station";
+import Swap from "./pages/Defi/Swap";
 import Docs from "./Component/Mobile/Docs";
 /* Libraries */
 import React, { useState, useEffect, useRef } from "react";
@@ -111,7 +113,9 @@ const Mobile = React.memo(
         toast("Wallet Connected!");
         connectEventHandler(provider);
       } catch (e) {
-        e ? toast("Wallet Connect Failed. Please try again") : toast("Wallet Connect Failed. Please Log-in metamask")
+        e
+          ? toast("Wallet Connect Failed. Please try again")
+          : toast("Wallet Connect Failed. Please Log-in metamask");
         console.log("Could not get a wallet connection", e);
         return;
       }
@@ -212,6 +216,8 @@ const Mobile = React.memo(
 
         <Switch>
           <Route path="/docs/:viewNum" component={Docs}></Route>
+          <Route path="/defi/station" component={() => <Station toast={toast} />}></Route>
+          <Route path="/defi/swap" component={() => <Swap toast={toast} />}></Route>
           <Route
             path="/defi"
             component={() => (
@@ -238,66 +244,66 @@ const Mobile = React.memo(
           <Route path="/" component={Home}></Route>
         </Switch>
         <style jsx global>{`
-            body {
-              width: 100%;
-              margin: 0px;
-              padding: 0px;
-              font-family: "Roboto", sans-serif;
-              background-color: #03051d;
-            }
-            div {
-              outline: none;
-            }
-            .desktop {
-              display: flex;
-              width: 100%;
-              // background: url(/bg_main_bottom.svg);
-              background-color: #02051c;
-              // background-size: cover;
-              // background-position: bottom 0px center;
-            }
-            .about {
-              // background: url(/bg_about_bottom.svg);
-              background-color: #02051c;
-              // background-size: cover;
-              // background-position: bottom 0px center;
-            }
-            .recharge {
-              // background: url(/bg_recharge_bottom.svg);
-              background-color: #02051c;
-              // background-size: cover;
-              // background-position: bottom 0px center;
-            }
-            .station {
-              // background: url(/bg_station_bottom.svg);
-              background-color: #02051c;
-              // background-size: cover;
-              // background-position: bottom 0px center;
-            }
-            .docs {
-              // background: none;
-              background-color: #02051c;
-              // background-size: cover;
-              // background-position: bottom 0px center;
-            }
-            body::-webkit-scrollbar {
-              width: 5px;
-            }
-            body::-webkit-scrollbar-thumb {
-              background-color: #2f3542;
-              border-radius: 3px;
-            }
-            body::-webkit-scrollbar-track {
-              background-color: #02051c;
-              border-radius: 3px;
-            }
-            .ToastHub___StyledAnimatedDiv-sc-1y0i8xl-1 {
-              margin-top: 10px;
-            } 
-            .ToastHub___StyledDiv-sc-1y0i8xl-0 {
-              padding: 5px 20px;
-            }
-          `}</style>
+          body {
+            width: 100%;
+            margin: 0px;
+            padding: 0px;
+            font-family: "Roboto", sans-serif;
+            background-color: #03051d;
+          }
+          div {
+            outline: none;
+          }
+          .desktop {
+            display: flex;
+            width: 100%;
+            // background: url(/bg_main_bottom.svg);
+            background-color: #02051c;
+            // background-size: cover;
+            // background-position: bottom 0px center;
+          }
+          .about {
+            // background: url(/bg_about_bottom.svg);
+            background-color: #02051c;
+            // background-size: cover;
+            // background-position: bottom 0px center;
+          }
+          .recharge {
+            // background: url(/bg_recharge_bottom.svg);
+            background-color: #02051c;
+            // background-size: cover;
+            // background-position: bottom 0px center;
+          }
+          .station {
+            // background: url(/bg_station_bottom.svg);
+            background-color: #02051c;
+            // background-size: cover;
+            // background-position: bottom 0px center;
+          }
+          .docs {
+            // background: none;
+            background-color: #02051c;
+            // background-size: cover;
+            // background-position: bottom 0px center;
+          }
+          body::-webkit-scrollbar {
+            width: 5px;
+          }
+          body::-webkit-scrollbar-thumb {
+            background-color: #2f3542;
+            border-radius: 3px;
+          }
+          body::-webkit-scrollbar-track {
+            background-color: #02051c;
+            border-radius: 3px;
+          }
+          .ToastHub___StyledAnimatedDiv-sc-1y0i8xl-1 {
+            margin-top: 10px;
+          }
+          .ToastHub___StyledDiv-sc-1y0i8xl-0 {
+            padding: 5px 20px;
+          }
+        `}</style>
       </div>
     );
   },

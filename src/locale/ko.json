@@ -61,7 +61,7 @@
   "RechargeToken/Distribution/bep20": "BEP-20 (바이낸스 스마트 체인)",
   "RechargeToken/Governance/title": "리차지 거버넌스",
   "RechargeToken/Governance/content": "리차지 거버넌스는 리차지 생태계와 연결된 사업 및 서비스의 더 나은 발전을 위해 설계되었습니다. \n리차지 토큰 보유자들은 보유하고 있는 토큰량에 비례해 투표권이 주어지며 이는 생태계 내에서 의사결정을 위해 사용됩니다. ",
-  "De-Fi/Station/charging-station": "스테이킹 툴은 리차지 생태계 내에서 보상을 최대화시킵니다.",
+  "De-Fi/Station/charging-station": "리차지 스테이킹 서비스를 통해 리차지 생태계 내에서 보상을 극대화 할 수 있습니다.",
   "De-Fi/Station/recharge-swap": "연결 솔루션을 통한 확장성. 서로 다른 메인넷 간의 클릭 한 번으로 교환할 수 있습니다.",
   "De-Fi/Station/MyPool/ask-connect": "지갑을 연결하세요",
   "De-Fi/Station/MyPool/no-pool": "참여한 스테이킹 풀이 없습니다",
@@ -74,5 +74,6 @@
   "Footer/sns/telegram": "https://t.me/therecharge_officialkr",
   "Footer/sns/etherscan": "https://etherscan.io/token/0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30",
   "Footer/sns/hecoinfo": "https://hecoinfo.com/token/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+  "Docs/userGuide": "/docs/Charging_Station_User_Guide_kor.pdf",
   "end": "end"
 }

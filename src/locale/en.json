@@ -75,5 +75,6 @@
   "Footer/sns/telegram": "https://t.me/therecharge_official",
   "Footer/sns/etherscan": "https://etherscan.io/token/0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30",
   "Footer/sns/hecoinfo": "https://hecoinfo.com/token/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+  "Docs/userGuide": "/docs/Charging_Station_User_Guide.pdf",
   "end": "end"
 }
