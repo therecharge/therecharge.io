@@ -290,8 +290,8 @@ export default function Row({
 
             <Wallets>
               <WalletConnect
-                need={userInfo.address == "0x00" ? "3" : "2"}
-                disable={userInfo.address == "0x00" ? true : false}
+                need={userInfo.address == "0x00" ? "2" : "2"}
+                disable={userInfo.address == "0x00" ? false : false}
                 bgColor={
                   status === "Active" ? "var(--purple)" : "var(--gray-30)"
                 }
@@ -306,17 +306,25 @@ export default function Row({
                   userInfo.allowance !== "0"
                     ? "PLUG-IN"
                     : userInfo.address == "0x00"
-                    ? "Now Loading"
+                    ? "Now Loading ..."
                     : "APPROVE"
                 } //어프로브 안되어 있으면 APPROVE로 대체 필요함.
                 onClick={async () => {
                   if (status === "Inactive") {
                     toast("This pool is inactive");
                   } else if (status === "Active") {
-                    if (userInfo.allowance == "0") {
+                    if (
+                      userInfo.allowance == "0" &&
+                      userInfo.address != "0x00"
+                    ) {
                       poolMethods.approve();
-                    } else {
+                    } else if (
+                      userInfo.allowance != "0" &&
+                      userInfo.address != "0x00"
+                    ) {
                       setPopupOpen(!isPopupOpen);
+                    } else {
+                      toast("Please wait for seconds");
                     }
                   } else {
                     toast("This pool is closed");

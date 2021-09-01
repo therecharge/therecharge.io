@@ -164,7 +164,7 @@ function List({ /*type, list,*/ params, toast }) {
                 className={params.isLP ? "disable" : ""}
               >
                 <Row
-                  key={index}
+                  key={charger.name}
                   status={charger.status} // active or not
                   name={charger.name}
                   apy={charger.apy}
