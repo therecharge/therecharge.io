@@ -34,9 +34,8 @@ export default function Row({
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
-  const [requireNetwork, setRequireNetwork] = useRecoilState(
-    requireNetworkState
-  );
+  const [requireNetwork, setRequireNetwork] =
+    useRecoilState(requireNetworkState);
   // const [onLoading, setOnLoading] = useState(false);
   const [isOpen, setOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
@@ -95,11 +94,12 @@ export default function Row({
           balance: weiToEther(data.account.balance),
           reward: weiToEther(data.account.reward),
           tvl: data.tvl,
-          apy: Number(data.apy) > 0
-            ? Number(data.apy) >= 10000000
-              ? "+999999.99"
-              : `${makeNum(Number(data.apy), 2)}`
-            : 0,
+          apy:
+            Number(data.apy) > 0
+              ? Number(data.apy) >= 10000000
+                ? "+999999.99"
+                : `${makeNum(Number(data.apy), 2)}`
+              : 0,
         };
       } catch (err) {
         console.log(err);
@@ -237,10 +237,15 @@ export default function Row({
         <Menu>
           <div className="part">
             <PoolInfo className="innerMenu">
-              <Info left="APY" right={`${!account ? apy : makeNum(userInfo.apy, 2)} %`} />
+              <Info
+                left="APY"
+                right={`${!account ? apy : makeNum(userInfo.apy, 2)} %`}
+              />
               <Info
                 left="TVL"
-                right={`${!account ? info.tvl : userInfo.tvl} ${info.symbol[0]}`}
+                right={`${!account ? info.tvl : userInfo.tvl} ${
+                  info.symbol[0]
+                }`}
               />
               <Info left="LIMIT" right="UNLIMITED" />
             </PoolInfo>
@@ -249,14 +254,16 @@ export default function Row({
                 <Info
                   className="hide"
                   left="MY BAL"
-                  right={`${makeNum(userInfo.balance)} ${info ? info.symbol[0] : ""
-                    }`}
+                  right={`${makeNum(userInfo.balance)} ${
+                    info ? info.symbol[0] : ""
+                  }`}
                 />
                 <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
                 <Info
                   left="Reward"
-                  right={`${makeNum(userInfo.reward)} ${info ? info.symbol[1] : ""
-                    }`}
+                  right={`${makeNum(userInfo.reward)} ${
+                    info ? info.symbol[1] : ""
+                  }`}
                 />
               </UserInfo>
             ) : (
@@ -307,8 +314,8 @@ export default function Row({
                   userInfo.allowance !== "0"
                     ? "PLUG-IN"
                     : userInfo.address == "0x00"
-                      ? "Now Loading ..."
-                      : "APPROVE"
+                    ? "Now Loading ..."
+                    : "APPROVE"
                 } //어프로브 안되어 있으면 APPROVE로 대체 필요함.
                 onClick={async () => {
                   if (status === "Inactive") {
@@ -339,10 +346,10 @@ export default function Row({
                   !account
                     ? "var(--gray-30)"
                     : status === "Inactive"
-                      ? "var(--gray-30)"
-                      : userInfo.reward > 0
-                        ? "var(--yellow)"
-                        : "var(--gray-30)"
+                    ? "var(--gray-30)"
+                    : userInfo.reward > 0
+                    ? "var(--yellow)"
+                    : "var(--gray-30)"
                 }
                 border=""
                 hcolor=""
@@ -353,8 +360,8 @@ export default function Row({
                 onClick={async () => {
                   if (!account) {
                     toast("Please connect to wallet");
-                  } else if (status === "Inactive") {
-                    toast("This pool is inactive");
+                  } else if (status === "Active") {
+                    toast("This pool does not end");
                   } else if (userInfo.reward > 0) {
                     poolMethods.earn();
                     await toast(
@@ -459,8 +466,9 @@ function Name({ status, name }) {
   }
   return (
     <p
-      className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
-        } name`}
+      className={`${
+        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+      } name`}
       style={{ color: color() }}
     >
       {name}
@@ -478,11 +486,14 @@ function Apy({ status, apy }) {
   }
   return (
     <p
-      className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
-        } apy`}
+      className={`${
+        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+      } apy`}
       style={{ color: color() }}
     >
-      {status != "Inactive" ? (apy == "+999999.99" ? "+999999.99" : apy) + "%" : "-"}
+      {status != "Inactive"
+        ? (apy == "+999999.99" ? "+999999.99" : apy) + "%"
+        : "-"}
     </p>
   );
 }
