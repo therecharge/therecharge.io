@@ -360,8 +360,10 @@ export default function Row({
                 onClick={async () => {
                   if (!account) {
                     toast("Please connect to wallet");
-                  } else if (status === "Active") {
+                  } else if (params.type == "Locked" && status === "Active") {
                     toast("This pool does not end");
+                  } else if (status === "Inactive") {
+                    toast("This pool is inactive");
                   } else if (userInfo.reward > 0) {
                     poolMethods.earn();
                     await toast(
