@@ -176,8 +176,29 @@ function Defi({
 
   const loadAnalytics = async () => {
     try {
-      let { data } = await axios.get(`https://bridge.therecharge.io/analytics`);
-      setAnalytics(data);
+      const [analData, priceData] = await Promise.all([
+        axios.get(`https://bridge.therecharge.io/analytics`),
+        axios.post(
+          `https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`,
+          {
+            query:
+              'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
+          }
+        ),
+      ]);
+      // let { data } = await axios.get(`https://bridge.therecharge.io/analytics`);
+      let { token0Price, token1Price } = priceData.data.data.pairs[0];
+      token0Price = makeNum(token0Price);
+      token1Price = makeNum(token1Price);
+      // console.log(token0Price);
+      // console.log(token1Price);
+      setAnalytics({
+        ...analData.data,
+        ERC: {
+          ...analData.data.ERC,
+          price: token0Price, // 이더리움 유니스왑 실시간 가격
+        },
+      });
       /**
        * ERC: {},
        * HRC: {},
@@ -413,8 +434,8 @@ function Defi({
             <div className="container">
               <div className="left box exception">
                 <div className="title Roboto_30pt_Medium">
-                  {analytics.general.RedemptionRate
-                    ? analytics.general.RedemptionRate / 100
+                  {analytics.ERC.redemption
+                    ? makeNum(analytics.ERC.redemption) / 100
                     : 0}{" "}
                   %
                 </div>

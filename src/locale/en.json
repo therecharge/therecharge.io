@@ -47,7 +47,7 @@
   "RechargeToken/Distribution/name": "Name",
   "RechargeToken/Distribution/ticker": "Ticker",
   "RechargeToken/Distribution/total-supply": "Total Supply",
-  "RechargeToken/Distribution/ecosystem": "Echosystem",
+  "RechargeToken/Distribution/ecosystem": "Ecosystem",
   "RechargeToken/Distribution/development": "Development",
   "RechargeToken/Distribution/exchanges/decentralized": "Exchanges (Decentralized)",
   "RechargeToken/Distribution/exchanges/centralized": "Exchanges (Centralized)",

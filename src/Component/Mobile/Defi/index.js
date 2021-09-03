@@ -429,8 +429,8 @@ function Defi({
             <div className="container">
               <div className="left box exception">
                 <div className="title Roboto_40pt_Black">
-                  {analytics.general.RedemptionRate
-                    ? analytics.general.RedemptionRate / 100
+                  {analytics.ERC.redemption
+                    ? makeNum(analytics.ERC.redemption) / 100
                     : 0}{" "}
                   %
                 </div>
