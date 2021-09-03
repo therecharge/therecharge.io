@@ -53,9 +53,8 @@ function Defi({
   const [account] = useRecoilState(accountState);
   const [modalPoolOpen, setModalPoolOpen] = useRecoilState(modalPoolOpenState);
   const [modalSwapOpen, setModalSwapOpen] = useRecoilState(modalSwapOpenState);
-  const [modalPool2Open, setModalPool2Open] = useRecoilState(
-    modalPool2OpenState
-  );
+  const [modalPool2Open, setModalPool2Open] =
+    useRecoilState(modalPool2OpenState);
   // const [modalPoolOpen, setModalPoolOpen] = useState(false);
   // const [modalSwapOpen, setModalSwapOpen] = useState(false);
   const [sel, setSelCharger] = useState(0);
@@ -80,7 +79,7 @@ function Defi({
       balance: "1,000,000",
       share: "100",
       reward: "100,000",
-      period: "21.01.01 00:00:00 ~ 21.01.30 00:00:00(GMT)",
+      period: "21.01.01 00:00:00 ~ 21.01.30 00:00:00((GMT+9))",
       available: "7,000,000.00",
       allowance: "0",
       rewardSymbol: "RCGr",
@@ -98,9 +97,10 @@ function Defi({
     general: {},
   });
 
-  const data = React.useMemo(() => (myPools === null ? [] : myPools), [
-    myPools,
-  ]);
+  const data = React.useMemo(
+    () => (myPools === null ? [] : myPools),
+    [myPools]
+  );
   const columns = React.useMemo(
     () => [
       {
@@ -136,13 +136,8 @@ function Defi({
     ],
   };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data, initialState }, useSortBy);
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data, initialState }, useSortBy);
 
   const handleModalPool = () => {
     setModalPoolOpen(!modalPoolOpen);
@@ -195,15 +190,19 @@ function Defi({
 
   const loadUniPrice = async () => {
     try {
-      let { data } = await axios.post(`https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`, {
-        "query": "query{pairs(where:{id:\"0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc\"}) { token0Price token1Price }}"
-      })
-      let token
-      console.log(data.data.pairs[0])
+      let { data } = await axios.post(
+        `https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`,
+        {
+          query:
+            'query{pairs(where:{id:"0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc"}) { token0Price token1Price }}',
+        }
+      );
+      let token;
+      console.log(data.data.pairs[0]);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   const handleLoading = () => {
     setOnLoading(false);
@@ -240,7 +239,7 @@ function Defi({
 
   useEffect(() => {
     loadUniPrice();
-  }, [])
+  }, []);
 
   // useEffect(() => {
   //   handleLoading();
@@ -257,11 +256,11 @@ function Defi({
       style={
         modalPoolOpen || modalSwapOpen
           ? {
-            position: "fixed",
-            top: "-20px",
-            width: "100%",
-            backgroundColor: "#02051c",
-          }
+              position: "fixed",
+              top: "-20px",
+              width: "100%",
+              backgroundColor: "#02051c",
+            }
           : {}
       }
     >
@@ -273,7 +272,7 @@ function Defi({
               <HashLink
                 className="box"
                 to={"/defi/station"}
-              // onClick={() => handleModalPool()}
+                // onClick={() => handleModalPool()}
               >
                 <img src="/ic_chargingstation.svg" />
                 <div className="name Roboto_40pt_Black">Charging Station</div>
@@ -286,7 +285,7 @@ function Defi({
               <HashLink
                 className="box"
                 to={"/defi/swap"}
-              // onClick={() => handleModalSwap()}
+                // onClick={() => handleModalSwap()}
               >
                 <img src="/ic_rechargingswap.svg" />
                 <div className="name Roboto_40pt_Black">Recharge swap</div>
@@ -380,8 +379,9 @@ function Defi({
                         {row.cells.map((cell) => {
                           return (
                             <HashLink
-                              to={`/defi/station#${myPools[row.index].type.split(" ")[0]
-                                }`}
+                              to={`/defi/station#${
+                                myPools[row.index].type.split(" ")[0]
+                              }`}
                               style={{
                                 display: "table-cell",
                                 textDecoration: "none",
@@ -463,8 +463,8 @@ function Defi({
                 >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -536,8 +536,8 @@ function Defi({
                 >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -614,8 +614,8 @@ function Defi({
                 >
                   {analytics.BEP.total
                     ? convertNum(weiToEther(convertNum(analytics.BEP.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
