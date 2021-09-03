@@ -300,7 +300,7 @@ export default function Row({
             <Info
               direction="column"
               left="Period"
-              right={info ? info.timeStamp + "((GMT+9))" : ""}
+              right={info ? info.timeStamp + "((UTC+9))" : ""}
             />
 
             <Wallets>
@@ -518,7 +518,7 @@ function Btn({ status, isOpen }) {
     );
 }
 
-function makeNum(str, decimal = 4) {
+function makeNum(str = "0", decimal = 4) {
   let newStr = str;
   if (typeof newStr === "number") newStr = str.toString();
   let arr = newStr.split(".");
