@@ -183,7 +183,7 @@ function List({ /*type, list,*/ params, toast }) {
 }
 
 const loadPoolPeriod = (startTime, duration) => {
-  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00((GMT+9)+9)";
+  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00((UTC+9)+9)";
   const endTime = Number(startTime) + Number(duration);
 
   const formatter = (timestamp) => {
@@ -216,7 +216,7 @@ const loadActiveStatus = ({ tvl, period, limit }) => {
     }
   }
 };
-function makeNum(str, decimal = 4) {
+function makeNum(str = "0", decimal = 4) {
   let newStr = str;
   if (typeof newStr === "number") newStr = str.toString();
   let arr = newStr.split(".");

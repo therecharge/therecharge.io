@@ -25,7 +25,7 @@ function makeNum(str, decimal = 4) {
   }
 }
 const loadPoolPeriod = (startTime, duration) => {
-  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00((GMT+9))";
+  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00((UTC+9))";
 
   const endTime = Number(startTime) + Number(duration);
 
@@ -1051,7 +1051,8 @@ function Pool({
               <div className="buttons">
                 <div
                   className="ok Roboto_20pt_Black"
-                  onClick={async () => { // }} //   setModalDecisionOpen(false); // {() => {
+                  onClick={async () => {
+                    // }} //   setModalDecisionOpen(false); // {() => {
                     setModalDecisionOpen(false);
                     // console.log(btnInfo);
                     if (btn2Info === "Deposit") {
