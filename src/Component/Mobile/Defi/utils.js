@@ -117,7 +117,7 @@ const getChargerInformations = async ({
     balance: "1,000,000",
     share: "100",
     reward: "100,000",
-    period: "21.01.01 00:00:00 ~ 21.01.30 00:00:00((UTC+9))",
+    period: "21.01.01 00:00:00 ~ 21.01.30 00:00:00(UTC+9)",
     available: "7,000,000.00",
     allowance: "0",
     rewardSymbol: "RCGr",
@@ -245,7 +245,7 @@ const exit = (poolM, account) => {
 };
 
 const period = (startTime, duration) => {
-  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00((UTC+9))";
+  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00(UTC+9)";
 
   const endTime = Number(startTime) + Number(duration);
 

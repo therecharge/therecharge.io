@@ -19,7 +19,7 @@ function makeNum(str, decimal = 4) {
 }
 
 const loadPoolPeriod = (startTime, duration) => {
-  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00((UTC+9))";
+  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00(UTC+9)";
 
   const endTime = Number(startTime) + Number(duration);
 
@@ -97,7 +97,7 @@ function Pool({
     type: "flexible",
   });
   const [period, setPeriod] = useState(
-    "21.01.01 00:00:00 ~ 21.01.30 00:00:00((UTC+9))"
+    "21.01.01 00:00:00 ~ 21.01.30 00:00:00(UTC+9)"
   );
   const [userInfo, setUserInfo] = useState({
     address: "0x4025238b28b796902F1C39081b17123817679742",
