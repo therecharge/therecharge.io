@@ -170,8 +170,8 @@ function List({ /*type, list,*/ params, toast }) {
                   info={charger}
                   params={params} // 버튼에 대한 분기처리 때문에 필요
                   toast={toast}
-                // chList={chList} // 전체 리스트 왜?
-                // sel={sel} // 선택 해야만 하는가?
+                  // chList={chList} // 전체 리스트 왜?
+                  // sel={sel} // 선택 해야만 하는가?
                 />
               </div>
             );
@@ -209,7 +209,7 @@ const loadActiveStatus = ({ tvl, period, limit }) => {
     return "Inactive";
   }
   if (period[0] + period[1] >= new Date().getTime() / 1000) {
-    if (!limit || limit > tvl) {
+    if (limit == 0 || limit > tvl) {
       return "Active";
     } else {
       return "Close";

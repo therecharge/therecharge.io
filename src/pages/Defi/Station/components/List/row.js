@@ -247,7 +247,14 @@ export default function Row({
                   info.symbol[0]
                 }`}
               />
-              <Info left="LIMIT" right="UNLIMITED" />
+              <Info
+                left="LIMIT"
+                right={
+                  info.limit == 0
+                    ? "UNLIMITED"
+                    : makeNum(info.limit) + ` ${info.symbol[0]}`
+                }
+              />
             </PoolInfo>
             {account && network == requireNetwork ? (
               <UserInfo account={account} className="innerMenu">
