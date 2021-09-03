@@ -300,7 +300,7 @@ export default function Row({
             <Info
               direction="column"
               left="Period"
-              right={info ? info.timeStamp + "(GMT)" : ""}
+              right={info ? info.timeStamp + "((GMT+9))" : ""}
             />
 
             <Wallets>
