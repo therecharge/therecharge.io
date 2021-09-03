@@ -60,9 +60,8 @@ function Defi({
   const [account] = useRecoilState(accountState);
   const [modalPoolOpen, setModalPoolOpen] = useRecoilState(modalPoolOpenState);
   const [modalSwapOpen, setModalSwapOpen] = useRecoilState(modalSwapOpenState);
-  const [modalPool2Open, setModalPool2Open] = useRecoilState(
-    modalPool2OpenState
-  );
+  const [modalPool2Open, setModalPool2Open] =
+    useRecoilState(modalPool2OpenState);
   const [chargerList, setChargerList] = useState([
     {
       type: "Flexible",
@@ -102,9 +101,10 @@ function Defi({
     general: {},
   });
 
-  const data = React.useMemo(() => (myPools === null ? [] : myPools), [
-    myPools,
-  ]);
+  const data = React.useMemo(
+    () => (myPools === null ? [] : myPools),
+    [myPools]
+  );
   const columns = React.useMemo(
     () => [
       {
@@ -146,13 +146,8 @@ function Defi({
     ],
   };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data, initialState }, useSortBy);
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data, initialState }, useSortBy);
 
   const handleModalPool = () => {
     setModalPoolOpen(!modalPoolOpen);
@@ -272,11 +267,11 @@ function Defi({
       style={
         modalPoolOpen || modalSwapOpen
           ? {
-            position: "fixed",
-            top: "-20px",
-            width: "100%",
-            backgroundColor: "#02051c",
-          }
+              position: "fixed",
+              top: "-20px",
+              width: "100%",
+              backgroundColor: "#02051c",
+            }
           : {}
       }
     >
@@ -289,7 +284,7 @@ function Defi({
                 className="box"
                 to={"/defi/station"}
                 style={{ textDecoration: "none" }}
-              // onClick={() => handleModalPool()}
+                // onClick={() => handleModalPool()}
               >
                 <img src="/ic_chargingstation.svg" />
                 <div className="name Roboto_40pt_Black">Charging Station</div>
@@ -303,7 +298,7 @@ function Defi({
                 className="box"
                 to={"/defi/swap"}
                 style={{ textDecoration: "none" }}
-              // onClick={() => handleModalSwap()}
+                // onClick={() => handleModalSwap()}
               >
                 <img src="/ic_rechargingswap.svg" />
                 <div className="name Roboto_40pt_Black">Recharge swap</div>
@@ -326,7 +321,7 @@ function Defi({
 
               <WalletConnect
                 need="2"
-                notConnected="Connect Wallet for data"
+                notConnected="Connect Wallet"
                 wrongNetwork="Change network for data"
                 m="auto"
                 w="540px"
@@ -397,8 +392,9 @@ function Defi({
                               {...cell.getCellProps()}
                               onClick={() => {
                                 setParams({
-                                  type: `${myPools[row.index].type.split(" ")[0]
-                                    }`,
+                                  type: `${
+                                    myPools[row.index].type.split(" ")[0]
+                                  }`,
                                   isLP: false,
                                 });
 
@@ -483,8 +479,8 @@ function Defi({
                 >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -556,8 +552,8 @@ function Defi({
                 >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -634,8 +630,8 @@ function Defi({
                 >
                   {analytics.BEP.total
                     ? convertNum(weiToEther(convertNum(analytics.BEP.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
