@@ -142,7 +142,7 @@ function Asset({ setParams }) {
           <List>
             <WalletConnect
               need="2"
-              notConnected="Connect Wallet for My Asset"
+              notConnected="Connect Wallet"
               wrongNetwork="Change network for My Asset"
               text="PLUG-IN"
               m="auto"

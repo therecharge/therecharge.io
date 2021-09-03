@@ -60,9 +60,8 @@ function Defi({
   const [account] = useRecoilState(accountState);
   const [modalPoolOpen, setModalPoolOpen] = useRecoilState(modalPoolOpenState);
   const [modalSwapOpen, setModalSwapOpen] = useRecoilState(modalSwapOpenState);
-  const [modalPool2Open, setModalPool2Open] = useRecoilState(
-    modalPool2OpenState
-  );
+  const [modalPool2Open, setModalPool2Open] =
+    useRecoilState(modalPool2OpenState);
   const [chargerList, setChargerList] = useState([
     {
       type: "Flexible",
@@ -102,9 +101,10 @@ function Defi({
     general: {},
   });
 
-  const data = React.useMemo(() => (myPools === null ? [] : myPools), [
-    myPools,
-  ]);
+  const data = React.useMemo(
+    () => (myPools === null ? [] : myPools),
+    [myPools]
+  );
   const columns = React.useMemo(
     () => [
       {
@@ -146,13 +146,8 @@ function Defi({
     ],
   };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data, initialState }, useSortBy);
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data, initialState }, useSortBy);
 
   const handleModalPool = () => {
     setModalPoolOpen(!modalPoolOpen);
@@ -326,7 +321,7 @@ function Defi({
 
               <WalletConnect
                 need="2"
-                notConnected="Connect Wallet for data"
+                notConnected="Connect Wallet"
                 wrongNetwork="Change network for data"
                 m="auto"
                 w="540px"
