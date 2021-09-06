@@ -186,7 +186,7 @@ function Defi({
           }
         ),
       ]);
-      // let { data } = await axios.get(`https://bridge.therecharge.io/analytics`);
+      console.log(analData)
       let { token0Price, token1Price } = priceData.data.data.pairs[0];
       token0Price = makeNum(token0Price);
       token1Price = makeNum(token1Price);
@@ -277,11 +277,11 @@ function Defi({
       style={
         modalPoolOpen || modalSwapOpen
           ? {
-              position: "fixed",
-              top: "-20px",
-              width: "100%",
-              backgroundColor: "#02051c",
-            }
+            position: "fixed",
+            top: "-20px",
+            width: "100%",
+            backgroundColor: "#02051c",
+          }
           : {}
       }
     >
@@ -293,7 +293,7 @@ function Defi({
               <HashLink
                 className="box"
                 to={"/defi/station"}
-                // onClick={() => handleModalPool()}
+              // onClick={() => handleModalPool()}
               >
                 <img src="/ic_chargingstation.svg" />
                 <div className="name Roboto_40pt_Black">Charging Station</div>
@@ -306,7 +306,7 @@ function Defi({
               <HashLink
                 className="box"
                 to={"/defi/swap"}
-                // onClick={() => handleModalSwap()}
+              // onClick={() => handleModalSwap()}
               >
                 <img src="/ic_rechargingswap.svg" />
                 <div className="name Roboto_40pt_Black">Recharge swap</div>
@@ -400,9 +400,8 @@ function Defi({
                         {row.cells.map((cell) => {
                           return (
                             <HashLink
-                              to={`/defi/station#${
-                                myPools[row.index].type.split(" ")[0]
-                              }`}
+                              to={`/defi/station#${myPools[row.index].type.split(" ")[0]
+                                }`}
                               style={{
                                 display: "table-cell",
                                 textDecoration: "none",
@@ -431,6 +430,16 @@ function Defi({
             Overview of Recharge Ecosystem
           </div>
           <div className="contents">
+            <div className="container">
+              <div className="center box exception">
+                <div className="title Roboto_30pt_Black">
+                  $ {analytics.general.tvl}
+                </div>
+                <div className="text Roboto_16pt_Regular_Gray">
+                  Total Value Locked
+                </div>
+              </div>
+            </div>
             <div className="container">
               <div className="left box exception">
                 <div className="title Roboto_30pt_Medium">
@@ -484,8 +493,8 @@ function Defi({
                 >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>
@@ -557,8 +566,8 @@ function Defi({
                 >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>
@@ -635,8 +644,8 @@ function Defi({
                 >
                   {analytics.BEP.total
                     ? convertNum(weiToEther(convertNum(analytics.BEP.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>
@@ -899,6 +908,19 @@ const Content = styled.div`
       .container {
         display: flex;
         gap: 0 8px;
+
+        .center {
+          position: relative;
+          width: 100%;
+          height: 120px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px 0;
+          box-sizing: border-box;
+          padding: 20px;
+          justify-content: center;
+          align-items: center;
+        }
 
         .left {
           position: relative;
