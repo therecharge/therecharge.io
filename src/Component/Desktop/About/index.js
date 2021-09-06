@@ -176,6 +176,23 @@ function About({ t }) {
               </div>
               <div
                 className="partner"
+              // onClick={() => { window.open("https://xangle.io/", "_blank") }}
+              >
+                <div className="logo">
+                  <img
+                    alt=""
+                    src="/ic_coingecko.svg"
+                    style={{ height: "78px", width: "74px" }}
+                  />
+                </div>
+                <div className="desc text Roboto_20pt_Regular">
+                  {t("About/Recharge-is-on/3-1")}
+                </div>
+              </div>
+            </div>
+            <div className="tier">
+              <div
+                className="partner"
                 onClick={() => { window.open("https://xangle.io/", "_blank") }}
               >
                 <div className="logo">
@@ -189,8 +206,6 @@ function About({ t }) {
                   {t("About/Recharge-is-on/3")}
                 </div>
               </div>
-            </div>
-            <div className="tier">
               <div
                 className="partner"
                 onClick={() => { window.open("https://cobak.co.kr/", "_blank") }}
