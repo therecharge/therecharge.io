@@ -433,7 +433,7 @@ function Defi({
             <div className="container">
               <div className="center box exception">
                 <div className="title Roboto_30pt_Black">
-                  $ {analytics.general.tvl}
+                  $ {analytics.general.tvl} {/* 들어오는 tvl 데이터 없음 */}
                 </div>
                 <div className="text Roboto_16pt_Regular_Gray">
                   Total Value Locked
