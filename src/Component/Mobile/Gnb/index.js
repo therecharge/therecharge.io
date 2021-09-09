@@ -1,94 +1,44 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import WalletConnect from "../../../Component/Components/Common/WalletConnect";
-import { ToastHub, Toast } from "@aragon/ui";
-import { useTranslation, withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-function Gnb({
-  connectWallet,
-  onDisconnect,
-  account,
-  getTitle,
-  setPage,
-  page,
-  modalPoolOpen,
-  setModalPoolOpen,
-  modal2Open,
-  setModal2Open,
-  modalSwapOpen,
-  setModalSwapOpen,
-}) {
-  const { t, i18n } = useTranslation();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [sidemenuOpen, setSidemenuOpen] = useState({
+function Gnb({ getTitle, }) {
+  const sidemenuInitialState = {
+    home: false,
     about: false,
     recharge: false,
     defi: false,
     docs: false,
-  });
+  }
+  const { t, i18n } = useTranslation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [sidemenuOpen, setSidemenuOpen] = useState(sidemenuInitialState);
   const open = () => {
     setMenuOpen(!menuOpen);
   };
 
   return (
     <Container>
-      <Logo
-        style={modalPoolOpen || modalSwapOpen ? { marginRight: "40px" } : {}}
-      >
-        {modalPoolOpen ? (
-          <img
-            className="back"
-            src="/ic_back@3x.png"
-            style={{ width: "87px", height: "30px" }}
-            onClick={() => {
-              modal2Open
-                ? setModal2Open(!modal2Open)
-                : setModalPoolOpen(!modalPoolOpen);
-            }}
-          />
-        ) : modalSwapOpen ? (
-          <img
-            className="back"
-            src="/ic_back@3x.png"
-            style={{ width: "87px", height: "30px" }}
-            onClick={() => {
-              setModalSwapOpen(!modalSwapOpen);
-            }}
-          />
-        ) : (
-          <HashLink
-            to={"/"}
-            onClick={() => {
-              // window.scrollTo(0, 0);
-              setMenuOpen(false);
-              // setPage("/");
-            }}
-          >
-            <img src="/logo.png" />
-          </HashLink>
-        )}
+      <Logo style={{ marginRight: "40px" }} >
+        <HashLink
+          to={"/"}
+          onClick={() => {
+            setMenuOpen(false);
+            setSidemenuOpen({
+              ...sidemenuInitialState,
+              home: true
+            });
+          }}
+        >
+          <img src="/logo.png" />
+        </HashLink>
       </Logo>
-      <div
-        className="state Roboto_30pt_Black"
-        style={
-          modal2Open || modalPoolOpen || modalSwapOpen
-            ? { marginLeft: "80px" }
-            : {}
-        }
-      >
+      <div className="state Roboto_30pt_Black" >
         {getTitle()}
       </div>
-      {/* <div
-        className="lang Roboto_30pt_Black"
-        onClick={() => {
-          i18n.changeLanguage(i18n.language != "en" ? "en" : "ko");
-          console.log("change language to " + i18n.language);
-        }}
-      >
-        {i18n.language.toUpperCase()}
-      </div> */}
       <div className="hamButton" onClick={() => open()}>
         <img src={menuOpen ? "/ic_menu_close.svg" : "/ic_menu.svg"} />
       </div>
@@ -96,31 +46,29 @@ function Gnb({
         className="nav"
         style={menuOpen ? { display: "flex" } : { display: "none" }}
       >
-        <ToastHub>
-          <Toast>
-            {(toast) => (
-              <WalletConnect
-                need="2"
-                notConnected="Connect Wallet"
-                wrongNetwork="Change network"
-                m="40px auto"
-                w="470px"
-                h="70px"
-                fontsize="20px"
-              />
-            )}
-          </Toast>
-        </ToastHub>
+        <WalletConnect
+          need="2"
+          notConnected="Connect Wallet"
+          wrongNetwork="Change network"
+          m="40px auto"
+          w="470px"
+          h="70px"
+          fontsize="20px"
+        />
         <div className="dropdown">
           <div
             className={
-              sidemenuOpen.about ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
+              sidemenuOpen.home ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
             }
           >
             <HashLink
               to={"/"}
               onClick={() => {
                 setMenuOpen(false);
+                setSidemenuOpen({
+                  ...sidemenuInitialState,
+                  home: true
+                });
               }}
             >
               Home
@@ -129,13 +77,10 @@ function Gnb({
         </div>
         <div className="dropdown">
           <Link
-            // to={"/about"}
             onClick={() => {
               setSidemenuOpen({
+                ...sidemenuInitialState,
                 about: !sidemenuOpen.about,
-                recharge: false,
-                defi: false,
-                docs: false,
               });
             }}
             className={
@@ -199,13 +144,10 @@ function Gnb({
 
         <div className="dropdown">
           <Link
-            // to={"/recharge"}
             onClick={() => {
               setSidemenuOpen({
-                about: false,
+                ...sidemenuInitialState,
                 recharge: !sidemenuOpen.recharge,
-                defi: false,
-                docs: false,
               });
             }}
             className={
@@ -269,13 +211,10 @@ function Gnb({
 
         <div className="dropdown Roboto_35pt_Nomal">
           <Link
-            // to={"/station/1"}
             onClick={() => {
               setSidemenuOpen({
-                about: false,
-                recharge: false,
+                ...sidemenuInitialState,
                 defi: !sidemenuOpen.defi,
-                docs: false,
               });
             }}
             className={
@@ -300,8 +239,27 @@ function Gnb({
                 }}
               >
                 <span className="on">Station</span>
-                {/* <span className="off">Coming Soon</span> */}
               </HashLink>
+              <div style={{ display: "flex", gap: "50px" }}>
+                <HashLink
+                  to={"/defi/station"}
+                  className="Roboto_25pt_Regular"
+                  onClick={() => {
+                    setMenuOpen(false);
+                  }}
+                >
+                  Station
+                </HashLink>
+                <HashLink
+                  to={"/defi/swap"}
+                  className="Roboto_25pt_Regular"
+                  onClick={() => {
+                    setMenuOpen(false);
+                  }}
+                >
+                  Swap
+                </HashLink>
+              </div>
             </div>
             <div>
               <HashLink
@@ -312,7 +270,6 @@ function Gnb({
                 }}
               >
                 <span className="on">My Pools</span>
-                {/* <span className="off">Coming Soon</span> */}
               </HashLink>
             </div>
             <div>
@@ -324,7 +281,6 @@ function Gnb({
                 }}
               >
                 Analytics
-                {/* <span className="off">Coming Soon</span> */}
               </HashLink>
             </div>
           </div>
@@ -334,9 +290,7 @@ function Gnb({
           <Link
             onClick={() => {
               setSidemenuOpen({
-                about: false,
-                recharge: false,
-                defi: false,
+                ...sidemenuInitialState,
                 docs: !sidemenuOpen.docs,
               });
             }}
@@ -377,7 +331,6 @@ function Gnb({
                 >
                   <span className="on">Token Audit</span>
                 </a>
-                {/* <span className="off">Coming Soon</span> */}
               </a>
             </div>
             <div>
