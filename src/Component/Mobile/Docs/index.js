@@ -6,9 +6,11 @@ import styled from "styled-components";
 import ReactPaginate from "react-paginate";
 import commentList from "./commentList/index";
 
+import { withTranslation } from "react-i18next";
+
 const perPage = 1;
 
-function Docs({ match }) {
+function Docs({ match, t }) {
   const [menu, setMenu] = useState("Whitepaper");
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -212,6 +214,17 @@ function Docs({ match }) {
             >
               CI Download
             </Link>
+          </div>
+          <div className="topic active Roboto_40pt_Black">
+            <a
+              style={{ textDecoration: "none", color: "#ffffff" }}
+              onClick={() => {
+                toggle();
+                window.open(t("Docs/userGuide"), "_blank");
+              }}
+            >
+              User Guide
+            </a>
           </div>
         </div>
       </Subnav>
@@ -631,4 +644,4 @@ const Background = styled.div`
   background-position: right 0px;
 `;
 
-export default Docs;
+export default withTranslation()(Docs);

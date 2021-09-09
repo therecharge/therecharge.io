@@ -404,6 +404,17 @@ function Gnb({
                 CI Download
               </HashLink>
             </div>
+            <div>
+              <a
+                className="Roboto_25pt_Regular"
+                onClick={() => {
+                  window.open(t("Docs/userGuide"), "_blank");
+                  setMenuOpen(false);
+                }}
+              >
+                User Guide
+              </a>
+            </div>
           </div>
         </div>
         <Footer>
@@ -457,10 +468,10 @@ function Gnb({
               <div
                 className="logo"
                 onClick={() =>
-                  (window.location =
-                    i18n.language == "en"
-                      ? "https://t.me/therecharge_official"
-                      : "https://t.me/therecharge_officialkr")
+                (window.location =
+                  i18n.language == "en"
+                    ? "https://t.me/therecharge_official"
+                    : "https://t.me/therecharge_officialkr")
                 }
               >
                 <img src="/footer4.png" />
