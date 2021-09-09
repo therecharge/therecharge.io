@@ -243,9 +243,8 @@ export default function Row({
               />
               <Info
                 left="TVL"
-                right={`${!account ? info.tvl : userInfo.tvl} ${
-                  info.symbol[0]
-                }`}
+                right={`${!account ? info.tvl : userInfo.tvl} ${info.symbol[0]
+                  }`}
               />
               <Info
                 left="LIMIT"
@@ -261,16 +260,14 @@ export default function Row({
                 <Info
                   className="hide"
                   left="MY BAL"
-                  right={`${makeNum(userInfo.balance)} ${
-                    info ? info.symbol[0] : ""
-                  }`}
+                  right={`${makeNum(userInfo.balance)} ${info ? info.symbol[0] : ""
+                    }`}
                 />
                 <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
                 <Info
                   left="Reward"
-                  right={`${makeNum(userInfo.reward)} ${
-                    info ? info.symbol[1] : ""
-                  }`}
+                  right={`${makeNum(userInfo.reward)} ${info ? info.symbol[1] : ""
+                    }`}
                 />
               </UserInfo>
             ) : (
@@ -310,7 +307,7 @@ export default function Row({
                 bgColor={
                   status === "Active" ? "var(--purple)" : "var(--gray-30)"
                 }
-                border=""
+                border={params.type === "Flexible" ? "" : "locked"}
                 hcolor=""
                 radius="20px"
                 w="540px"
@@ -321,8 +318,8 @@ export default function Row({
                   userInfo.allowance !== "0"
                     ? "PLUG-IN"
                     : userInfo.address == "0x00"
-                    ? "Now Loading ..."
-                    : "APPROVE"
+                      ? "Now Loading ..."
+                      : "APPROVE"
                 } //어프로브 안되어 있으면 APPROVE로 대체 필요함.
                 onClick={async () => {
                   if (status === "Inactive") {
@@ -346,41 +343,45 @@ export default function Row({
                   }
                 }}
               />
-              <WalletConnect
-                need="0"
-                disable={true}
-                bgColor={
-                  !account
-                    ? "var(--gray-30)"
-                    : status === "Inactive"
-                    ? "var(--gray-30)"
-                    : userInfo.reward > 0
-                    ? "var(--yellow)"
-                    : "var(--gray-30)"
-                }
-                border=""
-                hcolor=""
-                radius="20px"
-                w="540px"
-                fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
-                text="GET FILLED"
-                onClick={async () => {
-                  if (!account) {
-                    toast("Please connect to wallet");
-                  } else if (params.type == "Locked" && status === "Active") {
-                    toast("This pool does not end");
-                  } else if (status === "Inactive") {
-                    toast("This pool is inactive");
-                  } else if (userInfo.reward > 0) {
-                    poolMethods.earn();
-                    await toast(
-                      'Please approve "GET FILLED" in your private wallet'
-                    );
-                  } else {
-                    toast("There is no withdrawable amount");
+              {params.type === "Flexible" ? (
+                <WalletConnect
+                  need="0"
+                  disable={true}
+                  bgColor={
+                    !account
+                      ? "var(--gray-30)"
+                      : status === "Inactive"
+                        ? "var(--gray-30)"
+                        : userInfo.reward > 0
+                          ? "var(--yellow)"
+                          : "var(--gray-30)"
                   }
-                }}
-              />
+                  border=""
+                  hcolor=""
+                  radius="20px"
+                  w="540px"
+                  fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
+                  text="GET FILLED"
+                  onClick={async () => {
+                    if (!account) {
+                      toast("Please connect to wallet");
+                    } else if (params.type == "Locked" && status === "Active") {
+                      toast("This pool does not end");
+                    } else if (status === "Inactive") {
+                      toast("This pool is inactive");
+                    } else if (userInfo.reward > 0) {
+                      poolMethods.earn();
+                      await toast(
+                        'Please approve "GET FILLED" in your private wallet'
+                      );
+                    } else {
+                      toast("There is no withdrawable amount");
+                    }
+                  }}
+                />
+              ) : (
+                <></>
+              )}
               {params.type === "Flexible" ? (
                 <WalletConnect
                   need="0"
@@ -418,7 +419,7 @@ export default function Row({
                       ? "var(--ultramarine-blue)"
                       : "var(--gray-30)"
                   }
-                  border=""
+                  border={params.type === "Flexible" ? "" : "locked"}
                   hcolor=""
                   radius="20px"
                   w="540px"
@@ -475,9 +476,8 @@ function Name({ status, name }) {
   }
   return (
     <p
-      className={`${
-        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
-      } name`}
+      className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+        } name`}
       style={{ color: color() }}
     >
       {name}
@@ -495,9 +495,8 @@ function Apy({ status, apy }) {
   }
   return (
     <p
-      className={`${
-        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
-      } apy`}
+      className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+        } apy`}
       style={{ color: color() }}
     >
       {status != "Inactive"

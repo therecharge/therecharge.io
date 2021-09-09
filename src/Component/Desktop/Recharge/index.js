@@ -185,7 +185,10 @@ function Recharge({ t }) {
         <div className="fifth">
           <div className="theme Roboto_50pt_Black">Exchanges</div>
           <Line />
-          <div className="desc">
+          <div
+            className="desc"
+            onClick={() => window.open('https://v2.info.uniswap.org/pair/0x9c20be0f142fb34f10e33338026fb1dd9e308da3', '_blank')}
+          >
             <div className="image">
               <img src="/img_uniswap.svg" />
             </div>

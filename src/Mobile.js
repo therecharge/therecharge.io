@@ -30,7 +30,6 @@ const Mobile = React.memo(
       )
     );
 
-    const [page, setPage] = useState("/");
     const [countDown, setCountDown] = useState(null);
     const [modalPoolOpen, setModalPoolOpen] =
       useRecoilState(modalPoolOpenState);
@@ -150,7 +149,6 @@ const Mobile = React.memo(
     const getTitle = () => {
       const path = window.location.pathname.split("/")[1];
       const path2 = window.location.pathname.split("/")[2];
-      // return path;
 
       switch (path) {
         case "about":
@@ -158,38 +156,15 @@ const Mobile = React.memo(
         case "recharge":
           return "Recharge Token";
         case "defi":
-          if (modal2Open) {
-            if (path2 === "flexible") {
-              // console.log(modal2Open);
-              return "Flexible Staking";
-            }
-            if (path2 === "locked") {
-              return "Locked Staking";
-            }
-            if (path2 === "flexibleLP") {
-              return "LP Flexible Staking";
-            }
-            if (path2 === "lockedLP") {
-              return "LP Locked Staking";
-            }
-          } else if (modalPoolOpen) {
-            // console.log(modalPoolOpen);
-            return "Charging Station";
-          } else if (modalSwapOpen) {
-            // console.log(modalPoolOpen);
-            return "Recharge swap";
-          }
-          return "De-Fi";
+          if (path2 === "station") return "Charging Station"
+          else if (path2 === "swap") return "Charging Swap"
+          else return "De-Fi";
         case "docs":
           return "Documents";
         default:
           return "";
       }
     };
-
-    useEffect(() => {
-      setPage(window.location.pathname);
-    }, []);
 
     useEffect(async () => {
       if (!web3) return;
@@ -199,20 +174,7 @@ const Mobile = React.memo(
 
     return (
       <div className={"desktop " + getTitle()}>
-        <Gnb
-          connectWallet={ConnectWallet}
-          onDisconnect={onDisconnect}
-          account={account}
-          getTitle={getTitle}
-          modalPoolOpen={modalPoolOpen}
-          modal2Open={modal2Open}
-          modalSwapOpen={modalSwapOpen}
-          setModalPoolOpen={setModalPoolOpen}
-          setModal2Open={setModal2Open}
-          setModalSwapOpen={setModalSwapOpen}
-          params={params}
-          setParams={setParams}
-        />
+        <Gnb getTitle={getTitle} />
 
         <Switch>
           <Route path="/docs/:viewNum" component={Docs}></Route>

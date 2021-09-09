@@ -345,7 +345,7 @@ function Gnb() {
                   <a>CI Download</a>
                 </div>
               </HashLink>
-              <div>
+              <div style={{ cursor: "pointer" }}>
                 <a
                   onClick={() => {
                     window.open(t("Docs/userGuide"), "_blank");

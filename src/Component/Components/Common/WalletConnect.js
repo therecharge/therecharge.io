@@ -265,9 +265,11 @@ const Button = styled.div`
         ? "540px"
         : props.border === "4px solid #9314B2"
           ? "474px"
-          : props.notConnected === "Connect Wallet for data"
-            ? "420px"
-            : "310px"};
+          : props.border === "locked"
+            ? "474px"
+            : props.notConnected === "Connect Wallet for data"
+              ? "420px"
+              : "310px"};
         // margin: auto;
         margin-top: ${props.border === "4px solid #9314B2" ? "40px" : ""};
         height: ${props.border === "4px solid #9314B2" ? "60px" : ""};
