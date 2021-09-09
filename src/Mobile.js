@@ -180,27 +180,7 @@ const Mobile = React.memo(
           <Route path="/docs/:viewNum" component={Docs}></Route>
           <Route path="/defi/station" component={() => <Station toast={toast} />}></Route>
           <Route path="/defi/swap" component={() => <Swap toast={toast} />}></Route>
-          <Route
-            path="/defi"
-            component={() => (
-              <Defi
-                connectWallet={ConnectWallet}
-                onDisconnect={onDisconnect}
-                account={account}
-                chainId={chainId}
-                web3={web3}
-                toast={toast}
-                modalPoolOpen={modalPoolOpen}
-                modal2Open={modal2Open}
-                modalSwapOpen={modalSwapOpen}
-                setModalPoolOpen={setModalPoolOpen}
-                setModal2Open={setModal2Open}
-                setModalSwapOpen={setModalSwapOpen}
-                params={params}
-                setParams={setParams}
-              />
-            )}
-          ></Route>
+          <Route path="/defi" component={() => (<Defi toast={toast} />)}></Route>
           <Route path="/recharge" component={Recharge}></Route>
           <Route path="/about" component={About}></Route>
           <Route path="/" component={Home}></Route>

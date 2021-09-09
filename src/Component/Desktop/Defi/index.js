@@ -7,18 +7,11 @@ import axios from "axios";
 import { RotateCircleLoading } from "react-loadingg";
 import { withTranslation } from "react-i18next";
 /* Components */
-import ModalPool from "./modal_pool";
-import ModalSwap from "./modal_swap";
 import Footer from "../../Components/Desktop/Footer";
 import WalletConnect from "../../../Component/Components/Common/WalletConnect";
 /* State */
 import { useRecoilState } from "recoil";
 import { HashLink } from "react-router-hash-link";
-import {
-  modalPoolOpenState,
-  modalSwapOpenState,
-  modalPool2OpenState,
-} from "../../../store/modal";
 import { accountState } from "../../../store/web3";
 
 const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
@@ -38,57 +31,9 @@ const weiToEther = (wei) => {
   return fromWei(wei, "ether");
 };
 
-function Defi({
-  connectWallet,
-  onDisconnect,
-  // account,
-  chainId,
-  web3,
-  toast,
-  params,
-  setParams,
-  t,
-}) {
+function Defi({ toast, t, }) {
   const [onLoading, setOnLoading] = useState(true);
   const [account] = useRecoilState(accountState);
-  const [modalPoolOpen, setModalPoolOpen] = useRecoilState(modalPoolOpenState);
-  const [modalSwapOpen, setModalSwapOpen] = useRecoilState(modalSwapOpenState);
-  const [modalPool2Open, setModalPool2Open] =
-    useRecoilState(modalPool2OpenState);
-  // const [modalPoolOpen, setModalPoolOpen] = useState(false);
-  // const [modalSwapOpen, setModalSwapOpen] = useState(false);
-  const [sel, setSelCharger] = useState(0);
-  const [chargerList, setChargerList] = useState([
-    {
-      type: "Flexible",
-      isLP: false,
-      address: "0xac66a0E8bf3de069Ffc043491CB8ca7b278529A0",
-    },
-    {
-      type: "Locked",
-      isLP: false,
-      address: "0xf1e99a4a9569A2Afd40e12b7686e31608Ebd2663",
-    },
-  ]);
-  const [chargerInfoList, setChargerInfoList] = useState([
-    {
-      name: "Fake Charger No.0",
-      apy: "100",
-      tvl: "100,000,000",
-      limit: "0",
-      balance: "1,000,000",
-      share: "100",
-      reward: "100,000",
-      period: "21.01.01 00:00:00 ~ 21.01.30 00:00:00(UTC+9)",
-      available: "7,000,000.00",
-      allowance: "0",
-      rewardSymbol: "RCGr",
-      stakeSymbol: "RCGs",
-      redemption: "2",
-      status: "1",
-    },
-  ]);
-
   const [myPools, setMyPools] = useState(null);
   const [analytics, setAnalytics] = useState({
     ERC: {},
@@ -139,13 +84,6 @@ function Defi({
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data, initialState }, useSortBy);
 
-  const handleModalPool = () => {
-    setModalPoolOpen(!modalPoolOpen);
-  };
-  const handleModalSwap = () => {
-    setModalSwapOpen(!modalSwapOpen);
-  };
-
   const loadMyPools = async () => {
     try {
       let { data } = await axios.get(
@@ -159,7 +97,7 @@ function Defi({
        * symbol: ["RCG", "RCG"]
        * type: "flexible"
        */
-      let ret = data.map((charger, index) => {
+      let ret = data.map((charger) => {
         return {
           balance: makeNum(weiToEther(charger.balance)),
           reward: makeNum(weiToEther(charger.reward), 6),
@@ -209,26 +147,6 @@ function Defi({
     }
   };
 
-  const loadUniPrice = async () => {
-    try {
-      let { data } = await axios.post(
-        `https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`,
-        {
-          query:
-            'query{pairs(where:{id:"0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc"}) { token0Price token1Price }}',
-        }
-      );
-      let token;
-      console.log(data.data.pairs[0]);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleLoading = () => {
-    setOnLoading(false);
-  };
-
   const useInterval = (callback, delay) => {
     const savedCallback = useRef();
 
@@ -258,33 +176,8 @@ function Defi({
     loadMyPools();
   }, [account]);
 
-  useEffect(() => {
-    loadUniPrice();
-  }, []);
-
-  // useEffect(() => {
-  //   handleLoading();
-  // }, [myPools]);
-
-  // useEffect(() => {
-  //   setModalPoolOpen(false);
-  //   setModalPool2Open(false);
-  //   setModalSwapOpen(false);
-  // }, []);
-
   return (
-    <Container
-      style={
-        modalPoolOpen || modalSwapOpen
-          ? {
-            position: "fixed",
-            top: "-20px",
-            width: "100%",
-            backgroundColor: "#02051c",
-          }
-          : {}
-      }
-    >
+    <Container>
       <Content>
         <div className="first" id="station" style={{ paddingTop: "100px" }}>
           <div className="theme Roboto_50pt_Black">Station</div>
@@ -393,7 +286,7 @@ function Defi({
                 </thead>
 
                 <tbody {...getTableBodyProps()}>
-                  {rows.map((row, i) => {
+                  {rows.map((row) => {
                     prepareRow(row);
                     return (
                       <tr {...row.getRowProps()} className="tableRow">
@@ -716,49 +609,8 @@ function Defi({
             </div>
           </div>
 
-          {/* <div className="subTheme Roboto_30pt_Medium">
-              Daily Carbon Redemption
-            </div>
-            <div className="graph">
-              <img src="/sampleimg_graph.svg" />
-            </div> */}
         </div>
       </Content>
-      {modalPoolOpen ? (
-        <ModalPool
-          web3={web3}
-          modalPoolOpen={modalPoolOpen}
-          handleModalPool={handleModalPool}
-          connectWallet={connectWallet}
-          onDisconnect={onDisconnect}
-          params={params}
-          setParams={setParams}
-          account={account}
-          setSelCharger={setSelCharger}
-          sel={sel}
-          chainId={chainId}
-          toast={toast}
-        />
-      ) : (
-        <></>
-      )}
-      {modalSwapOpen ? (
-        <ModalSwap
-          web3={web3}
-          modalSwapOpen={modalSwapOpen}
-          handleModalSwap={handleModalSwap}
-          connectWallet={connectWallet}
-          onDisconnect={onDisconnect}
-          account={account}
-          chainId={chainId}
-          toast={toast}
-          chargerList={chargerList}
-          chargerInfoList={chargerInfoList}
-          redemption={analytics.general.RedemptionRate}
-        />
-      ) : (
-        <></>
-      )}
 
       <Footer />
     </Container>
