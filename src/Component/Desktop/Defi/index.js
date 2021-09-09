@@ -430,16 +430,16 @@ function Defi({
             Overview of Recharge Ecosystem
           </div>
           <div className="contents">
-            <div className="container">
+            {/* <div className="container">
               <div className="center box exception">
                 <div className="title Roboto_30pt_Black">
-                  $ {analytics.general.tvl} {/* 들어오는 tvl 데이터 없음 */}
+                  $ {analytics.general.tvl}
                 </div>
                 <div className="text Roboto_16pt_Regular_Gray">
                   Total Value Locked
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="container">
               <div className="left box exception">
                 <div className="title Roboto_30pt_Medium">
