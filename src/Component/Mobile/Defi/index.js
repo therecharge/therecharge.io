@@ -358,10 +358,10 @@ function Defi({ toast, t, }) {
             <div className="container">
               <div className="left box exception">
                 <div className="title Roboto_40pt_Black">
-                  {analytics.ERC.redemption
-                    ? makeNum(analytics.ERC.redemption) / 100
-                    : 0}{" "}
-                  %
+                  {/* {analytics.general.RedemptionRate
+                    ? makeNum(analytics.general.RedemptionRate) / 100
+                    : 0}{" "} */}
+                  2 %
                 </div>
                 <div className="text Roboto_20pt_Regular_Gray">
                   Current Redemption Rate
@@ -479,84 +479,6 @@ function Defi({ toast, t, }) {
                   className="title Roboto_40pt_Black"
                   style={{ zIndex: "2" }}
                 >
-                  {analytics.HRC.total
-                    ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                      unitSeparator: true,
-                    })
-                    : 0}{" "}
-                  RCG
-                </div>
-                <div
-                  className="text Roboto_20pt_Regular_Gray"
-                  style={{ zIndex: "2" }}
-                >
-                  Total Circulating Supply in HRC20
-                </div>
-                <div className="logo2">
-                  <img
-                    src="/img_hrc_back.svg"
-                    style={{ width: "97.5px", height: "150px" }}
-                  />
-                </div>
-              </div>
-              <div className="right box">
-                <div className="content le">
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      {analytics.HRC.redemption
-                        ? makeNum(analytics.HRC.redemption)
-                        : 0}{" "}
-                      RCG
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">
-                      Accumulated Carbon Redemption HRC20
-                    </div>
-                  </div>
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      ${" "}
-                      {analytics.HRC.price
-                        ? analytics.HRC.price === "0"
-                          ? "-"
-                          : makeNum(analytics.HRC.price)
-                        : 0}
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">
-                      Current RCG Price($) HRC20-Mdex
-                    </div>
-                  </div>
-                </div>
-                <div className="content">
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      {analytics.HRC.swapped
-                        ? makeNum(analytics.HRC.swapped)
-                        : 0}
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">
-                      RCG (HRC20) Swapped in
-                    </div>
-                  </div>
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      {analytics.HRC.conversion
-                        ? makeNum(analytics.HRC.conversion)
-                        : 0}{" "}
-                      RCG
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">
-                      Accumulated Conversion Fee(HRC20)
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="container">
-              <div className="left box">
-                <div
-                  className="title Roboto_40pt_Black"
-                  style={{ zIndex: "2" }}
-                >
                   {analytics.BEP.total
                     ? convertNum(weiToEther(convertNum(analytics.BEP.total)), {
                       unitSeparator: true,
@@ -624,6 +546,84 @@ function Defi({ toast, t, }) {
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Conversion Fee(BEP20)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="container">
+              <div className="left box">
+                <div
+                  className="title Roboto_40pt_Black"
+                  style={{ zIndex: "2" }}
+                >
+                  {analytics.HRC.total
+                    ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
+                      unitSeparator: true,
+                    })
+                    : 0}{" "}
+                  RCG
+                </div>
+                <div
+                  className="text Roboto_20pt_Regular_Gray"
+                  style={{ zIndex: "2" }}
+                >
+                  Total Circulating Supply in HRC20
+                </div>
+                <div className="logo2">
+                  <img
+                    src="/img_hrc_back.svg"
+                    style={{ width: "97.5px", height: "150px" }}
+                  />
+                </div>
+              </div>
+              <div className="right box">
+                <div className="content le">
+                  <div className="item">
+                    <div className="title Roboto_20pt_Black">
+                      {analytics.HRC.redemption
+                        ? makeNum(analytics.HRC.redemption)
+                        : 0}{" "}
+                      RCG
+                    </div>
+                    <div className="text Roboto_20pt_Regular_Gray">
+                      Accumulated Carbon Redemption HRC20
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="title Roboto_20pt_Black">
+                      ${" "}
+                      {analytics.HRC.price
+                        ? analytics.HRC.price === "0"
+                          ? "-"
+                          : makeNum(analytics.HRC.price)
+                        : 0}
+                    </div>
+                    <div className="text Roboto_20pt_Regular_Gray">
+                      Current RCG Price($) HRC20-Mdex
+                    </div>
+                  </div>
+                </div>
+                <div className="content">
+                  <div className="item">
+                    <div className="title Roboto_20pt_Black">
+                      {analytics.HRC.swapped
+                        ? makeNum(analytics.HRC.swapped)
+                        : 0}
+                    </div>
+                    <div className="text Roboto_20pt_Regular_Gray">
+                      RCG (HRC20) Swapped in
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="title Roboto_20pt_Black">
+                      {analytics.HRC.conversion
+                        ? makeNum(analytics.HRC.conversion)
+                        : 0}{" "}
+                      RCG
+                    </div>
+                    <div className="text Roboto_20pt_Regular_Gray">
+                      Accumulated Conversion Fee(HRC20)
                     </div>
                   </div>
                 </div>
