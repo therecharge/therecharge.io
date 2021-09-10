@@ -157,21 +157,7 @@ const Desktop = React.memo(
               <Swap toast={toast} />
             )}>
           </Route>
-          <Route
-            path="/defi"
-            component={() => (
-              <Defi
-                onDisconnect={onDisconnect}
-                connectWallet={ConnectWallet}
-                account={account}
-                chainId={chainId}
-                web3={web3}
-                toast={toast}
-                params={params}
-                setParams={setParams}
-              />
-            )}
-          ></Route>
+          <Route path="/defi" component={() => (<Defi toast={toast} />)}></Route>
           <Route path="/recharge" component={Recharge}></Route>
           <Route path="/about" component={About}></Route>
           <Route path="/" component={Home}></Route>

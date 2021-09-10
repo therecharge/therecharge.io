@@ -161,7 +161,7 @@ function About({ t }) {
               </div>
               <div
                 className="partner"
-                onClick={() => { window.open("https://coinmarketcap.com/", "_blank") }}
+                onClick={() => { window.open("https://coinmarketcap.com/currencies/recharge/", "_blank") }}
               >
                 <div className="logo">
                   <img
@@ -176,7 +176,7 @@ function About({ t }) {
               </div>
               <div
                 className="partner"
-              // onClick={() => { window.open("https://xangle.io/", "_blank") }}
+                onClick={() => { window.open("https://www.coingecko.com/en/coins/recharge", "_blank") }}
               >
                 <div className="logo">
                   <img
@@ -193,7 +193,7 @@ function About({ t }) {
             <div className="tier">
               <div
                 className="partner"
-                onClick={() => { window.open("https://xangle.io/", "_blank") }}
+                onClick={() => { window.open("https://xangle.io/project/RCG/key-info", "_blank") }}
               >
                 <div className="logo">
                   <img
