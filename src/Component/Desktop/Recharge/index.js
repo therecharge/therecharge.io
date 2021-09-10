@@ -132,11 +132,26 @@ function Recharge({ t }) {
                 </div>
                 <div className="content Roboto_20pt_Regular_L ">
                   <div>{t("RechargeToken/Distribution/erc20")} : </div>
-                  <div>0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30</div>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() => window.open('https://etherscan.io/address/0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30', '_blank')}
+                  >
+                    0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30
+                  </div>
                   <div>{t("RechargeToken/Distribution/hrc20")} : </div>
-                  <div>0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b</div>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() => window.open('https://hecoinfo.com/address/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b', '_blank')}
+                  >
+                    0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b
+                  </div>
                   <div>{t("RechargeToken/Distribution/bep20")} : </div>
-                  <div>0x2D94172436D869c1e3c094BeaD272508faB0d9E3</div>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() => window.open('https://bscscan.com/address/0x2D94172436D869c1e3c094BeaD272508faB0d9E3', '_blank')}
+                  >
+                    0x2D94172436D869c1e3c094BeaD272508faB0d9E3
+                  </div>
                 </div>
               </div>
             </div>
@@ -185,11 +200,12 @@ function Recharge({ t }) {
         <div className="fifth">
           <div className="theme Roboto_50pt_Black">Exchanges</div>
           <Line />
-          <div
-            className="desc"
-            onClick={() => window.open('https://v2.info.uniswap.org/pair/0x9c20be0f142fb34f10e33338026fb1dd9e308da3', '_blank')}
-          >
-            <div className="image">
+          <div className="desc">
+            <div
+              className="image"
+              style={{ cursor: "pointer" }}
+              onClick={() => window.open('https://v2.info.uniswap.org/pair/0x9c20be0f142fb34f10e33338026fb1dd9e308da3', '_blank')}
+            >
               <img src="/img_uniswap.svg" />
             </div>
             <div className="image">
