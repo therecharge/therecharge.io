@@ -46,7 +46,7 @@ function AssetSwap({ toast }) {
       56: "0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
     },
     conversionFee: {
-      1: 5,
+      1: 3,
       128: 0.5,
       56: 0.5,
     },
