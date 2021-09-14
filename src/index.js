@@ -49,6 +49,8 @@ let web3Modal = new Web3Modal({
   providerOptions,
 });
 
+console.log("VERSION IS : ", process.env.REACT_APP_VERSION);
+
 ReactDOM.render(
   <React.StrictMode>
     <Main layout={false} scrollView={true} theme={false}>
