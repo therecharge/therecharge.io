@@ -11,12 +11,13 @@ export default function Popup({
   apy,
   info,
   poolMethods,
+  userInfo,
   toast,
 }) {
   const [plAmount, setPlAmount] = useState("");
 
   const SetPercent = (x) => {
-    setPlAmount(makeNum((poolMethods.available / 100) * x));
+    setPlAmount(makeNum((userInfo.available / 100) * x));
   };
   return (
     <Background>
@@ -32,10 +33,12 @@ export default function Popup({
           <div className="group1">
             <span className="Roboto_40pt_Black popup-title">STAKING</span>
             <span className="Roboto_30pt_Regular popup-name">{name}</span>
-            <span className="Roboto_30pt_Regular popup-apy">{apy} %</span>
+            <span className="Roboto_30pt_Regular popup-apy">
+              {makeNum(apy, 2)} %
+            </span>
             <span className="Roboto_20pt_Regular popup-available">
               Available:{" "}
-              {`${makeNum((poolMethods.available - plAmount).toString())} ${
+              {`${makeNum((userInfo.available - plAmount).toString())} ${
                 info.symbol[0]
               }`}
             </span>
@@ -47,10 +50,10 @@ export default function Popup({
               onChange={(e) => {
                 if (Number(e.target.value) < 0) {
                   return setPlAmount("0");
-                } else if (poolMethods.available >= Number(e.target.value)) {
+                } else if (userInfo.available >= Number(e.target.value)) {
                   return setPlAmount(makeNum(e.target.value, 8));
                 } else {
-                  return setPlAmount(makeNum(poolMethods.available));
+                  return setPlAmount(makeNum(userInfo.available));
                 }
               }}
             />
@@ -120,17 +123,19 @@ export default function Popup({
           <InfoContainer>
             <Info
               left="Current Redemption Rate"
-              right={`${info.redemtion / 100} %`}
+              right={`${info.basePercent / 100} %`}
             />
             <Info left="RCG to Stake" right={`${plAmount} RCG`} />
             <Info
               left="RCG to Redeem"
-              right={`${makeNum((plAmount * info.redemtion) / 100 / 100)} RCG`}
+              right={`${makeNum(
+                (plAmount * info.basePercent) / 100 / 100
+              )} RCG`}
             />
             <Info
               left="Net RCG to Stake"
               right={`${makeNum(
-                plAmount - (plAmount * info.redemtion) / 100 / 100
+                plAmount - (plAmount * info.basePercent) / 100 / 100
               )} RCG`}
             />
           </InfoContainer>
