@@ -242,10 +242,10 @@ export default function Popup({ close = () => {}, recipe, setRecipe, toast }) {
             />
           </div>
           <InfoContainer>
-            <Info
+            {/* <Info
               left="Current Redemption Rate"
               right={`${poolMethods.redemption}%`}
-            />
+            /> */}
             <Info
               left="Current Conversion Fee"
               right={`${
@@ -258,24 +258,21 @@ export default function Popup({ close = () => {}, recipe, setRecipe, toast }) {
                 recipe.from.token
               }`}
             />
-            <Info
+            {/* <Info
               left={`${recipe.from.token} to Redeem`}
               right={`${makeNum(
                 (
-                  (recipe.swapAmount / 100) *
+                  (recipe.swapAmount) *
                   (poolMethods.redemption ? poolMethods.redemption / 100 : 1)
                 ).toString()
               )} ${recipe.from.token}`}
-            />
+            /> */}
             <Info
               left={`Net ${recipe.from.token} to Swap`}
               right={`${makeNum(
                 (
                   recipe.swapAmount -
-                  (recipe.swapAmount / 100) *
-                    (poolMethods.redemption
-                      ? poolMethods.redemption / 100
-                      : 1) -
+                  0.000000000000001 -
                   recipe.conversionFee[recipe.chainId[recipe.to.network]]
                 ).toString()
               )} ${recipe.from.token}`}
