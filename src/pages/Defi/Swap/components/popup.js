@@ -7,12 +7,25 @@ import { fromWei, toWei } from "web3-utils";
 //store
 import { useRecoilState } from "recoil";
 import { web3State, accountState } from "../../../../store/web3";
+import { web3ReaderState } from "../../../../store/read-web3";
+//functions
+import {
+  createContractInstance,
+  getSwapAvailableTokenAmount,
+} from "../../../../lib/read_contract/Swap.js";
 
 const ERC20_ABI = require("../../../../Component/Desktop/Defi/abis/ERC20ABI.json");
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
-export default function Popup({ close = () => {}, recipe, setRecipe, toast }) {
+export default function Popup({
+  close = () => {},
+  recipe,
+  setRecipe,
+  toast,
+  isPopupOpen,
+}) {
   const [web3, setWeb3] = useRecoilState(web3State);
+  const [web3_r] = useRecoilState(web3ReaderState);
   const [account, setAccount] = useRecoilState(accountState);
   const [poolMethods, setPoolMethods] = useState({
     redemption: 2,
@@ -40,25 +53,17 @@ export default function Popup({ close = () => {}, recipe, setRecipe, toast }) {
     if (!account) return;
     try {
       let ret = {};
-      const swapI = new web3.eth.Contract(ERC20_ABI, swapTokenAddress);
-      const swapM = swapI.methods;
 
-      let [balance, allowed] = await Promise.all([
-        await swapM.balanceOf(account).call(),
-        await swapM.allowance(account, bridgeAddress).call(),
-      ]);
-      // let balance = await swapM.balanceOf(account).call();
-      // let allowed = await swapM.allowance(account, bridgeAddress).call();
-
-      allowed = Number(allowed);
-
-      const approve = (tokenM, to, amount, account) => {
-        if (typeof amount != "string") amount = String(amount);
-        tokenM.approve(to, toWei(amount, "ether")).send({ from: account });
-      };
+      const Token_reader = createContractInstance(
+        web3_r[recipe.network[recipe.from.network]],
+        swapTokenAddress,
+        ERC20_ABI
+      );
+      const swapI = createContractInstance(web3, swapTokenAddress, ERC20_ABI);
+      let available = await getSwapAvailableTokenAmount(Token_reader, account);
       const swap = async (swapAmount) => {
         try {
-          await swapM
+          await swapI.methods
             .transfer(bridgeAddress, toWei(swapAmount, "ether"))
             .send({ from: account });
         } catch (err) {
@@ -67,16 +72,13 @@ export default function Popup({ close = () => {}, recipe, setRecipe, toast }) {
       };
 
       ret = {
-        available: fromWei(balance, "ether"),
-        allowance: allowed,
-        approve: async () =>
-          await approve(swapM, bridgeAddress, "999999999", account),
+        available: available,
         swap: async (swapAmount) => {
-          // methods.allowance !== 0
           await swap(swapAmount);
-          // : await approve(swapM, bridgeAddress, "999999999", account);
         },
       };
+
+      console.log("console from swap popup", ret);
 
       setPoolMethods({
         ...poolMethods,
@@ -128,6 +130,10 @@ export default function Popup({ close = () => {}, recipe, setRecipe, toast }) {
       );
     }
   }, [account, recipe.to.network]);
+
+  useEffect(() => {
+    if (isPopupOpen) loadMethods();
+  }, [isPopupOpen]);
 
   return (
     <Background>

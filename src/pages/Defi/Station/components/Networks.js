@@ -1,18 +1,38 @@
 import React from "react";
 import styled from "styled-components";
 
-function Networks({ setParams }) {
+function Networks({ setNetwork, network }) {
   return (
     <Container>
       <Content>
-        <div className="network" style={{ cursor: "pointer" }}>
-          <Button setParams={setParams} type="Locked" text="ERC-20" />
+        <div
+          onClick={() => {
+            console.log(network);
+            setNetwork("ERC");
+          }}
+          className="network"
+          style={{ cursor: "pointer" }}
+        >
+          <Button type="Locked" text="ERC-20" />
         </div>
-        <div className="network" style={{ cursor: "pointer" }}>
-          <Button type="Flexible" text="BEP-20" />
+
+        <div
+          onClick={() => {
+            console.log(network);
+            setNetwork("BEP");
+          }}
+          className="network"
+          style={{ cursor: "pointer" }}
+        >
+          <Button type="Locked" text="BEP-20" />
         </div>
+
         <div className="disable network">
-          <Button type="Locked" text="HRC-20" />
+          <Button
+            onClick={() => setNetwork("HRC")}
+            type="Locked"
+            text="HRC-20"
+          />
         </div>
       </Content>
     </Container>

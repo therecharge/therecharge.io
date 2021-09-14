@@ -7,6 +7,12 @@ import { ReactComponent as DropdownOpen } from "./assets/dropdown-open.svg";
 import WalletConnect from "../../../../../Component/Components/Common/WalletConnect";
 import Popup from "./popup";
 import Info from "./infoRow";
+import {
+  getChargerList,
+  createContractInstance,
+  getTokenInfo,
+  getChargerInfo,
+} from "../../../../../lib/read_contract/Station";
 //store
 import { useRecoilState } from "recoil";
 import {
@@ -15,9 +21,13 @@ import {
   networkState,
   requireNetworkState,
 } from "../../../../../store/web3";
-// import { async } from "@aragon/ui/dist/ToastHub";
+import { web3ReaderState } from "../../../../../store/read-web3";
+const TOKEN_ABI = require("../../../../../lib/read_contract/abi/erc20.json");
 const ERC20_ABI = require("../../../../../Component/Desktop/Defi/abis/ERC20ABI.json");
 const POOL_ABI = require("../../../../../Component/Desktop/Defi/abis/poolABI.json");
+const CHARGER_ABI = require("../../../../../lib/read_contract/abi/charger.json");
+const NETWORKS = require("../../../../../lib/networks.json");
+const NETWORK = NETWORKS[process.env.REACT_APP_VERSION];
 // Row Component structure
 //  1)state
 //  2)style
@@ -30,8 +40,14 @@ export default function Row({
   info,
   params,
   toast,
+  tvl,
+  limit,
+  period,
+  net,
 }) {
   const [web3] = useRecoilState(web3State);
+  const [web3_R] = useRecoilState(web3ReaderState);
+  const WEB3 = web3_R[net];
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
   const [requireNetwork, setRequireNetwork] =
@@ -56,6 +72,7 @@ export default function Row({
   });
   const [userInfo, setUserInfo] = useState({
     address: "0x00",
+    available: "0",
     balance: "-",
     reward: "-",
     allowance: "0",
@@ -86,21 +103,57 @@ export default function Row({
     };
     if (account && info) {
       try {
-        let { data } = await axios.get(
-          `https://bridge.therecharge.io/charger/info/${info.address}/${account}`
+        const STAKE_INSTANCE = createContractInstance(
+          WEB3,
+          info.stakeToken,
+          ERC20_ABI
         );
+        const CHARGER_INSTANCE = createContractInstance(
+          WEB3,
+          info.address,
+          CHARGER_ABI
+        );
+        // chargerInstance
+
+        let [allowance, available, balance, reward] = await Promise.all([
+          await STAKE_INSTANCE.methods.allowance(account, info.address).call(),
+          await STAKE_INSTANCE.methods.balanceOf(account).call(),
+          await CHARGER_INSTANCE.methods.balanceOf(account).call(),
+          await CHARGER_INSTANCE.methods.earned(account).call(),
+        ]);
+        let share = (balance / tvl) * 100;
+        // 1. 내가 스테이킹한 수량
+        // 2. 내가 스테이킹한 수량의 전체 비중 (1/tvl %)
+        // 3. 내가 받을 수량 (2 * 전체 reward) // charger earned(account)
+        // console.log("methods", info.address);
+        // console.log("share", share);
+        // console.log("tvl", weiToEther(tvl));
+        // console.log("reward", reward);
+
         ret = {
-          ...data.account,
-          balance: weiToEther(data.account.balance),
-          reward: weiToEther(data.account.reward),
-          tvl: data.tvl,
-          apy:
-            Number(data.apy) > 0
-              ? Number(data.apy) >= 10000000
-                ? "+999999.99"
-                : `${makeNum(Number(data.apy), 2)}`
-              : 0,
+          ...ret,
+          address: info.address,
+          available: fromWei(available, "ether"),
+          allowance: allowance,
+          balance: balance,
+          share: share,
+          reward: reward,
         };
+        // let { data } = await axios.get(
+        //   `https://bridge.therecharge.io/charger/info/${info.address}/${account}`
+        // );
+        // ret = {
+        //   ...data.account,
+        //   balance: weiToEther(data.account.balance),
+        //   reward: weiToEther(data.account.reward),
+        //   tvl: data.tvl,
+        //   apy:
+        //     Number(data.apy) > 0
+        //       ? Number(data.apy) >= 10000000
+        //         ? "+999999.99"
+        //         : `${makeNum(Number(data.apy), 2)}`
+        //       : 0,
+        // };
       } catch (err) {
         console.log(err);
       }
@@ -114,15 +167,25 @@ export default function Row({
     chargerAddress
   ) => {
     let ret = {};
-    const stakeI = new web3.eth.Contract(ERC20_ABI, stakeTokenAddress);
-    const stakeM = stakeI.methods;
-    const rewardI = new web3.eth.Contract(ERC20_ABI, rewardTokenAddress);
-    const rewardM = rewardI.methods;
-    const poolI = new web3.eth.Contract(POOL_ABI, chargerAddress);
-    const poolM = poolI.methods;
+    const STAKE_INSTANCE = createContractInstance(
+      web3,
+      stakeTokenAddress,
+      ERC20_ABI
+    );
+    const REWARD_INSTANCE = createContractInstance(
+      web3,
+      rewardTokenAddress,
+      ERC20_ABI
+    );
+    const POOL_INSTANCE = createContractInstance(
+      web3,
+      chargerAddress,
+      POOL_ABI
+    );
 
     // const [balance] = await stakeM.balanceOf(account).call();
-    let balance = await stakeM.balanceOf(account).call();
+    // let balance = await STAKE_INSTANCE.methods.balanceOf(account).call();
+
     const approve = (tokenM, to, amount, account) => {
       if (typeof amount != "string") amount = String(amount);
       tokenM.approve(to, toWei(amount, "ether")).send({ from: account });
@@ -139,13 +202,19 @@ export default function Row({
     };
 
     ret = {
-      available: fromWei(balance, "ether"),
+      // available: fromWei(balance, "ether"),
       approve: async () =>
-        await approve(stakeM, chargerAddress, "999999999", account),
-      stake: async (amount) => await stake(poolM, amount, account),
+        await approve(
+          STAKE_INSTANCE.methods,
+          chargerAddress,
+          "999999999",
+          account
+        ),
+      stake: async (amount) =>
+        await stake(POOL_INSTANCE.methods, amount, account),
 
-      earn: async () => await earn(poolM, account),
-      exit: async () => await exit(poolM, account),
+      earn: async () => await earn(POOL_INSTANCE.methods, account),
+      exit: async () => await exit(POOL_INSTANCE.methods, account),
     };
 
     setPoolMethods({
@@ -158,10 +227,10 @@ export default function Row({
   const updateChargerInfoList = async () => {
     if (info.address === "0x0") return;
     if (account && isOpen) {
-      await Promise.all([
-        loadUserInfo(),
-        loadMethods(info.token[0], info.token[1], info.address),
-      ]);
+      // await Promise.all([
+      loadUserInfo();
+      loadMethods(info.stakeToken, info.rewardToken, info.address);
+      // ]);
     }
   };
 
@@ -202,10 +271,11 @@ export default function Row({
   }, [params]);
 
   useEffect(() => {
-    if (info.address === "0x0") return;
+    // if (info.address === "0x0") return;
+    if (!account) return;
     if (isOpen && account)
-      loadMethods(info.token[0], info.token[1], info.address);
-  }, [isOpen]);
+      loadMethods(info.stakeToken, info.rewardToken, info.address);
+  }, [account, isOpen]);
 
   return (
     <Container>
@@ -219,6 +289,7 @@ export default function Row({
           info={info}
           poolMethods={poolMethods}
           toast={toast}
+          userInfo={userInfo}
         />
       )}
       <Title
@@ -230,28 +301,21 @@ export default function Row({
       >
         <Status status={status} />
         <Name status={status} name={name} />
-        <Apy status={status} apy={!account ? apy : makeNum(userInfo.apy, 2)} />
+        <Apy status={status} apy={makeNum(apy, 2)} />
         <Btn status={status} isOpen={isOpen} />
       </Title>
       {isOpen && (
         <Menu>
           <div className="part">
             <PoolInfo className="innerMenu">
-              <Info
-                left="APY"
-                right={`${!account ? apy : makeNum(userInfo.apy, 2)} %`}
-              />
-              <Info
-                left="TVL"
-                right={`${!account ? info.tvl : userInfo.tvl} ${info.symbol[0]
-                  }`}
-              />
+              <Info left="APY" right={makeNum(apy, 2)} />
+              <Info left="TVL" right={`${weiToEther(tvl)} ${info.symbol[0]}`} />
               <Info
                 left="LIMIT"
                 right={
-                  info.limit == 0
+                  limit == 0
                     ? "UNLIMITED"
-                    : makeNum(info.limit) + ` ${info.symbol[0]}`
+                    : weiToEther(limit) + ` ${info.symbol[0]}`
                 }
               />
             </PoolInfo>
@@ -260,14 +324,16 @@ export default function Row({
                 <Info
                   className="hide"
                   left="MY BAL"
-                  right={`${makeNum(userInfo.balance)} ${info ? info.symbol[0] : ""
-                    }`}
+                  right={`${makeNum(weiToEther(userInfo.balance))} ${
+                    info ? info.symbol[0] : ""
+                  }`}
                 />
                 <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
                 <Info
                   left="Reward"
-                  right={`${makeNum(userInfo.reward)} ${info ? info.symbol[1] : ""
-                    }`}
+                  right={`${makeNum(weiToEther(userInfo.reward))} ${
+                    info ? info.symbol[1] : ""
+                  }`}
                 />
               </UserInfo>
             ) : (
@@ -294,11 +360,7 @@ export default function Row({
             )}
           </div>
           <Pannel className="innerMenu">
-            <Info
-              direction="column"
-              left="Period"
-              right={info ? info.timeStamp + "(UTC+9)" : ""}
-            />
+            <Info direction="column" left="Period" right={period + "(UTC+9)"} />
 
             <Wallets>
               <WalletConnect
@@ -318,8 +380,8 @@ export default function Row({
                   userInfo.allowance !== "0"
                     ? "PLUG-IN"
                     : userInfo.address == "0x00"
-                      ? "Now Loading ..."
-                      : "APPROVE"
+                    ? "Now Loading ..."
+                    : "APPROVE"
                 } //어프로브 안되어 있으면 APPROVE로 대체 필요함.
                 onClick={async () => {
                   if (status === "Inactive") {
@@ -351,10 +413,10 @@ export default function Row({
                     !account
                       ? "var(--gray-30)"
                       : status === "Inactive"
-                        ? "var(--gray-30)"
-                        : userInfo.reward > 0
-                          ? "var(--yellow)"
-                          : "var(--gray-30)"
+                      ? "var(--gray-30)"
+                      : userInfo.reward > 0
+                      ? "var(--yellow)"
+                      : "var(--gray-30)"
                   }
                   border=""
                   hcolor=""
@@ -476,8 +538,9 @@ function Name({ status, name }) {
   }
   return (
     <p
-      className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
-        } name`}
+      className={`${
+        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+      } name`}
       style={{ color: color() }}
     >
       {name}
@@ -495,8 +558,9 @@ function Apy({ status, apy }) {
   }
   return (
     <p
-      className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
-        } apy`}
+      className={`${
+        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+      } apy`}
       style={{ color: color() }}
     >
       {status != "Inactive"

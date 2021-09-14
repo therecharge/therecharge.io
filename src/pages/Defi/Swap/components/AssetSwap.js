@@ -39,6 +39,11 @@ function AssetSwap({ toast }) {
       "(Huobi ECO Chain Network)": 128,
       "(Binance Smart Chain Network)": 56,
     },
+    network: {
+      "(Ethereum Network)": "ERC",
+      "(Huobi ECO Chain Network)": "HRC",
+      "(Binance Smart Chain Network)": "BEP",
+    },
     tokenAddress: {
       1: "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30", // "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F", // 랍스텐 토큰주소
       128: "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
@@ -86,6 +91,7 @@ function AssetSwap({ toast }) {
               setPopupOpen(false);
             }}
             toast={toast}
+            isPopupOpen={isPopupOpen}
           />
         )}
         <Dropdown
