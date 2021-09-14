@@ -1,0 +1,21 @@
+{
+    "production": {
+        "network": {
+            "HRC": {
+                "chainId": "0x80",
+                "chainName": "Huobi ECO Chain",
+                "rpcUrls": ["https://http-mainnet.hecochain.com"],
+                "nativeCurrency": {
+                  "name": "HT",
+                  "symbol": "HT",
+                  "decimals": 18
+                },
+                "blockExplorerUrls": ["https://hecoinfo.com/"]
+              }
+        },
+        "tokenAddress": {},
+        "chargerListAddress": {}
+    }
+    //staging
+    //developement
+}
