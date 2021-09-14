@@ -101,30 +101,30 @@ function AssetSwap({ toast }) {
           style={
             recipe.from.token === "PiggyCell Point"
               ? {
-                  width: "60px",
-                  height: "60px",
-                  margin: "40px auto",
-                  cursor: "not-allowed",
-                }
+                width: "60px",
+                height: "60px",
+                margin: "40px auto",
+                cursor: "not-allowed",
+              }
               : {
-                  width: "60px",
-                  height: "60px",
-                  margin: "40px auto",
-                  cursor: "pointer",
-                }
+                width: "60px",
+                height: "60px",
+                margin: "40px auto",
+                cursor: "pointer",
+              }
           }
           onClick={
             recipe.from.token === "PiggyCell Point"
-              ? () => {}
+              ? () => { }
               : () => {
-                  setRecipe({
-                    ...recipe,
-                    from: recipe.to,
-                    to: recipe.from,
-                    swapAmount: "",
-                  });
-                  setRequireNetwork(recipe.chainId[recipe.to.network]);
-                }
+                setRecipe({
+                  ...recipe,
+                  from: recipe.to,
+                  to: recipe.from,
+                  swapAmount: "",
+                });
+                setRequireNetwork(recipe.chainId[recipe.to.network]);
+              }
           }
         >
           {recipe.from.token !== "PiggyCell Point" ? <Active /> : <Inactive />}
@@ -139,33 +139,36 @@ function AssetSwap({ toast }) {
             recipe.from.index === 0
               ? toList1
               : recipe.from.index === 1
-              ? toList2
-              : recipe.from.index === 2
-              ? toList3
-              : recipe.from.index === 3
-              ? toList4
-              : []
+                ? toList2
+                : recipe.from.index === 2
+                  ? toList3
+                  : recipe.from.index === 3
+                    ? toList4
+                    : []
           }
           title="TO"
         />
         {recipe.from.token !== "PiggyCell Point" ? (
           <WalletConnect
             need="2"
-            bgColor="var(--gray-30)"
-            border="4px solid var(--gray-30)"
+            bgColor="var(--purple)"
+            border="4px solid #9314B2"
+            // bgColor="var(--gray-30)"
+            // border="4px solid var(--gray-30)"
             hcolor=""
+            notConnected="Connect Wallet for swap"
+            wrongNetwork="Change network for swap"
             // notConnected="Connect Wallet"
-            notConnected="Connect Wallet"
-            // wrongNetwork="Change network for swap"
-            wrongNetwork="'SWAP' will be open soon"
+            // wrongNetwork="'SWAP' will be open soon"
             m="40px auto"
             radius="20px"
             w="540px"
             // h="60px"
             fontsize="20px"
-            text="'SWAP' will be open soon"
-            onClick={() => console.log("")}
-            // onClick={() => setPopupOpen(!isPopupOpen)}
+            // text="'SWAP' will be open soon"
+            // onClick={() => console.log("")}
+            text="SWAP"
+            onClick={() => setPopupOpen(!isPopupOpen)}
           />
         ) : (
           <WalletConnect
@@ -180,7 +183,8 @@ function AssetSwap({ toast }) {
             w="540px"
             // h="60px"
             fontsize="20px"
-            text="'SWAP' will be open soon"
+            text="SWAP"
+            // text="'SWAP' will be open soon"
             disable={true}
           />
         )}
