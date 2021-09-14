@@ -57,13 +57,6 @@ export default function Popup({ close = () => {}, recipe, setRecipe, toast }) {
         tokenM.approve(to, toWei(amount, "ether")).send({ from: account });
       };
       const swap = async (swapAmount) => {
-        console.log(recipe.conversionFee[recipe.chainId[recipe.to.network]]);
-        if (
-          swapAmount > recipe.conversionFee[recipe.chainId[recipe.to.network]]
-        ) {
-          toast("Amount must more then fee");
-          return;
-        }
         try {
           await swapM
             .transfer(bridgeAddress, toWei(swapAmount, "ether"))
@@ -277,10 +270,14 @@ export default function Popup({ close = () => {}, recipe, setRecipe, toast }) {
             <Info
               left={`Net ${recipe.from.token} to Swap`}
               right={`${makeNum(
-                (
-                  recipe.swapAmount -
+                (recipe.swapAmount -
                   0.000000000000001 -
-                  recipe.conversionFee[recipe.chainId[recipe.to.network]]
+                  recipe.conversionFee[recipe.chainId[recipe.to.network]] >
+                0
+                  ? recipe.swapAmount -
+                    0.000000000000001 -
+                    recipe.conversionFee[recipe.chainId[recipe.to.network]]
+                  : 0
                 ).toString()
               )} ${recipe.from.token}`}
             />
