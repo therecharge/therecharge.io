@@ -17,9 +17,8 @@ import { ReactComponent as Inactive } from "./assets/swap_arrow_deactive.svg";
 
 function AssetSwap({ toast }) {
   const [t] = useTranslation();
-  const [requireNetwork, setRequireNetwork] = useRecoilState(
-    requireNetworkState
-  );
+  const [requireNetwork, setRequireNetwork] =
+    useRecoilState(requireNetworkState);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [recipe, setRecipe] = useState({
     from: {
@@ -48,7 +47,7 @@ function AssetSwap({ toast }) {
     conversionFee: {
       1: 3,
       128: 0.5,
-      56: 0.5,
+      56: 0.3,
     },
   });
 
