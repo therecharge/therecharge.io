@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as RCGeth } from "./assets/RCGETH.svg";
 import { ReactComponent as RCGht } from "./assets/RCGHT.svg";
+import { ReactComponent as RCGbnb } from "./assets/RCGBNB.svg";
 import { ReactComponent as Open } from "./assets/dropdown-close.svg";
 import { ReactComponent as Close } from "./assets/dropdown-open.svg";
 //store
@@ -52,7 +53,7 @@ export default function Dropdown({
                   }
               : { borderRadius: "20px" }
           }
-          onClick={() => setOpen(!open)}
+          onClick={title === "TO" ? () => {} : () => setOpen(!open)}
         >
           <div
             className="img"
@@ -133,13 +134,13 @@ export default function Dropdown({
                           to: {
                             token: "RCG",
                             network:
-                              token[1] === "(Huobi ECO Chain Network)"
+                              token[1] === "(Binance Smart Chain Network)"
                                 ? "(Ethereum Network)"
-                                : "(Huobi ECO Chain Network)",
+                                : "(Binance Smart Chain Network)",
                             image:
-                              token[1] === "(Huobi ECO Chain Network)"
+                              token[1] === "(Binance Smart Chain Network)"
                                 ? RCGeth
-                                : RCGht,
+                                : RCGbnb,
                             index: 0,
                           },
                         });

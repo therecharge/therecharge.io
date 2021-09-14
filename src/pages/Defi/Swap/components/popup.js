@@ -11,7 +11,7 @@ import { web3State, accountState } from "../../../../store/web3";
 const ERC20_ABI = require("../../../../Component/Desktop/Defi/abis/ERC20ABI.json");
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
-export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
+export default function Popup({ close = () => {}, recipe, setRecipe, toast }) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [account, setAccount] = useRecoilState(accountState);
   const [poolMethods, setPoolMethods] = useState({
@@ -96,13 +96,36 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
   let ToImg = recipe.to.image;
 
   useEffect(() => {
-    if (recipe.to.network === "(Binance Smart Chain Network)") {
+    if (
+      (recipe.to.network === "(Binance Smart Chain Network)" &&
+        recipe.from.network === "(Ethereum Network)") ||
+      (recipe.from.network === "(Binance Smart Chain Network)" &&
+        recipe.to.network === "(Ethereum Network)")
+    ) {
+      loadMethods(
+        recipe.tokenAddress[recipe.chainId[recipe.from.network]],
+        "0x45c0b31Bc83D4C5E430b15D790596878dF31c30e"
+      );
+    } else if (
+      (recipe.to.network === "(Huobi ECO Chain Network)" &&
+        recipe.from.network === "(Ethereum Network)") ||
+      (recipe.from.network === "(Huobi ECO Chain Network)" &&
+        recipe.to.network === "(Ethereum Network)")
+    ) {
+      loadMethods(
+        recipe.tokenAddress[recipe.chainId[recipe.from.network]],
+        "0xaBC71F46FA0D80bCC7D36D662Edbe9930271B414"
+      );
+    } else if (
+      (recipe.to.network === "(Huobi ECO Chain Network)" &&
+        recipe.from.network === "((Binance Smart Chain Network)") ||
+      (recipe.from.network === "(Huobi ECO Chain Network)" &&
+        recipe.to.network === "(Binance Smart Chain Network)")
+    ) {
       loadMethods(
         recipe.tokenAddress[recipe.chainId[recipe.from.network]],
         "0x05A21AECa80634097e4acE7D4E589bdA0EE30b25"
       );
-    } else {
-      loadMethods(recipe.tokenAddress[recipe.chainId[recipe.from.network]]);
     }
   }, [account, recipe.to.network]);
 
@@ -194,8 +217,9 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
             </div>
           </QuickSelect>
           <span className="Roboto_20pt_Regular popup-caution">
-            {`Conversion Fee: ${recipe.conversionFee[recipe.chainId[recipe.to.network]]
-              } ${recipe.from.token}`}
+            {`Conversion Fee: ${
+              recipe.conversionFee[recipe.chainId[recipe.to.network]]
+            } ${recipe.from.token}`}
           </span>
           <div className="wallet">
             <WalletConnect
@@ -224,13 +248,15 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
             />
             <Info
               left="Current Conversion Fee"
-              right={`${recipe.conversionFee[recipe.chainId[recipe.to.network]]
-                } ${recipe.from.token}`}
+              right={`${
+                recipe.conversionFee[recipe.chainId[recipe.to.network]]
+              } ${recipe.from.token}`}
             />
             <Info
               left={`${recipe.from.token} to Swap`}
-              right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${recipe.from.token
-                }`}
+              right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${
+                recipe.from.token
+              }`}
             />
             <Info
               left={`${recipe.from.token} to Redeem`}
@@ -247,9 +273,9 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
                 (
                   recipe.swapAmount -
                   (recipe.swapAmount / 100) *
-                  (poolMethods.redemption
-                    ? poolMethods.redemption / 100
-                    : 1) -
+                    (poolMethods.redemption
+                      ? poolMethods.redemption / 100
+                      : 1) -
                   recipe.conversionFee[recipe.chainId[recipe.to.network]]
                 ).toString()
               )} ${recipe.from.token}`}

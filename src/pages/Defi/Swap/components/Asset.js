@@ -40,7 +40,8 @@ function Asset({ setParams }) {
   const loadBalance = async () => {
     const ETH = new Web3(
       // "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161" // ropsten
-      "https://mainnet.infura.io/v3/636c3521d0f648d5b1789cd9388a182f" // 이더리움 메인넷
+      // "https://mainnet.infura.io/v3/636c3521d0f648d5b1789cd9388a182f" // 이더리움 메인넷
+      "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
     );
     const HECO = new Web3("https://http-mainnet.hecochain.com");
     const BNB = new Web3("https://bsc-dataseed.binance.org/");
@@ -104,6 +105,7 @@ function Asset({ setParams }) {
         BNB: balanceBNB,
       });
     }
+    console.log(tokensBalance);
   };
 
   useEffect(() => {
