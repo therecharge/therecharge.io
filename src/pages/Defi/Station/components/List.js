@@ -293,7 +293,10 @@ function List({ /*type, list,*/ params, toast, network }) {
         <RowContainer>
           {chList.map((charger, index) => {
             return (
-              <div className={params.isLP ? "disable" : ""}>
+              <div
+                className={params.isLP ? "disable" : ""}
+                style={charger.name === "Loading List.." ? { cursor: "not-allowed" } : {}}
+              >
                 <Row
                   key={charger.name}
                   status={charger.status} // active or not

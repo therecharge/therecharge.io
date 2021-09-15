@@ -293,11 +293,14 @@ export default function Row({
         />
       )}
       <Title
-        onClick={() => {
-          setOpen(!isOpen);
-          // setRequireNetwork(1);
-        }}
-        style={{ cursor: "pointer" }}
+        onClick={info.name !== "Loading List.."
+          ? () => { setOpen(!isOpen); }
+          : () => { }
+        }
+        style={info.name === "Loading List.."
+          ? { cursor: "not-allowed" }
+          : { cursor: "pointer" }
+        }
       >
         <Status status={status} />
         <Name status={status} name={name} />
