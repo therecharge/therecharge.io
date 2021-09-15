@@ -127,7 +127,7 @@ function Defi({ toast, t, }) {
       let { token0Price, token1Price } = priceData.data.data.pairs[0];
       token0Price = makeNum(token0Price);
       token1Price = makeNum(token1Price);
-      console.log(analData.data);
+      // console.log(analData.data);
       // console.log(token1Price);
       setAnalytics({
         ...analData.data,
@@ -479,10 +479,9 @@ function Defi({ toast, t, }) {
                 <div className="content le">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {analytics.BEP.redemption
+                      {/* {analytics.BEP.redemption
                         ? makeNum(analytics.BEP.redemption)
-                        : 0}{" "}
-                      RCG
+                        : 0} RCG */}-
                     </div>
                     <div className="text Roboto_16pt_Regular_Gray">
                       Accumulated Carbon Redemption BEP20

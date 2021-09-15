@@ -216,14 +216,14 @@ function List({ /*type, list,*/ params, toast, network }) {
         updatedList[i].apy = getAPY(
           updatedList[i].totalSupply,
           updatedList[i].rewardAmount -
-            (updatedList[i].rewardToken == updatedList[i].stakeToken
-              ? updatedList[i].totalSupply
-              : 0),
+          (updatedList[i].rewardToken == updatedList[i].stakeToken
+            ? updatedList[i].totalSupply
+            : 0),
           updatedList[i].DURATION
         );
         updatedList[i].symbol = [REWARDS_SYMBOL[i], STAKES_SYMBOL[i]];
       });
-      console.log("updatedList", updatedList);
+      // console.log("updatedList", updatedList);
       setChList(updatedList);
     };
     getList();
