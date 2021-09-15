@@ -407,10 +407,9 @@ function Defi({ toast, t, }) {
                 <div className="content le">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {analytics.ERC.redemption
+                      {/* {analytics.ERC.redemption
                         ? makeNum(analytics.ERC.redemption)
-                        : 0}{" "}
-                      RCG
+                        : 0} RCG */}-
                     </div>
                     <div className="text Roboto_16pt_Regular_Gray">
                       Accumulated Carbon Redemption ERC20
