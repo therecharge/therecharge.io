@@ -1,0 +1,96 @@
+{
+  "mainnet": {
+    "network": {
+      "HRC": {
+          "chainId": "128",
+          "chainName": "Huobi ECO Chain",
+          "rpcUrls": ["https://http-mainnet.hecochain.com"],
+          "nativeCurrency": {
+            "name": "HT",
+            "symbol": "HT",
+            "decimals": 18
+          },
+          "blockExplorerUrls": ["https://hecoinfo.com/"]
+      }, 
+      "ERC": {
+        "chainId": "1",
+        "chainName": "Ethereum Network",
+        "rpcUrls": ["https://mainnet.infura.io/v3/7b9dc9ccc7224bea84eb901e556f89ce"],
+        "nativeCurrency": {
+          "name": "ETH",
+          "symbol": "ETH",
+          "decimals": 18
+        },
+        "blockExplorerUrls": ["https://etherscan.io/"]
+      }, 
+      "BEP": {
+        "chainId": "56",
+        "chainName": "Binance Smart Chain Network",
+        "rpcUrls": ["https://bsc-dataseed.binance.org/"],
+        "nativeCurrency": {
+          "name": "BNB",
+          "symbol": "BNB",
+          "decimals": 18
+        },
+        "blockExplorerUrls": ["https://bscscan.com/"]
+      }
+    },
+    "tokenAddress": {
+      "HRC": "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+      "ERC": "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
+      "BEP": "0x2D94172436D869c1e3c094BeaD272508faB0d9E3"
+    },
+    "chargerListAddress": {
+      "HRC" : "0x705BC407Abfc3D88a2B9a800546ed1C65bb856e8",
+      "ERC" : "0xb6Ea0d1C92700b3Dc95dB19183DE95dF76994f37",
+      "BEP" : "0xf88bf2a6af4255EE9862B1aC8891402F6d0952EC"
+    }
+  },
+  "testnet": {
+    "network": {
+      "HRC": {
+        "chainId": "256",
+        "chainName": "Huobi ECO Chain Test Network",
+        "rpcUrls": ["https://http-testnet.hecochain.com"],
+        "nativeCurrency": {
+          "name": "HT",
+          "symbol": "HT",
+          "decimals": 18
+        },
+        "blockExplorerUrls": ["https://testnet.hecoinfo.com/"]
+      }, 
+      "ERC": {
+        "chainId": "3",
+        "chainName": "Ethereum Ropsten Network",
+        "rpcUrls": ["https://ropsten.infura.io/v3/7b9dc9ccc7224bea84eb901e556f89ce"],
+        "nativeCurrency": {
+          "name": "ETH",
+          "symbol": "ETH",
+          "decimals": 18
+        },
+        "blockExplorerUrls": ["https://ropsten.etherscan.io/"]
+      }, 
+      "BEP": {
+        "chainId": "97",
+        "chainName": "Binance Smart Chain Test Network",
+        "rpcUrls": ["https://data-seed-prebsc-1-s1.binance.org:8545/"],
+        "nativeCurrency": {
+          "name": "BNB",
+          "symbol": "BNB",
+          "decimals": 18
+        },
+        "blockExplorerUrls": ["https://testnet.bscscan.com/"]
+      }
+    },
+    "tokenAddress": {
+      "HRC": "0xc6B7F7fCBe3C2714C3b99640ee84d9FCf951fdbC",
+      "ERC": "0x826f221A2D386e32183224A1543Ea23fa2666688",
+      "BEP": "0x2D94172436D869c1e3c094BeaD272508faB0d9E3"
+    },
+    "chargerListAddress": {
+      "HRC": "0x935837Aa0582EAffC9dA96b16a0A90765c049dcA",
+      "ERC": "0xb6Ea0d1C92700b3Dc95dB19183DE95dF76994f37",
+      "BEP": "0x7656FB05D35C9291A4A3D53EF9B01359a56dbe9C"
+    }
+  }
+}

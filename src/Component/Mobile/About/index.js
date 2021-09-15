@@ -43,10 +43,10 @@ function About({ t }) {
       style={
         modalOpen
           ? {
-              position: "fixed",
-              // width: "100%",
-              // backgroundColor: "#02051c",
-            }
+            position: "fixed",
+            // width: "100%",
+            // backgroundColor: "#02051c",
+          }
           : {}
       }
     >
@@ -203,7 +203,7 @@ function About({ t }) {
               <div
                 className="partner"
                 onClick={() =>
-                  (window.location = "https://info.uniswap.org/#/")
+                  (window.open("https://info.uniswap.org/#/", "_blank"))
                 }
               >
                 <div className="logo">
@@ -220,7 +220,7 @@ function About({ t }) {
               </div>
               <div
                 className="partner"
-                onClick={() => (window.location = "https://coinmarketcap.com/")}
+                onClick={() => { window.open("https://coinmarketcap.com/currencies/recharge/", "_blank") }}
               >
                 <div className="logo">
                   <img
@@ -238,7 +238,24 @@ function About({ t }) {
             <div className="tier">
               <div
                 className="partner"
-                onClick={() => (window.location = "https://xangle.io/")}
+                onClick={() => { window.open("https://www.coingecko.com/en/coins/recharge", "_blank") }}
+              >
+                <div className="logo">
+                  <img
+                    src="/ic_coingecko.svg"
+                    style={{ height: "70px", width: "66.4px" }}
+                  />
+                </div>
+                <div className="desc text Roboto_20pt_Regular">
+                  <div className="text Roboto_20pt_Regular_Mobile">
+                    {t("About/Recharge-is-on/3-1")}
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className="partner"
+                onClick={() => { window.open("https://xangle.io/project/RCG/key-info", "_blank") }}
               >
                 <div className="logo">
                   <img
@@ -252,9 +269,11 @@ function About({ t }) {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="tier">
               <div
                 className="partner"
-                onClick={() => (window.location = "https://cobak.co.kr/")}
+                onClick={() => (window.open("https://cobak.co.kr/", "_blank"))}
               >
                 <div className="logo">
                   <img
@@ -273,11 +292,9 @@ function About({ t }) {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="tier">
               <div
                 className="partner"
-                onClick={() => (window.location = "https://snapshot.org/")}
+                onClick={() => (window.open("https://snapshot.org/", "_blank"))}
               >
                 <div className="logo">
                   <img

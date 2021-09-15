@@ -161,7 +161,7 @@ function About({ t }) {
               </div>
               <div
                 className="partner"
-                onClick={() => { window.open("https://coinmarketcap.com/", "_blank") }}
+                onClick={() => { window.open("https://coinmarketcap.com/currencies/recharge/", "_blank") }}
               >
                 <div className="logo">
                   <img
@@ -176,7 +176,24 @@ function About({ t }) {
               </div>
               <div
                 className="partner"
-                onClick={() => { window.open("https://xangle.io/", "_blank") }}
+                onClick={() => { window.open("https://www.coingecko.com/en/coins/recharge", "_blank") }}
+              >
+                <div className="logo">
+                  <img
+                    alt=""
+                    src="/ic_coingecko.svg"
+                    style={{ height: "78px", width: "74px" }}
+                  />
+                </div>
+                <div className="desc text Roboto_20pt_Regular">
+                  {t("About/Recharge-is-on/3-1")}
+                </div>
+              </div>
+            </div>
+            <div className="tier">
+              <div
+                className="partner"
+                onClick={() => { window.open("https://xangle.io/project/RCG/key-info", "_blank") }}
               >
                 <div className="logo">
                   <img
@@ -189,8 +206,6 @@ function About({ t }) {
                   {t("About/Recharge-is-on/3")}
                 </div>
               </div>
-            </div>
-            <div className="tier">
               <div
                 className="partner"
                 onClick={() => { window.open("https://cobak.co.kr/", "_blank") }}

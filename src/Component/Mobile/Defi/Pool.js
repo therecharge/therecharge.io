@@ -19,7 +19,7 @@ function makeNum(str, decimal = 4) {
 }
 
 const loadPoolPeriod = (startTime, duration) => {
-  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00(GMT)";
+  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00(UTC+9)";
 
   const endTime = Number(startTime) + Number(duration);
 
@@ -97,7 +97,7 @@ function Pool({
     type: "flexible",
   });
   const [period, setPeriod] = useState(
-    "21.01.01 00:00:00 ~ 21.01.30 00:00:00(GMT)"
+    "21.01.01 00:00:00 ~ 21.01.30 00:00:00(UTC+9)"
   );
   const [userInfo, setUserInfo] = useState({
     address: "0x4025238b28b796902F1C39081b17123817679742",
@@ -275,13 +275,8 @@ function Pool({
     ],
   };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data /*initialState*/ }, useSortBy);
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data /*initialState*/ }, useSortBy);
 
   useEffect(async () => {
     setOnLoading(true);
@@ -298,7 +293,6 @@ function Pool({
         await loadPoolInfo();
       } else if (account && chList[sel].address !== "0x00") {
         let ret = await Promise.all([loadPoolInfo(), loadUserInfo()]);
-        console.log("test ret :", ret);
       }
     } catch (err) {
       console.log(err);

@@ -6,9 +6,11 @@ import styled from "styled-components";
 import ReactPaginate from "react-paginate";
 import commentList from "./commentList/index";
 
+import { withTranslation } from "react-i18next";
+
 const perPage = 1;
 
-function Docs({ match }) {
+function Docs({ match, t }) {
   const [menu, setMenu] = useState("Whitepaper");
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -213,13 +215,24 @@ function Docs({ match }) {
               CI Download
             </Link>
           </div>
+          <div className="topic active Roboto_40pt_Black">
+            <a
+              style={{ textDecoration: "none", color: "#ffffff" }}
+              onClick={() => {
+                toggle();
+                window.open(t("Docs/userGuide"), "_blank");
+              }}
+            >
+              User Guide
+            </a>
+          </div>
         </div>
       </Subnav>
       <Content>
         <Section id="whitepaper">
           <div
             className={viewNum == 1 ? "active" : "hide"}
-            // style={{ "padding-top": "300px", "margin-top": "-300px" }}
+          // style={{ "padding-top": "300px", "margin-top": "-300px" }}
           >
             {currentComment(commentList)}
             <ReactPaginate
@@ -247,7 +260,7 @@ function Docs({ match }) {
             <div className="theme Roboto_50pt_Black_L">Disclaimer</div>
             <div
               id="information"
-              // style={{ "padding-top": "85px", "margin-top": "-85px" }}
+            // style={{ "padding-top": "85px", "margin-top": "-85px" }}
             >
               <div className="semiTitle Roboto_30pt_Black_L">Information</div>
               <div className="text Roboto_20pt_Regular_L">
@@ -266,7 +279,7 @@ function Docs({ match }) {
             </div>
             <div
               id="investmentrisks"
-              // style={{ "padding-top": "85px", "margin-top": "-85px" }}
+            // style={{ "padding-top": "85px", "margin-top": "-85px" }}
             >
               <div className="semiTitle Roboto_30pt_Black_L">
                 Investment risks
@@ -281,7 +294,7 @@ function Docs({ match }) {
             </div>
             <div
               id="nowarranties"
-              // style={{ "padding-top": "85px", "margin-top": "-85px" }}
+            // style={{ "padding-top": "85px", "margin-top": "-85px" }}
             >
               <div className="semiTitle Roboto_30pt_Black_L">No warranties</div>
               <div className="text Roboto_20pt_Regular_L">
@@ -292,7 +305,7 @@ function Docs({ match }) {
             </div>
             <div
               id="limitationofliability"
-              // style={{ "padding-top": "85px", "margin-top": "-85px" }}
+            // style={{ "padding-top": "85px", "margin-top": "-85px" }}
             >
               <div className="semiTitle Roboto_30pt_Black_L">
                 Limitation of liability
@@ -307,7 +320,7 @@ function Docs({ match }) {
             </div>
             <div
               id="lastamendment"
-              // style={{ "padding-top": "85px", "margin-top": "-85px" }}
+            // style={{ "padding-top": "85px", "margin-top": "-85px" }}
             >
               <div className="semiTitle Roboto_30pt_Black_L">
                 Last amendment
@@ -631,4 +644,4 @@ const Background = styled.div`
   background-position: right 0px;
 `;
 
-export default Docs;
+export default withTranslation()(Docs);

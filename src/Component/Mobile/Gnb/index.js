@@ -1,92 +1,44 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ToastHub, Toast } from "@aragon/ui";
-import { useTranslation, withTranslation } from "react-i18next";
+import { HashLink } from "react-router-hash-link";
+import WalletConnect from "../../../Component/Components/Common/WalletConnect";
+import { useTranslation } from "react-i18next";
 
-function Gnb({
-  connectWallet,
-  onDisconnect,
-  account,
-  getTitle,
-  setPage,
-  page,
-  modalPoolOpen,
-  setModalPoolOpen,
-  modal2Open,
-  setModal2Open,
-  modalSwapOpen,
-  setModalSwapOpen,
-}) {
-  const { t, i18n } = useTranslation();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [sidemenuOpen, setSidemenuOpen] = useState({
+function Gnb({ getTitle, }) {
+  const sidemenuInitialState = {
+    home: false,
     about: false,
     recharge: false,
     defi: false,
     docs: false,
-  });
+  }
+  const { t, i18n } = useTranslation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [sidemenuOpen, setSidemenuOpen] = useState(sidemenuInitialState);
   const open = () => {
     setMenuOpen(!menuOpen);
   };
 
   return (
     <Container>
-      <Logo
-        style={modalPoolOpen || modalSwapOpen ? { marginRight: "40px" } : {}}
-      >
-        {modalPoolOpen ? (
-          <img
-            className="back"
-            src="/ic_back@3x.png"
-            style={{ width: "87px", height: "30px" }}
-            onClick={() => {
-              modal2Open
-                ? setModal2Open(!modal2Open)
-                : setModalPoolOpen(!modalPoolOpen);
-            }}
-          />
-        ) : modalSwapOpen ? (
-          <img
-            className="back"
-            src="/ic_back@3x.png"
-            style={{ width: "87px", height: "30px" }}
-            onClick={() => {
-              setModalSwapOpen(!modalSwapOpen);
-            }}
-          />
-        ) : (
-          <a
-            href={"/"}
-            onClick={() => {
-              // window.scrollTo(0, 0);
-              setMenuOpen(false);
-              // setPage("/");
-            }}
-          >
-            <img src="/logo.png" />
-          </a>
-        )}
+      <Logo style={{ marginRight: "40px" }} >
+        <HashLink
+          to={"/"}
+          onClick={() => {
+            setMenuOpen(false);
+            setSidemenuOpen({
+              ...sidemenuInitialState,
+              home: true
+            });
+          }}
+        >
+          <img src="/logo.png" />
+        </HashLink>
       </Logo>
-      <div
-        className="state Roboto_30pt_Black"
-        style={
-          modal2Open || modalPoolOpen || modalSwapOpen
-            ? { marginLeft: "80px" }
-            : {}
-        }
-      >
+      <div className="state Roboto_30pt_Black" >
         {getTitle()}
       </div>
-      {/* <div
-        className="lang Roboto_30pt_Black"
-        onClick={() => {
-          i18n.changeLanguage(i18n.language != "en" ? "en" : "ko");
-          console.log("change language to " + i18n.language);
-        }}
-      >
-        {i18n.language.toUpperCase()}
-      </div> */}
       <div className="hamButton" onClick={() => open()}>
         <img src={menuOpen ? "/ic_menu_close.svg" : "/ic_menu.svg"} />
       </div>
@@ -94,54 +46,41 @@ function Gnb({
         className="nav"
         style={menuOpen ? { display: "flex" } : { display: "none" }}
       >
-        <ToastHub>
-          <Toast>
-            {(toast) => (
-              <ConnectWallet
-                onClick={
-                  account
-                    ? async () => {
-                        await onDisconnect();
-                        // await toast("코인 지갑의 연결이 해제되었어요.");
-                      }
-                    : async () => {
-                        await connectWallet();
-                        // await toast("코인 지갑이 연결되었어요.");
-                      }
-                }
-              >
-                <span className="Roboto_35pt_Bold">
-                  {account
-                    ? account.substring(0, 8) +
-                      "..." +
-                      account.substring(36, 42)
-                    : "Wallet Connect"}
-                </span>
-              </ConnectWallet>
-            )}
-          </Toast>
-        </ToastHub>
+        <WalletConnect
+          need="2"
+          notConnected="Connect Wallet"
+          wrongNetwork="Change network"
+          m="40px auto"
+          w="470px"
+          h="70px"
+          fontsize="20px"
+        />
         <div className="dropdown">
-          <div className={sidemenuOpen.about ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"}>
-            <a
-              href={"/"}
+          <div
+            className={
+              sidemenuOpen.home ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
+            }
+          >
+            <HashLink
+              to={"/"}
               onClick={() => {
                 setMenuOpen(false);
+                setSidemenuOpen({
+                  ...sidemenuInitialState,
+                  home: true
+                });
               }}
             >
               Home
-            </a>
+            </HashLink>
           </div>
         </div>
         <div className="dropdown">
           <Link
-            // to={"/about"}
             onClick={() => {
               setSidemenuOpen({
+                ...sidemenuInitialState,
                 about: !sidemenuOpen.about,
-                recharge: false,
-                defi: false,
-                docs: false,
               });
             }}
             className={
@@ -157,61 +96,58 @@ function Gnb({
             }
           >
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/about#aboutSection1"
+                to={"/about#aboutSection1"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Ecosystem
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/about#aboutSection2"
+                to={"/about#aboutSection2"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Recharge Virtuous Cycle
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/about#aboutSection3"
+                to={"/about#aboutSection3"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Team members
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/about#aboutSection4"
+                to={"/about#aboutSection4"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Recharge is on
-              </a>
+              </HashLink>
             </div>
           </div>
         </div>
 
         <div className="dropdown">
           <Link
-            // to={"/recharge"}
             onClick={() => {
               setSidemenuOpen({
-                about: false,
+                ...sidemenuInitialState,
                 recharge: !sidemenuOpen.recharge,
-                defi: false,
-                docs: false,
               });
             }}
             className={
@@ -227,61 +163,58 @@ function Gnb({
             }
           >
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/recharge#rechargeSection1"
+                to={"/recharge#rechargeSection1"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Features
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/recharge#rechargeSection3"
+                to={"/recharge#rechargeSection3"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Distribution
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/recharge#rechargeSection4"
+                to={"/recharge#rechargeSection4"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Governance
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/recharge#rechargeSection5"
+                to={"/recharge#rechargeSection5"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Exchanges
-              </a>
+              </HashLink>
             </div>
           </div>
         </div>
 
         <div className="dropdown Roboto_35pt_Nomal">
           <Link
-            // to={"/station/1"}
             onClick={() => {
               setSidemenuOpen({
-                about: false,
-                recharge: false,
+                ...sidemenuInitialState,
                 defi: !sidemenuOpen.defi,
-                docs: false,
               });
             }}
             className={
@@ -298,40 +231,57 @@ function Gnb({
             }
           >
             <div>
-              <a
+              <HashLink
+                to={"/defi"}
                 className="Roboto_25pt_Regular"
-                href="/defi#station"
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 <span className="on">Station</span>
-                {/* <span className="off">Coming Soon</span> */}
-              </a>
+              </HashLink>
+              <div style={{ display: "flex", gap: "50px" }}>
+                <HashLink
+                  to={"/defi/station"}
+                  className="Roboto_25pt_Regular"
+                  onClick={() => {
+                    setMenuOpen(false);
+                  }}
+                >
+                  Station
+                </HashLink>
+                <HashLink
+                  to={"/defi/swap"}
+                  className="Roboto_25pt_Regular"
+                  onClick={() => {
+                    setMenuOpen(false);
+                  }}
+                >
+                  Swap
+                </HashLink>
+              </div>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/defi#mypools"
+                to={"/defi#mypools"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 <span className="on">My Pools</span>
-                {/* <span className="off">Coming Soon</span> */}
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/defi#analytics"
+                to={"/defi#analytics"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 Analytics
-                {/* <span className="off">Coming Soon</span> */}
-              </a>
+              </HashLink>
             </div>
           </div>
         </div>
@@ -340,9 +290,7 @@ function Gnb({
           <Link
             onClick={() => {
               setSidemenuOpen({
-                about: false,
-                recharge: false,
-                defi: false,
+                ...sidemenuInitialState,
                 docs: !sidemenuOpen.docs,
               });
             }}
@@ -359,15 +307,15 @@ function Gnb({
             }
           >
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/docs/1"
+                to={"/docs/1"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 WhitePaper
-              </a>
+              </HashLink>
             </div>
             <div>
               <a className="unactive Roboto_25pt_Regular">
@@ -383,31 +331,41 @@ function Gnb({
                 >
                   <span className="on">Token Audit</span>
                 </a>
-                {/* <span className="off">Coming Soon</span> */}
               </a>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
                 style={{ cursor: "pointer" }}
                 onClick={() => {
                   window.scrollTo(0, 0);
                   setMenuOpen(false);
                 }}
-                href="/docs/2"
+                to={"/docs/2"}
               >
                 Disclaimer
-              </a>
+              </HashLink>
             </div>
             <div>
-              <a
+              <HashLink
                 className="Roboto_25pt_Regular"
-                href="/docs/3"
+                to={"/docs/3"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
               >
                 CI Download
+              </HashLink>
+            </div>
+            <div>
+              <a
+                className="Roboto_25pt_Regular"
+                onClick={() => {
+                  window.open(t("Docs/userGuide"), "_blank");
+                  setMenuOpen(false);
+                }}
+              >
+                User Guide
               </a>
             </div>
           </div>
@@ -434,9 +392,12 @@ function Gnb({
               <div
                 className="logo"
                 onClick={() => {
-                  window.open(i18n.language == "en"
-                    ? "https://medium.com/therecharge"
-                    : "https://medium.com/therecharge-kr", "_blank");
+                  window.open(
+                    i18n.language == "en"
+                      ? "https://medium.com/therecharge"
+                      : "https://medium.com/therecharge-kr",
+                    "_blank"
+                  );
                 }}
               >
                 <img src="/footer2.png" />
@@ -460,10 +421,10 @@ function Gnb({
               <div
                 className="logo"
                 onClick={() =>
-                  (window.location =
-                    i18n.language == "en"
-                      ? "https://t.me/therecharge_official"
-                      : "https://t.me/therecharge_officialkr")
+                (window.location =
+                  i18n.language == "en"
+                    ? "https://t.me/therecharge_official"
+                    : "https://t.me/therecharge_officialkr")
                 }
               >
                 <img src="/footer4.png" />

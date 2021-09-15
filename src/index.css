@@ -457,6 +457,18 @@ html {
   color: var(--gray-20);
 }
 
+.Roboto_24pt_Black {
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}
+
 .Roboto_30pt_Regular {
   font-family: Roboto;
   font-size: 30px;
@@ -501,7 +513,6 @@ html {
   font-style: normal;
   line-height: 1.32;
   letter-spacing: normal;
-  text-align: center;
   color: #ffffff;
 }
 

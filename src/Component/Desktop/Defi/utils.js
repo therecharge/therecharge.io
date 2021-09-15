@@ -117,7 +117,7 @@ const getChargerInformations = async ({
     balance: "1,000,000",
     share: "100",
     reward: "100,000",
-    period: "21.01.01 00:00:00 ~ 21.01.30 00:00:00(GMT)",
+    period: "21.01.01 00:00:00 ~ 21.01.30 00:00:00(UTC+9)",
     available: "7,000,000.00",
     allowance: "0",
     rewardSymbol: "RCGr",
@@ -160,21 +160,15 @@ const getChargerInformations = async ({
     const rewardI = new web3.eth.Contract(ERC20_ABI, rewardTokenAddress);
     const rewardM = rewardI.methods;
 
-    const [
-      basePercent,
-      balance,
-      allowance,
-      sSymbol,
-      rSymbol,
-      totalReward,
-    ] = await Promise.all([
-      stakeM.basePercent().call(),
-      stakeM.balanceOf(userAddress).call(),
-      stakeM.allowance(userAddress, chargerAddress).call(),
-      stakeM.symbol().call(),
-      rewardM.symbol().call(),
-      rewardM.balanceOf(chargerAddress).call(),
-    ]);
+    const [basePercent, balance, allowance, sSymbol, rSymbol, totalReward] =
+      await Promise.all([
+        stakeM.basePercent().call(),
+        stakeM.balanceOf(userAddress).call(),
+        stakeM.allowance(userAddress, chargerAddress).call(),
+        stakeM.symbol().call(),
+        rewardM.symbol().call(),
+        rewardM.balanceOf(chargerAddress).call(),
+      ]);
 
     //Get Token Price
     const tokenPrice = await axios.get(
@@ -245,7 +239,7 @@ const exit = (poolM, account) => {
 };
 
 const period = (startTime, duration) => {
-  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00(GMT)";
+  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00(UTC+9)";
 
   const endTime = Number(startTime) + Number(duration);
 

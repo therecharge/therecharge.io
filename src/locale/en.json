@@ -33,6 +33,7 @@
   "About/Member/ethanKang/content": "- CSO/CMO at 100 Percent\n- CSO at Thinkingwolf (Marketing)\n- CMO at Zipdoc (Interior O2O)",
   "About/Recharge-is-on/1": "Decentralized trading protocol",
   "About/Recharge-is-on/2": "Price-tracking website for crypto assets",
+  "About/Recharge-is-on/3-1": "provides a fundamental analysis of the digital currency market",
   "About/Recharge-is-on/3": "Provides disclosure practices of the crypto industry",
   "About/Recharge-is-on/4": "No.1 Crypto community in Korea",
   "About/Recharge-is-on/5": "Provides a off-chain, gasless, multi-governance community polling dashboard",
@@ -47,7 +48,7 @@
   "RechargeToken/Distribution/name": "Name",
   "RechargeToken/Distribution/ticker": "Ticker",
   "RechargeToken/Distribution/total-supply": "Total Supply",
-  "RechargeToken/Distribution/ecosystem": "Echosystem",
+  "RechargeToken/Distribution/ecosystem": "Ecosystem",
   "RechargeToken/Distribution/development": "Development",
   "RechargeToken/Distribution/exchanges/decentralized": "Exchanges (Decentralized)",
   "RechargeToken/Distribution/exchanges/centralized": "Exchanges (Centralized)",
@@ -75,5 +76,6 @@
   "Footer/sns/telegram": "https://t.me/therecharge_official",
   "Footer/sns/etherscan": "https://etherscan.io/token/0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30",
   "Footer/sns/hecoinfo": "https://hecoinfo.com/token/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+  "Docs/userGuide": "/docs/Charging_Station_User_Guide.pdf",
   "end": "end"
 }

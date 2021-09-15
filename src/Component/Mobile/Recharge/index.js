@@ -4,6 +4,9 @@ import RechargeSlider from "../../Components/Common/Slider/RechargeSlider";
 
 import { withTranslation } from "react-i18next";
 
+const NETWORKS = require("../../../lib/networks.json");
+const networks = NETWORKS[process.env.REACT_APP_VERSION];
+
 function Recharge({ t }) {
   return (
     <Container>
@@ -115,21 +118,44 @@ function Recharge({ t }) {
             <h1 className="text Roboto_40pt_Black_L">
               {t("RechargeToken/Distribution/recharge-token-address")}
             </h1>
-            <p className="text Roboto_25pt_Light">
-              {t("RechargeToken/Distribution/erc20")} :
-              <br />
-              0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30
-            </p>
-            <p className="text Roboto_25pt_Light">
-              {t("RechargeToken/Distribution/hrc20")} :
-              <br />
-              0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b
-            </p>
-            <p className="text Roboto_25pt_Light">
-              {t("RechargeToken/Distribution/bep20")} :
-              <br />
-              0x2D94172436D869c1e3c094BeaD272508faB0d9E3
-            </p>
+            <div className="text Roboto_25pt_Light ">
+              <div>{t("RechargeToken/Distribution/erc20")} : </div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  window.open(
+                    `${networks.network["ERC"].blockExplorerUrls[0]}/token/${networks.tokenAddress["ERC"]}`,
+                    "_blank"
+                  )
+                }
+              >
+                {networks.tokenAddress["ERC"]}
+              </div>
+              <div>{t("RechargeToken/Distribution/hrc20")} : </div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  window.open(
+                    `${networks.network["HRC"].blockExplorerUrls[0]}/token/${networks.tokenAddress["HRC"]}`,
+                    "_blank"
+                  )
+                }
+              >
+                {networks.tokenAddress["HRC"]}
+              </div>
+              <div>{t("RechargeToken/Distribution/bep20")} : </div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  window.open(
+                    `${networks.network["BEP"].blockExplorerUrls[0]}/token/${networks.tokenAddress["BEP"]}`,
+                    "_blank"
+                  )
+                }
+              >
+                {networks.tokenAddress["BEP"]}
+              </div>
+            </div>
           </div>
         </div>
       </Content>
@@ -160,7 +186,16 @@ function Recharge({ t }) {
           <div className="theme text Roboto_50pt_Black_Mobile">Exchanges</div>
           <Line />
           <div className="desc">
-            <div className="image">
+            <div
+              className="image"
+              style={{ cursor: "pointer" }}
+              onClick={() =>
+                window.open(
+                  "https://v2.info.uniswap.org/pair/0x9c20be0f142fb34f10e33338026fb1dd9e308da3",
+                  "_blank"
+                )
+              }
+            >
               <img src="/img_uniswap.svg" />
             </div>
             <div className="image">

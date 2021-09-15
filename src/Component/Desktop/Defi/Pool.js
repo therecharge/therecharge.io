@@ -25,7 +25,7 @@ function makeNum(str, decimal = 4) {
   }
 }
 const loadPoolPeriod = (startTime, duration) => {
-  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00(GMT)";
+  let ret = "21.01.01 00:00:00 ~ 21.01.30 00:00:00(UTC+9)";
 
   const endTime = Number(startTime) + Number(duration);
 
@@ -57,9 +57,8 @@ function Pool({
   toast,
 }) {
   const [onLoading, setOnLoading] = useState(false);
-  const [modalPool2Open, setModalPool2Open] = useRecoilState(
-    modalPool2OpenState
-  );
+  const [modalPool2Open, setModalPool2Open] =
+    useRecoilState(modalPool2OpenState);
   const [modalDecisionOpen, setModalDecisionOpen] = useRecoilState(
     modalDecisionOpenState
   );
@@ -326,13 +325,8 @@ function Pool({
       },
     ],
   };
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data /*initialState*/ }, useSortBy);
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data /*initialState*/ }, useSortBy);
 
   useEffect(async () => {
     setOnLoading(true);
@@ -349,7 +343,6 @@ function Pool({
         await loadPoolInfo();
       } else if (account && chList[sel].address !== "0x00") {
         let ret = await Promise.all([loadPoolInfo(), loadUserInfo()]);
-        console.log("test ret :", ret);
       }
     } catch (err) {
       console.log(err);
@@ -1058,8 +1051,8 @@ function Pool({
               <div className="buttons">
                 <div
                   className="ok Roboto_20pt_Black"
-                  onClick=// }} //   setModalDecisionOpen(false); // {() => {
-                  {async () => {
+                  onClick={async () => {
+                    // }} //   setModalDecisionOpen(false); // {() => {
                     setModalDecisionOpen(false);
                     // console.log(btnInfo);
                     if (btn2Info === "Deposit") {
