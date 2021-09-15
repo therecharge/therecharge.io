@@ -18,7 +18,7 @@ const ERC20_ABI = require("../../../../Component/Desktop/Defi/abis/ERC20ABI.json
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
 export default function Popup({
-  close = () => {},
+  close = () => { },
   recipe,
   setRecipe,
   toast,
@@ -78,7 +78,7 @@ export default function Popup({
         },
       };
 
-      console.log("console from swap popup", ret);
+      // console.log("console from swap popup", ret);
 
       setPoolMethods({
         ...poolMethods,
@@ -223,9 +223,8 @@ export default function Popup({
             </div>
           </QuickSelect>
           <span className="Roboto_20pt_Regular popup-caution">
-            {`Conversion Fee: ${
-              recipe.conversionFee[recipe.chainId[recipe.to.network]]
-            } ${recipe.from.token}`}
+            {`Conversion Fee: ${recipe.conversionFee[recipe.chainId[recipe.to.network]]
+              } ${recipe.from.token}`}
           </span>
           <div className="wallet">
             <WalletConnect
@@ -254,15 +253,13 @@ export default function Popup({
             /> */}
             <Info
               left="Current Conversion Fee"
-              right={`${
-                recipe.conversionFee[recipe.chainId[recipe.to.network]]
-              } ${recipe.from.token}`}
+              right={`${recipe.conversionFee[recipe.chainId[recipe.to.network]]
+                } ${recipe.from.token}`}
             />
             <Info
               left={`${recipe.from.token} to Swap`}
-              right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${
-                recipe.from.token
-              }`}
+              right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${recipe.from.token
+                }`}
             />
             {/* <Info
               left={`${recipe.from.token} to Redeem`}
@@ -279,10 +276,10 @@ export default function Popup({
                 (recipe.swapAmount -
                   0.000000000000001 -
                   recipe.conversionFee[recipe.chainId[recipe.to.network]] >
-                0
+                  0
                   ? recipe.swapAmount -
-                    0.000000000000001 -
-                    recipe.conversionFee[recipe.chainId[recipe.to.network]]
+                  0.000000000000001 -
+                  recipe.conversionFee[recipe.chainId[recipe.to.network]]
                   : 0
                 ).toString()
               )} ${recipe.from.token}`}

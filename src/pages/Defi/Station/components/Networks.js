@@ -1,14 +1,21 @@
 import React from "react";
 import styled from "styled-components";
+//store
+import { useRecoilState } from "recoil";
+import { requireNetworkState } from "../../../../store/web3";
 
 function Networks({ setNetwork, network }) {
+  const [requireNetwork, setRequireNetwork] = useRecoilState(
+    requireNetworkState
+  );
   return (
     <Container>
       <Content>
         <div
           onClick={() => {
-            console.log(network);
+            // console.log(network);
             setNetwork("ERC");
+            setRequireNetwork(1);
           }}
           className="network"
           style={{ cursor: "pointer" }}
@@ -18,8 +25,9 @@ function Networks({ setNetwork, network }) {
 
         <div
           onClick={() => {
-            console.log(network);
+            // console.log(network);
             setNetwork("BEP");
+            setRequireNetwork(56);
           }}
           className="network"
           style={{ cursor: "pointer" }}
@@ -93,10 +101,10 @@ function Button({ text, setParams }) {
             text === "ERC-20"
               ? "/ic_erc.png"
               : text === "BEP-20"
-              ? "/ic_bnb.png"
-              : text === "HRC-20"
-              ? "/ic_ht.png"
-              : ""
+                ? "/ic_bnb.png"
+                : text === "HRC-20"
+                  ? "/ic_ht.png"
+                  : ""
           }
         />
         <p
