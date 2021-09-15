@@ -580,10 +580,10 @@ function Defi({ toast, t, }) {
                 <div className="content le">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {analytics.HRC.redemption
+                      {/* {analytics.HRC.redemption
                         ? makeNum(analytics.HRC.redemption)
                         : 0}{" "}
-                      RCG
+                      RCG */}-
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Carbon Redemption HRC20
