@@ -7,12 +7,25 @@ import { fromWei, toWei } from "web3-utils";
 //store
 import { useRecoilState } from "recoil";
 import { web3State, accountState } from "../../../../store/web3";
+import { web3ReaderState } from "../../../../store/read-web3";
+//functions
+import {
+  createContractInstance,
+  getSwapAvailableTokenAmount,
+} from "../../../../lib/read_contract/Swap.js";
 
 const ERC20_ABI = require("../../../../Component/Desktop/Defi/abis/ERC20ABI.json");
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
-export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
+export default function Popup({
+  close = () => {},
+  recipe,
+  setRecipe,
+  toast,
+  isPopupOpen,
+}) {
   const [web3, setWeb3] = useRecoilState(web3State);
+  const [web3_r] = useRecoilState(web3ReaderState);
   const [account, setAccount] = useRecoilState(accountState);
   const [poolMethods, setPoolMethods] = useState({
     redemption: 2,
@@ -40,43 +53,32 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
     if (!account) return;
     try {
       let ret = {};
-      const swapI = new web3.eth.Contract(ERC20_ABI, swapTokenAddress);
-      const swapM = swapI.methods;
 
-      let [balance, allowed] = await Promise.all([
-        await swapM.balanceOf(account).call(),
-        await swapM.allowance(account, bridgeAddress).call(),
-      ]);
-      // let balance = await swapM.balanceOf(account).call();
-      // let allowed = await swapM.allowance(account, bridgeAddress).call();
-
-      allowed = Number(allowed);
-
-      const approve = (tokenM, to, amount, account) => {
-        if (typeof amount != "string") amount = String(amount);
-        tokenM.approve(to, toWei(amount, "ether")).send({ from: account });
-      };
+      const Token_reader = createContractInstance(
+        web3_r[recipe.network[recipe.from.network]],
+        swapTokenAddress,
+        ERC20_ABI
+      );
+      const swapI = createContractInstance(web3, swapTokenAddress, ERC20_ABI);
+      let available = await getSwapAvailableTokenAmount(Token_reader, account);
       const swap = async (swapAmount) => {
         try {
-          await swapM
+          await swapI.methods
             .transfer(bridgeAddress, toWei(swapAmount, "ether"))
-            .send({ from: account });
+            .send({ from: account, value: "0" });
         } catch (err) {
           console.log(err);
         }
       };
 
       ret = {
-        available: fromWei(balance, "ether"),
-        allowance: allowed,
-        approve: async () =>
-          await approve(swapM, bridgeAddress, "999999999", account),
+        available: available,
         swap: async (swapAmount) => {
-          // methods.allowance !== 0
           await swap(swapAmount);
-          // : await approve(swapM, bridgeAddress, "999999999", account);
         },
       };
+
+      console.log("console from swap popup", ret);
 
       setPoolMethods({
         ...poolMethods,
@@ -96,15 +98,42 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
   let ToImg = recipe.to.image;
 
   useEffect(() => {
-    if (recipe.to.network === "(Binance Smart Chain Network)") {
+    if (
+      (recipe.to.network === "(Binance Smart Chain Network)" &&
+        recipe.from.network === "(Ethereum Network)") ||
+      (recipe.from.network === "(Binance Smart Chain Network)" &&
+        recipe.to.network === "(Ethereum Network)")
+    ) {
+      loadMethods(
+        recipe.tokenAddress[recipe.chainId[recipe.from.network]],
+        "0x45c0b31Bc83D4C5E430b15D790596878dF31c30e"
+      );
+    } else if (
+      (recipe.to.network === "(Huobi ECO Chain Network)" &&
+        recipe.from.network === "(Ethereum Network)") ||
+      (recipe.from.network === "(Huobi ECO Chain Network)" &&
+        recipe.to.network === "(Ethereum Network)")
+    ) {
+      loadMethods(
+        recipe.tokenAddress[recipe.chainId[recipe.from.network]],
+        "0xaBC71F46FA0D80bCC7D36D662Edbe9930271B414"
+      );
+    } else if (
+      (recipe.to.network === "(Huobi ECO Chain Network)" &&
+        recipe.from.network === "((Binance Smart Chain Network)") ||
+      (recipe.from.network === "(Huobi ECO Chain Network)" &&
+        recipe.to.network === "(Binance Smart Chain Network)")
+    ) {
       loadMethods(
         recipe.tokenAddress[recipe.chainId[recipe.from.network]],
         "0x05A21AECa80634097e4acE7D4E589bdA0EE30b25"
       );
-    } else {
-      loadMethods(recipe.tokenAddress[recipe.chainId[recipe.from.network]]);
     }
   }, [account, recipe.to.network]);
+
+  useEffect(() => {
+    if (isPopupOpen) loadMethods();
+  }, [isPopupOpen]);
 
   return (
     <Background>
@@ -194,8 +223,9 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
             </div>
           </QuickSelect>
           <span className="Roboto_20pt_Regular popup-caution">
-            {`Conversion Fee: ${recipe.conversionFee[recipe.chainId[recipe.to.network]]
-              } ${recipe.from.token}`}
+            {`Conversion Fee: ${
+              recipe.conversionFee[recipe.chainId[recipe.to.network]]
+            } ${recipe.from.token}`}
           </span>
           <div className="wallet">
             <WalletConnect
@@ -218,39 +248,42 @@ export default function Popup({ close = () => { }, recipe, setRecipe, toast }) {
             />
           </div>
           <InfoContainer>
-            <Info
+            {/* <Info
               left="Current Redemption Rate"
               right={`${poolMethods.redemption}%`}
-            />
+            /> */}
             <Info
               left="Current Conversion Fee"
-              right={`${recipe.conversionFee[recipe.chainId[recipe.to.network]]
-                } ${recipe.from.token}`}
+              right={`${
+                recipe.conversionFee[recipe.chainId[recipe.to.network]]
+              } ${recipe.from.token}`}
             />
             <Info
               left={`${recipe.from.token} to Swap`}
-              right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${recipe.from.token
-                }`}
+              right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${
+                recipe.from.token
+              }`}
             />
-            <Info
+            {/* <Info
               left={`${recipe.from.token} to Redeem`}
               right={`${makeNum(
                 (
-                  (recipe.swapAmount / 100) *
+                  (recipe.swapAmount) *
                   (poolMethods.redemption ? poolMethods.redemption / 100 : 1)
                 ).toString()
               )} ${recipe.from.token}`}
-            />
+            /> */}
             <Info
               left={`Net ${recipe.from.token} to Swap`}
               right={`${makeNum(
-                (
-                  recipe.swapAmount -
-                  (recipe.swapAmount / 100) *
-                  (poolMethods.redemption
-                    ? poolMethods.redemption / 100
-                    : 1) -
-                  recipe.conversionFee[recipe.chainId[recipe.to.network]]
+                (recipe.swapAmount -
+                  0.000000000000001 -
+                  recipe.conversionFee[recipe.chainId[recipe.to.network]] >
+                0
+                  ? recipe.swapAmount -
+                    0.000000000000001 -
+                    recipe.conversionFee[recipe.chainId[recipe.to.network]]
+                  : 0
                 ).toString()
               )} ${recipe.from.token}`}
             />

@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserView, MobileView } from "react-device-detect";
 import { Main, ToastHub, Toast, textStyle } from "@aragon/ui";
-import { RecoilRoot, useSetRecoilState } from "recoil";
+import { RecoilRoot } from "recoil";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 /* Components */

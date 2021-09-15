@@ -4,6 +4,9 @@ import RechargeSlider from "../../Components/Common/Slider/RechargeSlider";
 
 import { withTranslation } from "react-i18next";
 
+const NETWORKS = require("../../../lib/networks.json");
+const networks = NETWORKS[process.env.REACT_APP_VERSION];
+
 function Recharge({ t }) {
   return (
     <Container>
@@ -119,23 +122,38 @@ function Recharge({ t }) {
               <div>{t("RechargeToken/Distribution/erc20")} : </div>
               <div
                 style={{ cursor: "pointer" }}
-                onClick={() => window.open('https://etherscan.io/address/0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30', '_blank')}
+                onClick={() =>
+                  window.open(
+                    `${networks.network["ERC"].blockExplorerUrls[0]}/token/${networks.tokenAddress["ERC"]}`,
+                    "_blank"
+                  )
+                }
               >
-                0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30
+                {networks.tokenAddress["ERC"]}
               </div>
               <div>{t("RechargeToken/Distribution/hrc20")} : </div>
               <div
                 style={{ cursor: "pointer" }}
-                onClick={() => window.open('https://hecoinfo.com/address/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b', '_blank')}
+                onClick={() =>
+                  window.open(
+                    `${networks.network["HRC"].blockExplorerUrls[0]}/token/${networks.tokenAddress["HRC"]}`,
+                    "_blank"
+                  )
+                }
               >
-                0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b
+                {networks.tokenAddress["HRC"]}
               </div>
               <div>{t("RechargeToken/Distribution/bep20")} : </div>
               <div
                 style={{ cursor: "pointer" }}
-                onClick={() => window.open('https://bscscan.com/address/0x2D94172436D869c1e3c094BeaD272508faB0d9E3', '_blank')}
+                onClick={() =>
+                  window.open(
+                    `${networks.network["BEP"].blockExplorerUrls[0]}/token/${networks.tokenAddress["BEP"]}`,
+                    "_blank"
+                  )
+                }
               >
-                0x2D94172436D869c1e3c094BeaD272508faB0d9E3
+                {networks.tokenAddress["BEP"]}
               </div>
             </div>
           </div>
@@ -171,7 +189,12 @@ function Recharge({ t }) {
             <div
               className="image"
               style={{ cursor: "pointer" }}
-              onClick={() => window.open('https://v2.info.uniswap.org/pair/0x9c20be0f142fb34f10e33338026fb1dd9e308da3', '_blank')}
+              onClick={() =>
+                window.open(
+                  "https://v2.info.uniswap.org/pair/0x9c20be0f142fb34f10e33338026fb1dd9e308da3",
+                  "_blank"
+                )
+              }
             >
               <img src="/img_uniswap.svg" />
             </div>

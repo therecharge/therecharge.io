@@ -23,15 +23,15 @@ function AssetSwap({ toast }) {
   const [recipe, setRecipe] = useState({
     from: {
       token: "RCG",
-      network: "(Huobi ECO Chain Network)",
-      image: RCGht,
+      network: "(Ethereum Network)",
+      image: RCGeth,
       index: 0,
     },
     to: {
       token: "RCG",
-      network: "(Ethereum Network)",
-      image: RCGeth,
-      index: 0,
+      network: "(Binance Smart Chain Network)",
+      image: RCGbnb,
+      index: 1,
     },
     swapAmount: "",
     chainId: {
@@ -39,20 +39,25 @@ function AssetSwap({ toast }) {
       "(Huobi ECO Chain Network)": 128,
       "(Binance Smart Chain Network)": 56,
     },
+    network: {
+      "(Ethereum Network)": "ERC",
+      "(Huobi ECO Chain Network)": "HRC",
+      "(Binance Smart Chain Network)": "BEP",
+    },
     tokenAddress: {
       1: "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30", // "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F", // 랍스텐 토큰주소
       128: "0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
       56: "0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
     },
     conversionFee: {
-      1: 5,
+      1: 3,
       128: 0.5,
-      56: 0.5,
+      56: 0.3,
     },
   });
 
   const fromList = [
-    ["RCG", "(Huobi ECO Chain Network)", RCGht],
+    // ["RCG", "(Huobi ECO Chain Network)", RCGht],
     ["RCG", "(Ethereum Network)", RCGeth],
     ["RCG", "(Binance Smart Chain Network)", RCGbnb],
     ["PiggyCell Point", "", FUP],
@@ -62,11 +67,11 @@ function AssetSwap({ toast }) {
     ["RCG", "(Binance Smart Chain Network)", RCGbnb],
   ];
   const toList2 = [
-    ["RCG", "(Huobi ECO Chain Network)", RCGht],
+    // ["RCG", "(Huobi ECO Chain Network)", RCGht],
     ["RCG", "(Binance Smart Chain Network)", RCGbnb],
   ];
   const toList3 = [
-    ["RCG", "(Huobi ECO Chain Network)", RCGht],
+    // ["RCG", "(Huobi ECO Chain Network)", RCGht],
     ["RCG", "(Ethereum Network)", RCGeth],
   ];
   const toList4 = [["RCG", "(Huobi ECO Chain Network)", RCGht]];
@@ -86,6 +91,7 @@ function AssetSwap({ toast }) {
               setPopupOpen(false);
             }}
             toast={toast}
+            isPopupOpen={isPopupOpen}
           />
         )}
         <Dropdown
@@ -136,36 +142,39 @@ function AssetSwap({ toast }) {
           symbol={recipe.to.token}
           network={recipe.to.network}
           unselectedList={
-            recipe.from.index === 0
-              ? toList1
-              : recipe.from.index === 1
-              ? toList2
-              : recipe.from.index === 2
-              ? toList3
-              : recipe.from.index === 3
-              ? toList4
-              : []
+            // recipe.from.index === 0
+            //   ? toList2
+            //   : recipe.from.index === 1
+            //   ? toList3
+            //   : recipe.from.index === 2
+            //   ? toList4
+            //   : // : recipe.from.index === 3
+            // ? toList4
+            []
           }
           title="TO"
         />
         {recipe.from.token !== "PiggyCell Point" ? (
           <WalletConnect
             need="2"
-            bgColor="var(--gray-30)"
-            border="4px solid var(--gray-30)"
+            bgColor="var(--purple)"
+            border="4px solid #9314B2"
+            // bgColor="var(--gray-30)"
+            // border="4px solid var(--gray-30)"
             hcolor=""
+            notConnected="Connect Wallet for swap"
+            wrongNetwork="Change network for swap"
             // notConnected="Connect Wallet"
-            notConnected="Connect Wallet"
-            // wrongNetwork="Change network for swap"
-            wrongNetwork="'SWAP' will be open soon"
+            // wrongNetwork="'SWAP' will be open soon"
             m="40px auto"
             radius="20px"
             w="540px"
             // h="60px"
             fontsize="20px"
-            text="'SWAP' will be open soon"
-            onClick={() => console.log("")}
-            // onClick={() => setPopupOpen(!isPopupOpen)}
+            // text="'SWAP' will be open soon"
+            // onClick={() => console.log("")}
+            text="SWAP"
+            onClick={() => setPopupOpen(!isPopupOpen)}
           />
         ) : (
           <WalletConnect
@@ -180,7 +189,8 @@ function AssetSwap({ toast }) {
             w="540px"
             // h="60px"
             fontsize="20px"
-            text="'SWAP' will be open soon"
+            text="SWAP"
+            // text="'SWAP' will be open soon"
             disable={true}
           />
         )}

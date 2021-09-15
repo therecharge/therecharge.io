@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 // Components
+import Networks from "./components/Networks";
 import Slider from "./components/Slider";
 import List from "./components/List";
 
@@ -12,6 +13,7 @@ function Station(props) {
     isLP: false,
     address: "0x", // useless?
   });
+  const [network, setNetwork] = useState("ERC");
 
   const loadFromMypools = () => {
     let type = window.location.href.split("#")[1];
@@ -29,9 +31,10 @@ function Station(props) {
     <Container>
       <Content>
         <span className="Roboto_50pt_Black pool-title1">Charging Station</span>
+        <Networks setNetwork={setNetwork} network={network} />
         <Slider setParams={setParams} params={params} />
         <Line />
-        <List params={params} toast={props.toast} />
+        <List params={params} toast={props.toast} network={network} />
       </Content>
     </Container>
   );
