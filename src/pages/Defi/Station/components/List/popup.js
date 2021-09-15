@@ -6,7 +6,7 @@ import { async } from "@aragon/ui/dist/ToastHub";
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
 export default function Popup({
-  close = () => {},
+  close = () => { },
   name,
   apy,
   info,
@@ -38,9 +38,8 @@ export default function Popup({
             </span>
             <span className="Roboto_20pt_Regular popup-available">
               Available:{" "}
-              {`${makeNum((userInfo.available - plAmount).toString())} ${
-                info.symbol[0]
-              }`}
+              {`${makeNum((userInfo.available - plAmount).toString())} ${info.symbol[0]
+                }`}
             </span>
             <input
               className="Roboto_20pt_Regular popup-input"
@@ -94,7 +93,7 @@ export default function Popup({
           </QuickSelect>
           <span className="Roboto_20pt_Regular popup-caution">
             {`Caution!: Recharge transaction, regardless of mainnet type
-          will incur ${info.redemtion / 100}% of carbon redemption.`}
+          will incur ${info.basePercent / 100}% of carbon redemption.`}
           </span>
           <div className="wallet">
             <WalletConnect
