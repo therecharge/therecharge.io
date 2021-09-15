@@ -65,7 +65,7 @@ export default function Popup({
         try {
           await swapI.methods
             .transfer(bridgeAddress, toWei(swapAmount, "ether"))
-            .send({ from: account });
+            .send({ from: account, value: "0" });
         } catch (err) {
           console.log(err);
         }
