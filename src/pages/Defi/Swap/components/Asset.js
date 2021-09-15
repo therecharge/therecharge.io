@@ -105,7 +105,7 @@ function Asset({ setParams }) {
         BNB: balanceBNB,
       });
     }
-    console.log(tokensBalance);
+    // console.log(tokensBalance);
   };
 
   useEffect(() => {

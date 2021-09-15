@@ -129,7 +129,7 @@ function Defi({ toast, t, }) {
           }
         ),
       ]);
-      console.log(analData)
+      // console.log(analData)
       let { token0Price, token1Price } = priceData.data.data.pairs[0];
       token0Price = makeNum(token0Price);
       token1Price = makeNum(token1Price);
@@ -430,10 +430,9 @@ function Defi({ toast, t, }) {
                 <div className="content le">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {analytics.ERC.redemption
+                      {/* {analytics.ERC.redemption
                         ? makeNum(analytics.ERC.redemption)
-                        : 0}{" "}
-                      RCG
+                        : 0}{" "}RCG */}-
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Carbon Redemption ERC20
@@ -503,10 +502,10 @@ function Defi({ toast, t, }) {
                 <div className="content le">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {analytics.BEP.redemption
+                      {/* {analytics.BEP.redemption
                         ? makeNum(analytics.BEP.redemption)
                         : 0}{" "}
-                      RCG
+                      RCG */}-
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Carbon Redemption BEP20
