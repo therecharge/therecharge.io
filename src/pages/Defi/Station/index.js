@@ -15,17 +15,20 @@ function Station(props) {
   });
   const [network, setNetwork] = useState("ERC");
 
-  const loadFromMypools = () => {
-    let type = window.location.href.split("#")[1];
-    setParams({
-      ...params,
-      type: type,
-    });
-  };
+  // const loadFromMypools = () => {
+  //   let type = window.location.href.split("#")[1];
+  //   setParams({
+  //     ...params,
+  //     type: type,
+  //   });
+  // };
 
   useEffect(() => {
-    loadFromMypools();
-  }, []);
+    setParams({
+      ...params,
+      type: "Locked",
+    });
+  }, [network]);
 
   return (
     <Container>
