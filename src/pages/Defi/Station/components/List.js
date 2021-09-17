@@ -126,10 +126,23 @@ function List({ /*type, list,*/ params, toast, network }) {
       //   console.log(err);
       // }
     }
-    const chargerInfo = {
-      address: "0x00",
-      name: "There is currently no Charger List available.",
-    };
+
+    const chargerInfo = [
+      {
+        address: "0x0",
+        // apy: "-",
+        name: "There is currently no Charger List available.",
+        period: [1625022000, 14400],
+        redemtion: 200,
+        symbol: ["RCG", "RCG"],
+        token: [
+          "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30", // 이더리움 토큰주소
+          "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
+        ],
+        tvl: "-",
+        type: "flexible",
+      },
+    ];
     const priceData = await axios.post(
       `https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`,
       {
@@ -155,7 +168,8 @@ function List({ /*type, list,*/ params, toast, network }) {
 
     const getList = async () => {
       const list = await getChargerList(CHARGERLIST_INSTANCE);
-      if (list.length == 0) setChList([chargerInfo]);
+      // console.log("chargerInfo", chargerInfo);
+      if (list.length == 0) return setChList(chargerInfo);
       let updatedList = [];
       const CHARGER_INSTANCES = list.map((CHARGER_ADDRESS) => {
         return createContractInstance(WEB3, CHARGER_ADDRESS, CHARGER_ABI);
@@ -216,15 +230,34 @@ function List({ /*type, list,*/ params, toast, network }) {
         updatedList[i].apy = getAPY(
           updatedList[i].totalSupply,
           updatedList[i].rewardAmount -
-          (updatedList[i].rewardToken == updatedList[i].stakeToken
-            ? updatedList[i].totalSupply
-            : 0),
+            (updatedList[i].rewardToken == updatedList[i].stakeToken
+              ? updatedList[i].totalSupply
+              : 0),
           updatedList[i].DURATION
         );
         updatedList[i].symbol = [REWARDS_SYMBOL[i], STAKES_SYMBOL[i]];
       });
-      // console.log("updatedList", updatedList);
-      setChList(updatedList);
+      console.log("updatedList", updatedList);
+      console.log("params", params.type);
+      // 1. pool type에 따라 필터링 진행
+      let test = updatedList.filter((charger) =>
+        charger.name.includes(params.type)
+      );
+      console.log("test", test);
+      // 해당 풀타입이 없을 때
+      if (test.length === 0) {
+        // bep Loced 예외처리 Zero 잡기
+        test = updatedList.filter((charger) => charger.name.includes("Zero"));
+        console.log("test2", test);
+        if (test.length === 0) {
+          return setChList(chargerInfo);
+        } else {
+          console.log("test3", test);
+          setChList(test);
+        }
+      } else {
+        setChList(test);
+      }
     };
     getList();
 
@@ -292,8 +325,16 @@ function List({ /*type, list,*/ params, toast, network }) {
         </Title>
         <RowContainer>
           {chList.map((charger, index) => {
+            console.log(charger);
             return (
-              <div className={params.isLP ? "disable" : ""}>
+              <div
+                className={params.isLP ? "disable" : ""}
+                style={
+                  charger.name === "Loading List.."
+                    ? { cursor: "not-allowed" }
+                    : {}
+                }
+              >
                 <Row
                   key={charger.name}
                   status={charger.status} // active or not
