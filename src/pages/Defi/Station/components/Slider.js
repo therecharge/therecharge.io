@@ -10,9 +10,9 @@ function Slider({ setParams }) {
         <div style={{ cursor: "pointer" }}>
           <Button setParams={setParams} type="Locked" text="Locked Staking" />
         </div>
-        <div className="disable">
+        <div style={{ cursor: "pointer" }} /*className="disable"*/>
           <Button
-            // setParams={setParams}
+            setParams={setParams}
             type="Flexible"
             text="Flexible Staking"
           />
@@ -113,8 +113,8 @@ function Button({ type, text, setParams }) {
                 ? "/ic_lockedstaking_lp.png"
                 : "/ic_lockedstaking.svg"
               : text.includes("LP")
-                ? "/ic_flexiblestaking_lp.png"
-                : "/ic_flexiblestaking.svg"
+              ? "/ic_flexiblestaking_lp.png"
+              : "/ic_flexiblestaking.svg"
           }
         />
         <p

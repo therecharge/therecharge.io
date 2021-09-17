@@ -50,8 +50,9 @@ export default function Row({
   const WEB3 = web3_R[net];
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
-  const [requireNetwork, setRequireNetwork] =
-    useRecoilState(requireNetworkState);
+  const [requireNetwork, setRequireNetwork] = useRecoilState(
+    requireNetworkState
+  );
   // const [onLoading, setOnLoading] = useState(false);
   const [isOpen, setOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
@@ -261,14 +262,14 @@ export default function Row({
     if (isOpen) loadUserInfo();
   }, [account, isOpen]);
 
-  useEffect(async () => {
-    setUserInfo(loading_data);
-    try {
-      await loadUserInfo();
-    } catch (err) {
-      console.log(err);
-    }
-  }, [params]);
+  // useEffect(async () => {
+  //   setUserInfo(loading_data);
+  //   try {
+  //     await loadUserInfo();
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }, [params]);
 
   useEffect(() => {
     // if (info.address === "0x0") return;
@@ -293,13 +294,19 @@ export default function Row({
         />
       )}
       <Title
-        onClick={info.name !== "Loading List.."
-          ? () => { setOpen(!isOpen); }
-          : () => { }
+        onClick={
+          info.name == "Loading List.." ||
+          info.name == "There is currently no Charger List available."
+            ? () => {}
+            : () => {
+                setOpen(!isOpen);
+              }
         }
-        style={info.name === "Loading List.."
-          ? { cursor: "not-allowed" }
-          : { cursor: "pointer" }
+        style={
+          info.name === "Loading List.." ||
+          info.name == "There is currently no Charger List available."
+            ? { cursor: "not-allowed" }
+            : { cursor: "pointer" }
         }
       >
         <Status status={status} />
@@ -327,14 +334,16 @@ export default function Row({
                 <Info
                   className="hide"
                   left="MY BAL"
-                  right={`${makeNum(weiToEther(userInfo.balance))} ${info ? info.symbol[0] : ""
-                    }`}
+                  right={`${makeNum(weiToEther(userInfo.balance))} ${
+                    info ? info.symbol[0] : ""
+                  }`}
                 />
                 <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
                 <Info
                   left="Reward"
-                  right={`${makeNum(weiToEther(userInfo.reward))} ${info ? info.symbol[1] : ""
-                    }`}
+                  right={`${makeNum(weiToEther(userInfo.reward))} ${
+                    info ? info.symbol[1] : ""
+                  }`}
                 />
               </UserInfo>
             ) : (
@@ -381,8 +390,8 @@ export default function Row({
                   userInfo.allowance !== "0"
                     ? "PLUG-IN"
                     : userInfo.address == "0x00"
-                      ? "Now Loading ..."
-                      : "APPROVE"
+                    ? "Now Loading ..."
+                    : "APPROVE"
                 } //어프로브 안되어 있으면 APPROVE로 대체 필요함.
                 onClick={async () => {
                   if (status === "Inactive") {
@@ -414,10 +423,10 @@ export default function Row({
                     !account
                       ? "var(--gray-30)"
                       : status === "Inactive"
-                        ? "var(--gray-30)"
-                        : userInfo.reward > 0
-                          ? "var(--yellow)"
-                          : "var(--gray-30)"
+                      ? "var(--gray-30)"
+                      : userInfo.reward > 0
+                      ? "var(--yellow)"
+                      : "var(--gray-30)"
                   }
                   border=""
                   hcolor=""
@@ -539,8 +548,9 @@ function Name({ status, name }) {
   }
   return (
     <p
-      className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
-        } name`}
+      className={`${
+        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+      } name`}
       style={{ color: color() }}
     >
       {name}
@@ -558,8 +568,9 @@ function Apy({ status, apy }) {
   }
   return (
     <p
-      className={`${window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
-        } apy`}
+      className={`${
+        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+      } apy`}
       style={{ color: color() }}
     >
       {status != "Inactive"
