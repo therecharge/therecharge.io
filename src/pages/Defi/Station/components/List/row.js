@@ -434,22 +434,29 @@ export default function Row({
                   w="540px"
                   fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
                   text="GET FILLED"
-                  onClick={async () => {
-                    if (!account) {
-                      toast("Please connect to wallet");
-                    } else if (params.type == "Locked" && status === "Active") {
-                      toast("This pool does not end");
-                    } else if (status === "Inactive") {
-                      toast("This pool is inactive");
-                    } else if (userInfo.reward > 0) {
-                      poolMethods.earn();
-                      await toast(
-                        'Please approve "GET FILLED" in your private wallet'
-                      );
-                    } else {
-                      toast("There is no withdrawable amount");
-                    }
-                  }}
+                  onClick={
+                    params.type === "Locked"
+                      ? () => {}
+                      : async () => {
+                          if (!account) {
+                            toast("Please connect to wallet");
+                          } else if (
+                            params.type == "Locked" &&
+                            status === "Active"
+                          ) {
+                            toast("This pool does not end");
+                          } else if (status === "Inactive") {
+                            toast("This pool is inactive");
+                          } else if (userInfo.reward > 0) {
+                            poolMethods.earn();
+                            await toast(
+                              'Please approve "GET FILLED" in your private wallet'
+                            );
+                          } else {
+                            toast("There is no withdrawable amount");
+                          }
+                        }
+                  }
                 />
               ) : (
                 <></>

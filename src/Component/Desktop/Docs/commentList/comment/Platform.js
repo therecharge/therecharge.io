@@ -4,9 +4,9 @@ function Platform() {
   return (
     <Container>
       <div className="theme Roboto_50pt_Black_L">Whitepaper</div>
-      <div className="title Roboto_30pt_Black_L">3. Our Platforms</div>
+      <div className="title Roboto_30pt_Black_L">4. Our Platforms</div>
       <div className="subTitle Roboto_20pt_Black_L">
-        3-1. Charging Station (Decentralized Finance)
+        4-1. Charging Station (Decentralized Finance)
       </div>
       <div className="text Roboto_20pt_Regular_L">
         The Charging Station acts as a recharging hub that serves as the center
@@ -36,7 +36,7 @@ function Platform() {
       <div className="text Roboto_20pt_Regular_L">
         ■ Staking Locked (40%) – Regular Staking pool.
       </div>
-      <div className="subTitle Roboto_20pt_Black_L">3-2 Recharge swap</div>
+      <div className="subTitle Roboto_20pt_Black_L">4-2 Recharge swap</div>
       <div className="text Roboto_20pt_Regular_L">
         The Frequent Use Points can be swapped with Recharge Tokens through the
         Recharge swap (Exchange Rate applies). In addition, Recharge swap

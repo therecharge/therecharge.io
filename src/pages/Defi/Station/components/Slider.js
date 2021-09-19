@@ -2,26 +2,32 @@ import React from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
-function Slider({ setParams }) {
+function Slider({ setParams, params }) {
   const [t] = useTranslation();
   return (
     <Container>
       <Content>
         <div style={{ cursor: "pointer" }}>
-          <Button setParams={setParams} type="Locked" text="Locked Staking" />
+          <Button
+            setParams={setParams}
+            pam={params}
+            type="Locked"
+            text="Locked Staking"
+          />
         </div>
         <div style={{ cursor: "pointer" }} /*className="disable"*/>
           <Button
             setParams={setParams}
+            pam={params}
             type="Flexible"
             text="Flexible Staking"
           />
         </div>
         <div className="disable">
-          <Button type="Locked" text="LP Locked Staking" />
+          <Button type="Locked" pam={params} text="LP Locked Staking" />
         </div>
         <div className="disable">
-          <Button type="Flexible" text="LP Flexible Staking" />
+          <Button type="Flexible" pam={params} text="LP Flexible Staking" />
         </div>
       </Content>
     </Container>
@@ -69,7 +75,7 @@ const Content = styled.div`
 
 export default React.memo(Slider);
 
-function Button({ type, text, setParams }) {
+function Button({ type, text, setParams, pam }) {
   let params;
   if (type === "Locked") {
     if (text.includes("LP")) {
@@ -102,7 +108,9 @@ function Button({ type, text, setParams }) {
   }
   return (
     <ContainerButton
-      onClick={() => (setParams ? setParams(params) : console.log(""))}
+      onClick={() => {
+        type !== pam.type ? setParams(params) : console.log("");
+      }}
     >
       <div className="box">
         <img

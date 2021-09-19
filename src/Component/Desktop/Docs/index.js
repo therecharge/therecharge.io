@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ReactPaginate from "react-paginate";
 import commentList from "./commentList/index";
-import { HashLink } from 'react-router-hash-link';
+import { HashLink } from "react-router-hash-link";
 import Footer from "../../Components/Desktop/Footer";
 import { withTranslation } from "react-i18next";
 
@@ -24,7 +24,7 @@ function Docs({ match, t }) {
   };
 
   const setLocation = () => {
-    window.history.replaceState({}, '', '/doc/1');
+    window.history.replaceState({}, "", "/doc/1");
     document.getElementById("header").scrollIntoView();
   };
 
@@ -38,7 +38,7 @@ function Docs({ match, t }) {
     if (window.location.href.includes("#")) {
       setCurrentPage(0);
     }
-  }, [window.location.pathname])
+  }, [window.location.pathname]);
 
   return (
     <Container>
@@ -99,7 +99,7 @@ function Docs({ match, t }) {
                       setCurrentPage(1);
                     }}
                   >
-                    About Our Business
+                    Terms and Definitions
                   </a>
                 </div>
                 <div className="text active">
@@ -112,7 +112,7 @@ function Docs({ match, t }) {
                       setCurrentPage(2);
                     }}
                   >
-                    Our Platforms
+                    The Recharge Token
                   </a>
                 </div>
                 <div className="text active">
@@ -125,7 +125,7 @@ function Docs({ match, t }) {
                       setCurrentPage(3);
                     }}
                   >
-                    Vision
+                    Our Platforms
                   </a>
                 </div>
                 <div className="text active">
@@ -138,7 +138,7 @@ function Docs({ match, t }) {
                       setCurrentPage(4);
                     }}
                   >
-                    Disclaimers and Risks
+                    Vision
                   </a>
                 </div>
                 <div className="text active">
@@ -151,7 +151,7 @@ function Docs({ match, t }) {
                       setCurrentPage(5);
                     }}
                   >
-                    Terms and Definitions
+                    Disclaimers and Risks
                   </a>
                 </div>
               </div>
@@ -162,7 +162,12 @@ function Docs({ match, t }) {
             </div>
             <div className="topic Roboto_30pt_Black_L unactive">
               <a
-                onClick={() => window.open("https://www.certik.org/projects/therecharge", "_blank")}
+                onClick={() =>
+                  window.open(
+                    "https://www.certik.org/projects/therecharge",
+                    "_blank"
+                  )
+                }
                 style={{ textDecoration: "none", color: "white" }}
               >
                 Token Audit
@@ -541,7 +546,7 @@ const Section = styled.div`
   .desc .active {
     display: block;
   }
-  .active{
+  .active {
     margin-top: 300px;
   }
   .hide {
