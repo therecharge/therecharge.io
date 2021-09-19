@@ -7,17 +7,15 @@ import Term from "./comment/Term";
 import Disclaimer from "./comment/Disclaimer";
 import CI from "./comment/CI";
 
-
 const CommentList = [
-    <Background />,
-    <Business />,
-    <Platform />,
-    <Vision />,
-    <Risk />,
-    <Term />,
-    // <Disclaimer />,
-    // <CI />
-]
-
+  <Background />,
+  <Term />,
+  <Business />,
+  <Platform />,
+  <Vision />,
+  <Risk />,
+  // <Disclaimer />,
+  // <CI />
+];
 
 export default CommentList;

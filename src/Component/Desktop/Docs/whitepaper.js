@@ -3609,7 +3609,7 @@ function Whitepaper() {
             fontFamily: '"Apple SD Gothic Neo"',
           }}
         >
-          ERC-20: To be updated
+          ERC-20: 0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30
         </span>
       </p>
       <p
