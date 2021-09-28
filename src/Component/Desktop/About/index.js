@@ -170,7 +170,7 @@ function About({ t }) {
             >
               <img
                 style={{ width: "169px", height: "238px" }}
-                src="./aboutEthanKang.png"
+                src="./aboutEk.png"
               />
             </div>
             <div className="member">
