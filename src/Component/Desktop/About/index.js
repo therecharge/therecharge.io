@@ -120,7 +120,7 @@ function About({ t }) {
             >
               <img
                 style={{ width: "169px", height: "238px" }}
-                src="/aboutJaylee.png"
+                src="./aboutJaylee.png"
               />
             </div>
             <div className="member">
@@ -132,7 +132,22 @@ function About({ t }) {
               </div>
             </div>
           </div>
-          {/* <div className="members">
+          <div className="members">
+            <div
+              className="nft"
+            // style={{ cursor: "pointer" }}
+            // onClick={() => {
+            //   window.open(
+            //     "https://www.bakeryswap.org/#/exchange/artworkInfo/17054/0/1?type=111&level=v3",
+            //     "_blank"
+            //   );
+            // }}
+            >
+              <img
+                style={{ width: "169px", height: "238px" }}
+                src="./aboutJakekim.png"
+              />
+            </div>
             <div className="member">
               <div className="name text Roboto_20pt_Black_L">
                 {t("About/Member/jakeKim/title")}
@@ -141,7 +156,7 @@ function About({ t }) {
                 {t("About/Member/jakeKim/content")}
               </div>
             </div>
-          </div> */}
+          </div>
           <div className="members">
             <div
               className="nft"
@@ -155,7 +170,7 @@ function About({ t }) {
             >
               <img
                 style={{ width: "169px", height: "238px" }}
-                src="/aboutEthanKang.png"
+                src="./aboutEthanKang.png"
               />
             </div>
             <div className="member">
@@ -197,16 +212,6 @@ function About({ t }) {
               </div>
             </div>
           </div>
-          {/* <div className="members">
-            <div className="member">
-              <div className="name text Roboto_20pt_Black_L">
-                {t("About/Member/jakeKim/title")}
-              </div>
-              <div className="desc text Roboto_20pt_Regular_L">
-                {t("About/Member/jakeKim/content")}
-              </div>
-            </div>
-          </div> */}
           <div className="members">
             <div
               className="nft"
@@ -229,6 +234,56 @@ function About({ t }) {
               </div>
               <div className="desc text Roboto_20pt_Regular_L">
                 {t("About/Advisor/JonathanLee/content")}
+              </div>
+            </div>
+          </div>
+          <div className="members">
+            <div
+              className="nft"
+            // style={{ cursor: "pointer" }}
+            // onClick={() => {
+            //   window.open(
+            //     "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
+            //     "_blank"
+            //   );
+            // }}
+            >
+              <img
+                style={{ width: "169px", height: "238px" }}
+                src="/aboutSeungbum.png"
+              />
+            </div>
+            <div className="member">
+              <div className="name text Roboto_20pt_Black_L">
+                {t("About/Advisor/JonathanLee/title")}
+              </div>
+              <div className="desc text Roboto_20pt_Regular_L">
+                {t("About/Advisor/JonathanLee/content")}
+              </div>
+            </div>
+          </div>
+          <div className="members">
+            <div
+              className="nft"
+            // style={{ cursor: "pointer" }}
+            // onClick={() => {
+            //   window.open(
+            //     "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
+            //     "_blank"
+            //   );
+            // }}
+            >
+              <img
+                style={{ width: "169px", height: "238px" }}
+                src="/aboutJason.png"
+              />
+            </div>
+            <div className="member">
+              <div className="name text Roboto_20pt_Black_L">
+                {t("About/Advisor/aboutJason/title")}
+              </div>
+              <div className="desc text Roboto_19pt_Regular_L">
+                {t("About/Advisor/aboutJason/content")}
               </div>
             </div>
           </div>
