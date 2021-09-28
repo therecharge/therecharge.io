@@ -69,7 +69,7 @@ function Docs({ match, t }) {
               </HashLink>
               <div
                 className="drop "
-                style={viewNum == 1 ? { maxHeight: "236px" } : {}}
+                style={viewNum == 1 ? { maxHeight: "290px" } : {}}
               >
                 <div className="text active">
                   <HashLink

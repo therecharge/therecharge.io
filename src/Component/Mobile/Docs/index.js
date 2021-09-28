@@ -24,13 +24,18 @@ function Docs({ match, t }) {
 
   function handlePage(data) {
     setCurrentPage(data.selected);
-    window.scrollTo(0, 0);
+    document.getElementById("header").scrollIntoView();
   }
 
   const currentComment = (pages) => {
     return pages.slice(currentPage, currentPage + perPage).map((page) => {
       return <div className="currentComment">{page}</div>;
     });
+  };
+
+  const setLocation = () => {
+    window.history.replaceState({}, "", "/doc/1");
+    document.getElementById("header").scrollIntoView();
   };
 
   useEffect(() => {
@@ -47,7 +52,7 @@ function Docs({ match, t }) {
   }, []);
 
   return (
-    <Container>
+    <Container id="header">
       <div className="menuToggle Roboto_40pt_Black" onClick={() => toggle()}>
         <span>{menu}</span>
         <img src={menuOpen ? "/ic_rollup.svg" : "/ic_rolldown.svg"} />
@@ -64,7 +69,7 @@ function Docs({ match, t }) {
                 toggle();
                 setMenu("Whitepaper");
                 setViewNum(1);
-                window.scrollTo(0, 0);
+                setLocation();
                 setCurrentPage(0);
               }}
             >
@@ -80,7 +85,7 @@ function Docs({ match, t }) {
                   toggle();
                   setMenu("Whitepaper");
                   setViewNum(1);
-                  window.scrollTo(0, 0);
+                  setLocation();
                   setCurrentPage(0);
                 }}
               >
@@ -96,11 +101,11 @@ function Docs({ match, t }) {
                   toggle();
                   setMenu("Whitepaper");
                   setViewNum(1);
-                  window.scrollTo(0, 0);
+                  setLocation();
                   setCurrentPage(1);
                 }}
               >
-                About Our Business
+                Terms and Definitions
               </Link>
             </div>
             <div>
@@ -113,8 +118,25 @@ function Docs({ match, t }) {
                   toggle();
                   setMenu("Whitepaper");
                   setViewNum(1);
-                  window.scrollTo(0, 0);
+                  setLocation();
                   setCurrentPage(2);
+                }}
+              >
+                The Recharge Token
+              </Link>
+            </div>
+            <div>
+              <Link
+                to={"/docs/1"}
+                className="text active Roboto_30pt_Regular_Mobile"
+                href="/docs/1"
+                style={{ textDecoration: "none" }}
+                onClick={() => {
+                  toggle();
+                  setMenu("Whitepaper");
+                  setViewNum(1);
+                  setLocation();
+                  setCurrentPage(3);
                 }}
               >
                 Our Platforms
@@ -130,8 +152,8 @@ function Docs({ match, t }) {
                   toggle();
                   setMenu("Whitepaper");
                   setViewNum(1);
-                  window.scrollTo(0, 0);
-                  setCurrentPage(3);
+                  setLocation();
+                  setCurrentPage(4);
                 }}
               >
                 Vision
@@ -147,28 +169,11 @@ function Docs({ match, t }) {
                   toggle();
                   setMenu("Whitepaper");
                   setViewNum(1);
-                  window.scrollTo(0, 0);
-                  setCurrentPage(4);
-                }}
-              >
-                Disclaimers and Risks
-              </Link>
-            </div>
-            <div>
-              <Link
-                to={"/docs/1"}
-                className="text active Roboto_30pt_Regular_Mobile"
-                href="/docs/1"
-                style={{ textDecoration: "none" }}
-                onClick={() => {
-                  toggle();
-                  setMenu("Whitepaper");
-                  setViewNum(1);
-                  window.scrollTo(0, 0);
+                  setLocation();
                   setCurrentPage(5);
                 }}
               >
-                Terms and Definitions
+                Disclaimers and Risks
               </Link>
             </div>
           </div>

@@ -4,8 +4,8 @@ function Vision() {
   return (
     <Container>
       <div className="theme Roboto_50pt_Black_L">Whitepaper</div>
-      <div className="title Roboto_30pt_Black_L">4. Vision</div>
-      <div className="subTitle Roboto_20pt_Black_L">4-1. Roadmap</div>
+      <div className="title Roboto_30pt_Black_L">5. Vision</div>
+      <div className="subTitle Roboto_20pt_Black_L">5-1. Roadmap</div>
       <div className="semiTitle Roboto_20pt_Black_L">2021</div>
       <div className="subText Roboto_20pt_Regular_L">Q2</div>
       <div className="subText Roboto_20pt_Regular_L">
@@ -43,7 +43,7 @@ function Vision() {
       <div className="text Roboto_20pt_Regular_L">
         - 3rd Recharge Ecosystem Partner Service Unveiling
       </div>
-      <div className="subTitle Roboto_20pt_Black_L">4-2. Team members</div>
+      <div className="subTitle Roboto_20pt_Black_L">5-2. Team members</div>
       <div className="subTitle Roboto_20pt_Black_L">
         Jake Kim, Chief Technical Officer,
       </div>
@@ -73,15 +73,13 @@ function Vision() {
   );
 }
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
   // width: 750px;
   .theme {
     margin-bottom: 80px;
     text-shadow: 0 0 1px white, 0 0 15px white;
   }
   .title {
-    // margin-top: 60px;
+    margin-top: 60px;
     margin-bottom: 40px;
   }
   .subTitle {

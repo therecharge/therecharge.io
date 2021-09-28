@@ -4,7 +4,7 @@ function Background() {
     return (
         <Container>
             <div className="theme Roboto_50pt_Black_L">Whitepaper</div>
-            <div className="title Roboto_40pt_Black_L">1. Background</div>
+            <div className="title Roboto_30pt_Black_L">1. Background</div>
             <div className="text Roboto_20pt_Regular_L">
                 Companies constantly look for new means of production while the
                 choices made by the consumers expand and evolve the free market. They
@@ -24,14 +24,12 @@ function Background() {
 }
 const Container = styled.div`
     // width: 750px;
-    display: flex;
-    flex-direction: column;
     .theme {
         margin-bottom: 80px;
         text-shadow: 0 0 1px white, 0 0 15px white;
     }
     .title {
-        // margin-top: 60px;
+        margin-top: 60px;
         margin-bottom: 40px;
     }
     .text {
