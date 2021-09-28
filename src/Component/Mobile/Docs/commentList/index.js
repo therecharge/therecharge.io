@@ -9,13 +9,13 @@ import CI from "./comment/CI";
 
 const CommentList = [
   <Background />,
+  <Term />,
   <Business />,
   <Platform />,
   <Vision />,
   <Risk />,
-  <Term />,
-  <Disclaimer />,
-  <CI />,
+  // <Disclaimer />,
+  // <CI />
 ];
 
 export default CommentList;
