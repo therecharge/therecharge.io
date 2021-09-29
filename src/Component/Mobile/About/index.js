@@ -43,10 +43,10 @@ function About({ t }) {
       style={
         modalOpen
           ? {
-            position: "fixed",
-            // width: "100%",
-            // backgroundColor: "#02051c",
-          }
+              position: "fixed",
+              // width: "100%",
+              // backgroundColor: "#02051c",
+            }
           : {}
       }
     >
@@ -185,13 +185,13 @@ function About({ t }) {
           <div className="members">
             <div
               className="nft"
-            // style={{ cursor: "pointer" }}
-            // onClick={() => {
-            //   window.open(
-            //     "https://www.bakeryswap.org/#/exchange/artworkInfo/17054/0/1?type=111&level=v3",
-            //     "_blank"
-            //   );
-            // }}
+              // style={{ cursor: "pointer" }}
+              // onClick={() => {
+              //   window.open(
+              //     "https://www.bakeryswap.org/#/exchange/artworkInfo/17054/0/1?type=111&level=v3",
+              //     "_blank"
+              //   );
+              // }}
             >
               <img
                 style={{ width: "169px", height: "238px" }}
@@ -234,7 +234,7 @@ function About({ t }) {
           </div>
         </div>
       </Content>
-      <Content id="aboutSection3">
+      <Content id="aboutSection4">
         <div className="third">
           <div className="theme text Roboto_50pt_Black">Advisors</div>
           <div className="members">
@@ -290,13 +290,13 @@ function About({ t }) {
           <div className="members">
             <div
               className="nft"
-            // style={{ cursor: "pointer" }}
-            // onClick={() => {
-            //   window.open(
-            //     "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
-            //     "_blank"
-            //   );
-            // }}
+              // style={{ cursor: "pointer" }}
+              // onClick={() => {
+              //   window.open(
+              //     "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
+              //     "_blank"
+              //   );
+              // }}
             >
               <img
                 style={{ width: "169px", height: "238px" }}
@@ -315,13 +315,13 @@ function About({ t }) {
           <div className="members">
             <div
               className="nft"
-            // style={{ cursor: "pointer" }}
-            // onClick={() => {
-            //   window.open(
-            //     "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
-            //     "_blank"
-            //   );
-            // }}
+              // style={{ cursor: "pointer" }}
+              // onClick={() => {
+              //   window.open(
+              //     "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
+              //     "_blank"
+              //   );
+              // }}
             >
               <img
                 style={{ width: "169px", height: "238px" }}
@@ -339,7 +339,7 @@ function About({ t }) {
           </div>
         </div>
       </Content>
-      <Content id="aboutSection4">
+      <Content id="aboutSection5">
         <div className="fourth">
           <div className="theme text Roboto_50pt_Black_Mobile">
             Recharge is on
@@ -508,7 +508,6 @@ function About({ t }) {
               </div>
             </div>
           </div>
-
         </div>
       </Content>
       <Modal modalOpen={modalOpen} handleModal={handleModal} />
