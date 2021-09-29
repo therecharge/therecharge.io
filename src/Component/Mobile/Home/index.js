@@ -398,6 +398,17 @@ function Home({ t }) {
             <div className="tier">
               <div
                 className="partner"
+                onClick={() =>
+                  (window.location = "https://www.binance.org/en/smartChain")
+                }
+              >
+                <img
+                  src="/homePV8.png"
+                  style={{ width: "242px", height: "57.7px" }}
+                />
+              </div>
+              <div
+                className="partner"
                 onClick={() => (window.location = "https://www.certik.org/")}
               >
                 <img
@@ -405,6 +416,8 @@ function Home({ t }) {
                   style={{ width: "242px", height: "57.7px" }}
                 />
               </div>
+            </div>
+            <div className="tier">
               <div
                 className="partner"
                 onClick={() =>
@@ -416,8 +429,6 @@ function Home({ t }) {
                   style={{ width: "242px", height: "38.9px" }}
                 />
               </div>
-            </div>
-            <div className="tier">
               <div
                 className="partner"
                 onClick={() =>
@@ -429,6 +440,8 @@ function Home({ t }) {
                   style={{ width: "242px", height: "86.8px" }}
                 />
               </div>
+            </div>
+            <div className="tier">
               <div
                 className="partner"
                 onClick={() => (window.location = "https://piggycell.com/")}
@@ -438,8 +451,6 @@ function Home({ t }) {
                   style={{ width: "242px", height: "114.9px" }}
                 />
               </div>
-            </div>
-            <div className="tier">
               <div
                 className="partner"
                 onClick={() =>

@@ -31,7 +31,7 @@ const weiToEther = (wei) => {
   return fromWei(wei, "ether");
 };
 
-function Defi({ toast, t, }) {
+function Defi({ toast, t }) {
   const [onLoading, setOnLoading] = useState(true);
   const [account] = useRecoilState(accountState);
   const [myPools, setMyPools] = useState(null);
@@ -114,7 +114,7 @@ function Defi({ toast, t, }) {
 
   const loadAnalytics = async () => {
     try {
-      const [analData, priceData] = await Promise.all([
+      const [analData, priceData, tvlData] = await Promise.all([
         axios.get(`https://bridge.therecharge.io/analytics`),
         axios.post(
           `https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`,
@@ -123,10 +123,13 @@ function Defi({ toast, t, }) {
               'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
           }
         ),
+        axios.get(`https://api.therecharge.io/tvl`),
       ]);
       let { token0Price, token1Price } = priceData.data.data.pairs[0];
       token0Price = makeNum(token0Price);
       token1Price = makeNum(token1Price);
+      let TVL = makeNum("" + tvlData.data.TVL);
+      console.log("TVL", tvlData);
       // console.log(analData.data);
       // console.log(token1Price);
       setAnalytics({
@@ -135,7 +138,9 @@ function Defi({ toast, t, }) {
           ...analData.data.ERC,
           price: token0Price, // 이더리움 유니스왑 실시간 가격
         },
+        general: { tvl: TVL },
       });
+      console.log(analytics);
       /**
        * ERC: {},
        * HRC: {},
@@ -185,7 +190,7 @@ function Defi({ toast, t, }) {
               <HashLink
                 className="box"
                 to={"/defi/station"}
-              // onClick={() => handleModalPool()}
+                // onClick={() => handleModalPool()}
               >
                 <img src="/ic_chargingstation.svg" />
                 <div className="name Roboto_40pt_Black">Charging Station</div>
@@ -198,7 +203,7 @@ function Defi({ toast, t, }) {
               <HashLink
                 className="box"
                 to={"/defi/swap"}
-              // onClick={() => handleModalSwap()}
+                // onClick={() => handleModalSwap()}
               >
                 <img src="/ic_rechargingswap.svg" />
                 <div className="name Roboto_40pt_Black">Recharge swap</div>
@@ -292,8 +297,9 @@ function Defi({ toast, t, }) {
                         {row.cells.map((cell) => {
                           return (
                             <HashLink
-                              to={`/defi/station#${myPools[row.index].type.split(" ")[0]
-                                }`}
+                              to={`/defi/station#${
+                                myPools[row.index].type.split(" ")[0]
+                              }`}
                               style={{
                                 display: "table-cell",
                                 textDecoration: "none",
@@ -322,16 +328,21 @@ function Defi({ toast, t, }) {
             Overview of Recharge Ecosystem
           </div>
           <div className="contents">
-            {/* <div className="container">
+            <div className="container">
               <div className="center box exception">
                 <div className="title Roboto_30pt_Black">
-                  $ {analytics.general.tvl}
+                  ${" "}
+                  {analytics.general.tvl
+                    ? convertNum(analytics.general.tvl, {
+                        unitSeparator: true,
+                      })
+                    : 0}
                 </div>
                 <div className="text Roboto_16pt_Regular_Gray">
                   Total Value Locked
                 </div>
               </div>
-            </div> */}
+            </div>
             <div className="container">
               <div className="left box exception">
                 <div className="title Roboto_30pt_Medium">
@@ -385,8 +396,8 @@ function Defi({ toast, t, }) {
                 >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -409,7 +420,8 @@ function Defi({ toast, t, }) {
                     <div className="title Roboto_20pt_Black">
                       {/* {analytics.ERC.redemption
                         ? makeNum(analytics.ERC.redemption)
-                        : 0} RCG */}-
+                        : 0} RCG */}
+                      -
                     </div>
                     <div className="text Roboto_16pt_Regular_Gray">
                       Accumulated Carbon Redemption ERC20
@@ -457,8 +469,8 @@ function Defi({ toast, t, }) {
                 >
                   {analytics.BEP.total
                     ? convertNum(weiToEther(convertNum(analytics.BEP.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -481,7 +493,8 @@ function Defi({ toast, t, }) {
                     <div className="title Roboto_20pt_Black">
                       {/* {analytics.BEP.redemption
                         ? makeNum(analytics.BEP.redemption)
-                        : 0} RCG */}-
+                        : 0} RCG */}
+                      -
                     </div>
                     <div className="text Roboto_16pt_Regular_Gray">
                       Accumulated Carbon Redemption BEP20
@@ -534,8 +547,8 @@ function Defi({ toast, t, }) {
                 >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                      unitSeparator: true,
-                    })
+                        unitSeparator: true,
+                      })
                     : 0}{" "}
                   RCG
                 </div>
@@ -559,7 +572,8 @@ function Defi({ toast, t, }) {
                       {/* {analytics.HRC.redemption
                         ? makeNum(analytics.HRC.redemption)
                         : 0}{" "}
-                      RCG */}-
+                      RCG */}
+                      -
                     </div>
                     <div className="text Roboto_16pt_Regular_Gray">
                       Accumulated Carbon Redemption HRC20
@@ -605,7 +619,6 @@ function Defi({ toast, t, }) {
               </div>
             </div>
           </div>
-
         </div>
       </Content>
 
