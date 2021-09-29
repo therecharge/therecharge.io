@@ -438,6 +438,8 @@ function Gnb({ getTitle }) {
               >
                 <img src="/footer4.png" />
               </div>
+            </div>
+            <div className="sns">
               <div
                 className="logo"
                 onClick={() => {
@@ -448,6 +450,17 @@ function Gnb({ getTitle }) {
                 }}
               >
                 <img src="/footer5.png" />
+              </div>
+              <div
+                className="logo"
+                onClick={() => {
+                  window.open(
+                    "https://bscscan.com/token/0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
+                    "_blank"
+                  );
+                }}
+              >
+                <img src="/footer7.png" />
               </div>
               <div
                 className="logo"
@@ -641,7 +654,8 @@ const ConnectWallet = styled.div`
 
 const Footer = styled.div`
   display: flex;
-  margin: auto;
+  margin: 0 auto;
+  margin-top: 40px;
   // margin-bottom: 10vh;
   margin-bottom: 0px;
 
@@ -672,7 +686,8 @@ const Footer = styled.div`
 
     .sns {
       display: flex;
-      margin: 40px auto;
+      margin: 0 auto;
+      margin-top: 40px;
       .logo {
         margin: 0 20px;
         cursor: pointer;
@@ -684,6 +699,7 @@ const Footer = styled.div`
     }
     .bottom {
       margin: 0 auto;
+      margin-top: 40px;
       margin-bottom: 0px;
     }
   }
