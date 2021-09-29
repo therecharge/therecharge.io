@@ -156,38 +156,184 @@ function About({ t }) {
       </Content>
       <Content id="aboutSection3">
         <div className="third">
-          <div className="theme text Roboto_50pt_Black_Mobile">
-            Team members
-          </div>
+          <div className="theme text Roboto_50pt_Black">Team members</div>
           <div className="members">
+            <div
+              className="nft"
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                window.open(
+                  "https://www.bakeryswap.org/#/exchange/artworkInfo/16350/0/1?type=111&level=v3",
+                  "_blank"
+                );
+              }}
+            >
+              <img
+                style={{ width: "169px", height: "238px" }}
+                src="./aboutJaylee.png"
+              />
+            </div>
             <div className="member">
               <div className="name text Roboto_30pt_Black_L">
                 {t("About/Member/jayLee/title")}
               </div>
-              <div className="desc">
-                <div className="text Roboto_25pt_Regular_Mobile2">
-                  {t("About/Member/jayLee/content")}
-                </div>
+              <div className="desc text Roboto_25pt_Regular">
+                {t("About/Member/jayLee/content")}
               </div>
+            </div>
+          </div>
+          <div className="members">
+            <div
+              className="nft"
+            // style={{ cursor: "pointer" }}
+            // onClick={() => {
+            //   window.open(
+            //     "https://www.bakeryswap.org/#/exchange/artworkInfo/17054/0/1?type=111&level=v3",
+            //     "_blank"
+            //   );
+            // }}
+            >
+              <img
+                style={{ width: "169px", height: "238px" }}
+                src="./aboutJakekim.png"
+              />
             </div>
             <div className="member">
               <div className="name text Roboto_30pt_Black_L">
                 {t("About/Member/jakeKim/title")}
               </div>
-              <div className="desc">
-                <div className="text Roboto_25pt_Regular_Mobile2">
-                  {t("About/Member/jakeKim/content")}
-                </div>
+              <div className="desc text Roboto_25pt_Regular">
+                {t("About/Member/jakeKim/content")}
               </div>
+            </div>
+          </div>
+          <div className="members">
+            <div
+              className="nft"
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                window.open(
+                  "https://www.bakeryswap.org/#/exchange/artworkInfo/17054/0/1?type=111&level=v3",
+                  "_blank"
+                );
+              }}
+            >
+              <img
+                style={{ width: "169px", height: "238px" }}
+                src="./aboutEk.png"
+              />
             </div>
             <div className="member">
               <div className="name text Roboto_30pt_Black_L">
                 {t("About/Member/ethanKang/title")}
               </div>
-              <div className="desc">
-                <div className="text Roboto_25pt_Regular_Mobile2">
-                  {t("About/Member/ethanKang/content")}
-                </div>
+              <div className="desc text Roboto_25pt_Regular">
+                {t("About/Member/ethanKang/content")}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Content>
+      <Content id="aboutSection3">
+        <div className="third">
+          <div className="theme text Roboto_50pt_Black">Advisors</div>
+          <div className="members">
+            <div
+              className="nft"
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                window.open(
+                  "https://www.bakeryswap.org/#/exchange/artworkInfo/17052/0/1?type=111&level=v3",
+                  "_blank"
+                );
+              }}
+            >
+              <img
+                style={{ width: "169px", height: "238px" }}
+                src="/aboutSinhaeLee.png"
+              />
+            </div>
+            <div className="member">
+              <div className="name text Roboto_30pt_Black_L">
+                {t("About/Advisor/SinhaeLee/title")}
+              </div>
+              <div className="desc text Roboto_25pt_Regular">
+                {t("About/Advisor/SinhaeLee/content")}
+              </div>
+            </div>
+          </div>
+          <div className="members">
+            <div
+              className="nft"
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                window.open(
+                  "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
+                  "_blank"
+                );
+              }}
+            >
+              <img
+                style={{ width: "169px", height: "238px" }}
+                src="/aboutJonathanLee.png"
+              />
+            </div>
+            <div className="member">
+              <div className="name text Roboto_30pt_Black_L">
+                {t("About/Advisor/JonathanLee/title")}
+              </div>
+              <div className="desc text Roboto_25pt_Regular">
+                {t("About/Advisor/JonathanLee/content")}
+              </div>
+            </div>
+          </div>
+          <div className="members">
+            <div
+              className="nft"
+            // style={{ cursor: "pointer" }}
+            // onClick={() => {
+            //   window.open(
+            //     "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
+            //     "_blank"
+            //   );
+            // }}
+            >
+              <img
+                style={{ width: "169px", height: "238px" }}
+                src="/aboutSeungbum.png"
+              />
+            </div>
+            <div className="member">
+              <div className="name text Roboto_30pt_Black_L">
+                {t("About/Advisor/JonathanLee/title")}
+              </div>
+              <div className="desc text Roboto_25pt_Regular">
+                {t("About/Advisor/JonathanLee/content")}
+              </div>
+            </div>
+          </div>
+          <div className="members">
+            <div
+              className="nft"
+            // style={{ cursor: "pointer" }}
+            // onClick={() => {
+            //   window.open(
+            //     "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
+            //     "_blank"
+            //   );
+            // }}
+            >
+              <img
+                style={{ width: "169px", height: "238px" }}
+                src="/aboutJason.png"
+              />
+            </div>
+            <div className="member">
+              <div className="name text Roboto_30pt_Black_L">
+                {t("About/Advisor/aboutJason/title")}
+              </div>
+              <div className="desc text Roboto_25pt_Regular">
+                {t("About/Advisor/aboutJason/content")}
               </div>
             </div>
           </div>
@@ -202,12 +348,16 @@ function About({ t }) {
             <div className="tier">
               <div
                 className="partner"
-                onClick={() =>
-                  (window.open("https://info.uniswap.org/#/", "_blank"))
-                }
+                onClick={() => {
+                  window.open(
+                    "https://app.uniswap.org/#/swap?inputCurrency=0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48&outputCurrency=0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
+                    "_blank"
+                  );
+                }}
               >
                 <div className="logo">
                   <img
+                    alt=""
                     src="/aboutUniswap.png"
                     style={{ height: "70px", width: "60.8px" }}
                   />
@@ -220,7 +370,12 @@ function About({ t }) {
               </div>
               <div
                 className="partner"
-                onClick={() => { window.open("https://coinmarketcap.com/currencies/recharge/", "_blank") }}
+                onClick={() => {
+                  window.open(
+                    "https://coinmarketcap.com/currencies/recharge/",
+                    "_blank"
+                  );
+                }}
               >
                 <div className="logo">
                   <img
@@ -238,7 +393,12 @@ function About({ t }) {
             <div className="tier">
               <div
                 className="partner"
-                onClick={() => { window.open("https://www.coingecko.com/en/coins/recharge", "_blank") }}
+                onClick={() => {
+                  window.open(
+                    "https://www.coingecko.com/en/coins/recharge",
+                    "_blank"
+                  );
+                }}
               >
                 <div className="logo">
                   <img
@@ -255,10 +415,40 @@ function About({ t }) {
 
               <div
                 className="partner"
-                onClick={() => { window.open("https://xangle.io/project/RCG/key-info", "_blank") }}
+                onClick={() => {
+                  window.open(
+                    "https://nomics.com/assets/rcg-recharge?utm_source=twitter&utm_medium=bot&utm_campaign=new_asset&utm_content=rcg&d=1630561474",
+                    "_blank"
+                  );
+                }}
               >
                 <div className="logo">
                   <img
+                    alt=""
+                    src="/aboutNomics.png"
+                    style={{ height: "70px", width: "66.4px" }}
+                  />
+                </div>
+                <div className="desc text Roboto_20pt_Regular">
+                  <div className="text Roboto_20pt_Regular_Mobile">
+                    {t("About/Recharge-is-on/6")}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="tier">
+              <div
+                className="partner"
+                onClick={() => {
+                  window.open(
+                    "https://xangle.io/project/RCG/key-info",
+                    "_blank"
+                  );
+                }}
+              >
+                <div className="logo">
+                  <img
+                    alt=""
                     src="/aboutXangle.png"
                     style={{ height: "70px", width: "66.4px" }}
                   />
@@ -269,11 +459,11 @@ function About({ t }) {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="tier">
               <div
                 className="partner"
-                onClick={() => (window.open("https://cobak.co.kr/", "_blank"))}
+                onClick={() => {
+                  window.open("https://cobak.co.kr/community/146", "_blank");
+                }}
               >
                 <div className="logo">
                   <img
@@ -286,15 +476,23 @@ function About({ t }) {
                     }}
                   />
                 </div>
-                <div className="desc text Roboto_20pt_Regular">
+
+                <div className="desc text Roboto_16pt_Regular">
                   <div className="text Roboto_20pt_Regular_Mobile">
                     {t("About/Recharge-is-on/4")}
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="tier">
               <div
                 className="partner"
-                onClick={() => (window.open("https://snapshot.org/", "_blank"))}
+                onClick={() => {
+                  window.open(
+                    "https://snapshot.org/#/therecharge.eth",
+                    "_blank"
+                  );
+                }}
               >
                 <div className="logo">
                   <img
@@ -310,6 +508,7 @@ function About({ t }) {
               </div>
             </div>
           </div>
+
         </div>
       </Content>
       <Modal modalOpen={modalOpen} handleModal={handleModal} />
@@ -398,22 +597,29 @@ const Content = styled.div`
     .members {
       display: flex;
       flex-direction: column;
-      margin: 0 auto;
-      margin-bottom: 160px;
+      justify-content: center;
+      margin-bottom: 16px;
+
+      .nft{
+        display: flex;
+        margin: 40px auto 16px auto;
+        width: 169px;
+        height: 237.7px;
+        // margin-right: 14px;
+      }
 
         .member {
           display: flex;
           flex-direction: column;
           width: 620px;
-          height: fit-content;
-          margin-bottom: 20px;
-          padding: 40px 0;
-          padding-left: 80px;
+          height: 310px;
+          padding: 40px;
           box-sizing: border-box;
-          border-radius: 20px;
+          border-radius: 10px;
           background-color: var(--black-30);
 
           .name {
+            margin: 0;
             margin-bottom: 16px;
           }
         }

@@ -4,7 +4,7 @@ function Term() {
   return (
     <Container>
       <div className="theme Roboto_50pt_Black_L">Whitepaper</div>
-      <div className="title Roboto_30pt_Black_L">6. Terms and Definitions</div>
+      <div className="title Roboto_30pt_Black_L">2. Terms and Definitions</div>
       <div className="subTitle Roboto_20pt_Black_L">✓ Smart-Contract</div>
       <div className="text Roboto_20pt_Regular_L">
         A smart contract is an automatically executing contract that is part of
@@ -67,15 +67,13 @@ function Term() {
   );
 }
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
   // width: 750px;
   .theme {
     margin-bottom: 80px;
     text-shadow: 0 0 1px white, 0 0 15px white;
   }
   .title {
-    // margin-top: 60px;
+    margin-top: 60px;
     margin-bottom: 40px;
   }
   .subTitle {

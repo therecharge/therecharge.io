@@ -4,21 +4,21 @@ function Business() {
   return (
     <Container>
       <div className="theme Roboto_50pt_Black_L">Whitepaper</div>
-      <div className="title Roboto_30pt_Black_L">2. About Our Business</div>
+      <div className="title Roboto_30pt_Black_L">3. The Recharge Token</div>
       <div className="subTitle Roboto_20pt_Black_L">
-        2-1 Birth of Recharge Token
+        3-1 Birth of Recharge Token
       </div>
       <div className="text Roboto_20pt_Regular_L">
-        PiggyCell, a new power bank sharing platform, has been installed in more
-        than thirty thousand branches across the major cities in South Korea.
-        According to CoinDesk, the age group who are most interested in crypto
-        technologies and cryptocurrencies is 20s to 30s in 2021. It is estimated
-        that there are more than 3 million virtual asset trading users in South
-        Korea as of May 2021. In particular, the age group called 2030
-        generation accounts for approximately 59% of crypto users, and they seem
-        to adapt easily to the changing technology trends while also actively
-        using these services. This age group directly aligns with most users in
-        PiggyCell platforms.
+        PiggyCell, a new power bank sharing platform, has been reserved to be
+        installed in more than thirty thousand branches across the major cities
+        in South Korea as of August 2021. According to CoinDesk, the age group
+        who are most interested in crypto technologies and cryptocurrencies is
+        20s to 30s in 2021. It is estimated that there are more than 3 million
+        virtual asset trading users in South Korea as of May 2021. In
+        particular, the age group called 2030 generation accounts for
+        approximately 59% of crypto users, and they seem to adapt easily to the
+        changing technology trends while also actively using these services.
+        This age group directly aligns with most users in PiggyCell platforms.
       </div>
       <div className="text Roboto_20pt_Regular_L">
         PiggyCell service so far has been an “One-way service” which provide
@@ -45,12 +45,12 @@ function Business() {
         environmental-friendly blockchain economy.
       </div>
       <div className="text Roboto_20pt_Regular_L">
-        We will soon unveil the 2nd Ecosystem partner “EV Charging Complex”
+        We expect to unveil the 2nd Ecosystem partner “EV Charging Complex”
         through our communication channels in Q3, 2021.
       </div>
 
       <div className="subTitle Roboto_20pt_Black_L">
-        2-2 What is a Recharge Token?
+        3-2 What is a Recharge Token?
       </div>
       <div className="text Roboto_20pt_Regular_L">
         Recharge Token is a native token in the ecosystem centered on
@@ -69,7 +69,8 @@ function Business() {
       </div>
       <div className="text Roboto_20pt_Regular_L">
         - The ecosystem built through the Recharge Token can be expanded to any
-        electric based services and EV Charging Complex is the 1st example.
+        electric based services. If EV Charging Complex is successfully
+        launched, this can be the 1st example.
       </div>
       <div className="text Roboto_20pt_Regular_L">
         - Through the automatic incineration functions of the Recharge Token,
@@ -79,15 +80,15 @@ function Business() {
         expired not to be used.
       </div>
       <div className="subTitle Roboto_20pt_Black_L">
-        2-3 Recharge Token Purpose
+        3-3 Recharge Token Purpose
       </div>
       <div className="text Roboto_20pt_Regular_L">
         Recharge Token aims to build and expand the current ecosystem related to
         charging by combining the already existing Piggy Cell service with
-        blockchain technology. Thus, it will provide a Turnkey Solution for
-        charging related in the future. That is, it will establish the basis of
-        charging stations and pave the way as the representative charging
-        service in the market.
+        blockchain technology. Thus, we hope to provide a Turnkey Solution for
+        charging related in the future. That is, we hope we can establish the
+        basis of charging stations and pave the way as the representative
+        charging service in the market.
       </div>
       <div className="text Roboto_20pt_Regular_L">
         - Enhanced Incentives: Decentralized Finance is provided to enhance
@@ -101,9 +102,9 @@ function Business() {
         enhanced incentive circulation by adopting Recharge Ecosystem.
       </div>
       <div className="subTitle Roboto_20pt_Black_L">
-        2-4 Recharge Token Ecosystem
+        3-4 Recharge Token Ecosystem
       </div>
-      <div className="semiTitle Roboto_20pt_Black_L">2-4-1. Overview</div>
+      <div className="semiTitle Roboto_20pt_Black_L">3-4-1. Overview</div>
       <div className="text Roboto_20pt_Regular_L">
         The basis of the Recharge Token’s ecosystem is initially being built
         around Piggy Cell’s service platform, which is maintained through both
@@ -139,7 +140,7 @@ function Business() {
         accelerate the current accumulation rate of the Recharge Tokens.
       </div>
       <div className="semiTitle Roboto_20pt_Black_L">
-        2-4-2 FUP Frequent Use Points
+        3-4-2 FUP Frequent Use Points
       </div>
       <div className="text Roboto_20pt_Regular_L">
         The Frequent Use Points play an important role in configuring,
@@ -163,7 +164,7 @@ function Business() {
         functions of each module.
       </div>
       <div className="semiTitle Roboto_20pt_Black_L">
-        2-4-3 Carbon Redemption (CRE)
+        3-4-3 Carbon Redemption (CRE)
       </div>
       <div className="text Roboto_20pt_Regular_L">
         Automated Token Burn of Recharge Token is named as Carbon Redemption
@@ -187,7 +188,7 @@ function Business() {
         incentives for ecosystem building such as staking reward. Ratio of each
         distribution can change through Recharge Governance on Snapshot.org.
       </div>
-      <div className="semiTitle Roboto_20pt_Black_L">2-4-4 Governance</div>
+      <div className="semiTitle Roboto_20pt_Black_L">3-4-4 Governance</div>
       <div className="text Roboto_20pt_Regular_L">
         Recharge Token holders are granted voting rights proportional to their
         token holdings and can participate in the decision-making process for
@@ -229,7 +230,7 @@ function Business() {
         incentives in accordance with the results of their votes.
       </div>
       <div className="subTitle Roboto_20pt_Black_L">
-        2-5. Recharge Token Information
+        3-5. Recharge Token Information
       </div>
       <div className="subText Roboto_20pt_Regular_L">○ Token symbol: RCG</div>
       <div className="subText Roboto_20pt_Regular_L">
@@ -239,16 +240,16 @@ function Business() {
         ○ Token contract address
       </div>
       <div className="subText Roboto_20pt_Regular_L">
-        ■ ERC-20: To be updated
+        ■ ERC-20: 0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30
       </div>
       <div className="subText Roboto_20pt_Regular_L">
-        ■ EBEP-20: To be updated
+        ■ BEP-20: 0x2D94172436D869c1e3c094BeaD272508faB0d9E3
       </div>
       <div className="text Roboto_20pt_Regular_L">
-        ■ EHRC-20: To 0x46D5e02eEa581022184DF5fC36e6fc8D56d16a93
+        ■ HRC-20: 0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b
       </div>
       <div className="subTitle Roboto_20pt_Black_L">
-        2-6 Recharge Token Distribution
+        3-6 Recharge Token Distribution
       </div>
       <div className="subText Roboto_20pt_Regular_L">
         ○ Total supply: 1,000,000,000 RCG (100%)
@@ -281,15 +282,13 @@ function Business() {
   );
 }
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
   // width: 750px;
   .theme {
     margin-bottom: 80px;
     text-shadow: 0 0 1px white, 0 0 15px white;
   }
   .title {
-    // margin-top: 60px;
+    margin-top: 60px;
     margin-bottom: 40px;
   }
   .subTitle {
