@@ -5,14 +5,14 @@ import { HashLink } from "react-router-hash-link";
 import WalletConnect from "../../../Component/Components/Common/WalletConnect";
 import { useTranslation } from "react-i18next";
 
-function Gnb({ getTitle, }) {
+function Gnb({ getTitle }) {
   const sidemenuInitialState = {
     home: false,
     about: false,
     recharge: false,
     defi: false,
     docs: false,
-  }
+  };
   const { t, i18n } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [sidemenuOpen, setSidemenuOpen] = useState(sidemenuInitialState);
@@ -22,23 +22,21 @@ function Gnb({ getTitle, }) {
 
   return (
     <Container>
-      <Logo style={{ marginRight: "40px" }} >
+      <Logo style={{ marginRight: "40px" }}>
         <HashLink
           to={"/"}
           onClick={() => {
             setMenuOpen(false);
             setSidemenuOpen({
               ...sidemenuInitialState,
-              home: true
+              home: true,
             });
           }}
         >
           <img src="/logo.png" />
         </HashLink>
       </Logo>
-      <div className="state Roboto_30pt_Black" >
-        {getTitle()}
-      </div>
+      <div className="state Roboto_30pt_Black">{getTitle()}</div>
       <div className="hamButton" onClick={() => open()}>
         <img src={menuOpen ? "/ic_menu_close.svg" : "/ic_menu.svg"} />
       </div>
@@ -67,7 +65,7 @@ function Gnb({ getTitle, }) {
                 setMenuOpen(false);
                 setSidemenuOpen({
                   ...sidemenuInitialState,
-                  home: true
+                  home: true,
                 });
               }}
             >
@@ -132,6 +130,17 @@ function Gnb({ getTitle, }) {
               <HashLink
                 className="Roboto_25pt_Regular"
                 to={"/about#aboutSection4"}
+                onClick={() => {
+                  setMenuOpen(false);
+                }}
+              >
+                Advisors
+              </HashLink>
+            </div>
+            <div>
+              <HashLink
+                className="Roboto_25pt_Regular"
+                to={"/about#aboutSection5"}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
@@ -421,10 +430,10 @@ function Gnb({ getTitle, }) {
               <div
                 className="logo"
                 onClick={() =>
-                (window.location =
-                  i18n.language == "en"
-                    ? "https://t.me/therecharge_official"
-                    : "https://t.me/therecharge_officialkr")
+                  (window.location =
+                    i18n.language == "en"
+                      ? "https://t.me/therecharge_official"
+                      : "https://t.me/therecharge_officialkr")
                 }
               >
                 <img src="/footer4.png" />

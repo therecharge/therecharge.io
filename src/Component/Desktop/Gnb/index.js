@@ -132,6 +132,18 @@ function Gnb() {
                 }}
               >
                 <div>
+                  <a>Advisors</a>
+                </div>
+              </HashLink>
+              <HashLink
+                to={"/about#aboutSection5"}
+                onClick={() => {
+                  setModalPoolOpen(false);
+                  setModalPool2Open(false);
+                  setModalSwapOpen(false);
+                }}
+              >
+                <div>
                   <a>Recharge is on</a>
                 </div>
               </HashLink>
