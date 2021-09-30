@@ -50,9 +50,8 @@ export default function Row({
   const WEB3 = web3_R[net];
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
-  const [requireNetwork, setRequireNetwork] = useRecoilState(
-    requireNetworkState
-  );
+  const [requireNetwork, setRequireNetwork] =
+    useRecoilState(requireNetworkState);
   // const [onLoading, setOnLoading] = useState(false);
   const [isOpen, setOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
@@ -494,7 +493,7 @@ export default function Row({
                   need="0"
                   disable={true}
                   bgColor={
-                    status === "Inactive" && userInfo.balance > 0
+                    status === "Close" && userInfo.balance > 0
                       ? "var(--ultramarine-blue)"
                       : "var(--gray-30)"
                   }
@@ -508,7 +507,7 @@ export default function Row({
                     // Locked인 경우에, period가 종료된 이후에 출금할 수 있음
                     if (!account) {
                       toast("Please connect to wallet");
-                    } else if (status === "Inactive") {
+                    } else if (status === "Close") {
                       if (userInfo.balance > 0) {
                         poolMethods.exit();
                         await toast(
