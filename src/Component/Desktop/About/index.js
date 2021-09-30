@@ -255,10 +255,10 @@ function About({ t }) {
             </div>
             <div className="member">
               <div className="name text Roboto_20pt_Black_L">
-                {t("About/Advisor/JonathanLee/title")}
+                {t("About/Advisor/Seungbum/title")}
               </div>
               <div className="desc text Roboto_20pt_Regular_L">
-                {t("About/Advisor/JonathanLee/content")}
+                {t("About/Advisor/Seungbum/content")}
               </div>
             </div>
           </div>
