@@ -41,7 +41,6 @@ function List({ /*type, list,*/ params, toast, network }) {
   const NETWORKS = require("../../../../lib/networks.json");
 
   const loadChargerList = async () => {
-
     const chargerInfo = [
       {
         address: "0x0",
@@ -145,9 +144,9 @@ function List({ /*type, list,*/ params, toast, network }) {
         updatedList[i].apy = getAPY(
           updatedList[i].totalSupply,
           updatedList[i].rewardAmount -
-          (updatedList[i].rewardToken == updatedList[i].stakeToken
-            ? updatedList[i].totalSupply
-            : 0),
+            (updatedList[i].rewardToken == updatedList[i].stakeToken
+              ? updatedList[i].totalSupply
+              : 0),
           updatedList[i].DURATION
         );
         updatedList[i].symbol = [REWARDS_SYMBOL[i], STAKES_SYMBOL[i]];
@@ -159,13 +158,14 @@ function List({ /*type, list,*/ params, toast, network }) {
       );
 
       if (params.type === "Locked") {
-
         // 해당 풀타입이 없을 때
-        let catchZeroPool = []
+        let catchZeroPool = [];
         // bep Loced 예외처리 Zero 잡기
-        catchZeroPool = updatedList.filter((charger) => charger.name.includes("Zero"));
+        catchZeroPool = updatedList.filter((charger) =>
+          charger.name.includes("Zero")
+        );
         if (catchZeroPool.length !== 0) {
-          test.unshift(catchZeroPool[0])
+          test.unshift(catchZeroPool[0]);
         }
       }
 
@@ -293,19 +293,16 @@ const loadPoolPeriod = (startTime, duration) => {
 };
 
 const loadActiveStatus = ({ totalSupply, startTime, DURATION, limit }) => {
-  if (
-    startTime > new Date().getTime() / 1000 ||
-    startTime + DURATION < new Date().getTime() / 1000
-  ) {
-    return "Inactive";
-  }
-  if (startTime + DURATION >= new Date().getTime() / 1000) {
-    if (limit == 0 || limit > totalSupply) {
-      return "Active";
-    } else {
-      return "Close";
-    }
-  }
+  startTime = Number(startTime);
+  DURATION = Number(DURATION);
+  let NOW = new Date().getTime() / 1000;
+  console.log(limit, totalSupply);
+  if (NOW < startTime) return "Inactive";
+
+  if (NOW > startTime + DURATION) return "Close";
+
+  if (limit != "0" && totalSupply >= limit) return "Close";
+  return "Active";
 };
 function makeNum(str = "0", decimal = 4) {
   let newStr = str;
