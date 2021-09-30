@@ -158,12 +158,15 @@ function List({ /*type, list,*/ params, toast, network }) {
         charger.name.includes(params.type)
       );
 
-      // 해당 풀타입이 없을 때
-      let catchZeroPool = []
-      // bep Loced 예외처리 Zero 잡기
-      catchZeroPool = updatedList.filter((charger) => charger.name.includes("Zero"));
-      if (catchZeroPool.length !== 0) {
-        test.unshift(catchZeroPool[0])
+      if (params.type === "Locked") {
+
+        // 해당 풀타입이 없을 때
+        let catchZeroPool = []
+        // bep Loced 예외처리 Zero 잡기
+        catchZeroPool = updatedList.filter((charger) => charger.name.includes("Zero"));
+        if (catchZeroPool.length !== 0) {
+          test.unshift(catchZeroPool[0])
+        }
       }
 
       if (test.length === 0) {
