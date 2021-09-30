@@ -41,91 +41,6 @@ function List({ /*type, list,*/ params, toast, network }) {
   const NETWORKS = require("../../../../lib/networks.json");
 
   const loadChargerList = async () => {
-    {
-      // try {
-      //   // GET Pool list(Charging list) from back by staking type(Flexible/Locked and LP or not)
-      //   let { data } = await axios.get(
-      //     `https://bridge.therecharge.io/charger/list/type/${params.type.toLowerCase()}`
-      //   );
-      //   //   data = [
-      //   //     {
-      //   //         "address": "0x2658757cE2B5Ff083254B773C14f3a59ceA0E824",
-      //   //         "name": "9.1 Locked Pool 100",
-      //   //         "apy": 519.3820656252104
-      //   //     },
-      //   //     {
-      //   //         "address": "0x3151F5c0cbEB09d0166E815F9c5e5acAFB0681EF",
-      //   //         "name": "9.3 Locked Pool 500",
-      //   //         "apy": 1065.9542517667592
-      //   //     }
-      //   // ]
-      //   // pool 미제공 시 data 값 확인 후 분기 처리
-      //   if (data.length === 0) {
-      //     setChList([
-      //       {
-      //         address: "0x00",
-      //         name: "There is currently no Charger List available.",
-      //         apy: "0",
-      //         period: [1625022000, 14400],
-      //         redemtion: 200,
-      //         symbol: ["RCG", "RCG"],
-      //         token: [
-      //           "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
-      //           "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
-      //         ],
-      //         tvl: 0,
-      //         type: "flexible",
-      //       },
-      //     ]);
-      //     return;
-      //   }
-      //   // GET each Pool information from back
-      //   let returnValue = await Promise.all(
-      //     data.map(async (d) => {
-      //       try {
-      //         let { data } = await axios.get(
-      //           `https://bridge.therecharge.io/charger/info/${d.address}`
-      //         );
-      //         // data = {
-      //         //   limit: "40000",
-      //         //   token: [
-      //         //     "0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30",
-      //         //     "0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30",
-      //         //   ],
-      //         //   redemtion: 200,
-      //         //   symbol: ["RCG", "RCG"],
-      //         //   apy: 1065.9542517667592,
-      //         //   period: [1630659600, 2332800],
-      //         //   address: "0x3151F5c0cbEB09d0166E815F9c5e5acAFB0681EF",
-      //         //   tvl: "14914.127648",
-      //         //   name: "9.3 Locked Pool 500",
-      //         //   type: "locked",
-      //         // };
-      //         let tempTime = loadPoolPeriod(data.period[0], data.period[1]);
-      //         let status = loadActiveStatus(data);
-      //         return {
-      //           ...d,
-      //           ...data,
-      //           name: `${data.name.substring(0, 50)}`,
-      //           apy:
-      //             Number(data.apy) > 0
-      //               ? Number(data.apy) >= 10000000
-      //                 ? "+999999.99"
-      //                 : `${makeNum(Number(data.apy), 2)}`
-      //               : 0,
-      //           status: status,
-      //           timeStamp: tempTime,
-      //         };
-      //       } catch (err) {
-      //         console.log(err);
-      //       }
-      //     })
-      //   );
-      //   setChList(returnValue);
-      // } catch (err) {
-      //   console.log(err);
-      // }
-    }
 
     const chargerInfo = [
       {
@@ -230,31 +145,29 @@ function List({ /*type, list,*/ params, toast, network }) {
         updatedList[i].apy = getAPY(
           updatedList[i].totalSupply,
           updatedList[i].rewardAmount -
-            (updatedList[i].rewardToken == updatedList[i].stakeToken
-              ? updatedList[i].totalSupply
-              : 0),
+          (updatedList[i].rewardToken == updatedList[i].stakeToken
+            ? updatedList[i].totalSupply
+            : 0),
           updatedList[i].DURATION
         );
         updatedList[i].symbol = [REWARDS_SYMBOL[i], STAKES_SYMBOL[i]];
       });
-      console.log("updatedList", updatedList);
-      console.log("params", params.type);
+
       // 1. pool type에 따라 필터링 진행
       let test = updatedList.filter((charger) =>
         charger.name.includes(params.type)
       );
-      console.log("test", test);
+
       // 해당 풀타입이 없을 때
+      let catchZeroPool = []
+      // bep Loced 예외처리 Zero 잡기
+      catchZeroPool = updatedList.filter((charger) => charger.name.includes("Zero"));
+      if (catchZeroPool.length !== 0) {
+        test.unshift(catchZeroPool[0])
+      }
+
       if (test.length === 0) {
-        // bep Loced 예외처리 Zero 잡기
-        test = updatedList.filter((charger) => charger.name.includes("Zero"));
-        console.log("test2", test);
-        if (test.length === 0) {
-          return setChList(chargerInfo);
-        } else {
-          console.log("test3", test);
-          setChList(test);
-        }
+        setChList(chargerInfo);
       } else {
         setChList(test);
       }
