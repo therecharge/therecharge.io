@@ -144,13 +144,15 @@ function List({ /*type, list,*/ params, toast, network }) {
         updatedList[i].apy = getAPY(
           updatedList[i].totalSupply,
           updatedList[i].rewardAmount -
-            (updatedList[i].rewardToken == updatedList[i].stakeToken
-              ? updatedList[i].totalSupply
-              : 0),
+          (updatedList[i].rewardToken == updatedList[i].stakeToken
+            ? updatedList[i].totalSupply
+            : 0),
           updatedList[i].DURATION
         );
         updatedList[i].symbol = [REWARDS_SYMBOL[i], STAKES_SYMBOL[i]];
       });
+
+      // console.log("updatedList", updatedList)
 
       // 1. pool type에 따라 필터링 진행
       let test = updatedList.filter((charger) =>
@@ -241,7 +243,7 @@ function List({ /*type, list,*/ params, toast, network }) {
         </Title>
         <RowContainer>
           {chList.map((charger, index) => {
-            console.log(charger);
+            // console.log(charger);
             return (
               <div
                 className={params.isLP ? "disable" : ""}
@@ -296,7 +298,7 @@ const loadActiveStatus = ({ totalSupply, startTime, DURATION, limit }) => {
   startTime = Number(startTime);
   DURATION = Number(DURATION);
   let NOW = new Date().getTime() / 1000;
-  console.log(limit, totalSupply);
+  // console.log(limit, totalSupply);
   if (NOW < startTime) return "Inactive";
 
   if (NOW > startTime + DURATION) return "Close";
