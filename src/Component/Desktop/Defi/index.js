@@ -9,10 +9,17 @@ import { withTranslation } from "react-i18next";
 /* Components */
 import Footer from "../../Components/Desktop/Footer";
 import WalletConnect from "../../../Component/Components/Common/WalletConnect";
+/* Libraries */
+import {
+  getChargerList,
+  createContractInstance,
+  getChargerInfo,
+} from "../../../lib/read_contract/Station";
 /* State */
 import { useRecoilState } from "recoil";
 import { HashLink } from "react-router-hash-link";
 import { accountState } from "../../../store/web3";
+import { web3ReaderState } from "../../../store/read-web3";
 
 const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
   let newNum;
@@ -32,8 +39,13 @@ const weiToEther = (wei) => {
 };
 
 function Defi({ toast, t }) {
-  const [onLoading, setOnLoading] = useState(true);
   const [account] = useRecoilState(accountState);
+  const [web3_R] = useRecoilState(web3ReaderState);
+  const NETWORKS = require("../../../lib/networks.json");
+  const CHARGERLIST_ABI = require("../../../lib/read_contract/abi/chargerList.json");
+  const CHARGER_ABI = require("../../../lib/read_contract/abi/charger.json");
+
+  const [onLoading, setOnLoading] = useState(true);
   const [myPools, setMyPools] = useState(null);
   const [analytics, setAnalytics] = useState({
     ERC: {},
@@ -75,8 +87,7 @@ function Defi({ toast, t }) {
   const initialState = {
     sortBy: [
       {
-        id: "balance",
-        desc: true,
+        id: "name",
       },
     ],
   };
@@ -86,27 +97,81 @@ function Defi({ toast, t }) {
 
   const loadMyPools = async () => {
     try {
-      let { data } = await axios.get(
-        `https://bridge.therecharge.io/charger/list/account/${account}`
+      const NETWORK = NETWORKS[process.env.REACT_APP_VERSION];
+      const ERC_WEB3 = web3_R["ERC"];
+      const BEP_WEB3 = web3_R["BEP"];
+      const ERC_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress["ERC"];
+      const BEP_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress["BEP"];
+
+      const ERC_CHARGERLIST_INSTANCE = createContractInstance(
+        ERC_WEB3,
+        ERC_CHARGERLIST_ADDRESS,
+        CHARGERLIST_ABI
       );
-      /*
-       * address: "0xc0F7C09dD6AcDcac9515Bc1c018c14E93C1757FF"
-       * balance: "19600000000000000000"
-       * name: "Test Flexible Charger"
-       * reward: "2451553674681048"
-       * symbol: ["RCG", "RCG"]
-       * type: "flexible"
-       */
-      let ret = data.map((charger) => {
-        return {
-          balance: makeNum(weiToEther(charger.balance)),
-          reward: makeNum(weiToEther(charger.reward), 6),
-          type:
-            charger.type === "flexible" ? "Flexible Staking" : "Locked Staking",
-          name: charger.name,
-        };
+      const BEP_CHARGERLIST_INSTANCE = createContractInstance(
+        BEP_WEB3,
+        BEP_CHARGERLIST_ADDRESS,
+        CHARGERLIST_ABI
+      );
+
+      const ERC_CHARGERLIST = await getChargerList(ERC_CHARGERLIST_INSTANCE);
+      const BEP_CHARGERLIST = await getChargerList(BEP_CHARGERLIST_INSTANCE);
+
+      const ERC_CHARGER_INSTANCES = ERC_CHARGERLIST.map((CHARGER_ADDRESS) => {
+        return createContractInstance(ERC_WEB3, CHARGER_ADDRESS, CHARGER_ABI);
       });
-      setMyPools(ret);
+      const BEP_CHARGER_INSTANCES = BEP_CHARGERLIST.map((CHARGER_ADDRESS) => {
+        return createContractInstance(BEP_WEB3, CHARGER_ADDRESS, CHARGER_ABI);
+      });
+
+      const ERC_CHARGERS_INFO = await Promise.all(
+        ERC_CHARGER_INSTANCES.map((CHARGER_INSTANCE) => {
+          return getChargerInfo(CHARGER_INSTANCE);
+        })
+      );
+      const BEP_CHARGERS_INFO = await Promise.all(
+        BEP_CHARGER_INSTANCES.map((CHARGER_INSTANCE) => {
+          return getChargerInfo(CHARGER_INSTANCE);
+        })
+      );
+
+      let ercPool = await Promise.all(ERC_CHARGER_INSTANCES.map(async (instance, i) => {
+        let { name } = ERC_CHARGERS_INFO[i]
+
+        let [balance, reward] = await Promise.all([
+          await instance.methods.balanceOf(account).call(),
+          await instance.methods.earned(account).call(),
+        ]);
+
+        return {
+          type: (name.includes("Locked") || name.includes("Zero")) ? "Locked Staking" : "Flexible Staking",
+          name: name,
+          balance: makeNum(fromWei(balance, "ether")),
+          reward: makeNum(fromWei(reward, "ether"))
+        }
+      }))
+
+      let bepPool = await Promise.all(BEP_CHARGER_INSTANCES.map(async (instance, i) => {
+        let { name } = BEP_CHARGERS_INFO[i]
+
+        let [balance, reward] = await Promise.all([
+          await instance.methods.balanceOf(account).call(),
+          await instance.methods.earned(account).call(),
+        ]);
+
+        return {
+          type: (name.includes("Locked") || name.includes("Zero")) ? "Locked Staking" : "Flexible Staking",
+          name: name,
+          balance: fromWei(balance, "ether"),
+          reward: fromWei(reward, "ether")
+        }
+      }))
+
+      let ALL_OF_CHARCERS_INFO = [...ercPool, ...bepPool].filter(pool => pool.balance > 0)
+
+      // console.log("ALL_OF_CHARCERS_INFO", ALL_OF_CHARCERS_INFO)
+
+      setMyPools(ALL_OF_CHARCERS_INFO);
     } catch (err) {
       console.log(err);
     }
@@ -129,7 +194,7 @@ function Defi({ toast, t }) {
       token0Price = makeNum(token0Price);
       token1Price = makeNum(token1Price);
       let TVL = makeNum("" + tvlData.data.TVL);
-      console.log("TVL", tvlData);
+      // console.log("TVL", tvlData);
       // console.log(analData.data);
       // console.log(token1Price);
       setAnalytics({
@@ -140,7 +205,7 @@ function Defi({ toast, t }) {
         },
         general: { tvl: TVL },
       });
-      console.log(analytics);
+      // console.log(analytics);
       /**
        * ERC: {},
        * HRC: {},
@@ -177,7 +242,7 @@ function Defi({ toast, t }) {
   }, 5000);
 
   useEffect(() => {
-    loadMyPools();
+    if (account) loadMyPools();
   }, [account]);
 
   return (
@@ -190,7 +255,7 @@ function Defi({ toast, t }) {
               <HashLink
                 className="box"
                 to={"/defi/station"}
-                // onClick={() => handleModalPool()}
+              // onClick={() => handleModalPool()}
               >
                 <img src="/ic_chargingstation.svg" />
                 <div className="name Roboto_40pt_Black">Charging Station</div>
@@ -203,7 +268,7 @@ function Defi({ toast, t }) {
               <HashLink
                 className="box"
                 to={"/defi/swap"}
-                // onClick={() => handleModalSwap()}
+              // onClick={() => handleModalSwap()}
               >
                 <img src="/ic_rechargingswap.svg" />
                 <div className="name Roboto_40pt_Black">Recharge swap</div>
@@ -297,9 +362,8 @@ function Defi({ toast, t }) {
                         {row.cells.map((cell) => {
                           return (
                             <HashLink
-                              to={`/defi/station#${
-                                myPools[row.index].type.split(" ")[0]
-                              }`}
+                              to={`/defi/station#${myPools[row.index].type.split(" ")[0]
+                                }`}
                               style={{
                                 display: "table-cell",
                                 textDecoration: "none",
@@ -334,8 +398,8 @@ function Defi({ toast, t }) {
                   ${" "}
                   {analytics.general.tvl
                     ? convertNum(analytics.general.tvl, {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}
                 </div>
                 <div className="text Roboto_16pt_Regular_Gray">
@@ -396,8 +460,8 @@ function Defi({ toast, t }) {
                 >
                   {analytics.ERC.total
                     ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>
@@ -469,8 +533,8 @@ function Defi({ toast, t }) {
                 >
                   {analytics.BEP.total
                     ? convertNum(weiToEther(convertNum(analytics.BEP.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>
@@ -547,8 +611,8 @@ function Defi({ toast, t }) {
                 >
                   {analytics.HRC.total
                     ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                        unitSeparator: true,
-                      })
+                      unitSeparator: true,
+                    })
                     : 0}{" "}
                   RCG
                 </div>
