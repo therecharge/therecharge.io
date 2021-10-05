@@ -290,7 +290,12 @@ function About({ t }) {
           </div>
         </div>
       </Content>
-      <Slider />
+        <Content id="aboutSection5">
+          <div className="fourth">
+            <div className="theme text Roboto_50pt_Black">Press</div>
+          <Slider />
+        </div>
+      </Content>
       <Content id="aboutSection5">
         <div className="fourth">
           <div className="theme text Roboto_50pt_Black">Recharge is on</div>
