@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Modal from "./modal";
 import { withTranslation } from "react-i18next";
 
+import Slider from "./Slider";
+
 function About({ t }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [firstVideo, setFirstVideo] = useState(false);
@@ -339,6 +341,7 @@ function About({ t }) {
           </div>
         </div>
       </Content>
+      <Slider />
       <Content id="aboutSection5">
         <div className="fourth">
           <div className="theme text Roboto_50pt_Black_Mobile">
