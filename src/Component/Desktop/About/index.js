@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import { Section } from "react-scroll-section";
+import Slider from "./Slider";
 import Footer from "../../Components/Desktop/Footer";
 
 function About({ t }) {
@@ -289,6 +290,7 @@ function About({ t }) {
           </div>
         </div>
       </Content>
+      <Slider />
       <Content id="aboutSection5">
         <div className="fourth">
           <div className="theme text Roboto_50pt_Black">Recharge is on</div>
