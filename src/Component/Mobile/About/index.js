@@ -341,7 +341,12 @@ function About({ t }) {
           </div>
         </div>
       </Content>
-      <Slider />
+      <Content id="aboutSection5">
+        <div className="fifth">
+          <div className="theme text Roboto_50pt_Black_Mobile">Press</div>
+          <Slider />
+        </div>
+      </Content>
       <Content id="aboutSection5">
         <div className="fourth">
           <div className="theme text Roboto_50pt_Black_Mobile">
@@ -671,6 +676,17 @@ const Content = styled.div`
           background-color: rgba(255, 255, 255, 0.2);
         }
       }
+    }
+  }
+
+  .fifth {
+    display: flex;
+    flex-direction: column;
+    width: 720px;
+
+    .theme {
+      margin: 120px auto;
+      text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
     }
   }
 `;
