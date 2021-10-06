@@ -45,6 +45,11 @@ function Slider({ setParams, params }) {
       title: t("About/Medium/8/title"),
       url: t("About/Medium/8/url"),
     },
+    {
+      image: "medium9",
+      title: t("About/Medium/9/title"),
+      url: t("About/Medium/9/url"),
+    },
   ];
   return (
     <Container>
