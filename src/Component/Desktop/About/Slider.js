@@ -231,6 +231,27 @@ function Slider({ setParams, params }) {
               {t("About/Medium/8/title")}
             </div>
           </div>
+          <div
+            className="slide"
+            onClick={() => {
+              window.open(t("About/Medium/9/url"), "_blank");
+            }}
+          >
+            <img
+              src="/medium9.png"
+              style={{ width: "305px", height: "173px" }}
+            />
+            <div
+              className={
+                window.innerWidth > 1088
+                  ? "Roboto_20pt_Regular_L"
+                  : "Roboto_30pt_Regular_L"
+              }
+              style={{ width: "305px" }}
+            >
+              {t("About/Medium/9/title")}
+            </div>
+          </div>
         </SliderContent>
       </AboutSlider>
     </Container>
