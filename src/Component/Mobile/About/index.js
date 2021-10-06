@@ -343,11 +343,11 @@ function About({ t }) {
       </Content>
       <Content id="aboutSection5">
         <div className="fifth">
-          <div className="theme text Roboto_50pt_Black_Mobile">Press</div>
+          <div className="theme text Roboto_50pt_Black_Mobile">Medium</div>
           <Slider />
         </div>
       </Content>
-      <Content id="aboutSection5">
+      <Content id="aboutSection6">
         <div className="fourth">
           <div className="theme text Roboto_50pt_Black_Mobile">
             Recharge is on
