@@ -145,6 +145,17 @@ function Gnb({ getTitle }) {
                   setMenuOpen(false);
                 }}
               >
+                Medium
+              </HashLink>
+            </div>
+            <div>
+              <HashLink
+                className="Roboto_25pt_Regular"
+                to={"/about#aboutSection6"}
+                onClick={() => {
+                  setMenuOpen(false);
+                }}
+              >
                 Recharge is on
               </HashLink>
             </div>
