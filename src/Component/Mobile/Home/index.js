@@ -451,7 +451,7 @@ function Home({ t }) {
                   style={{ width: "242px", height: "114.9px" }}
                 />
               </div>
-              <div
+              {/* <div
                 className="partner"
                 onClick={() =>
                   (window.location = "http://www.keyeast.co.kr/index/")
@@ -461,7 +461,7 @@ function Home({ t }) {
                   src="/homePV7.png"
                   style={{ width: "242px", height: "29.8px" }}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

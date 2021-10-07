@@ -153,7 +153,7 @@ function About({ t }) {
               <div className="name text Roboto_20pt_Black_L">
                 {t("About/Member/jakeKim/title")}
               </div>
-              <div className="desc text Roboto_20pt_Regular_L">
+              <div className="desc text Roboto_19pt_Regular_L">
                 {t("About/Member/jakeKim/content")}
               </div>
             </div>
@@ -178,7 +178,7 @@ function About({ t }) {
               <div className="name text Roboto_20pt_Black_L">
                 {t("About/Member/ethanKang/title")}
               </div>
-              <div className="desc text Roboto_20pt_Regular_L">
+              <div className="desc text Roboto_19pt_Regular_L">
                 {t("About/Member/ethanKang/content")}
               </div>
             </div>
@@ -233,7 +233,7 @@ function About({ t }) {
               <div className="name text Roboto_20pt_Black_L">
                 {t("About/Advisor/JonathanLee/title")}
               </div>
-              <div className="desc text Roboto_20pt_Regular_L">
+              <div className="desc text Roboto_19pt_Regular_L">
                 {t("About/Advisor/JonathanLee/content")}
               </div>
             </div>
@@ -258,7 +258,7 @@ function About({ t }) {
               <div className="name text Roboto_20pt_Black_L">
                 {t("About/Advisor/Seungbum/title")}
               </div>
-              <div className="desc text Roboto_20pt_Regular_L">
+              <div className="desc text Roboto_19pt_Regular_L">
                 {t("About/Advisor/Seungbum/content")}
               </div>
             </div>
