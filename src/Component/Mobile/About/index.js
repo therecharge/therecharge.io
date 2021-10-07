@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Modal from "./modal";
 import { withTranslation } from "react-i18next";
 
+import Slider from "./Slider";
+
 function About({ t }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [firstVideo, setFirstVideo] = useState(false);
@@ -340,6 +342,12 @@ function About({ t }) {
         </div>
       </Content>
       <Content id="aboutSection5">
+        <div className="fifth">
+          <div className="theme text Roboto_50pt_Black_Mobile">Medium</div>
+          <Slider />
+        </div>
+      </Content>
+      <Content id="aboutSection6">
         <div className="fourth">
           <div className="theme text Roboto_50pt_Black_Mobile">
             Recharge is on
@@ -668,6 +676,17 @@ const Content = styled.div`
           background-color: rgba(255, 255, 255, 0.2);
         }
       }
+    }
+  }
+
+  .fifth {
+    display: flex;
+    flex-direction: column;
+    width: 720px;
+
+    .theme {
+      margin: 120px auto;
+      text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
     }
   }
 `;

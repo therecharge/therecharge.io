@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import { Section } from "react-scroll-section";
+import Slider from "./Slider";
 import Footer from "../../Components/Desktop/Footer";
 
 function About({ t }) {
@@ -152,7 +153,7 @@ function About({ t }) {
               <div className="name text Roboto_20pt_Black_L">
                 {t("About/Member/jakeKim/title")}
               </div>
-              <div className="desc text Roboto_20pt_Regular_L">
+              <div className="desc text Roboto_19pt_Regular_L">
                 {t("About/Member/jakeKim/content")}
               </div>
             </div>
@@ -177,7 +178,7 @@ function About({ t }) {
               <div className="name text Roboto_20pt_Black_L">
                 {t("About/Member/ethanKang/title")}
               </div>
-              <div className="desc text Roboto_20pt_Regular_L">
+              <div className="desc text Roboto_19pt_Regular_L">
                 {t("About/Member/ethanKang/content")}
               </div>
             </div>
@@ -232,7 +233,7 @@ function About({ t }) {
               <div className="name text Roboto_20pt_Black_L">
                 {t("About/Advisor/JonathanLee/title")}
               </div>
-              <div className="desc text Roboto_20pt_Regular_L">
+              <div className="desc text Roboto_19pt_Regular_L">
                 {t("About/Advisor/JonathanLee/content")}
               </div>
             </div>
@@ -257,7 +258,7 @@ function About({ t }) {
               <div className="name text Roboto_20pt_Black_L">
                 {t("About/Advisor/Seungbum/title")}
               </div>
-              <div className="desc text Roboto_20pt_Regular_L">
+              <div className="desc text Roboto_19pt_Regular_L">
                 {t("About/Advisor/Seungbum/content")}
               </div>
             </div>
@@ -290,6 +291,12 @@ function About({ t }) {
         </div>
       </Content>
       <Content id="aboutSection5">
+        <div className="fourth">
+          <div className="theme text Roboto_50pt_Black">Medium</div>
+          <Slider />
+        </div>
+      </Content>
+      <Content id="aboutSection6">
         <div className="fourth">
           <div className="theme text Roboto_50pt_Black">Recharge is on</div>
           <div className="partners">
