@@ -295,14 +295,14 @@ function Home({ t }) {
               >
                 <img src="/ic_piggycell.svg" />
               </div>
-              <div
+              {/* <div
                 className="partner"
                 onClick={() => {
                   window.open("http://www.keyeast.co.kr/index/", "_blank");
                 }}
               >
                 <img src="/ic_keyeast.svg" />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
