@@ -89,7 +89,7 @@ function Asset({ setParams }) {
         ETH.eth.getBalance(account),
         HECO.eth.getBalance(account),
         BNB.eth.getBalance(account),
-        axios.get(`https://fup.bridge.therecharge.io/point/0xc1912fEE45d61C87Cc5EA59DaE31190FFFFf232d`)
+        axios.get(`https://fup.bridge.therecharge.io/point/${account}`)
       ]);
 
       balanceRCG = makeNum(weiToEther(balanceRCG));
