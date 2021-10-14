@@ -9,7 +9,8 @@ function Networks({ setNetwork, network }) {
     requireNetworkState
   );
   return (
-    <Container>
+
+    <Container Container >
       <Content>
         <div
           onClick={() => {
@@ -43,7 +44,7 @@ function Networks({ setNetwork, network }) {
           />
         </div>
       </Content>
-    </Container>
+    </Container >
   );
 }
 const Container = styled.div`
