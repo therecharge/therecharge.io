@@ -4,6 +4,7 @@ import { ReactComponent as PopupClose } from "./assets/popup-close.svg";
 import { ReactComponent as PopupArrow } from "./assets/swap_popup_arrow.svg";
 import WalletConnect from "../../../../Component/Components/Common/WalletConnect";
 import { fromWei, toWei } from "web3-utils";
+import axios from "axios";
 //store
 import { useRecoilState } from "recoil";
 import { web3State, accountState } from "../../../../store/web3";
@@ -94,6 +95,19 @@ export default function Popup({
     }
   };
 
+  const getFupBalance = async () => {
+    let balanceFUP = await axios.get(`https://fup.bridge.therecharge.io/point/${account}`);
+    balanceFUP = balanceFUP.data.balance;
+    setPoolMethods({
+      ...poolMethods,
+      available: balanceFUP,
+    });
+    setRecipe({
+      ...recipe,
+      swapAmount: balanceFUP,
+    })
+  }
+
   let FromImg = recipe.from.image;
   let ToImg = recipe.to.image;
 
@@ -129,11 +143,17 @@ export default function Popup({
         "0x05A21AECa80634097e4acE7D4E589bdA0EE30b25"
       );
     }
-  }, [account, recipe.to.network]);
+    if (isPopupOpen && recipe.from.token === "PiggyCell Point") getFupBalance();
+  }, [account, recipe.to.network, isPopupOpen]);
 
   useEffect(() => {
-    if (isPopupOpen) loadMethods();
-  }, [isPopupOpen]);
+    if (recipe.from.token === "PiggyCell Point") {
+      setRecipe({
+        ...recipe,
+        swapAmount: "",
+      });
+    }
+  }, [])
 
   return (
     <Background>
@@ -168,6 +188,7 @@ export default function Popup({
               type="number"
               placeholder="Enter the amount of swap"
               value={recipe.swapAmount}
+              disabled={recipe.from.token === "PiggyCell Point" ? "disabled" : ""}
               onChange={(e) => {
                 if (Number(e.target.value) < 0) {
                   return setRecipe({
@@ -190,40 +211,40 @@ export default function Popup({
           </div>
           <QuickSelect>
             <div
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                SetPercent(25);
-              }}
+              style={{ cursor: recipe.from.token === "PiggyCell Point" ? "not-allowed" : "pointer" }}
+              onClick={
+                recipe.from.token === "PiggyCell Point" ? () => { } : () => SetPercent(25)
+              }
             >
               <span className="Roboto_20pt_Regular">25%</span>
             </div>
             <div
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                SetPercent(50);
-              }}
+              style={{ cursor: recipe.from.token === "PiggyCell Point" ? "not-allowed" : "pointer" }}
+              onClick={
+                recipe.from.token === "PiggyCell Point" ? () => { } : () => SetPercent(50)
+              }
             >
               <span className="Roboto_20pt_Regular">50%</span>
             </div>
             <div
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                SetPercent(75);
-              }}
+              style={{ cursor: recipe.from.token === "PiggyCell Point" ? "not-allowed" : "pointer" }}
+              onClick={
+                recipe.from.token === "PiggyCell Point" ? () => { } : () => SetPercent(75)
+              }
             >
               <span className="Roboto_20pt_Regular">75%</span>
             </div>
             <div
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                SetPercent(100);
-              }}
+              style={{ cursor: recipe.from.token === "PiggyCell Point" ? "not-allowed" : "pointer" }}
+              onClick={
+                recipe.from.token === "PiggyCell Point" ? () => { } : () => SetPercent(100)
+              }
             >
               <span className="Roboto_20pt_Regular">MAX</span>
             </div>
           </QuickSelect>
           <span className="Roboto_20pt_Regular popup-caution">
-            {`Conversion Fee: ${recipe.conversionFee[recipe.chainId[recipe.to.network]]
+            {`Conversion Fee: ${recipe.from.token === "PiggyCell Point" ? 0 : recipe.conversionFee[recipe.chainId[recipe.to.network]]
               } ${recipe.from.token}`}
           </span>
           <div className="wallet">
@@ -237,9 +258,14 @@ export default function Popup({
               text="SWAP" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
               onClick={async () => {
                 if (recipe.swapAmount > 0) {
-                  await close();
-                  await toast('Please approve "SWAP" in your private wallet');
-                  await poolMethods.swap(recipe.swapAmount);
+                  if (recipe.from.token === "PiggyCell Point") {
+                    let completed = await axios.post(`https://fup.bridge.therecharge.io/point/${account}`);
+                    close();
+                  } else {
+                    await close();
+                    await toast('Please approve "SWAP" in your private wallet');
+                    await poolMethods.swap(recipe.swapAmount);
+                  }
                 } else {
                   toast("Please enter the amount of Swap");
                 }
@@ -253,7 +279,7 @@ export default function Popup({
             /> */}
             <Info
               left="Current Conversion Fee"
-              right={`${recipe.conversionFee[recipe.chainId[recipe.to.network]]
+              right={`${recipe.from.token === "PiggyCell Point" ? 0 : recipe.conversionFee[recipe.chainId[recipe.to.network]]
                 } ${recipe.from.token}`}
             />
             <Info
@@ -273,21 +299,17 @@ export default function Popup({
             <Info
               left={`Net ${recipe.from.token} to Swap`}
               right={`${makeNum(
-                (recipe.swapAmount -
-                  0.000000000000001 -
-                  recipe.conversionFee[recipe.chainId[recipe.to.network]] >
-                  0
-                  ? recipe.swapAmount -
-                  0.000000000000001 -
-                  recipe.conversionFee[recipe.chainId[recipe.to.network]]
-                  : 0
-                ).toString()
+                recipe.from.token === "PiggyCell Point" ? recipe.swapAmount - 0 :
+                  (recipe.swapAmount - 0.000000000000001 - recipe.conversionFee[recipe.chainId[recipe.to.network]] > 0
+                    ? recipe.swapAmount - 0.000000000000001 - recipe.conversionFee[recipe.chainId[recipe.to.network]]
+                    : 0
+                  ).toString()
               )} ${recipe.from.token}`}
             />
           </InfoContainer>
         </Content>
       </Container>
-    </Background>
+    </Background >
   );
 }
 

@@ -230,17 +230,47 @@ function List({ /*type, list,*/ params, toast, network }) {
     <Container>
       <Content>
         <Title>
-          <Image params={params} />
-          <p
-            className={
-              window.innerWidth > 1088
-                ? "Roboto_30pt_Black"
-                : "Roboto_40pt_Black"
-            }
-          >
-            Charger List
-          </p>
+          <div >
+            {/* <Image params={params} /> */}
+            <p
+              className={
+                window.innerWidth > 1088
+                  ? "Roboto_30pt_Black"
+                  : "Roboto_40pt_Black"
+              }
+            >
+              Charger List
+            </p>
+            <TotalValue>
+              <div>Total Value Locked</div>
+              <div>$ 000,000,000,000.00</div>
+            </TotalValue>
+          </div>
         </Title>
+        <Line />
+        <DropDownWrapper>
+          <NetWork>
+            <Text>Network</Text>
+            <BoxContainer>
+              <Box>ERC-20</Box>
+              <Button></Button>
+            </BoxContainer>
+          </NetWork>
+          <Type>
+            <Text>Type</Text>
+            <BoxContainer>
+              <Box></Box>
+              <Button></Button>
+            </BoxContainer>
+          </Type>
+          <Sortby>
+            <Text>Sort by</Text>
+            <BoxContainer>
+              <Box></Box>
+              <Button></Button>
+            </BoxContainer>
+          </Sortby>
+        </DropDownWrapper>
         <RowContainer>
           {chList.map((charger, index) => {
             // console.log(charger);
@@ -355,7 +385,7 @@ const Title = styled.div`
   @media (min-width: 1088px) {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between	;
     align-items: flex-end;
   }
 `;
@@ -375,5 +405,35 @@ const RowContainer = styled.div`
     opacity: 0.5;
   }
 `;
+
+const TotalValue = styled.div``;
+const Line = styled.div`
+  height: 2px;
+  margin: 40px 10px 0px 10px;
+  width: auto;
+  background-color: #9314b2;
+  box-shadow: 0px 0px 20px 0.5px white;
+`;
+
+const DropDownWrapper = styled.div`
+display:flex;
+justify-content: flex-end;
+`;
+const NetWork = styled.div``;
+const Text = styled.div``;
+const Box = styled.div`
+width: 196px;
+height: 42px;
+// margin: 8px 0 0 302px;
+// padding: 0 0 0 2px;
+object-fit: contain;
+border-radius: 30px;
+background-color: var(--black-30);
+`;
+const Type = styled.div``;
+const Sortby = styled.div``;
+const BoxContainer = styled.div``;
+const Button = styled.div``;
+
 
 export default List;

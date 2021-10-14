@@ -36,8 +36,9 @@ function Station(props) {
         <span className="Roboto_50pt_Black pool-title1">Charging Station</span>
         <Networks setNetwork={setNetwork} network={network} />
         <Slider setParams={setParams} params={params} />
-        <Line />
+        {/* <Line /> */}
         <List params={params} toast={props.toast} network={network} />
+        <Line />
       </Content>
     </Container>
   );
