@@ -20,6 +20,7 @@ import {
   networkState,
   requireNetworkState,
 } from "../../../../store/web3";
+import axios from "axios";
 const ERC20_ABI = require("../../../../Component/Desktop/Defi/abis/ERC20ABI.json");
 
 function Asset({ setParams }) {
@@ -54,7 +55,8 @@ function Asset({ setParams }) {
       balanceBEPRCG,
       balanceETH,
       balanceHT,
-      balanceBNB;
+      balanceBNB,
+      balanceFUP;
 
     RCGeth = new ETH.eth.Contract(
       ERC20_ABI,
@@ -79,6 +81,7 @@ function Asset({ setParams }) {
         balanceETH,
         balanceHT,
         balanceBNB,
+        balanceFUP
       ] = await Promise.all([
         RCGeth.methods.balanceOf(account).call(),
         RCGht.methods.balanceOf(account).call(),
@@ -86,6 +89,7 @@ function Asset({ setParams }) {
         ETH.eth.getBalance(account),
         HECO.eth.getBalance(account),
         BNB.eth.getBalance(account),
+        axios.get(`https://fup.bridge.therecharge.io/point/0xc1912fEE45d61C87Cc5EA59DaE31190FFFFf232d`)
       ]);
 
       balanceRCG = makeNum(weiToEther(balanceRCG));
@@ -94,6 +98,8 @@ function Asset({ setParams }) {
       balanceETH = makeNum(weiToEther(balanceETH));
       balanceHT = makeNum(weiToEther(balanceHT));
       balanceBNB = makeNum(weiToEther(balanceBNB));
+      balanceFUP = balanceFUP.data.balance;
+      console.log("balanceFUP", balanceFUP)
 
       setTokensBalance({
         ...tokensBalance,
@@ -103,6 +109,7 @@ function Asset({ setParams }) {
         ETH: balanceETH,
         HT: balanceHT,
         BNB: balanceBNB,
+        FUP1: balanceFUP,
       });
     }
     // console.log(tokensBalance);
