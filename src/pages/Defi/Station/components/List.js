@@ -15,7 +15,8 @@ import {
 } from "../../../../lib/read_contract/Station";
 /* Store */
 import { web3ReaderState } from "../../../../store/read-web3";
-
+import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
+import { ReactComponent as DropdownOpen } from "./List/assets/dropdown-open.svg";
 const loading_data = [
   {
     address: "0x0",
@@ -37,6 +38,7 @@ function List({ /*type, list,*/ params, toast, network }) {
   const [t] = useTranslation();
   const [chList, setChList] = useState(loading_data);
   const [sel, setSelCharger] = useState(0);
+  const [isOpen, setOpen] = useState(false);
   const [web3_R] = useRecoilState(web3ReaderState);
   const NETWORKS = require("../../../../lib/networks.json");
 
@@ -225,14 +227,42 @@ function List({ /*type, list,*/ params, toast, network }) {
   };
 
   // useInterval(() => updateChargerInfoList(), 10000);
+  // function Btn({ status, isOpen }) {
+  //   if (isOpen) return <DropdownOpen className="btn" />;
+  //   else
+  //     return (
+  //       <DropdownClose
+  //         className="btn"
+  //         fill={status == "Inactive" ? "#7E7E7E" : "#fff"}
+  //       />
+  //     );
+  // }
 
+  // function Status({ status }) {
+  //   function color() {
+  //     switch (status) {
+  //       case "Close":
+  //         return "#D62828";
+  //       case "Inactive":
+  //         return "#7E7E7E";
+  //       case "Active":
+  //         return "#0EEF6D";
+  //     }
+  //   }
+  //   return (
+  //     <p
+  //       className="Roboto_20pt_Black status"
+  //       style={{ color: color(status), width: "71.5px", textAlign: "center" }}
+  //     >
+  //       {status}
+  //     </p>
+  //   );
+  // }
   return (
     <Container>
       <Content>
-        <Title>
-          <div >
-            {/* <Image params={params} /> */}
-            <p
+
+        {/* <p
               className={
                 window.innerWidth > 1088
                   ? "Roboto_30pt_Black"
@@ -245,15 +275,16 @@ function List({ /*type, list,*/ params, toast, network }) {
               <div>Total Value Locked</div>
               <div>$ 000,000,000,000.00</div>
             </TotalValue>
-          </div>
-        </Title>
-        <Line />
-        <DropDownWrapper>
+          </TitleWrapper>
+        </Title> */}
+        {/* <Line /> */}
+        {/* <DropDownWrapper>
           <NetWork>
             <Text>Network</Text>
             <BoxContainer>
               <Box>ERC-20</Box>
-              <Button></Button>
+
+              <Btn src="./dropdown-close.svg" />
             </BoxContainer>
           </NetWork>
           <Type>
@@ -270,7 +301,7 @@ function List({ /*type, list,*/ params, toast, network }) {
               <Button></Button>
             </BoxContainer>
           </Sortby>
-        </DropDownWrapper>
+        </DropDownWrapper > */}
         <RowContainer>
           {chList.map((charger, index) => {
             // console.log(charger);
@@ -300,8 +331,8 @@ function List({ /*type, list,*/ params, toast, network }) {
             );
           })}
         </RowContainer>
-      </Content>
-    </Container>
+      </Content >
+    </Container >
   );
 }
 
@@ -369,12 +400,12 @@ const Content = styled.div`
   }
   p {
     color: white;
-    margin: auto;
+    // margin: auto;
     margin-top: 20px;
 
     @media (min-width: 1088px) {
       margin: 0;
-      margin-left: 20px;
+      margin-left: 10px;
       margin-bottom: 0px;
   }
 `;
@@ -389,7 +420,10 @@ const Title = styled.div`
     align-items: flex-end;
   }
 `;
-
+const TitleWrapper = styled.div`
+display:flex;
+justify-content: space-between	;
+`
 const RowContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -415,25 +449,27 @@ const Line = styled.div`
   box-shadow: 0px 0px 20px 0.5px white;
 `;
 
-const DropDownWrapper = styled.div`
-display:flex;
-justify-content: flex-end;
-`;
-const NetWork = styled.div``;
-const Text = styled.div``;
-const Box = styled.div`
-width: 196px;
-height: 42px;
-// margin: 8px 0 0 302px;
-// padding: 0 0 0 2px;
-object-fit: contain;
-border-radius: 30px;
-background-color: var(--black-30);
-`;
-const Type = styled.div``;
-const Sortby = styled.div``;
-const BoxContainer = styled.div``;
-const Button = styled.div``;
-
+// const DropDownWrapper = styled.div`
+// display:flex;
+// justify-content: flex-end;
+// `;
+// const NetWork = styled.div``;
+// const Text = styled.div``;
+// const Box = styled.div`
+// width: 196px;
+// height: 42px;
+// // margin: 8px 0 0 302px;
+// // padding: 0 0 0 2px;
+// object-fit: contain;
+// border-radius: 30px;
+// background-color: var(--black-30);
+// `;
+// const Type = styled.div``;
+// const Sortby = styled.div``;
+// const BoxContainer = styled.div`
+// display:flex;
+// `;
+// const Button = styled.div``;
+// const Btn = styled.div``
 
 export default List;
