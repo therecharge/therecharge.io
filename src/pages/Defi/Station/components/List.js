@@ -261,10 +261,8 @@ function List({ /*type, list,*/ params, toast, network }) {
   return (
     <Container>
       <Content>
-        <Title>
-          <TitleWrapper >
-            {/* <Image params={params} /> */}
-            <p
+
+        {/* <p
               className={
                 window.innerWidth > 1088
                   ? "Roboto_30pt_Black"
@@ -278,9 +276,9 @@ function List({ /*type, list,*/ params, toast, network }) {
               <div>$ 000,000,000,000.00</div>
             </TotalValue>
           </TitleWrapper>
-        </Title>
-        <Line />
-        <DropDownWrapper>
+        </Title> */}
+        {/* <Line /> */}
+        {/* <DropDownWrapper>
           <NetWork>
             <Text>Network</Text>
             <BoxContainer>
@@ -303,7 +301,7 @@ function List({ /*type, list,*/ params, toast, network }) {
               <Button></Button>
             </BoxContainer>
           </Sortby>
-        </DropDownWrapper>
+        </DropDownWrapper > */}
         <RowContainer>
           {chList.map((charger, index) => {
             // console.log(charger);
@@ -333,8 +331,8 @@ function List({ /*type, list,*/ params, toast, network }) {
             );
           })}
         </RowContainer>
-      </Content>
-    </Container>
+      </Content >
+    </Container >
   );
 }
 
@@ -451,27 +449,27 @@ const Line = styled.div`
   box-shadow: 0px 0px 20px 0.5px white;
 `;
 
-const DropDownWrapper = styled.div`
-display:flex;
-justify-content: flex-end;
-`;
-const NetWork = styled.div``;
-const Text = styled.div``;
-const Box = styled.div`
-width: 196px;
-height: 42px;
-// margin: 8px 0 0 302px;
-// padding: 0 0 0 2px;
-object-fit: contain;
-border-radius: 30px;
-background-color: var(--black-30);
-`;
-const Type = styled.div``;
-const Sortby = styled.div``;
-const BoxContainer = styled.div`
-display:flex;
-`;
-const Button = styled.div``;
-const Btn = styled.div``
+// const DropDownWrapper = styled.div`
+// display:flex;
+// justify-content: flex-end;
+// `;
+// const NetWork = styled.div``;
+// const Text = styled.div``;
+// const Box = styled.div`
+// width: 196px;
+// height: 42px;
+// // margin: 8px 0 0 302px;
+// // padding: 0 0 0 2px;
+// object-fit: contain;
+// border-radius: 30px;
+// background-color: var(--black-30);
+// `;
+// const Type = styled.div``;
+// const Sortby = styled.div``;
+// const BoxContainer = styled.div`
+// display:flex;
+// `;
+// const Button = styled.div``;
+// const Btn = styled.div``
 
 export default List;
