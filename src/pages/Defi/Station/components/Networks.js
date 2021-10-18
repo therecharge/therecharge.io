@@ -1,54 +1,88 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 //store
 import { useRecoilState } from "recoil";
 import { requireNetworkState } from "../../../../store/web3";
 import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
-import { ReactComponent as DropdownOpen } from "./List/assets/dropdown-open.svg";
+// import { ReactComponent as DropdownOpen } from "./List/assets/dropdown-open.svg";
 
 function Networks({ setNetwork, network }) {
+  const [isOpen, setOpen] = useState(false);
+  const [clickNetwork, SetclickNetwork] = useState("All Networks")
   const [requireNetwork, setRequireNetwork] = useRecoilState(
     requireNetworkState
   );
+
+  let networksParam = [
+    {
+      name: "All Networks",
+      network: "ALL",
+      rpc: 1
+    },
+    {
+      name: "ERC-20",
+      network: "ERC",
+      rpc: 1
+    },
+    {
+      name: "BEP-20",
+      network: "BEP",
+      rpc: 56
+    },
+    {
+      name: "HRC-20",
+      network: "HRC",
+      rpc: null
+    }
+  ]
+
+
   return (
     <DropDownWrapper>
-      <NetWork>
+      <NetWork onClick={() => { setOpen(!isOpen) }}>
         <Text className={"Roboto_20pt_Black_L "}>Network</Text>
+
         <BoxContainer>
-          <Box className={"Roboto_20pt_Regular"}>ERC-20</Box>
+          <Box className={"Roboto_20pt_Regular"}>{clickNetwork}</Box>
           <BtnWrapper>
             <DropdownClose fill={"#fff"} />
           </BtnWrapper>
-
         </BoxContainer>
+        {isOpen === false ?
+          <></> :
+          <DropDownContents>
+            {networksParam.map((networkParam, i) => (
+              <DropdownList
+                className={"Roboto_20pt_Regular"}
+                style={i === 3 ? { cursor: "not-allowed" } : {}}
+                onClick={i === 3 ?
+                  () => { } :
+                  () => {
+                    SetclickNetwork(networkParam.name)
+                    setNetwork(networkParam.network)
+                    setRequireNetwork(networkParam.rpc)
+                  }
+                }
+              >{networkParam.name}</DropdownList>
+            ))}
+          </DropDownContents>
+        }
       </NetWork>
-      <Type>
-        <Text>Type</Text>
-        <BoxContainer>
-          <Box></Box>
-          <Button></Button>
-        </BoxContainer>
-      </Type>
-      <Sortby>
-        <Text>Sort by</Text>
-        <BoxContainer>
-          <Box></Box>
-          <Button></Button>
-        </BoxContainer>
-      </Sortby>
     </DropDownWrapper >
-
   )
 } const DropDownWrapper = styled.div`
   display:flex;
-  justify-content: flex-end;
-  margin-top:40px;
-  gap:16px;
+
+
   `;
-const NetWork = styled.div``;
+const NetWork = styled.div`
+cursor: pointer;
+position:relative;
+`;
 const Text = styled.div`
 margin-bottom:4px;
 margin-left:20px;
+
 `;
 const Box = styled.div`
 display:flex;
@@ -59,7 +93,9 @@ height: 42px;
     align-items: center;
 
   `;
-const Type = styled.div``;
+const Type = styled.div`
+cursor: pointer;
+`;
 const Sortby = styled.div``;
 const BoxContainer = styled.div`
   display:flex;
@@ -76,6 +112,23 @@ align-items: center;
 justify-content: space-between;
 margin: auto;
 margin-right: 16px;
+`
+const DropDownContents = styled.div`
+  width: 196px;
+  height: 204px;
+  border-radius: 30px;
+  box-shadow: 0 0 5px 0 rgba(255, 255, 255, 0.16);
+  background-color: rgba(0, 0, 0, 0.9);
+  margin-top:8px;
+  position:absolute;
+  z-index: 1;
+`
+const DropdownList = styled.div`
+padding: 10px 0px;
+&:hover {
+  border-radius: 30px;
+       background-color: #1c1e35;
+   }
 `
 //     <Container Container >
 //       <Content>

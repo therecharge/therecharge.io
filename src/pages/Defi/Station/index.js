@@ -2,42 +2,35 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 // Components
-import Networks from "./components/Networks";
-import Slider from "./components/Slider";
+// import Networks from "./components/Networks";
+// import Slider from "./components/Slider";
 import List from "./components/List";
 import Header from "./components/Header";
 function Station(props) {
   const [t] = useTranslation();
   const [params, setParams] = useState({
-    type: "Locked",
-    isLP: false,
+    type: "ALL",
+    isLP: "ALL",
     address: "0x", // useless?
   });
-  const [network, setNetwork] = useState("ERC");
+  const [network, setNetwork] = useState("ALL");
+  const [tvl, setTvl] = useState(0)
 
-  // const loadFromMypools = () => {
-  //   let type = window.location.href.split("#")[1];
+  // useEffect(() => {
   //   setParams({
   //     ...params,
-  //     type: type,
+  //     type: "Locked",
   //   });
-  // };
-
-  useEffect(() => {
-    setParams({
-      ...params,
-      type: "Locked",
-    });
-  }, [network]);
+  // }, [network]);
 
   return (
     <Container>
       <Content>
         <span className="Roboto_50pt_Black pool-title1">Charging Station</span>
-        <Header />
+        <Header setNetwork={setNetwork} network={network} setParams={setParams} params={params} tvl={tvl} />
         {/* <Networks setNetwork={setNetwork} network={network} /> */}
         {/* <Slider setParams={setParams} params={params} /> */}
-        <List params={params} toast={props.toast} network={network} />
+        <List params={params} toast={props.toast} network={network} setTvl={setTvl} />
       </Content>
     </Container>
   );
