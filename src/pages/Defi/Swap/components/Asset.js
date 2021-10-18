@@ -55,8 +55,8 @@ function Asset({ setParams }) {
       balanceBEPRCG,
       balanceETH,
       balanceHT,
-      balanceBNB,
-      balanceFUP;
+      balanceBNB
+    // balanceFUP;
 
     RCGeth = new ETH.eth.Contract(
       ERC20_ABI,
@@ -81,7 +81,7 @@ function Asset({ setParams }) {
         balanceETH,
         balanceHT,
         balanceBNB,
-        balanceFUP
+        // balanceFUP
       ] = await Promise.all([
         RCGeth.methods.balanceOf(account).call(),
         RCGht.methods.balanceOf(account).call(),
@@ -89,7 +89,7 @@ function Asset({ setParams }) {
         ETH.eth.getBalance(account),
         HECO.eth.getBalance(account),
         BNB.eth.getBalance(account),
-        axios.get(`https://fup.bridge.therecharge.io/point/${account}`)
+        // axios.get(`https://fup.bridge.therecharge.io/point/${account}`)
       ]);
 
       balanceRCG = makeNum(weiToEther(balanceRCG));
@@ -98,8 +98,8 @@ function Asset({ setParams }) {
       balanceETH = makeNum(weiToEther(balanceETH));
       balanceHT = makeNum(weiToEther(balanceHT));
       balanceBNB = makeNum(weiToEther(balanceBNB));
-      balanceFUP = balanceFUP.data.balance;
-      console.log("balanceFUP", balanceFUP)
+      // balanceFUP = balanceFUP.data.balance;
+      // console.log("balanceFUP", balanceFUP)
 
       setTokensBalance({
         ...tokensBalance,
@@ -109,15 +109,33 @@ function Asset({ setParams }) {
         ETH: balanceETH,
         HT: balanceHT,
         BNB: balanceBNB,
-        FUP1: balanceFUP,
+        // FUP1: balanceFUP,
       });
     }
     // console.log(tokensBalance);
   };
 
+  const loadFupBalance = async () => {
+    let balanceFUP;
+
+    try {
+      balanceFUP = await axios.get(`https://fup.bridge.therecharge.io/point/${account}`)
+    } catch (err) {
+      balanceFUP = { data: { balance: 0 } }
+    }
+    balanceFUP = balanceFUP.data.balance;
+    // console.log("balanceFUP", balanceFUP);
+
+    setTokensBalance({
+      ...tokensBalance,
+      FUP1: balanceFUP,
+    });
+  }
+
   useEffect(() => {
     if (!account) return;
     loadBalance();
+    loadFupBalance();
   }, [account]);
 
   return (

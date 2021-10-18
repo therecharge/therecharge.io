@@ -131,7 +131,7 @@ function ConnectWallet({
       setNetwork(requireNetwork);
       return true;
     }
-    return network == requireNetwork;
+    return (typeof network === 'string' ? parseInt(network, 16) : network) == requireNetwork;
   }
   async function connect() {
     while (
@@ -211,11 +211,9 @@ function ConnectWallet({
         }
       >
         {need === "0" && text}
-        {need === "1" &&
-          !isDisable() &&
+        {need === "1" && !isDisable() &&
           (account ? getAccount() : notConnected)}
-        {need === "2" &&
-          !isDisable() &&
+        {need === "2" && !isDisable() &&
           (account
             ? isChainCorrect()
               ? getAccount()
