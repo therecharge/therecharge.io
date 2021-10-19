@@ -10,6 +10,7 @@ import { createContractInstance } from "../../../../../lib/read_contract/Station
 //store
 import { useRecoilState } from "recoil";
 import {
+  web3State,
   accountState,
   networkState,
   requireNetworkState,
@@ -36,13 +37,15 @@ export default function Row({
   tvl, // charger.totalSupply
   limit, // charger.limit
   period, // loadPoolPeriod(-)
-  poolNet
+  poolNet,
+  index
 }) {
-  // const [web3] = useRecoilState(web3State);
+  const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
   const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
   const [web3_R] = useRecoilState(web3ReaderState);
+  console.log(index, info.address)
   const WEB3 = web3_R[poolNet];
   const [isOpen, setOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
@@ -99,10 +102,6 @@ export default function Row({
         // 1. 내가 스테이킹한 수량
         // 2. 내가 스테이킹한 수량의 전체 비중 (1/tvl %)
         // 3. 내가 받을 수량 (2 * 전체 reward) // charger earned(account)
-        // console.log("methods", info.address);
-        // console.log("share", share);
-        // console.log("tvl", weiToEther(tvl));
-        // console.log("reward", reward);
 
         ret = {
           ...ret,
@@ -126,16 +125,16 @@ export default function Row({
     chargerAddress
   ) => {
     let ret = {};
-    const STAKE_INSTANCE = createContractInstance(WEB3, stakeTokenAddress, ERC20_ABI);
-    const POOL_INSTANCE = createContractInstance(WEB3, chargerAddress, POOL_ABI);
-    // const REWARD_INSTANCE = createContractInstance(WEB3, rewardTokenAddress, ERC20_ABI);
+    const STAKE_INSTANCE = createContractInstance(web3, stakeTokenAddress, ERC20_ABI);
+    const POOL_INSTANCE = createContractInstance(web3, chargerAddress, POOL_ABI);
+    // const REWARD_INSTANCE = createContractInstance(web3, rewardTokenAddress, ERC20_ABI);
 
     // const [balance] = await stakeM.balanceOf(account).call();
     // let balance = await STAKE_INSTANCE.methods.balanceOf(account).call();
 
-    const approve = async (tokenM, to, amount, account) => {
+    const approve = (tokenM, to, amount, account) => {
       if (typeof amount != "string") amount = String(amount);
-      await tokenM.approve(to, toWei(amount, "ether")).send({ from: account });
+      return tokenM.approve(to, toWei(amount, "ether")).send({ from: account });
     };
     const stake = async (poolM, amount, account) => {
       if (typeof amount !== "string") amount = String(amount);

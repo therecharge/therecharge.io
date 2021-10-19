@@ -32,7 +32,7 @@ const loading_data = [
     ],
     tvl: "-",
     type: "flexible",
-    network: "ETH"
+    network: "ERC"
   },
 ];
 const chargerInfo = [
@@ -49,7 +49,7 @@ const chargerInfo = [
     ],
     tvl: "-",
     type: "flexible",
-    network: "ETH"
+    network: "ERC"
   },
 ];
 
@@ -78,7 +78,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
      *  1-2. 각 네트워크에 대한 차져 리스트를 받을 수 있다.
      * 
      * {
-     *    ETH: [],
+     *    ERC: [],
      *    BEP: [],
      *    HRC: [],
      * }
@@ -401,6 +401,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
               >
                 <Row
                   key={charger.name}
+                  index={index}
                   status={charger.status} // active or not
                   name={charger.name}
                   tvl={charger.totalSupply}
