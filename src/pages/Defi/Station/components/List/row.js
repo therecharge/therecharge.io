@@ -45,7 +45,6 @@ export default function Row({
   const [network] = useRecoilState(networkState);
   const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
   const [web3_R] = useRecoilState(web3ReaderState);
-  console.log(index, info.address)
   const WEB3 = web3_R[poolNet];
   const [isOpen, setOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);

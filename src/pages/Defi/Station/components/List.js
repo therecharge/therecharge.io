@@ -210,11 +210,9 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       for (let network in ALL_RESULTS) {
         ALL_RESULTS[network].map(charger => ALL_LIST.push(charger));
       }
-      console.log("ALL_LIST", ALL_LIST)
 
       let tvl = 0;
       ALL_LIST.map(charger => tvl += Number(fromWei(charger.totalSupply, "ether")))
-      // console.log("tvl", tvl * RCG_PRICE)
       setTvl(tvl * RCG_PRICE)
       // if (params.type === "Locked") {
       //   // 해당 풀타입이 없을 때
@@ -389,7 +387,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         </DropDownWrapper > */}
         <RowContainer>
           {chList.map((charger, index) => {
-            // console.log(charger);
             return (
               <div
                 className={params.isLP === true ? "disable" : ""}
