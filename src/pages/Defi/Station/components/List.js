@@ -208,7 +208,14 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       // ); //
       let ALL_LIST = [];
       for (let network in ALL_RESULTS) {
-        ALL_RESULTS[network].map(charger => ALL_LIST.push(charger));
+        ALL_RESULTS[network].map(charger => {
+          if (charger.name === "9.3 Locked Pool 500" ||
+            charger.name === "9.15 BSC Zero-Burning Pool 20") {
+
+          } else {
+            ALL_LIST.push(charger)
+          }
+        });
       }
 
       let tvl = 0;
