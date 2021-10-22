@@ -3,7 +3,6 @@
 // 어떤 정보를 알 수 있는가? networkId, account
 // 토스트 띄울 수 있어야 하니까. 토스트 세팅하는 아톰도 있어야 한다.
 // const { atom } = require("recoil");
-import { async } from "@aragon/ui/dist/ToastHub";
 import { atom } from "recoil";
 
 

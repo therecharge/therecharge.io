@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="80">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="사각형_661" data-name="사각형 661" transform="translate(453 968)" style="fill:#fff;stroke:#707070" d="M0 0h100v80H0z"/>
+        </clipPath>
+        <style>
+            .cls-4{fill:#f0b90b}
+        </style>
+    </defs>
+    <g id="img_station_bsc" transform="translate(-453 -968)" style="clip-path:url(#clip-path)">
+        <g id="img_bep_back" transform="translate(453 958)" style="opacity:.249">
+            <path id="패스_186" data-name="패스 186" class="cls-4" d="m161.058 390.34-11.3 11.294-11.296-11.294 11.293-11.294z" transform="translate(-138.462 -340.34)"/>
+            <path id="패스_187" data-name="패스 187" class="cls-4" d="m205.016 329.807 19.353 19.363 11.293-11.293-30.646-30.647-30.646 30.647 11.294 11.293z" transform="translate(-155.016 -307.23)"/>
+            <path id="패스_188" data-name="패스 188" class="cls-4" d="m293.405 379.046-11.293 11.294 11.293 11.293 11.284-11.293z" transform="translate(-204.689 -340.34)"/>
+            <path id="패스_189" data-name="패스 189" class="cls-4" d="m205.016 434.325-19.353-19.353-11.293 11.284 30.646 30.644 30.647-30.647-11.293-11.281z" transform="translate(-155.016 -356.902)"/>
+            <path id="사각형_168" data-name="사각형 168" class="cls-4" transform="rotate(-45 79.709 -21.723)" d="M0 0h15.971v15.971H0z"/>
+        </g>
+    </g>
+</svg>

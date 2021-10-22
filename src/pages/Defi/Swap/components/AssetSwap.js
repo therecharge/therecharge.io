@@ -38,11 +38,13 @@ function AssetSwap({ toast }) {
       "(Ethereum Network)": 1,
       "(Huobi ECO Chain Network)": 128,
       "(Binance Smart Chain Network)": 56,
+      "": 1,
     },
     network: {
       "(Ethereum Network)": "ERC",
       "(Huobi ECO Chain Network)": "HRC",
       "(Binance Smart Chain Network)": "BEP",
+      "": 1,
     },
     tokenAddress: {
       1: "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30", // "0x76E7BE90D0BF6bfaa2CA07381169654c6b45793F", // 랍스텐 토큰주소
@@ -107,30 +109,30 @@ function AssetSwap({ toast }) {
           style={
             recipe.from.token === "PiggyCell Point"
               ? {
-                  width: "60px",
-                  height: "60px",
-                  margin: "40px auto",
-                  cursor: "not-allowed",
-                }
+                width: "60px",
+                height: "60px",
+                margin: "40px auto",
+                cursor: "not-allowed",
+              }
               : {
-                  width: "60px",
-                  height: "60px",
-                  margin: "40px auto",
-                  cursor: "pointer",
-                }
+                width: "60px",
+                height: "60px",
+                margin: "40px auto",
+                cursor: "pointer",
+              }
           }
           onClick={
             recipe.from.token === "PiggyCell Point"
-              ? () => {}
+              ? () => { }
               : () => {
-                  setRecipe({
-                    ...recipe,
-                    from: recipe.to,
-                    to: recipe.from,
-                    swapAmount: "",
-                  });
-                  setRequireNetwork(recipe.chainId[recipe.to.network]);
-                }
+                setRecipe({
+                  ...recipe,
+                  from: recipe.to,
+                  to: recipe.from,
+                  swapAmount: "",
+                });
+                setRequireNetwork(recipe.chainId[recipe.to.network]);
+              }
           }
         >
           {recipe.from.token !== "PiggyCell Point" ? <Active /> : <Inactive />}
@@ -178,12 +180,16 @@ function AssetSwap({ toast }) {
           />
         ) : (
           <WalletConnect
-            need="3"
-            bgColor="var(--gray-30)"
-            border="none"
+            need="1"
+            bgColor="var(--purple)"
+            border="4px solid #9314B2"
+            // bgColor="var(--gray-30)"
+            // border="none"
             hcolor=""
-            notConnected="Not supported yet"
-            wrongNetwork="Not supported yet"
+            notConnected="Connect Wallet for swap"
+            wrongNetwork="Change network for swap"
+            // notConnected="Not supported yet"
+            // wrongNetwork="Not supported yet"
             m="40px auto"
             radius="20px"
             w="540px"
@@ -191,7 +197,8 @@ function AssetSwap({ toast }) {
             fontsize="20px"
             text="SWAP"
             // text="'SWAP' will be open soon"
-            disable={true}
+            // disable={true}
+            onClick={() => setPopupOpen(!isPopupOpen)}
           />
         )}
       </Content>

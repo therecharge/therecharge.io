@@ -2,7 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
-import { ToastHub, Toast } from "@aragon/ui";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { changeNetwork } from "./utils/Wallets";
 //store
@@ -131,7 +130,7 @@ function ConnectWallet({
       setNetwork(requireNetwork);
       return true;
     }
-    return network == requireNetwork;
+    return (typeof network === 'string' ? parseInt(network, 16) : network) == requireNetwork;
   }
   async function connect() {
     while (
@@ -211,11 +210,9 @@ function ConnectWallet({
         }
       >
         {need === "0" && text}
-        {need === "1" &&
-          !isDisable() &&
+        {need === "1" && !isDisable() &&
           (account ? getAccount() : notConnected)}
-        {need === "2" &&
-          !isDisable() &&
+        {need === "2" && !isDisable() &&
           (account
             ? isChainCorrect()
               ? getAccount()
