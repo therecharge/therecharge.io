@@ -52,6 +52,14 @@ function Home({ t }) {
             <div className="text Roboto_20pt_Regular_L">
               {t("Home/text/info")}
             </div>
+            <LaunchApp
+              className="launchApp"
+              onClick={() => {
+                window.open("https://app.therecharge.io/", "_blank");
+              }}
+            >
+              <div className="wording Roboto_16pt_Bold">Launch App</div>
+            </LaunchApp>
           </div>
           <div className="right">
             <video
@@ -320,6 +328,20 @@ const Container = styled.div`
   width: 100%;
   min-width: 1088px;
 `;
+const LaunchApp = styled.div`
+  display: flex;
+  margin: auto 0;
+  margin-top: 40px;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 192px;
+  border-radius: 210px;
+  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.3);
+  background-color: var(--yellow);
+  cursor: pointer;
+`;
+
 const Content = styled.div`
   display: flex;
   color: #ffffff;
@@ -339,6 +361,11 @@ const Content = styled.div`
       margin-top: 240px;
       margin-right: 8px;
       width: 597px;
+
+      .launchApp:hover {
+        box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
+      }
+
       .theme {
         width: 597px;
         margin-bottom: 10px;

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Language from "../../Components/Desktop/Language";
 import { HashLink } from "react-router-hash-link";
-import WalletConnect from "../../../Component/Components/Common/WalletConnect";
+// import WalletConnect from "../../../Component/Components/Common/WalletConnect";
 import { useRecoilState } from "recoil";
 import {
   modalPoolOpenState,
@@ -53,110 +53,110 @@ function Gnb() {
         <Logo>
           <HashLink
             to={"/#home"}
-            onClick={() => {
-              setModalPoolOpen(false);
-              setModalPool2Open(false);
-              setModalSwapOpen(false);
-            }}
+            // onClick={() => {
+            //   setModalPoolOpen(false);
+            //   setModalPool2Open(false);
+            //   setModalSwapOpen(false);
+            // }}
           >
             <img src="/logo.png" />
           </HashLink>
         </Logo>
         <Nav>
           <HashLink
-            to={"/#home"}
-            onClick={() => {
-              setModalPoolOpen(false);
-              setModalPool2Open(false);
-              setModalSwapOpen(false);
-            }}
+            to={"/"}
+            // onClick={() => {
+            //   setModalPoolOpen(false);
+            //   setModalPool2Open(false);
+            //   setModalSwapOpen(false);
+            // }}
           >
             <div className="dropdown">
-              <a>Home</a>
+              <a className="title Roboto_16pt_Regular">Home</a>
             </div>
           </HashLink>
           <div className="dropdown">
             <HashLink
               to={"/about#aboutSection1"}
-              onClick={() => {
-                setModalPoolOpen(false);
-                setModalPool2Open(false);
-                setModalSwapOpen(false);
-              }}
+              // onClick={() => {
+              //   setModalPoolOpen(false);
+              //   setModalPool2Open(false);
+              //   setModalSwapOpen(false);
+              // }}
             >
-              <a>About</a>
+              <a className="title Roboto_16pt_Regular">About</a>
             </HashLink>
             <div className="dropdownContent">
               <HashLink
                 to={"/about#aboutSection1"}
-                onClick={() => {
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
-                }}
+                // onClick={() => {
+                //   setModalPoolOpen(false);
+                //   setModalPool2Open(false);
+                //   setModalSwapOpen(false);
+                // }}
               >
                 <div>
-                  <a>Ecosystem</a>
+                  <a className="Roboto_14pt_Regular">Ecosystem</a>
                 </div>
               </HashLink>
               <HashLink
                 to={"/about#aboutSection2"}
-                onClick={() => {
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
-                }}
+                // onClick={() => {
+                //   setModalPoolOpen(false);
+                //   setModalPool2Open(false);
+                //   setModalSwapOpen(false);
+                // }}
               >
                 <div>
-                  <span>Recharge Virtuous Cycle</span>
+                  <a className="Roboto_14pt_Regular">Recharge Virtuous Cycle</a>
                 </div>
               </HashLink>
               <HashLink
                 to={"/about#aboutSection3"}
-                onClick={() => {
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
-                }}
+                // onClick={() => {
+                //   setModalPoolOpen(false);
+                //   setModalPool2Open(false);
+                //   setModalSwapOpen(false);
+                // }}
               >
                 <div>
-                  <a>Team members</a>
+                  <a className="Roboto_14pt_Regular">Team members</a>
                 </div>
               </HashLink>
               <HashLink
                 to={"/about#aboutSection4"}
-                onClick={() => {
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
-                }}
+                // onClick={() => {
+                //   setModalPoolOpen(false);
+                //   setModalPool2Open(false);
+                //   setModalSwapOpen(false);
+                // }}
               >
                 <div>
-                  <a>Advisors</a>
+                  <a className="Roboto_14pt_Regular">Advisors</a>
                 </div>
               </HashLink>
               <HashLink
                 to={"/about#aboutSection5"}
-                onClick={() => {
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
-                }}
+                // onClick={() => {
+                //   setModalPoolOpen(false);
+                //   setModalPool2Open(false);
+                //   setModalSwapOpen(false);
+                // }}
               >
                 <div>
-                  <a>Medium</a>
+                  <a className="Roboto_14pt_Regular">Medium</a>
                 </div>
               </HashLink>
               <HashLink
                 to={"/about#aboutSection6"}
-                onClick={() => {
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
-                }}
+                // onClick={() => {
+                //   setModalPoolOpen(false);
+                //   setModalPool2Open(false);
+                //   setModalSwapOpen(false);
+                // }}
               >
                 <div>
-                  <a>Recharge is on</a>
+                  <a className="Roboto_14pt_Regular">Recharge is on</a>
                 </div>
               </HashLink>
             </div>
@@ -164,66 +164,66 @@ function Gnb() {
           <div className="dropdown">
             <HashLink
               to={"/recharge#rechargeSection1"}
-              onClick={() => {
-                setModalPoolOpen(false);
-                setModalPool2Open(false);
-                setModalSwapOpen(false);
-              }}
+              // onClick={() => {
+              //   setModalPoolOpen(false);
+              //   setModalPool2Open(false);
+              //   setModalSwapOpen(false);
+              // }}
             >
-              <a>Recharge Token</a>
+              <a className="title Roboto_16pt_Regular">Recharge Token</a>
             </HashLink>
             <div className="dropdownContent">
               <HashLink
                 to={"/recharge#rechargeSection1"}
-                onClick={() => {
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
-                }}
+                // onClick={() => {
+                //   setModalPoolOpen(false);
+                //   setModalPool2Open(false);
+                //   setModalSwapOpen(false);
+                // }}
               >
                 <div>
-                  <a>Features</a>
+                  <a className="Roboto_14pt_Regular">Features</a>
                 </div>
               </HashLink>
               <HashLink
                 to={"/recharge#rechargeSection3"}
-                onClick={() => {
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
-                }}
+                // onClick={() => {
+                //   setModalPoolOpen(false);
+                //   setModalPool2Open(false);
+                //   setModalSwapOpen(false);
+                // }}
               >
                 <div>
-                  <a>Distribution</a>
+                  <a className="Roboto_14pt_Regular">Distribution</a>
                 </div>
               </HashLink>
               <HashLink
                 to={"/recharge#rechargeSection4"}
-                onClick={() => {
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
-                }}
+                // onClick={() => {
+                //   setModalPoolOpen(false);
+                //   setModalPool2Open(false);
+                //   setModalSwapOpen(false);
+                // }}
               >
                 <div>
-                  <a>Governance</a>
+                  <a className="Roboto_14pt_Regular">Governance</a>
                 </div>
               </HashLink>
               <HashLink
                 to={"/recharge#rechargeSection5"}
-                onClick={() => {
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
-                }}
+                // onClick={() => {
+                //   setModalPoolOpen(false);
+                //   setModalPool2Open(false);
+                //   setModalSwapOpen(false);
+                // }}
               >
                 <div>
-                  <a>Exchanges</a>
+                  <a className="Roboto_14pt_Regular">Exchanges</a>
                 </div>
               </HashLink>
             </div>
           </div>
-          <div className="dropdown">
+          {/* <div className="dropdown">
             <HashLink
               to={"/defi#station"}
               onClick={() => {
@@ -296,16 +296,17 @@ function Gnb() {
                 </div>
               </HashLink>
             </div>
-          </div>
+          </div> */}
           <div className="dropdown">
             <HashLink to={"/docs/1#whitepaper"}>
               <a
-                onClick={() => {
-                  window.scrollTo(0, 0);
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
-                }}
+                className="title Roboto_16pt_Regular"
+                // onClick={() => {
+                //   window.scrollTo(0, 0);
+                //   setModalPoolOpen(false);
+                //   setModalPool2Open(false);
+                //   setModalSwapOpen(false);
+                // }}
               >
                 Docs
               </a>
@@ -313,14 +314,14 @@ function Gnb() {
             <div className="dropdownContent">
               <HashLink
                 to={"/docs/1#whitepaper"}
-                onClick={() => {
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
-                }}
+                // onClick={() => {
+                //   setModalPoolOpen(false);
+                //   setModalPool2Open(false);
+                //   setModalSwapOpen(false);
+                // }}
               >
                 <div>
-                  <a>WhitePaper</a>
+                  <a className="Roboto_14pt_Regular">WhitePaper</a>
                 </div>
               </HashLink>
 
@@ -329,15 +330,16 @@ function Gnb() {
               </div>
               <div>
                 <a
+                  className="Roboto_14pt_Regular"
                   style={{ cursor: "pointer" }}
                   onClick={() => {
                     window.open(
                       "https://www.certik.org/projects/therecharge",
                       "_blank"
                     );
-                    setModalPoolOpen(false);
-                    setModalPool2Open(false);
-                    setModalSwapOpen(false);
+                    // setModalPoolOpen(false);
+                    // setModalPool2Open(false);
+                    // setModalSwapOpen(false);
                   }}
                 >
                   Token Audit
@@ -347,35 +349,36 @@ function Gnb() {
                 to={"/docs/2#disclaimer"}
                 onClick={() => {
                   window.scrollTo(0, 0);
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
+                  // setModalPoolOpen(false);
+                  // setModalPool2Open(false);
+                  // setModalSwapOpen(false);
                 }}
               >
                 <div>
-                  <a>Disclaimer</a>
+                  <a className="Roboto_14pt_Regular">Disclaimer</a>
                 </div>
               </HashLink>
               <HashLink
                 to={"/docs/3#cidownload"}
                 onClick={() => {
                   window.scrollTo(0, 0);
-                  setModalPoolOpen(false);
-                  setModalPool2Open(false);
-                  setModalSwapOpen(false);
+                  // setModalPoolOpen(false);
+                  // setModalPool2Open(false);
+                  // setModalSwapOpen(false);
                 }}
               >
                 <div>
-                  <a>CI Download</a>
+                  <a className="Roboto_14pt_Regular">CI Download</a>
                 </div>
               </HashLink>
               <div style={{ cursor: "pointer" }}>
                 <a
+                  className="Roboto_14pt_Regular"
                   onClick={() => {
                     window.open(t("Docs/userGuide"), "_blank");
-                    setModalPoolOpen(false);
-                    setModalPool2Open(false);
-                    setModalSwapOpen(false);
+                    // setModalPoolOpen(false);
+                    // setModalPool2Open(false);
+                    // setModalSwapOpen(false);
                   }}
                 >
                   User Guide
@@ -385,7 +388,7 @@ function Gnb() {
           </div>
         </Nav>
         <Language />
-        <WalletConnectContainer>
+        {/* <WalletConnectContainer>
           <WalletConnect
             need="2"
             notConnected="Connect Wallet"
@@ -395,7 +398,18 @@ function Gnb() {
             fontsize="20px"
             fontClass="Roboto_20pt_Light"
           />
-        </WalletConnectContainer>
+        </WalletConnectContainer> */}
+        <LaunchApp
+          className="launchApp"
+          onClick={() => {
+            window.open("https://app.therecharge.io/", "_blank");
+            // setModalPoolOpen(false);
+            // setModalPool2Open(false);
+            // setModalSwapOpen(false);
+          }}
+        >
+          <div className="wording Roboto_16pt_Bold">Launch App</div>
+        </LaunchApp>
       </SubContainer>
     </Container>
   );
@@ -408,7 +422,7 @@ const Container = styled.div`
   // width: 1920px;
   width: 100%;
   min-width: 1088px;
-  height: 100px;
+  height: 80px;
   z-index: 6;
   a {
     text-decoration: none;
@@ -425,6 +439,10 @@ const SubContainer = styled.div`
     color: #ffffff;
     text-decoration: none;
     font-weight: bold;
+  }
+
+  .launchApp:hover {
+    box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
   }
 `;
 
@@ -447,27 +465,29 @@ const Nav = styled.div`
     align-items: center;
     display: flex;
     margin: auto auto;
-    padding: 0 30px;
+    padding: 0 20px;
     height: 60px;
 
     a {
       color: #ffffff;
     }
+
+    .title:hover {
+      color: var(--yellow);
+    }
   }
   .dropdownContent {
     display: none;
     position: absolute;
-    top: 75px;
+    top: 65px;
     min-width: 9%;
     padding: 10px 35px 10px 15px;
     margin-left: -15px;
-    background-color: black;
+    border-radius: 10px;
+    background-color: var(--black-30);
 
-    a {
-      color: var(--gray-20);
-    }
     a: hover {
-      color: #ffffff;
+      color: var(--yellow);
     }
     div {
       margin: 10px 0;
@@ -480,6 +500,11 @@ const Nav = styled.div`
   }
   .dropdown:hover .dropdownContent {
     display: block;
+  }
+  .dropdownContent:hover .dropdown {
+    .title {
+      color: var(--yellow);
+    }
   }
 `;
 
@@ -502,6 +527,19 @@ const WalletConnectContainer = styled.div`
   display: flex;
   height: 40px;
   margin: auto auto;
+`;
+
+const LaunchApp = styled.div`
+  display: flex;
+  margin: auto 0;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 160px;
+  border-radius: 210px;
+  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.3);
+  background-color: var(--yellow);
+  cursor: pointer;
 `;
 
 export default Gnb;

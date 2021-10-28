@@ -25,7 +25,7 @@ function Language(props) {
       <div className="dropdown">
         <Flag
           src={getImagePath(lang)}
-        // onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          // onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         />
         <Dropdown className="dropdownContent">
           <Row
@@ -58,7 +58,7 @@ const Container = styled.div`
     height: 60px;
     display: flex;
     margin: auto auto;
-    padding-left: 27px;
+    padding-left: 20px;
     padding-right: 40px;
     align-items: center;
   }
@@ -77,10 +77,11 @@ const Dropdown = styled.div`
   position: fixed;
   display: flex;
   flex-direction: column;
-  top: 75px;
+  top: 65px;
   width: 100px;
   height: 80px;
-  background-color: black;
+  border-radius: 10px;
+  background-color: var(--black-30);
 `;
 const Row = styled.div`
   display: flex;
@@ -89,7 +90,7 @@ const Row = styled.div`
   height: 20px;
   cursor: pointer;
   &:hover span {
-    color: var(--white);
+    color: var(--yellow);
   }
   img {
     height: 20px;
@@ -98,8 +99,8 @@ const Row = styled.div`
     margin: auto auto;
     margin-bottom: 0;
     margin-left: 8.7px;
-    font: var(--Roboto_15pt_Regular);
-    color: var(--gray-20);
+    font: var(--Roboto_14pt_Regular);
+    color: var(--white);
   }
   .bold {
     font: var(--Roboto_15pt_Bold);
