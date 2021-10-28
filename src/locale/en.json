@@ -105,5 +105,6 @@
   "Footer/sns/bscchain": "https://bscscan.com/token/0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
   "Footer/sns/hecoinfo": "https://hecoinfo.com/token/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
   "Docs/userGuide": "/docs/Charging_Station_User_Guide.pdf",
+  "LaunchApp": "https://app.therecharge.io",
   "end": "end"
 }
