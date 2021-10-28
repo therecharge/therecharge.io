@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="80">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="사각형_662" data-name="사각형 662" transform="translate(424 928)" style="fill:#fff;stroke:#707070" d="M0 0h100v80H0z"/>
+        </clipPath>
+        <style>
+            .cls-4{fill:#232423}.cls-6{fill:#6f7071}
+        </style>
+    </defs>
+    <g id="img_station_eth" transform="translate(-424 -928)" style="clip-path:url(#clip-path)">
+        <g id="img_erc_back" transform="translate(443.266 918)" style="opacity:.3">
+            <path id="패스_211" data-name="패스 211" class="cls-4" d="M464.038 328.379v25.037l30.735-43.17z" transform="translate(-433.304 -253.417)"/>
+            <path id="패스_212" data-name="패스 212" d="M464.038 219.982v32.138l30.734-18.18z" transform="translate(-433.304 -182.949)" style="fill:#030504"/>
+            <path id="패스_213" data-name="패스 213" class="cls-4" d="M464.038 51.13v37.034l30.734 13.957z" transform="translate(-433.304 -51.13)"/>
+            <path id="패스_214" data-name="패스 214" class="cls-6" d="M354.643 328.379v25.037l-30.734-43.17z" transform="translate(-323.908 -253.417)"/>
+            <path id="패스_215" data-name="패스 215" d="M354.645 219.982v32.138l-30.734-18.18z" transform="translate(-323.91 -182.949)" style="fill:#272828"/>
+            <path id="패스_216" data-name="패스 216" class="cls-6" d="M354.645 51.13v37.034l-30.734 13.957z" transform="translate(-323.91 -51.13)"/>
+        </g>
+    </g>
+</svg>
