@@ -349,6 +349,18 @@ html {
   color: #ffffff;
 }
 
+.Roboto_16pt_Bold {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.3;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ffffff;
+}
+
 .Roboto_16pt_Medium {
   font-family: Roboto;
   font-size: 16px;
@@ -718,4 +730,16 @@ html {
   letter-spacing: normal;
   text-align: left;
   color: #ffffff;
+}
+
+.Roboto_12pt_Regular_L_Gray {
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.67;
+  letter-spacing: normal;
+  text-align: left;
+  color: var(--gray-10);
 }
