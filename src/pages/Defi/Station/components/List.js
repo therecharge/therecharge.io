@@ -110,9 +110,9 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const getList = async () => {
       const ETH_CHARGER_LIST = await getChargerList(ETH_CHARGERLIST_INSTANCE);
       const BEP_CHARGER_LIST = await getChargerList(BEP_CHARGERLIST_INSTANCE);
-      const HRC_CHARGER_LIST = await getChargerList(HRC_CHARGERLIST_INSTANCE); //
+      const HRC_CHARGER_LIST = await getChargerList(HRC_CHARGERLIST_INSTANCE);
       const ALL_NETWORK_CHARGERLIST = [ETH_CHARGER_LIST, BEP_CHARGER_LIST, HRC_CHARGER_LIST];
-
+      console.log("ALL_NETWORK_CHARGERLIST", ALL_NETWORK_CHARGERLIST)
       if (ETH_CHARGER_LIST.length === 0 && BEP_CHARGER_LIST.length === 0) return setChList(chargerInfo);
 
       let ALL_RESULTS = {
@@ -165,6 +165,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       const ALL_STAKES_BASEPERCENT = await Promise.all(
         ALL_NETWORK_CHARGERLIST.map((CHARGERLIST, network) => {
           return Promise.all(CHARGERLIST.map(async (CHARGER_ADDRESS, i) => {
+            if(ALL_STAKES_SYMBOL[network][i]!="RCG") return 0;
             const TOKEN_INSTANCE = createContractInstance(ALL_WEB3[network], ALL_RESULTS[network][i].stakeToken, TOKEN_ABI);
             return TOKEN_INSTANCE.methods.basePercent().call();
           }))
