@@ -211,6 +211,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         ALL_NETWORK_CHARGERLIST.map((CHARGERLIST, network) => {
           return Promise.all(
             CHARGERLIST.map(async (CHARGER_ADDRESS, i) => {
+              if (ALL_STAKES_SYMBOL[network][i] != "RCG") return 0;
               const TOKEN_INSTANCE = createContractInstance(
                 ALL_WEB3[network],
                 ALL_RESULTS[network][i].stakeToken,
