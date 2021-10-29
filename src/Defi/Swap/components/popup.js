@@ -295,7 +295,7 @@ export default function Popup({
                 if (recipe.swapAmount > 0) {
                   if (recipe.from.token === "PiggyCell Point") {
                     let completed = await axios.post(
-                      `https://fup.bridge.therecharge.io/point/${account}`
+                      `https://fup.bridge.therecharge.io/swap/${account}`
                     );
                     close();
                   } else {
