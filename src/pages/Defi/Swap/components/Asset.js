@@ -124,8 +124,10 @@ function Asset({ setParams }) {
   }
 
   const updateBalance = () => {
-    loadBalance();
-    loadFupBalance();
+    if (account) {
+      loadBalance();
+      loadFupBalance();
+    }
   }
 
   const useInterval = (callback, delay) => {
