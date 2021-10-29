@@ -118,7 +118,7 @@ export default function Dropdown({
                           ? "0px 0px 20px 20px"
                           : j === 2
                           ? "0px 0px 20px 20px"
-                          : "0px",
+                          : "0px 0px 20px 20px",
                     }}
                     // 글로벌 상태 requiredNetwork 설정 필요
                     onClick={() => {

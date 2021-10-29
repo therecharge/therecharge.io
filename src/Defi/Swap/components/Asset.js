@@ -185,7 +185,7 @@ function Asset({ setParams }) {
             <Balance Image={ETH} symbol="ETH" balance={tokensBalance.ETH} />
             <Balance Image={HT} symbol="HT" balance={tokensBalance.HT} />
             <Balance Image={BNB} symbol="BNB" balance={tokensBalance.BNB} />
-            <Balance Image={FUP1} symbol="FUP" balance={tokensBalance.FUP1} />
+            <Balance Image={FUP1} symbol="FUP" balance={fupBalance} />
           </List>
         ) : (
           <List>

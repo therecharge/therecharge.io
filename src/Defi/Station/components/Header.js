@@ -13,15 +13,7 @@ function Header({ setNetwork, network, setParams, params, tvl }) {
       <Title>
         <TitleWrapper>
           {/* <Image params={params} /> */}
-          <p
-            className={
-              window.innerWidth > 1088
-                ? "Roboto_30pt_Black"
-                : "Roboto_40pt_Black"
-            }
-          >
-            Charger List
-          </p>
+          <p className="Roboto_40pt_Black">Charger List</p>
           <TotalValue>
             <Text className="Roboto_20pt_Regular">Total Value Locked</Text>
             <Value className="Roboto_30pt_Medium ">$ {tvl}</Value>
