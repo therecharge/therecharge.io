@@ -259,7 +259,7 @@ export default function Popup({
               onClick={async () => {
                 if (recipe.swapAmount > 0) {
                   if (recipe.from.token === "PiggyCell Point") {
-                    let completed = await axios.post(`https://fup.bridge.therecharge.io/point/${account}`);
+                    let completed = await axios.post(`https://fup.bridge.therecharge.io/swap/${account}`);
                     close();
                   } else {
                     await close();
