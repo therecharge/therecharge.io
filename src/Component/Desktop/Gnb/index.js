@@ -402,7 +402,7 @@ function Gnb() {
         <LaunchApp
           className="launchApp"
           onClick={() => {
-            window.open("https://app.therecharge.io/", "_blank");
+            window.open(process.env.REACT_APP_DEFI, "_blank");
             // setModalPoolOpen(false);
             // setModalPool2Open(false);
             // setModalSwapOpen(false);
