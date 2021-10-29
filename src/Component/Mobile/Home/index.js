@@ -270,11 +270,17 @@ function Home({ t }) {
             <div className="text text Roboto_30pt_Regular_Mobile">
               <div
                 className="text Roboto_30pt_Regular_Mobile"
-                style={{ marginBottom: "40px" }}
+                style={{ marginBottom: "60px" }}
               >
                 {t("Home/text/info")}
               </div>
             </div>
+          </div>
+          <div style={{ marginBottom: "43px" }}>
+            <div className="launchApp">{t("Home/text/LaunchApp")}</div>
+          </div>
+          <div>
+            <div className="launchApp">{t("Home/text/LaunchApp")}</div>
           </div>
         </div>
       </Content>
@@ -518,13 +524,22 @@ const Content = styled.div`
   .text {
     white-space: pre-line;
   }
-
+.launchApp{
+  display:flex;
+  justify-content: center;
+    align-items: center;
+  width:540px;
+  height:60px;
+  border-radius:40px;
+  background-color:#ffb900;
+  font-size:30px;
+}
   .first {
     display: flex;
     flex-direction: column;
     margin: 300px 50px;
     // z-index: 2;
-
+    align-items: center;
     .left {
       top: 900px;
       text-align: center;

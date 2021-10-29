@@ -44,20 +44,13 @@ function Gnb({ getTitle }) {
         className="nav"
         style={menuOpen ? { display: "flex" } : { display: "none" }}
       >
-        <WalletConnect
-          need="2"
-          notConnected="Connect Wallet"
-          wrongNetwork="Change network"
-          m="40px auto"
-          w="470px"
-          h="70px"
-          fontsize="20px"
-        />
+
         <div className="dropdown">
           <div
             className={
-              sidemenuOpen.home ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
+              sidemenuOpen.home ? "Roboto_35pt_Black_Yellow" : "Roboto_35pt_Nomal"
             }
+            style={{ marginTop: "80px" }}
           >
             <HashLink
               to={"/"}
@@ -82,8 +75,9 @@ function Gnb({ getTitle }) {
               });
             }}
             className={
-              sidemenuOpen.about ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
+              sidemenuOpen.about ? "Roboto_35pt_Black_Yellow" : "Roboto_35pt_Nomal"
             }
+          // style={{ color: sidemenuOpen.about ? "--var(yellow)" : "" }}
           >
             About
           </Link>
@@ -99,6 +93,10 @@ function Gnb({ getTitle }) {
                 to={"/about#aboutSection1"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    about: false,
+                  });
                 }}
               >
                 Ecosystem
@@ -110,6 +108,10 @@ function Gnb({ getTitle }) {
                 to={"/about#aboutSection2"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    about: false,
+                  });
                 }}
               >
                 Recharge Virtuous Cycle
@@ -121,6 +123,10 @@ function Gnb({ getTitle }) {
                 to={"/about#aboutSection3"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    about: false,
+                  });
                 }}
               >
                 Team members
@@ -132,6 +138,10 @@ function Gnb({ getTitle }) {
                 to={"/about#aboutSection4"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    about: false,
+                  });
                 }}
               >
                 Advisors
@@ -143,6 +153,10 @@ function Gnb({ getTitle }) {
                 to={"/about#aboutSection5"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    about: false,
+                  });
                 }}
               >
                 Medium
@@ -154,6 +168,10 @@ function Gnb({ getTitle }) {
                 to={"/about#aboutSection6"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    about: false,
+                  });
                 }}
               >
                 Recharge is on
@@ -171,7 +189,7 @@ function Gnb({ getTitle }) {
               });
             }}
             className={
-              sidemenuOpen.recharge ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
+              sidemenuOpen.recharge ? "Roboto_35pt_Black_Yellow" : "Roboto_35pt_Nomal"
             }
           >
             Recharge Token
@@ -188,6 +206,10 @@ function Gnb({ getTitle }) {
                 to={"/recharge#rechargeSection1"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    recharge: false,
+                  });
                 }}
               >
                 Features
@@ -199,6 +221,10 @@ function Gnb({ getTitle }) {
                 to={"/recharge#rechargeSection3"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    recharge: false,
+                  });
                 }}
               >
                 Distribution
@@ -210,6 +236,10 @@ function Gnb({ getTitle }) {
                 to={"/recharge#rechargeSection4"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    recharge: false,
+                  });
                 }}
               >
                 Governance
@@ -221,6 +251,10 @@ function Gnb({ getTitle }) {
                 to={"/recharge#rechargeSection5"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    recharge: false,
+                  });
                 }}
               >
                 Exchanges
@@ -238,7 +272,7 @@ function Gnb({ getTitle }) {
               });
             }}
             className={
-              sidemenuOpen.defi ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
+              sidemenuOpen.defi ? "Roboto_35pt_Black_Yellow" : "Roboto_35pt_Nomal"
             }
           >
             De-Fi
@@ -255,7 +289,11 @@ function Gnb({ getTitle }) {
                 to={"/defi"}
                 className="Roboto_25pt_Regular"
                 onClick={() => {
-                  setMenuOpen(false);
+                  setMenuOpen(false)
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    defi: false,
+                  })
                 }}
               >
                 <span className="on">Station</span>
@@ -266,6 +304,10 @@ function Gnb({ getTitle }) {
                   className="Roboto_25pt_Regular"
                   onClick={() => {
                     setMenuOpen(false);
+                    setSidemenuOpen({
+                      ...sidemenuInitialState,
+                      defi: false,
+                    })
                   }}
                 >
                   Station
@@ -275,6 +317,10 @@ function Gnb({ getTitle }) {
                   className="Roboto_25pt_Regular"
                   onClick={() => {
                     setMenuOpen(false);
+                    setSidemenuOpen({
+                      ...sidemenuInitialState,
+                      defi: false,
+                    })
                   }}
                 >
                   Swap
@@ -287,6 +333,10 @@ function Gnb({ getTitle }) {
                 to={"/defi#mypools"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    defi: false,
+                  })
                 }}
               >
                 <span className="on">My Pools</span>
@@ -298,6 +348,10 @@ function Gnb({ getTitle }) {
                 to={"/defi#analytics"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    defi: false,
+                  })
                 }}
               >
                 Analytics
@@ -315,7 +369,7 @@ function Gnb({ getTitle }) {
               });
             }}
             className={
-              sidemenuOpen.docs ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
+              sidemenuOpen.docs ? "Roboto_35pt_Black_Yellow" : "Roboto_35pt_Nomal"
             }
           >
             Docs
@@ -332,6 +386,11 @@ function Gnb({ getTitle }) {
                 to={"/docs/1"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    docs: false,
+                  });
+
                 }}
               >
                 WhitePaper
@@ -360,6 +419,10 @@ function Gnb({ getTitle }) {
                 onClick={() => {
                   window.scrollTo(0, 0);
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    docs: false,
+                  });
                 }}
                 to={"/docs/2"}
               >
@@ -372,6 +435,10 @@ function Gnb({ getTitle }) {
                 to={"/docs/3"}
                 onClick={() => {
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    docs: false,
+                  });
                 }}
               >
                 CI Download
@@ -383,6 +450,10 @@ function Gnb({ getTitle }) {
                 onClick={() => {
                   window.open(t("Docs/userGuide"), "_blank");
                   setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    docs: false,
+                  });
                 }}
               >
                 User Guide
@@ -390,16 +461,30 @@ function Gnb({ getTitle }) {
             </div>
           </div>
         </div>
+
+        <WalletConnect
+          need="2"
+          notConnected="Launch App"
+          wrongNetwork="Change network"
+          m="40px auto"
+          w="470px"
+          h="70px"
+          fontsize="30px"
+        // backgroundColor="#ffb900"
+        // style={{ backgroundColor: "#ffb900" }}
+        />
+
+
         <Footer>
           <div className="footer">
-            <div className="header">
+            {/* <div className="header">
               <a
                 className="Roboto_20pt_Regular"
                 href="mailto:info@therecharge.io"
               >
                 info@therecharge.io<span>〉</span>
               </a>
-            </div>
+            </div> */}
             <div className="sns">
               <div
                 className="logo"
@@ -441,10 +526,10 @@ function Gnb({ getTitle }) {
               <div
                 className="logo"
                 onClick={() =>
-                  (window.location =
-                    i18n.language == "en"
-                      ? "https://t.me/therecharge_official"
-                      : "https://t.me/therecharge_officialkr")
+                (window.location =
+                  i18n.language == "en"
+                    ? "https://t.me/therecharge_official"
+                    : "https://t.me/therecharge_officialkr")
                 }
               >
                 <img src="/footer4.png" />
@@ -483,6 +568,18 @@ function Gnb({ getTitle }) {
                 }}
               >
                 <img src="/footer6.png" />
+              </div>
+              <div
+                className="logo"
+                onClick={() => {
+                  // window.open(
+                  //   "https://hecoinfo.com/token/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+                  //   "_blank"
+                  // );
+                  console.log("opened")
+                }}
+              >
+                <img src="/footer8.png" />
               </div>
             </div>
             <div className="bottom Roboto_15pt_Regular">
@@ -653,9 +750,11 @@ const ConnectWallet = styled.div`
   height: 70px;
   border: solid 2px var(--yellow);
   border-radius: 210px;
+  
 
   span {
     margin: auto;
+  
   }
 
   &:active {
@@ -666,7 +765,7 @@ const ConnectWallet = styled.div`
 const Footer = styled.div`
   display: flex;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 200px;
   // margin-bottom: 10vh;
   margin-bottom: 0px;
 
@@ -697,7 +796,7 @@ const Footer = styled.div`
 
     .sns {
       display: flex;
-      margin: 0 auto;
+      /* margin: 0 auto; */
       margin-top: 40px;
       .logo {
         margin: 0 20px;

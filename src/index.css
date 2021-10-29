@@ -253,6 +253,18 @@ html {
   color: #ffffff;
 }
 
+.Roboto_35pt_Black_Yellow {
+  font-family: Roboto;
+  font-size: 35px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.31;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ffb900;
+}
+
 .Roboto_35pt_Bold {
   font-family: Roboto;
   font-size: 35px;
