@@ -982,6 +982,7 @@ const Content = styled.div`
 const Line = styled.div`
   height: 2px;
   background-color: var(--purple);
+  box-shadow: 0 0 20px 0 #fff;
 `;
 
 const Loading = styled.div`

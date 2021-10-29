@@ -285,10 +285,7 @@ function Defi({ toast, t }) {
                   <div className="text Roboto_25pt_Regular">
                     {t("De-Fi/Station/charging-station")}
                   </div>
-                  <HashLink
-                    to={"/defi/station"}
-                    style={{ textDecoration: "none" }}
-                  >
+                  <HashLink to={"/station"} style={{ textDecoration: "none" }}>
                     <div className="link Roboto_25pt_Regular">
                       {t("De-Fi/Station/charging-station-link")}
                     </div>
@@ -309,7 +306,7 @@ function Defi({ toast, t }) {
                   <div className="text Roboto_25pt_Regular">
                     {t("De-Fi/Station/recharge-swap")}
                   </div>
-                  <HashLink to={"defi/swap"} style={{ textDecoration: "none" }}>
+                  <HashLink to={"/swap"} style={{ textDecoration: "none" }}>
                     <div className="link Roboto_25pt_Regular">
                       {t("De-Fi/Station/charging-station-link")}
                     </div>
