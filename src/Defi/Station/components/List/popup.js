@@ -104,7 +104,7 @@ export default function Popup({
               border="3px solid #9314B2"
               w="540px"
               radius="20px"
-              notConnected="Connect Wallet"
+              notConnected="Wallet Connect"
               wrongNetwork="Change network for PLUG-IN"
               text="PLUG-IN" //어프로브 안되어 있으면 APPROVE로 대체 필요함.
               onClick={async () => {

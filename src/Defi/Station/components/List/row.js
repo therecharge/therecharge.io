@@ -314,7 +314,7 @@ export default function Row({
               >
                 <WalletConnect
                   need="2"
-                  notConnected="Connect Wallet"
+                  notConnected="Wallet Connect"
                   wrongNetwork="Change network for data"
                   // m="auto"
                   w="540px"
@@ -346,7 +346,7 @@ export default function Row({
                 radius="20px"
                 w="540px"
                 fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
-                notConnected="Connect Wallet"
+                notConnected="Wallet Connect"
                 wrongNetwork="Change network for PLUG-IN"
                 text={
                   userInfo.allowance !== "0"
