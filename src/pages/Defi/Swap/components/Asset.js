@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Web3 from "web3";
@@ -122,6 +122,33 @@ function Asset({ setParams }) {
 
     setFupBalance(balanceFUP);
   }
+
+  const updateBalance = () => {
+    loadBalance();
+    loadFupBalance();
+  }
+
+  const useInterval = (callback, delay) => {
+    const savedCallback = useRef();
+
+    // Remember the latest callback.
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+
+    // Set up the interval.
+    useEffect(() => {
+      function tick() {
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+  };
+
+  useInterval(updateBalance, 3000);
 
   useEffect(async () => {
     if (!account) return;
