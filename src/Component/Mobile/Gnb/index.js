@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-import WalletConnect from "../../../Component/Components/Common/WalletConnect";
 import { useTranslation } from "react-i18next";
 
 function Gnb({ getTitle }) {
@@ -10,7 +9,6 @@ function Gnb({ getTitle }) {
     home: false,
     about: false,
     recharge: false,
-    defi: false,
     docs: false,
   };
   const { t, i18n } = useTranslation();
@@ -27,10 +25,6 @@ function Gnb({ getTitle }) {
           to={"/"}
           onClick={() => {
             setMenuOpen(false);
-            setSidemenuOpen({
-              ...sidemenuInitialState,
-              home: true,
-            });
           }}
         >
           <img src="/logo.png" />
@@ -44,21 +38,17 @@ function Gnb({ getTitle }) {
         className="nav"
         style={menuOpen ? { display: "flex" } : { display: "none" }}
       >
-
         <div className="dropdown">
-          <div
-            className={
-              sidemenuOpen.home ? "Roboto_35pt_Black_Yellow" : "Roboto_35pt_Nomal"
-            }
-            style={{ marginTop: "80px" }}
-          >
+          <div className={"Roboto_35pt_Nomal"} style={{ marginTop: "80px" }}>
             <HashLink
               to={"/"}
               onClick={() => {
                 setMenuOpen(false);
                 setSidemenuOpen({
-                  ...sidemenuInitialState,
-                  home: true,
+                  home: false,
+                  about: false,
+                  recharge: false,
+                  docs: false,
                 });
               }}
             >
@@ -75,9 +65,10 @@ function Gnb({ getTitle }) {
               });
             }}
             className={
-              sidemenuOpen.about ? "Roboto_35pt_Black_Yellow" : "Roboto_35pt_Nomal"
+              sidemenuOpen.about
+                ? "Roboto_35pt_Black_Yellow"
+                : "Roboto_35pt_Nomal"
             }
-          // style={{ color: sidemenuOpen.about ? "--var(yellow)" : "" }}
           >
             About
           </Link>
@@ -189,7 +180,9 @@ function Gnb({ getTitle }) {
               });
             }}
             className={
-              sidemenuOpen.recharge ? "Roboto_35pt_Black_Yellow" : "Roboto_35pt_Nomal"
+              sidemenuOpen.recharge
+                ? "Roboto_35pt_Black_Yellow"
+                : "Roboto_35pt_Nomal"
             }
           >
             Recharge Token
@@ -263,103 +256,6 @@ function Gnb({ getTitle }) {
           </div>
         </div>
 
-        <div className="dropdown Roboto_35pt_Nomal">
-          <Link
-            onClick={() => {
-              setSidemenuOpen({
-                ...sidemenuInitialState,
-                defi: !sidemenuOpen.defi,
-              });
-            }}
-            className={
-              sidemenuOpen.defi ? "Roboto_35pt_Black_Yellow" : "Roboto_35pt_Nomal"
-            }
-          >
-            De-Fi
-          </Link>
-
-          <div
-            className="dropdownContent"
-            style={
-              sidemenuOpen.defi ? { display: "block" } : { display: "none" }
-            }
-          >
-            <div>
-              <HashLink
-                to={"/defi"}
-                className="Roboto_25pt_Regular"
-                onClick={() => {
-                  setMenuOpen(false)
-                  setSidemenuOpen({
-                    ...sidemenuInitialState,
-                    defi: false,
-                  })
-                }}
-              >
-                <span className="on">Station</span>
-              </HashLink>
-              <div style={{ display: "flex", gap: "50px" }}>
-                <HashLink
-                  to={"/defi/station"}
-                  className="Roboto_25pt_Regular"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    setSidemenuOpen({
-                      ...sidemenuInitialState,
-                      defi: false,
-                    })
-                  }}
-                >
-                  Station
-                </HashLink>
-                <HashLink
-                  to={"/defi/swap"}
-                  className="Roboto_25pt_Regular"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    setSidemenuOpen({
-                      ...sidemenuInitialState,
-                      defi: false,
-                    })
-                  }}
-                >
-                  Swap
-                </HashLink>
-              </div>
-            </div>
-            <div>
-              <HashLink
-                className="Roboto_25pt_Regular"
-                to={"/defi#mypools"}
-                onClick={() => {
-                  setMenuOpen(false);
-                  setSidemenuOpen({
-                    ...sidemenuInitialState,
-                    defi: false,
-                  })
-                }}
-              >
-                <span className="on">My Pools</span>
-              </HashLink>
-            </div>
-            <div>
-              <HashLink
-                className="Roboto_25pt_Regular"
-                to={"/defi#analytics"}
-                onClick={() => {
-                  setMenuOpen(false);
-                  setSidemenuOpen({
-                    ...sidemenuInitialState,
-                    defi: false,
-                  })
-                }}
-              >
-                Analytics
-              </HashLink>
-            </div>
-          </div>
-        </div>
-
         <div className="dropdown">
           <Link
             onClick={() => {
@@ -369,7 +265,9 @@ function Gnb({ getTitle }) {
               });
             }}
             className={
-              sidemenuOpen.docs ? "Roboto_35pt_Black_Yellow" : "Roboto_35pt_Nomal"
+              sidemenuOpen.docs
+                ? "Roboto_35pt_Black_Yellow"
+                : "Roboto_35pt_Nomal"
             }
           >
             Docs
@@ -390,7 +288,6 @@ function Gnb({ getTitle }) {
                     ...sidemenuInitialState,
                     docs: false,
                   });
-
                 }}
               >
                 WhitePaper
@@ -462,22 +359,18 @@ function Gnb({ getTitle }) {
           </div>
         </div>
 
-        <WalletConnect
-          need="2"
-          notConnected="Launch App"
-          wrongNetwork="Change network"
-          m="40px auto"
-          w="470px"
-          h="70px"
-          fontsize="30px"
-        // backgroundColor="#ffb900"
-        // style={{ backgroundColor: "#ffb900" }}
-        />
-
-
-        <Footer>
-          <div className="footer">
-            {/* <div className="header">
+        <LaunchApp
+          className="launchApp"
+          onClick={() => {
+            window.open("https://defi.therecharge.io/", "_blank");
+          }}
+        >
+          <div className="wording Roboto_30pt_Bold">Launch App</div>
+        </LaunchApp>
+        <Bottom>
+          <Footer>
+            <div className="footer">
+              {/* <div className="header">
               <a
                 className="Roboto_20pt_Regular"
                 href="mailto:info@therecharge.io"
@@ -485,122 +378,116 @@ function Gnb({ getTitle }) {
                 info@therecharge.io<span>〉</span>
               </a>
             </div> */}
-            <div className="sns">
-              <div
-                className="logo"
-                onClick={() => {
-                  window.open("https://github.com/therecharge", "_blank");
-                }}
-              >
-                <img src="/footer1.png" />
+              <div className="sns">
+                <div
+                  className="logo"
+                  onClick={() => {
+                    window.open("https://github.com/therecharge", "_blank");
+                  }}
+                >
+                  <img src="/footer1.png" />
+                </div>
+                <div
+                  className="logo"
+                  onClick={() => {
+                    window.open(
+                      i18n.language == "en"
+                        ? "https://medium.com/therecharge"
+                        : "https://medium.com/therecharge-kr",
+                      "_blank"
+                    );
+                  }}
+                >
+                  <img src="/footer2.png" />
+                </div>
+                <div
+                  className="logo"
+                  onClick={() => {
+                    window.open("https://blog.naver.com/therecharge", "_blank");
+                  }}
+                >
+                  <img src="/ic_naver.svg" />
+                </div>
+                <div
+                  className="logo"
+                  onClick={() => {
+                    window.open("https://twitter.com/TheRecharge_Ad", "_blank");
+                  }}
+                >
+                  <img src="/footer3.png" />
+                </div>
+                <div
+                  className="logo"
+                  onClick={() =>
+                    (window.location =
+                      i18n.language == "en"
+                        ? "https://t.me/therecharge_official"
+                        : "https://t.me/therecharge_officialkr")
+                  }
+                >
+                  <img src="/footer4.png" />
+                </div>
               </div>
-              <div
-                className="logo"
-                onClick={() => {
-                  window.open(
-                    i18n.language == "en"
-                      ? "https://medium.com/therecharge"
-                      : "https://medium.com/therecharge-kr",
-                    "_blank"
-                  );
-                }}
-              >
-                <img src="/footer2.png" />
+              <div className="sns">
+                <div
+                  className="logo"
+                  onClick={() => {
+                    window.open(
+                      "https://etherscan.io/token/0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30",
+                      "_blank"
+                    );
+                  }}
+                >
+                  <img src="/footer5.png" />
+                </div>
+                <div
+                  className="logo"
+                  onClick={() => {
+                    window.open(
+                      "https://bscscan.com/token/0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
+                      "_blank"
+                    );
+                  }}
+                >
+                  <img src="/footer7.png" />
+                </div>
+                <div
+                  className="logo"
+                  onClick={() => {
+                    window.open(
+                      "https://hecoinfo.com/token/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+                      "_blank"
+                    );
+                  }}
+                >
+                  <img src="/footer6.png" />
+                </div>
+                <div className="logo">
+                  <a href="mailto:info@therecharge.io">
+                    <img src="/footer8.png" />
+                  </a>
+                </div>
               </div>
-              <div
-                className="logo"
-                onClick={() => {
-                  window.open("https://blog.naver.com/therecharge", "_blank");
-                }}
-              >
-                <img src="/ic_naver.svg" />
-              </div>
-              <div
-                className="logo"
-                onClick={() => {
-                  window.open("https://twitter.com/TheRecharge_Ad", "_blank");
-                }}
-              >
-                <img src="/footer3.png" />
-              </div>
-              <div
-                className="logo"
-                onClick={() =>
-                (window.location =
-                  i18n.language == "en"
-                    ? "https://t.me/therecharge_official"
-                    : "https://t.me/therecharge_officialkr")
-                }
-              >
-                <img src="/footer4.png" />
-              </div>
-            </div>
-            <div className="sns">
-              <div
-                className="logo"
-                onClick={() => {
-                  window.open(
-                    "https://etherscan.io/token/0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30",
-                    "_blank"
-                  );
-                }}
-              >
-                <img src="/footer5.png" />
-              </div>
-              <div
-                className="logo"
-                onClick={() => {
-                  window.open(
-                    "https://bscscan.com/token/0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
-                    "_blank"
-                  );
-                }}
-              >
-                <img src="/footer7.png" />
-              </div>
-              <div
-                className="logo"
-                onClick={() => {
-                  window.open(
-                    "https://hecoinfo.com/token/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
-                    "_blank"
-                  );
-                }}
-              >
-                <img src="/footer6.png" />
-              </div>
-              <div
-                className="logo"
-                onClick={() => {
-                  // window.open(
-                  //   "https://hecoinfo.com/token/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
-                  //   "_blank"
-                  // );
-                  console.log("opened")
-                }}
-              >
-                <img src="/footer8.png" />
+              <div className="bottom Roboto_15pt_Regular">
+                @ 2021 Recharge Labs Ltd.
               </div>
             </div>
-            <div className="bottom Roboto_15pt_Regular">
-              @ 2021 Recharge Labs Ltd.
+          </Footer>
+          <Lang
+            onClick={() =>
+              i18n.changeLanguage(i18n.language != "en" ? "en" : "ko")
+            }
+          >
+            <div className="Roboto_35pt_Black">
+              <img src="/lang/ic-eng.svg" />
+              <span className={i18n.language == "en" ? "bold" : ""}>ENG</span>
             </div>
-          </div>
-        </Footer>
-        <Lang
-          onClick={() =>
-            i18n.changeLanguage(i18n.language != "en" ? "en" : "ko")
-          }
-        >
-          <div className="Roboto_35pt_Black">
-            <img src="/lang/ic-eng.svg" />
-            <span className={i18n.language == "en" ? "bold" : ""}>ENG</span>
-          </div>
-          <div className="Roboto_35pt_Black">
-            <img src="/lang/ic-kor.svg" />
-            <span className={i18n.language == "ko" ? "bold" : ""}>KOR</span>
-          </div>
-        </Lang>
+            <div className="Roboto_35pt_Black">
+              <img src="/lang/ic-kor.svg" />
+              <span className={i18n.language == "ko" ? "bold" : ""}>KOR</span>
+            </div>
+          </Lang>
+        </Bottom>
       </div>
     </Container>
   );
@@ -643,6 +530,7 @@ const Container = styled.div`
     min-height: 100%;
     background-color: rgba(0, 0, 0, 0.95);
     border-left: 1px solid var(--white);
+    align-items: center;
 
     .dropdown {
       display: flex;
@@ -762,10 +650,27 @@ const ConnectWallet = styled.div`
     color: var(--white);
 `;
 
+const LaunchApp = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 302px;
+  border-radius: 210px;
+  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.3);
+  background-color: var(--yellow);
+  cursor: pointer;
+`;
+
+const Bottom = styled.div`
+  position: fixed;
+  bottom: 30px;
+`;
+
 const Footer = styled.div`
   display: flex;
   margin: 0 auto;
-  margin-top: 200px;
+  // margin-top: 200px;
   // margin-bottom: 10vh;
   margin-bottom: 0px;
 

@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import Footer from "../../Components/Desktop/Footer";
-const NETWORKS = require("../../../lib/networks.json");
-const networks = NETWORKS[process.env.REACT_APP_VERSION];
 
 function Recharge({ t }) {
   return (
@@ -138,36 +136,36 @@ function Recharge({ t }) {
                     style={{ cursor: "pointer" }}
                     onClick={() =>
                       window.open(
-                        `${networks.network["ERC"].blockExplorerUrls[0]}/token/${networks.tokenAddress["ERC"]}`,
+                        "https://etherscan.io//token/0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30",
                         "_blank"
                       )
                     }
                   >
-                    {networks.tokenAddress["ERC"]}
-                  </div>
-                  <div>{t("RechargeToken/Distribution/hrc20")} : </div>
-                  <div
-                    style={{ cursor: "pointer" }}
-                    onClick={() =>
-                      window.open(
-                        `${networks.network["HRC"].blockExplorerUrls[0]}/token/${networks.tokenAddress["HRC"]}`,
-                        "_blank"
-                      )
-                    }
-                  >
-                    {networks.tokenAddress["HRC"]}
+                    0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30
                   </div>
                   <div>{t("RechargeToken/Distribution/bep20")} : </div>
                   <div
                     style={{ cursor: "pointer" }}
                     onClick={() =>
                       window.open(
-                        `${networks.network["BEP"].blockExplorerUrls[0]}/token/${networks.tokenAddress["BEP"]}`,
+                        "https://bscscan.com//token/0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
                         "_blank"
                       )
                     }
                   >
-                    {networks.tokenAddress["BEP"]}
+                    0x2D94172436D869c1e3c094BeaD272508faB0d9E3
+                  </div>
+                  <div>{t("RechargeToken/Distribution/hrc20")} : </div>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      window.open(
+                        "https://hecoinfo.com//token/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+                        "_blank"
+                      )
+                    }
+                  >
+                    0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b
                   </div>
                 </div>
               </div>

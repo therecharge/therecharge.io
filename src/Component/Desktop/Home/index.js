@@ -55,7 +55,7 @@ function Home({ t }) {
             <LaunchApp
               className="launchApp"
               onClick={() => {
-                window.open("https://app.therecharge.io/", "_blank");
+                window.open("https://defi.therecharge.io/", "_blank");
               }}
             >
               <div className="wording Roboto_16pt_Bold">Launch App</div>

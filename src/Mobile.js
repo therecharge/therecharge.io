@@ -3,51 +3,41 @@ import Gnb from "./Component/Mobile/Gnb";
 import Home from "./Component/Mobile/Home";
 import About from "./Component/Mobile/About";
 import Recharge from "./Component/Mobile/Recharge";
-import Defi from "./Component/Mobile/Defi";
-import Station from "./pages/Defi/Station";
-import Swap from "./pages/Defi/Swap";
 import Docs from "./Component/Mobile/Docs";
 /* Libraries */
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import i18next from "./locale/i18n";
 
-const Mobile = React.memo(({ toast }) => {
+const Mobile = React.memo(
+  ({ toast }) => {
+    const getTitle = () => {
+      const path = window.location.pathname.split("/")[1];
+      const path2 = window.location.pathname.split("/")[2];
 
-  const getTitle = () => {
-    const path = window.location.pathname.split("/")[1];
-    const path2 = window.location.pathname.split("/")[2];
+      switch (path) {
+        case "about":
+          return "About";
+        case "recharge":
+          return "Recharge Token";
+        case "docs":
+          return "Documents";
+        default:
+          return "";
+      }
+    };
 
-    switch (path) {
-      case "about":
-        return "About";
-      case "recharge":
-        return "Recharge Token";
-      case "defi":
-        if (path2 === "station") return "Charging Station"
-        else if (path2 === "swap") return "Charging Swap"
-        else return "De-Fi";
-      case "docs":
-        return "Documents";
-      default:
-        return "";
-    }
-  };
+    return (
+      <div className={"desktop " + getTitle()}>
+        <Gnb getTitle={getTitle} />
 
-  return (
-    <div className={"desktop " + getTitle()}>
-      <Gnb getTitle={getTitle} />
-
-      <Switch>
-        <Route path="/docs/:viewNum" component={Docs}></Route>
-        <Route path="/defi/station" component={() => <Station toast={toast} />}></Route>
-        <Route path="/defi/swap" component={() => <Swap toast={toast} />}></Route>
-        <Route path="/defi" component={() => (<Defi toast={toast} />)}></Route>
-        <Route path="/recharge" component={Recharge}></Route>
-        <Route path="/about" component={About}></Route>
-        <Route path="/" component={Home}></Route>
-      </Switch>
-      <style jsx global>{`
+        <Switch>
+          <Route path="/docs/:viewNum" component={Docs}></Route>
+          <Route path="/recharge" component={Recharge}></Route>
+          <Route path="/about" component={About}></Route>
+          <Route path="/" component={Home}></Route>
+        </Switch>
+        <style jsx global>{`
           body {
             width: 100%;
             margin: 0px;
@@ -108,9 +98,9 @@ const Mobile = React.memo(({ toast }) => {
             padding: 5px 20px;
           }
         `}</style>
-    </div>
-  );
-},
+      </div>
+    );
+  },
   (prevProps, nextProps) => {
     return true;
   }

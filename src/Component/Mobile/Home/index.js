@@ -277,10 +277,14 @@ function Home({ t }) {
             </div>
           </div>
           <div style={{ marginBottom: "43px" }}>
-            <div className="launchApp">{t("Home/text/LaunchApp")}</div>
-          </div>
-          <div>
-            <div className="launchApp">{t("Home/text/LaunchApp")}</div>
+            <div
+              className="launchApp"
+              onClick={() => {
+                window.open("https://defi.therecharge.io/", "_blank");
+              }}
+            >
+              {t("Home/text/LaunchApp")}
+            </div>
           </div>
         </div>
       </Content>
@@ -524,16 +528,20 @@ const Content = styled.div`
   .text {
     white-space: pre-line;
   }
-.launchApp{
-  display:flex;
-  justify-content: center;
+  .launchApp {
+    display: flex;
+    justify-content: center;
     align-items: center;
-  width:540px;
-  height:60px;
-  border-radius:40px;
-  background-color:#ffb900;
-  font-size:30px;
-}
+    width: 540px;
+    height: 60px;
+    border-radius: 40px;
+    background-color: #ffb900;
+    font-size: 30px;
+
+    &:hover {
+      box-shadow: 0 0 20px 0 rgba(255, 255, 255, 0.5);
+    }
+  }
   .first {
     display: flex;
     flex-direction: column;
