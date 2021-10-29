@@ -21,7 +21,7 @@ const ERC20_ABI = require("../../../abis/ERC20ABI.json");
 const POOL_ABI = require("../../../abis/poolABI.json");
 const CHARGER_ABI = require("../../../../lib/read_contract/abi/charger.json");
 const NETWORKS = require("../../../../lib/networks.json");
-const NETWORK = NETWORKS[process.env.REACT_APP_VERSION];
+const NETWORK = NETWORKS["mainnet"];
 // Row Component structure
 //  1)state
 //  2)style

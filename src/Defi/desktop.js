@@ -101,7 +101,7 @@ function Defi({ toast, t }) {
 
   const loadMyPools = async () => {
     try {
-      const NETWORK = NETWORKS[process.env.REACT_APP_VERSION];
+      const NETWORK = NETWORKS["mainnet"];
       const ERC_WEB3 = web3_R["ERC"];
       const BEP_WEB3 = web3_R["BEP"];
       const ERC_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress["ERC"];

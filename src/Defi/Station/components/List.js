@@ -92,7 +92,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const HRC_WEB3 = web3_R.HRC;
     const ALL_WEB3 = [ETH_WEB3, BEP_WEB3, HRC_WEB3];
 
-    const NETWORK = NETWORKS[process.env.REACT_APP_VERSION];
+    const NETWORK = NETWORKS["mainnet"];
     // const TOKEN_ADDRESS = NETWORK.tokenAddress[network]; //
     const ETH_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress.ERC;
     const BEP_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress.BEP;
