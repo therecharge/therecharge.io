@@ -241,6 +241,18 @@ html {
   color: #ffffff;
 }
 
+.Roboto_40pt_Medium_C {
+  font-family: Roboto;
+  font-size: 40px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}
+
 .Roboto_35pt_Black {
   font-family: Roboto;
   font-size: 35px;
@@ -515,6 +527,18 @@ html {
   letter-spacing: normal;
   text-align: center;
   color: var(--yellow);
+}
+
+.Roboto_25pt_Gray {
+  font-family: Roboto;
+  font-size: 25px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 0.8;
+  letter-spacing: normal;
+  text-align: center;
+  color: var(--gray-10);
 }
 
 .Roboto_25pt_Black {

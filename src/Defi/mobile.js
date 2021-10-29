@@ -5,9 +5,8 @@ import { useSortBy, useTable } from "react-table";
 import styled from "styled-components";
 import axios from "axios";
 import { RotateCircleLoading } from "react-loadingg";
+import { HashLink } from "react-router-hash-link";
 import { withTranslation } from "react-i18next";
-/* Components */
-import Footer from "../Components/Desktop/Footer";
 import WalletConnect from "../Components/Common/WalletConnect";
 /* Libraries */
 import {
@@ -17,7 +16,6 @@ import {
 } from "../lib/read_contract/Station";
 /* State */
 import { useRecoilState } from "recoil";
-import { HashLink } from "react-router-hash-link";
 import { accountState } from "../store/web3";
 import { web3ReaderState } from "../store/read-web3";
 
@@ -80,13 +78,20 @@ function Defi({ toast, t }) {
         accessor: "reward",
         disableSortBy: true,
       },
+      {
+        Header: "",
+        accessor: "detail",
+        disableSortBy: true,
+      },
     ],
     []
   );
+
   const initialState = {
     sortBy: [
       {
-        id: "name",
+        id: "balance",
+        desc: true,
       },
     ],
   };
@@ -221,7 +226,6 @@ function Defi({ toast, t }) {
         },
         general: { tvl: TVL },
       });
-      // console.log(analytics);
       /**
        * ERC: {},
        * HRC: {},
@@ -253,7 +257,9 @@ function Defi({ toast, t }) {
   };
 
   useInterval(() => {
-    if (account) loadMyPools();
+    if (account) {
+      loadMyPools();
+    }
     loadAnalytics();
   }, 5000);
 
@@ -263,22 +269,27 @@ function Defi({ toast, t }) {
 
   return (
     <Container>
-      <Content>
-        <div className="first" id="station" style={{ paddingTop: "80px" }}>
-          <div className="theme Roboto_40pt_Black">Overview</div>
+      <Content id="station">
+        <div className="first" style={{ paddingTop: "100px" }}>
+          <div className="theme Roboto_50pt_Black">Overview</div>
           <div className="contents">
             <div className="content">
               <div className="box">
-                <img src="/ic_chargingstation.svg" />
+                <div style={{ width: "96.4px", height: "80px" }}>
+                  <img src="/ic_chargingstation.svg" />
+                </div>
                 <div className="desc">
-                  <div className="name Roboto_30pt_Black_L">
+                  <div className="name Roboto_40pt_Black_L">
                     Charging Station
                   </div>
-                  <div className="text Roboto_16pt_Regular_L">
+                  <div className="text Roboto_25pt_Regular">
                     {t("De-Fi/Station/charging-station")}
                   </div>
-                  <HashLink to={"/defi/station"}>
-                    <div className="link Roboto_16pt_Regular_L">
+                  <HashLink
+                    to={"/defi/station"}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <div className="link Roboto_25pt_Regular">
                       {t("De-Fi/Station/charging-station-link")}
                     </div>
                   </HashLink>
@@ -287,14 +298,19 @@ function Defi({ toast, t }) {
             </div>
             <div className="content">
               <div className="box">
-                <img src="/ic_rechargingswap.svg" />
+                <div style={{ width: "96.4px", height: "80px" }}>
+                  <img
+                    src="/ic_rechargingswap.svg"
+                    style={{ width: "96.4px", height: "80px" }}
+                  />
+                </div>
                 <div className="desc">
-                  <div className="name Roboto_30pt_Black_L">Recharge swap</div>
-                  <div className="text Roboto_16pt_Regular_L">
+                  <div className="Roboto_40pt_Black_L">Recharge swap</div>
+                  <div className="text Roboto_25pt_Regular">
                     {t("De-Fi/Station/recharge-swap")}
                   </div>
-                  <HashLink to={"defi/swap"}>
-                    <div className="link Roboto_16pt_Regular_L">
+                  <HashLink to={"defi/swap"} style={{ textDecoration: "none" }}>
+                    <div className="link Roboto_25pt_Regular">
                       {t("De-Fi/Station/charging-station-link")}
                     </div>
                   </HashLink>
@@ -304,23 +320,22 @@ function Defi({ toast, t }) {
           </div>
         </div>
       </Content>
-      <Content>
-        <div className="second" id="mypools" style={{ paddingTop: "100px" }}>
-          <div className="theme Roboto_30pt_Black">My pools</div>
+      <Content id="mypools">
+        <div className="second">
+          <div className="theme Roboto_30pt_Black_L">My pools</div>
           <Line />
           {!account ? (
             <div className="contents">
               <div className="content Roboto_30pt_Medium">
                 {t("De-Fi/Station/MyPool/ask-connect")}
               </div>
+
               <WalletConnect
                 need="2"
                 notConnected="Wallet Connect"
-                wrongNetwork="Change network"
+                wrongNetwork="Change network for data"
                 m="auto"
-                w="366px"
-                h="40px"
-                fontsize="20px"
+                w="540px"
               />
             </div>
           ) : myPools === null ? (
@@ -333,9 +348,12 @@ function Defi({ toast, t }) {
                 <div className="text Roboto_30pt_Black">Loading…</div>
               </div>
             </Loading>
-          ) : myPools.length === 0 ? (
+          ) : myPools.length == 0 ? (
             <div className="contents">
-              <div className="content Roboto_30pt_Medium">
+              <div
+                className="content Roboto_40pt_Black"
+                style={{ width: "356px" }}
+              >
                 {t("De-Fi/Station/MyPool/no-pool")}
               </div>
             </div>
@@ -343,8 +361,8 @@ function Defi({ toast, t }) {
             <div className="contents">
               <table
                 {...getTableProps()}
-                style={{ width: "1088px", borderCollapse: "collapse" }}
-                className="Roboto_16pt_Bold"
+                style={{ width: "720px", borderCollapse: "collapse" }}
+                className="Roboto_20pt_Black"
               >
                 <thead>
                   {headerGroups.map((headerGroup) => (
@@ -359,26 +377,21 @@ function Defi({ toast, t }) {
                           }}
                         >
                           {column.render("Header")}
-                          {column.Header !== "" ? (
-                            <div
-                              style={{
-                                width: "100%",
-                                height: "2px",
-                                margin: "20px 0",
-                                objectFit: "contain",
-                                boxShadow: "0 0 20px 0 #ffffff",
-                                backgroundColor: "var(--purple)",
-                              }}
-                            ></div>
-                          ) : (
-                            <></>
-                          )}
+                          <div
+                            style={{
+                              width: "100%",
+                              height: "2px",
+                              margin: "20px 0",
+                              objectFit: "contain",
+                              boxShadow: "0 0 20px 0 #ffffff",
+                              backgroundColor: "var(--purple)",
+                            }}
+                          ></div>
                         </th>
                       ))}
                     </tr>
                   ))}
                 </thead>
-
                 <tbody {...getTableBodyProps()}>
                   {rows.map((row) => {
                     prepareRow(row);
@@ -400,6 +413,26 @@ function Defi({ toast, t }) {
                             >
                               {cell.render("Cell")}
                             </HashLink>
+
+                            // <td
+                            //   {...cell.getCellProps()}
+                            //   onClick={() => {
+                            //     setParams({
+                            //       type: `${myPools[row.index].type.split(" ")[0]
+                            //         }`,
+                            //       isLP: false,
+                            //     });
+
+                            //     setModalPool2Open(!modalPool2Open);
+                            //     handleModalPool();
+                            //   }}
+                            //   style={{
+                            //     paddingTop: "20px",
+                            //     textAlign: "center",
+                            //   }}
+                            // >
+                            //   {cell.render("Cell")}
+                            // </td>
                           );
                         })}
                       </tr>
@@ -411,19 +444,19 @@ function Defi({ toast, t }) {
           )}
         </div>
       </Content>
-      <Content>
-        <div className="third" id="analytics" style={{ paddingTop: "100px" }}>
+      <Content id="analytics" style={{ width: "100%" }}>
+        <div className="third" style={{ marginTop: "200px" }}>
           <div className="themes">
-            <div className="theme Roboto_30pt_Black">Analytics</div>
+            <div className="theme Roboto_30pt_Black_L">Analytics</div>
             <div className="subTheme Roboto_20pt_Medium_L">
               Overview of Recharge Ecosystem
             </div>
           </div>
-          <Line style={{ marginBottom: "20px" }} />
+          <Line />
           <div className="contents">
             <div className="container">
               <div className="center box exception">
-                <div className="title Roboto_30pt_Black">
+                <div className="title Roboto_40pt_Medium_C">
                   ${" "}
                   {analytics.general.tvl
                     ? convertNum(analytics.general.tvl, {
@@ -431,52 +464,59 @@ function Defi({ toast, t }) {
                       })
                     : 0}
                 </div>
-                <div className="text Roboto_16pt_Regular_Gray">
-                  Total Value Locked
-                </div>
+                <div className="text Roboto_25pt_Gray">Total Value Locked</div>
               </div>
             </div>
             <div className="container">
               <div className="left box exception">
-                <div className="title Roboto_20pt_Medium_C">
+                <div className="title Roboto_40pt_Medium_C">
                   {/* {analytics.general.RedemptionRate
                     ? makeNum(analytics.general.RedemptionRate) / 100
                     : 0}{" "} */}
                   2 %
                 </div>
-                <div className="text Roboto_12pt_Regular_L_Gray">
+                <div className="text Roboto_25pt_Gray">
                   Current Redemption Rate
                 </div>
               </div>
               <div className="right box exception">
                 <div className="item">
-                  <div className="title Roboto_16pt_Bold">
+                  <div
+                    className="title Roboto_25pt_Black"
+                    style={{ textAlign: "center" }}
+                  >
                     {analytics.general.ServicesPlugged
                       ? analytics.general.ServicesPlugged
                       : 0}
                   </div>
-                  <div className="text Roboto_12pt_Regular_L_Gray">
-                    Number of Services Plugged
+                  <div className="text Roboto_20pt_Regular_Gray">
+                    Number of Services{<br />}Plugged
                   </div>
                 </div>
                 <div className="item">
-                  <div className="title Roboto_16pt_Bold">
+                  <div
+                    className="title Roboto_25pt_Black"
+                    style={{ textAlign: "center" }}
+                  >
                     {analytics.general.ChargersActivated
                       ? analytics.general.ChargersActivated
                       : 0}
                   </div>
-                  <div className="text Roboto_12pt_Regular_L_Gray">
-                    Number of Chargers Activated
+                  <div className="text Roboto_20pt_Regular_Gray">
+                    Number of Chargers{<br />}Activated
                   </div>
                 </div>
                 <div className="item">
-                  <div className="title Roboto_16pt_Bold">
+                  <div
+                    className="title Roboto_25pt_Black"
+                    style={{ textAlign: "center" }}
+                  >
                     {analytics.general.BridgesActivated
                       ? analytics.general.BridgesActivated
                       : 0}
                   </div>
-                  <div className="text Roboto_12pt_Regular_L_Gray">
-                    Number of Bridges Activated
+                  <div className="text Roboto_20pt_Regular_Gray">
+                    Number of Bridges{<br />}Activated
                   </div>
                 </div>
               </div>
@@ -484,7 +524,7 @@ function Defi({ toast, t }) {
             <div className="container">
               <div className="left box">
                 <div
-                  className="title title Roboto_20pt_Medium_C"
+                  className="title Roboto_40pt_Medium_C"
                   style={{ zIndex: "2" }}
                 >
                   {analytics.ERC.total
@@ -495,7 +535,7 @@ function Defi({ toast, t }) {
                   RCG
                 </div>
                 <div
-                  className="text Roboto_12pt_Regular_L_Gray"
+                  className="text Roboto_20pt_Regular_Gray"
                   style={{ zIndex: "2" }}
                 >
                   Total Circulating Supply in ERC20
@@ -503,51 +543,51 @@ function Defi({ toast, t }) {
                 <div className="logo1">
                   <img
                     src="/img_erc_back.svg"
-                    style={{ width: "61.5px", height: "100px" }}
+                    style={{ width: "92.2px", height: "150px" }}
                   />
                 </div>
               </div>
               <div className="right box">
                 <div className="content le">
                   <div className="item">
-                    <div className="title Roboto_16pt_Bold">
+                    <div className="title Roboto_20pt_Black">
                       {/* {analytics.ERC.redemption
                         ? makeNum(analytics.ERC.redemption)
-                        : 0} RCG */}
+                        : 0}{" "}RCG */}
                       -
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
+                    <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Carbon Redemption ERC20
                     </div>
                   </div>
                   <div className="item">
-                    <div className="title Roboto_16pt_Bold">
+                    <div className="title Roboto_20pt_Black">
                       $ {analytics.ERC.price ? makeNum(analytics.ERC.price) : 0}
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
+                    <div className="text Roboto_20pt_Regular_Gray">
                       Current RCG Price($) ERC20 Uniswap
                     </div>
                   </div>
                 </div>
                 <div className="content">
                   <div className="item">
-                    <div className="title Roboto_16pt_Bold">
+                    <div className="title Roboto_20pt_Black">
                       {analytics.ERC.swapped
                         ? makeNum(analytics.ERC.swapped)
                         : 0}
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
+                    <div className="text Roboto_20pt_Regular_Gray">
                       RCG (ERC20) Swapped in
                     </div>
                   </div>
                   <div className="item">
-                    <div className="title Roboto_16pt_Bold">
+                    <div className="title Roboto_20pt_Black">
                       {analytics.ERC.conversion
                         ? makeNum(analytics.ERC.conversion)
                         : 0}{" "}
                       RCG
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
+                    <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Conversion Fee(ERC20)
                     </div>
                   </div>
@@ -557,7 +597,7 @@ function Defi({ toast, t }) {
             <div className="container">
               <div className="left box">
                 <div
-                  className="title title Roboto_20pt_Medium_C"
+                  className="title Roboto_40pt_Medium_C"
                   style={{ zIndex: "2" }}
                 >
                   {analytics.BEP.total
@@ -568,7 +608,7 @@ function Defi({ toast, t }) {
                   RCG
                 </div>
                 <div
-                  className="text Roboto_12pt_Regular_L_Gray"
+                  className="text Roboto_20pt_Regular_Gray"
                   style={{ zIndex: "2" }}
                 >
                   Total Circulating Supply in BEP20
@@ -576,25 +616,26 @@ function Defi({ toast, t }) {
                 <div className="logo3">
                   <img
                     src="/img_bep_back.svg"
-                    style={{ width: "100px", height: "100px" }}
+                    style={{ width: "150px", height: "150px" }}
                   />
                 </div>
               </div>
               <div className="right box">
                 <div className="content le">
                   <div className="item">
-                    <div className="title Roboto_16pt_Bold">
+                    <div className="title Roboto_20pt_Black">
                       {/* {analytics.BEP.redemption
                         ? makeNum(analytics.BEP.redemption)
-                        : 0} RCG */}
+                        : 0}{" "}
+                      RCG */}
                       -
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
+                    <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Carbon Redemption BEP20
                     </div>
                   </div>
                   <div className="item">
-                    <div className="title Roboto_16pt_Bold">
+                    <div className="title Roboto_20pt_Black">
                       ${" "}
                       {analytics.BEP.price
                         ? analytics.BEP.price === "0"
@@ -602,30 +643,30 @@ function Defi({ toast, t }) {
                           : makeNum(analytics.BEP.price)
                         : 0}
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
+                    <div className="text Roboto_20pt_Regular_Gray">
                       Current RCG Price($) BEP20 Pancakeswap
                     </div>
                   </div>
                 </div>
                 <div className="content">
                   <div className="item">
-                    <div className="title Roboto_16pt_Bold">
+                    <div className="title Roboto_20pt_Black">
                       {analytics.BEP.swapped
                         ? makeNum(analytics.BEP.swapped)
                         : 0}
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
+                    <div className="text Roboto_20pt_Regular_Gray">
                       RCG (BEP20) Swapped in
                     </div>
                   </div>
                   <div className="item">
-                    <div className="title Roboto_16pt_Bold">
+                    <div className="title Roboto_20pt_Black">
                       {analytics.BEP.conversion
                         ? makeNum(analytics.BEP.conversion)
                         : 0}{" "}
                       RCG
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
+                    <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Conversion Fee(BEP20)
                     </div>
                   </div>
@@ -635,7 +676,7 @@ function Defi({ toast, t }) {
             <div className="container">
               <div className="left box">
                 <div
-                  className="title title Roboto_20pt_Medium_C"
+                  className="title Roboto_40pt_Medium_C"
                   style={{ zIndex: "2" }}
                 >
                   {analytics.HRC.total
@@ -646,7 +687,7 @@ function Defi({ toast, t }) {
                   RCG
                 </div>
                 <div
-                  className="text Roboto_12pt_Regular_L_Gray"
+                  className="text Roboto_20pt_Regular_Gray"
                   style={{ zIndex: "2" }}
                 >
                   Total Circulating Supply in HRC20
@@ -654,26 +695,26 @@ function Defi({ toast, t }) {
                 <div className="logo2">
                   <img
                     src="/img_hrc_back.svg"
-                    style={{ width: "65px", height: "100px" }}
+                    style={{ width: "97.5px", height: "150px" }}
                   />
                 </div>
               </div>
               <div className="right box">
                 <div className="content le">
                   <div className="item">
-                    <div className="title Roboto_16pt_Bold">
+                    <div className="title Roboto_20pt_Black">
                       {/* {analytics.HRC.redemption
                         ? makeNum(analytics.HRC.redemption)
                         : 0}{" "}
                       RCG */}
                       -
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
+                    <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Carbon Redemption HRC20
                     </div>
                   </div>
                   <div className="item">
-                    <div className="title Roboto_16pt_Bold">
+                    <div className="title Roboto_20pt_Black">
                       ${" "}
                       {analytics.HRC.price
                         ? analytics.HRC.price === "0"
@@ -681,30 +722,30 @@ function Defi({ toast, t }) {
                           : makeNum(analytics.HRC.price)
                         : 0}
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
+                    <div className="text Roboto_20pt_Regular_Gray">
                       Current RCG Price($) HRC20-Mdex
                     </div>
                   </div>
                 </div>
                 <div className="content">
                   <div className="item">
-                    <div className="title Roboto_16pt_Bold">
+                    <div className="title Roboto_20pt_Black">
                       {analytics.HRC.swapped
                         ? makeNum(analytics.HRC.swapped)
                         : 0}
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
+                    <div className="text Roboto_20pt_Regular_Gray">
                       RCG (HRC20) Swapped in
                     </div>
                   </div>
                   <div className="item">
-                    <div className="title Roboto_16pt_Bold">
+                    <div className="title Roboto_20pt_Black">
                       {analytics.HRC.conversion
                         ? makeNum(analytics.HRC.conversion)
                         : 0}{" "}
                       RCG
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
+                    <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Conversion Fee(HRC20)
                     </div>
                   </div>
@@ -712,64 +753,75 @@ function Defi({ toast, t }) {
               </div>
             </div>
           </div>
+
+          {/* <div className="subTheme Roboto_30pt_Medium">
+              Daily Carbon Redemption
+            </div>
+            <div className="graph">
+              <img src="/sampleimg_graph.svg" />
+            </div> */}
         </div>
       </Content>
-
-      <Footer />
     </Container>
   );
 }
 
 const Container = styled.div`
   margin: auto auto;
-  margin-top: 80px;
+  margin-top: 105px;
   display: flex;
   flex-direction: column;
-  min-width: 1088px;
+  // min-width: 1088px;
   width: 100%;
 `;
 const Content = styled.div`
   display: flex;
   margin: auto auto;
   margin-bottom: 20px;
-  width: 1088px;
+  width: 720px;
 
   height: fit-content; // 조정 필요
 
   color: var(--white);
 
+  .text {
+    white-space: pre-line;
+  }
   .first {
     display: flex;
     flex-direction: column;
-    margin: auto;
-    width: 1088px;
+    margin: 0 auto;
+    width: 720px;
+    padding-bottom: 100px;
 
     .theme {
       margin: auto auto;
-      margin-bottom: 80px;
+      margin-bottom: 120px;
     }
     .contents {
       display: flex;
+      flex-direction: column;
+      align-items: center;
       margin: auto;
-      width: 100%;
+      width: 620px;
+      gap: 80px;
 
       .content {
         display: flex;
         flex-direction: column;
         margin: auto 10px;
-        width: 534px;
+        width: 620px;
 
         .box {
           text-decoration: none;
           display: flex;
-          align-content: center;
+          align-items: flex-start;
           justify-content: center;
-          align-items: center;
-          width: 534px;
+          width: 620px;
           border-radius: 8px;
           img {
-            width: 68.4px;
-            height: 80px;
+            width: 96.4px;
+            height: 90px;
           }
           .desc {
             display: flex;
@@ -800,12 +852,11 @@ const Content = styled.div`
   .second {
     display: flex;
     flex-direction: column;
-    margin: auto;
-    width: 1088px;
+    width: 620px;
+    margin: 100px auto;
 
     .theme {
-      margin-bottom: 16px;
-      text-align: left;
+      margin-bottom: 8px;
     }
 
     .contents {
@@ -815,12 +866,11 @@ const Content = styled.div`
       }
 
       .tableRow:hover {
-        width: 1052px;
         background-color: var(--black-20);
       }
       .content {
         margin: auto;
-        margin-top: 16px;
+        margin-top: 8px;
         margin-bottom: 120px;
       }
       .walletConnect {
@@ -842,38 +892,36 @@ const Content = styled.div`
   .third {
     display: flex;
     flex-direction: column;
-    margin: auto;
-
+    margin: auto 50px;
+    width: 620px;
     .themes {
       display: flex;
-      align-items: flex-end;
       justify-content: space-between;
-      margin-bottom: 16px;
-    }
+      align-items: flex-end;
+      margin-bottom: 8px;
 
-    .theme {
-      // margin: auto;
-    }
-    .subTheme {
-      // margin: auto;
-      // margin-bottom: 80px;
+      .theme {
+      }
+      .subTheme {
+      }
     }
     .contents {
       display: flex;
       flex-direction: column;
-      gap: 20px 0;
-      width: 100%;
       gap: 16px 0;
-      margin-bottom: 160px;
+      width: 100%;
+      margin-top: 40px;
+      margin-bottom: 120px;
 
       .container {
         display: flex;
-        gap: 0 8px;
+        flex-direction: column;
+        gap: 16px 0;
 
         .center {
           position: relative;
           width: 100%;
-          height: 100px;
+          height: 120px;
           display: flex;
           flex-direction: column;
           gap: 8px 0;
@@ -882,14 +930,12 @@ const Content = styled.div`
           justify-content: center;
           align-items: center;
         }
-
         .left {
           position: relative;
-          width: 400px;
-          height: 146px;
+          height: 230px;
           display: flex;
           flex-direction: column;
-          gap: 8px 0;
+          gap: 16px 0;
           box-sizing: border-box;
           padding: 20px;
           justify-content: center;
@@ -897,31 +943,32 @@ const Content = styled.div`
 
           .logo1 {
             position: absolute;
-            bottom: 20px;
-            right: 170px;
+            bottom: 40px;
+            right: 262.8px;
           }
 
           .logo2 {
             position: absolute;
-            bottom: 20px;
-            right: 170px;
+            bottom: 40px;
+            right: 260.5px;
           }
 
           .logo3 {
             position: absolute;
-            bottom: 20px;
-            right: 153px;
+            bottom: 40px;
+            right: 234.3px;
           }
         }
 
         .left.exception {
-          height: 80px;
+          height: 150px;
         }
 
         .right.exception {
           display: flex;
-          height: 80px;
-          padding: 0 40px;
+          flex-direction: row;
+          height: 120px;
+          padding: 0 20px;
           box-sizing: border-box;
           justify-content: space-between;
           align-items: center;
@@ -931,24 +978,20 @@ const Content = styled.div`
             flex-direction: column;
             gap: 8px 0;
           }
-          .title {
-            text-align: left;
-          }
-          .text {
-            text-align: left;
-          }
         }
 
         .right {
           display: flex;
-          width: 680px;
-          height: 146px;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 400px;
+          gap: 20px 0;
 
           .content {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin-left: 40px;
             gap: 20px 0;
 
             .item {
@@ -956,15 +999,6 @@ const Content = styled.div`
               flex-direction: column;
               gap: 8px 0;
             }
-            .title {
-              text-align: left;
-            }
-            .text {
-              text-align: left;
-            }
-          }
-          .le {
-            width: 302px;
           }
         }
       }
@@ -982,6 +1016,67 @@ const Content = styled.div`
 const Line = styled.div`
   height: 2px;
   background-color: var(--purple);
+  box-shadow: 0 0 20px 0 #fff;
+`;
+
+const Footer = styled.div`
+  display: flex;
+  margin: auto;
+  margin-bottom: 180px;
+  color: #ffffff;
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+
+    .header {
+      display: flex;
+      margin: 0 auto;
+      padding: 12px 0;
+      width: 286px;
+      height: 50px;
+      box-sizing: border-box;
+      text-align: center;
+      border: 1px solid var(--yellow);
+      border-radius: 6px;
+      a {
+        margin: auto;
+        margin-top: -3px;
+        text-decoration: none;
+        color: #ffffff;
+      }
+      span {
+        margin-left: 30px;
+        margin-right: -30px;
+        color: var(--yellow);
+      }
+    }
+    .header:hover {
+      border-radius: 6px;
+      background-color: var(--yellow);
+
+      span {
+        color: var(--white);
+      }
+    }
+    .sns {
+      display: flex;
+      margin: 40px auto;
+      align-items: center;
+      .logo {
+        margin: 0 20px;
+        cursor: pointer;
+        img {
+          width: 30px;
+          vertical-align: top;
+        }
+      }
+    }
+    .bottom {
+      margin: 0 auto;
+    }
+  }
 `;
 
 const Loading = styled.div`
@@ -999,7 +1094,7 @@ const Loading = styled.div`
   .box {
     display: flex;
     flex-direction: column;
-    width: 600px;
+    width: 400px;
     height: 255px;
     background-color: rgba(0, 0, 0, 1);
     border-radius: 20px;
@@ -1010,5 +1105,4 @@ const Loading = styled.div`
     }
   }
 `;
-
 export default withTranslation()(Defi);

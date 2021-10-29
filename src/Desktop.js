@@ -1,9 +1,6 @@
-import logo from "./logo.svg";
-import "./App.css";
-
 /* Components */
-import Gnb from "./Gnb";
-import Home from "./Defi";
+import Gnb from "./Gnb/desktop";
+import Home from "./Defi/desktop";
 import Station from "./Defi/Station";
 import Swap from "./Defi/Swap";
 /* Modules */
@@ -29,13 +26,10 @@ function App({ toast, t }) {
       <Gnb />
       <Switch>
         <Route
-          path="/defi/station"
+          path="/station"
           component={() => <Station toast={toast} />}
         ></Route>
-        <Route
-          path="/defi/swap"
-          component={() => <Swap toast={toast} />}
-        ></Route>
+        <Route path="/swap" component={() => <Swap toast={toast} />}></Route>
         <Route path="/" component={Home}></Route>
       </Switch>
       <style jsx global>{`

@@ -52,12 +52,7 @@ function Gnb() {
       <SubContainer>
         <HashLink
           className="logo"
-          to={"/"}
-          // onClick={() => {
-          //   setModalPoolOpen(false);
-          //   setModalPool2Open(false);
-          //   setModalSwapOpen(false);
-          // }}
+          onClick={() => window.open("https://therecharge.io", "_blank")}
         >
           <Logo>
             <img src="/logo.png" />
@@ -89,7 +84,7 @@ function Gnb() {
           </HashLink>
           <HashLink
             className="content"
-            to={"/defi/station"}
+            to={"/station"}
             // onClick={() => {
             //   setModalPoolOpen(false);
             //   setModalPool2Open(false);
@@ -110,7 +105,7 @@ function Gnb() {
           </HashLink>
           <HashLink
             className="content"
-            to={"/defi/swap"}
+            to={"/swap"}
             // onClick={() => {
             //   setModalPoolOpen(false);
             //   setModalPool2Open(false);

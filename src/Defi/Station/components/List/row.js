@@ -505,7 +505,21 @@ function Status({ status }) {
   return (
     <p
       className="Roboto_20pt_Black status"
-      style={{ color: color(status), width: "71.5px", textAlign: "center" }}
+      style={
+        window.innerWidth > 720
+          ? {
+              marginLeft: "67px",
+              color: color(status),
+              width: "71.5px",
+              textAlign: "center",
+            }
+          : {
+              marginLeft: "50px",
+              color: color(status),
+              width: "71.5px",
+              textAlign: "center",
+            }
+      }
     >
       {status}
     </p>
@@ -516,15 +530,24 @@ function Name({ status, name }) {
     if (status != "Active") return "var(--gray-30)";
   }
   return (
-    <p
+    <div
       className={`${
-        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+        window.innerWidth > 720 ? "Roboto_25pt_Black" : "Roboto_20pt_Black"
       } name`}
-      style={{ color: color() }}
+      style={
+        window.innerWidth > 720
+          ? {
+              marginLeft: "47px",
+              color: color(),
+            }
+          : { marginLeft: "5px", color: color() }
+      }
     >
-      <img src="/swap_rcg.svg" />
-      {name}
-    </p>
+      <div>
+        <img src="/swap_rcg.svg" />
+      </div>
+      <div>{name}</div>
+    </div>
   );
 }
 
@@ -539,7 +562,7 @@ function Apy({ status, apy }) {
   return (
     <p
       className={`${
-        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
+        window.innerWidth > 720 ? "Roboto_25pt_Black" : "Roboto_25pt_Black"
       } apy`}
       style={{ color: color() }}
     >
@@ -585,12 +608,14 @@ const Container = styled.div`
   border-radius: 10px;
   .status {
     margin: auto auto;
-    margin-left: 67px;
+    // margin-left: 67px;
     margin-right: 0px;
   }
   .name {
+    display: flex;
     margin: auto auto;
-    margin-left: 47px;
+    align-items: center;
+    // margin-left: 47px;
     img {
       width: 40px;
       height: 40px;
