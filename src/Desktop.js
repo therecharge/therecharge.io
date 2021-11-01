@@ -3,26 +3,14 @@ import Gnb from "./Component/Desktop/Gnb";
 import Home from "./Component/Desktop/Home";
 import About from "./Component/Desktop/About";
 import Recharge from "./Component/Desktop/Recharge";
-import Defi from "./Component/Desktop/Defi";
 import Docs from "./Component/Desktop/Docs";
-import Station from "./pages/Defi/Station";
-import Swap from "./pages/Defi/Swap";
 /* Modules */
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { useRecoilState } from "recoil";
 /* Libraries */
-import {
-  getChargerList,
-  createContractInstance,
-  getTokenInfo,
-  getChargerInfo,
-} from "./lib/read_contract/Station";
-// import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import i18next from "./locale/i18n";
-/* Store */
-import { web3ReaderState } from "./store/read-web3";
 
 const Desktop = React.memo(
   ({ toast, t }) => {
@@ -78,7 +66,7 @@ const Desktop = React.memo(
         <Gnb />
         <Switch>
           <Route path="/docs/:viewNum" component={Docs}></Route>
-          <Route
+          {/* <Route
             path="/defi/station"
             component={() => <Station toast={toast} />}
           ></Route>
@@ -86,7 +74,7 @@ const Desktop = React.memo(
             path="/defi/swap"
             component={() => <Swap toast={toast} />}
           ></Route>
-          <Route path="/defi" component={() => <Defi toast={toast} />}></Route>
+          <Route path="/defi" component={() => <Defi toast={toast} />}></Route> */}
           <Route path="/recharge" component={Recharge}></Route>
           <Route path="/about" component={About}></Route>
           <Route path="/" component={Home}></Route>

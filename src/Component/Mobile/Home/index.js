@@ -270,10 +270,20 @@ function Home({ t }) {
             <div className="text text Roboto_30pt_Regular_Mobile">
               <div
                 className="text Roboto_30pt_Regular_Mobile"
-                style={{ marginBottom: "40px" }}
+                style={{ marginBottom: "60px" }}
               >
                 {t("Home/text/info")}
               </div>
+            </div>
+          </div>
+          <div style={{ marginBottom: "43px" }}>
+            <div
+              className="launchApp"
+              onClick={() => {
+                window.open("https://defi.therecharge.io/", "_blank");
+              }}
+            >
+              {t("Home/text/LaunchApp")}
             </div>
           </div>
         </div>
@@ -518,13 +528,26 @@ const Content = styled.div`
   .text {
     white-space: pre-line;
   }
+  .launchApp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 540px;
+    height: 60px;
+    border-radius: 40px;
+    background-color: #ffb900;
+    font-size: 30px;
 
+    &:hover {
+      box-shadow: 0 0 20px 0 rgba(255, 255, 255, 0.5);
+    }
+  }
   .first {
     display: flex;
     flex-direction: column;
     margin: 300px 50px;
     // z-index: 2;
-
+    align-items: center;
     .left {
       top: 900px;
       text-align: center;
