@@ -7,6 +7,13 @@ import Networks from "./Networks";
 import Slider from "./Slider";
 import SortBy from "./SortBy";
 
+// const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
+//   let newNum;
+//   if (typeof num === "string") newNum = Number(num);
+//   if (unitSeparator) return newNum.toLocaleString();
+//   return newNum.toLocaleString("fullwide", { useGrouping: false });
+// };
+
 function Header({ setNetwork, network, setParams, params, tvl }) {
   return (
     <Contain>
@@ -16,7 +23,9 @@ function Header({ setNetwork, network, setParams, params, tvl }) {
           <p className="Roboto_40pt_Black">Charger List</p>
           <TotalValue>
             <Text className="Roboto_20pt_Regular">Total Value Locked</Text>
-            <Value className="Roboto_30pt_Medium ">$ {tvl}</Value>
+            <Value className="Roboto_30pt_Medium ">
+              {/* $ {convertNum(tvl, { unitSeparator: true })} */}$ {tvl}
+            </Value>
           </TotalValue>
         </TitleWrapper>
       </Title>

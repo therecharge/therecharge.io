@@ -295,7 +295,7 @@ function Defi({ toast, t }) {
                   </div>
                   <HashLink to={"/swap"} style={{ textDecoration: "none" }}>
                     <div className="link Roboto_16pt_Regular_L">
-                      {t("De-Fi/Station/charging-station-link")}
+                      {t("De-Fi/Station/recharge-swap-link")}
                     </div>
                   </HashLink>
                 </div>
@@ -313,7 +313,7 @@ function Defi({ toast, t }) {
               <div className="content Roboto_30pt_Medium">
                 {t("De-Fi/Station/MyPool/ask-connect")}
               </div>
-              <WalletConnect
+              {/* <WalletConnect
                 need="2"
                 notConnected="Wallet Connect"
                 wrongNetwork="Change network"
@@ -321,7 +321,7 @@ function Defi({ toast, t }) {
                 w="366px"
                 h="40px"
                 fontsize="20px"
-              />
+              /> */}
             </div>
           ) : myPools === null ? (
             <Loading style={{ display: onLoading ? "" : "none" }}>
