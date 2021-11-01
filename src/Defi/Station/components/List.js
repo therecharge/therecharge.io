@@ -247,10 +247,10 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           ALL_RESULTS[network][i].apy = getAPY(
             ALL_RESULTS[network][i].totalSupply,
             ALL_RESULTS[network][i].rewardAmount -
-            (ALL_RESULTS[network][i].rewardToken ==
+              (ALL_RESULTS[network][i].rewardToken ==
               ALL_RESULTS[network][i].stakeToken
-              ? ALL_RESULTS[network][i].totalSupply
-              : 0),
+                ? ALL_RESULTS[network][i].totalSupply
+                : 0),
             ALL_RESULTS[network][i].DURATION
           );
           ALL_RESULTS[network][i].symbol = [
@@ -294,7 +294,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       //     test.unshift(catchZeroPool[0]);
       //   }
       // }
-      console.log("ALL_LIST", ALL_LIST)
+      console.log("ALL_LIST", ALL_LIST.reverse());
 
       if (ALL_LIST.length === 0) {
         setChList(chargerInfo);
@@ -314,9 +314,15 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   };
   const filterByType = (chargerList) => {
     if (params.isLP) {
-      return chargerList.filter((charger) => charger.name.includes(params.type) && charger.name.includes("LP"));
+      return chargerList.filter(
+        (charger) =>
+          charger.name.includes(params.type) && charger.name.includes("LP")
+      );
     } else {
-      return chargerList.filter((charger) => charger.name.includes(params.type) && !charger.name.includes("LP"));
+      return chargerList.filter(
+        (charger) =>
+          charger.name.includes(params.type) && !charger.name.includes("LP")
+      );
     }
   };
 
@@ -459,7 +465,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           </Sortby>
         </DropDownWrapper > */}
         <RowContainer>
-          {chList.map((charger, index) => {
+          {chList.reverse().map((charger, index) => {
             return (
               <div
                 className={params.isLP === true ? "disable" : ""}
