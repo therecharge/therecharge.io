@@ -32,7 +32,7 @@ const loading_data = [
     ],
     tvl: "-",
     type: "flexible",
-    network: "ERC"
+    network: "ERC",
   },
 ];
 const chargerInfo = [
@@ -49,12 +49,11 @@ const chargerInfo = [
     ],
     tvl: "-",
     type: "flexible",
-    network: "ERC"
+    network: "ERC",
   },
 ];
 
 function List({ /*type, list,*/ params, toast, network, setTvl }) {
-
   const [t] = useTranslation();
   const [fullList, setFullList] = useState(loading_data);
   const [chList, setChList] = useState(loading_data);
@@ -76,13 +75,13 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
      * 1. 모든 차져리스트를 받는다
      *  1-1. 각 네트워크에 대한 web3, 풀어드레스를 받는다
      *  1-2. 각 네트워크에 대한 차져 리스트를 받을 수 있다.
-     * 
+     *
      * {
      *    ERC: [],
      *    BEP: [],
      *    HRC: [],
      * }
-     * 
+     *
      * 2. 모든 차져리스트에 대한 인스턴스 생성
      * 3. 모든 차져 인스턴스에 대한 인포 받기
      * 4. 네트워크, 타입에 따라 필터링 진행
@@ -91,7 +90,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const ETH_WEB3 = web3_R.ERC;
     const BEP_WEB3 = web3_R.BEP;
     const HRC_WEB3 = web3_R.HRC;
-    const ALL_WEB3 = [ETH_WEB3, BEP_WEB3, HRC_WEB3]
+    const ALL_WEB3 = [ETH_WEB3, BEP_WEB3, HRC_WEB3];
 
     const NETWORK = NETWORKS[process.env.REACT_APP_VERSION];
     // const TOKEN_ADDRESS = NETWORK.tokenAddress[network]; //
@@ -103,72 +102,124 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const TOKEN_ABI = require("../../../../lib/read_contract/abi/erc20.json");
     const CHARGER_ABI = require("../../../../lib/read_contract/abi/charger.json");
 
-    const ETH_CHARGERLIST_INSTANCE = createContractInstance(ETH_WEB3, ETH_CHARGERLIST_ADDRESS, CHARGERLIST_ABI);
-    const BEP_CHARGERLIST_INSTANCE = createContractInstance(BEP_WEB3, BEP_CHARGERLIST_ADDRESS, CHARGERLIST_ABI);
-    const HRC_CHARGERLIST_INSTANCE = createContractInstance(HRC_WEB3, HRC_CHARGERLIST_ADDRESS, CHARGERLIST_ABI); //
+    const ETH_CHARGERLIST_INSTANCE = createContractInstance(
+      ETH_WEB3,
+      ETH_CHARGERLIST_ADDRESS,
+      CHARGERLIST_ABI
+    );
+    const BEP_CHARGERLIST_INSTANCE = createContractInstance(
+      BEP_WEB3,
+      BEP_CHARGERLIST_ADDRESS,
+      CHARGERLIST_ABI
+    );
+    const HRC_CHARGERLIST_INSTANCE = createContractInstance(
+      HRC_WEB3,
+      HRC_CHARGERLIST_ADDRESS,
+      CHARGERLIST_ABI
+    ); //
 
     const getList = async () => {
       const ETH_CHARGER_LIST = await getChargerList(ETH_CHARGERLIST_INSTANCE);
       const BEP_CHARGER_LIST = await getChargerList(BEP_CHARGERLIST_INSTANCE);
       const HRC_CHARGER_LIST = await getChargerList(HRC_CHARGERLIST_INSTANCE);
-      const ALL_NETWORK_CHARGERLIST = [ETH_CHARGER_LIST, BEP_CHARGER_LIST, HRC_CHARGER_LIST];
-      console.log("ALL_NETWORK_CHARGERLIST", ALL_NETWORK_CHARGERLIST)
-      if (ETH_CHARGER_LIST.length === 0 && BEP_CHARGER_LIST.length === 0) return setChList(chargerInfo);
+      const ALL_NETWORK_CHARGERLIST = [
+        ETH_CHARGER_LIST,
+        BEP_CHARGER_LIST,
+        HRC_CHARGER_LIST,
+      ];
+      console.log("ALL_NETWORK_CHARGERLIST", ALL_NETWORK_CHARGERLIST);
+      if (ETH_CHARGER_LIST.length === 0 && BEP_CHARGER_LIST.length === 0)
+        return setChList(chargerInfo);
 
       let ALL_RESULTS = {
         0: [],
         1: [],
         2: [], //
-      }
+      };
 
-      const ALL_CHARGER_INSTANCES = ALL_NETWORK_CHARGERLIST.map((CHARGERLIST, network) => {
-        return CHARGERLIST.map((CHARGER_ADDRESS) => {
-          return createContractInstance(ALL_WEB3[network], CHARGER_ADDRESS, CHARGER_ABI);
-        })
-      })
+      const ALL_CHARGER_INSTANCES = ALL_NETWORK_CHARGERLIST.map(
+        (CHARGERLIST, network) => {
+          return CHARGERLIST.map((CHARGER_ADDRESS) => {
+            return createContractInstance(
+              ALL_WEB3[network],
+              CHARGER_ADDRESS,
+              CHARGER_ABI
+            );
+          });
+        }
+      );
       const ALL_CHARGERS_INFO = await Promise.all(
         ALL_CHARGER_INSTANCES.map(async (CHARGER_INSTANCES) => {
-          return Promise.all(CHARGER_INSTANCES.map((INSTANCE) => {
-            return getChargerInfo(INSTANCE)
-          }))
-        }))
+          return Promise.all(
+            CHARGER_INSTANCES.map((INSTANCE) => {
+              return getChargerInfo(INSTANCE);
+            })
+          );
+        })
+      );
       ALL_CHARGERS_INFO.map((CHARGERS_INFO, network) => {
         CHARGERS_INFO.map((INFO, i) => {
-          ALL_RESULTS[network][i] = INFO
-        })
-      })
+          ALL_RESULTS[network][i] = INFO;
+        });
+      });
 
       const ALL_REWARDS_AMOUNT = await Promise.all(
         ALL_NETWORK_CHARGERLIST.map(async (CHARGERLIST, network) => {
-          return Promise.all(CHARGERLIST.map((CHARGER_ADDRESS, i) => {
-            const REWARDTOKEN_INSTANCE = createContractInstance(ALL_WEB3[network], ALL_RESULTS[network][i].rewardToken, TOKEN_ABI);
-            return REWARDTOKEN_INSTANCE.methods.balanceOf(CHARGER_ADDRESS).call();
-          }))
+          return Promise.all(
+            CHARGERLIST.map((CHARGER_ADDRESS, i) => {
+              const REWARDTOKEN_INSTANCE = createContractInstance(
+                ALL_WEB3[network],
+                ALL_RESULTS[network][i].rewardToken,
+                TOKEN_ABI
+              );
+              return REWARDTOKEN_INSTANCE.methods
+                .balanceOf(CHARGER_ADDRESS)
+                .call();
+            })
+          );
         })
-      )
+      );
       const ALL_REWARDS_SYMBOL = await Promise.all(
         ALL_NETWORK_CHARGERLIST.map((CHARGERLIST, network) => {
-          return Promise.all(CHARGERLIST.map((CHARGER_ADDRESS, i) => {
-            const TOKEN_INSTANCE = createContractInstance(ALL_WEB3[network], ALL_RESULTS[network][i].rewardToken, TOKEN_ABI);
-            return TOKEN_INSTANCE.methods.symbol().call();
-          }))
+          return Promise.all(
+            CHARGERLIST.map((CHARGER_ADDRESS, i) => {
+              const TOKEN_INSTANCE = createContractInstance(
+                ALL_WEB3[network],
+                ALL_RESULTS[network][i].rewardToken,
+                TOKEN_ABI
+              );
+              return TOKEN_INSTANCE.methods.symbol().call();
+            })
+          );
         })
-      )
+      );
       const ALL_STAKES_SYMBOL = await Promise.all(
         ALL_NETWORK_CHARGERLIST.map((CHARERLIST, network) => {
-          return Promise.all(CHARERLIST.map((CHARGER_ADDRESS, i) => {
-            const TOKEN_INSTANCE = createContractInstance(ALL_WEB3[network], ALL_RESULTS[network][i].stakeToken, TOKEN_ABI);
-            return TOKEN_INSTANCE.methods.symbol().call();
-          }))
+          return Promise.all(
+            CHARERLIST.map((CHARGER_ADDRESS, i) => {
+              const TOKEN_INSTANCE = createContractInstance(
+                ALL_WEB3[network],
+                ALL_RESULTS[network][i].stakeToken,
+                TOKEN_ABI
+              );
+              return TOKEN_INSTANCE.methods.symbol().call();
+            })
+          );
         })
       );
       const ALL_STAKES_BASEPERCENT = await Promise.all(
         ALL_NETWORK_CHARGERLIST.map((CHARGERLIST, network) => {
-          return Promise.all(CHARGERLIST.map(async (CHARGER_ADDRESS, i) => {
-            if(ALL_STAKES_SYMBOL[network][i]!="RCG") return 0;
-            const TOKEN_INSTANCE = createContractInstance(ALL_WEB3[network], ALL_RESULTS[network][i].stakeToken, TOKEN_ABI);
-            return TOKEN_INSTANCE.methods.basePercent().call();
-          }))
+          return Promise.all(
+            CHARGERLIST.map(async (CHARGER_ADDRESS, i) => {
+              if (ALL_STAKES_SYMBOL[network][i] != "RCG") return 0;
+              const TOKEN_INSTANCE = createContractInstance(
+                ALL_WEB3[network],
+                ALL_RESULTS[network][i].stakeToken,
+                TOKEN_ABI
+              );
+              return TOKEN_INSTANCE.methods.basePercent().call();
+            })
+          );
         })
       );
 
@@ -176,31 +227,38 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         let net;
         switch (network) {
           case 0:
-            net = "ERC"
+            net = "ERC";
             break;
           case 1:
-            net = "BEP"
+            net = "BEP";
             break;
           case 2:
-            net = "HRC"
+            net = "HRC";
             break;
         }
         await CHARGERLIST.map((CHARGER_ADDRESS, i) => {
           ALL_RESULTS[network][i].address = CHARGER_ADDRESS;
-          ALL_RESULTS[network][i].status = loadActiveStatus(ALL_RESULTS[network][i]);
+          ALL_RESULTS[network][i].status = loadActiveStatus(
+            ALL_RESULTS[network][i]
+          );
           ALL_RESULTS[network][i].rewardAmount = ALL_REWARDS_AMOUNT[network][i];
-          ALL_RESULTS[network][i].basePercent = ALL_STAKES_BASEPERCENT[network][i];
+          ALL_RESULTS[network][i].basePercent =
+            ALL_STAKES_BASEPERCENT[network][i];
           ALL_RESULTS[network][i].apy = getAPY(
             ALL_RESULTS[network][i].totalSupply,
             ALL_RESULTS[network][i].rewardAmount -
-            (ALL_RESULTS[network][i].rewardToken == ALL_RESULTS[network][i].stakeToken
-              ? ALL_RESULTS[network][i].totalSupply
-              : 0),
+              (ALL_RESULTS[network][i].rewardToken ==
+              ALL_RESULTS[network][i].stakeToken
+                ? ALL_RESULTS[network][i].totalSupply
+                : 0),
             ALL_RESULTS[network][i].DURATION
           );
-          ALL_RESULTS[network][i].symbol = [ALL_REWARDS_SYMBOL[network][i], ALL_STAKES_SYMBOL[network][i]];
+          ALL_RESULTS[network][i].symbol = [
+            ALL_REWARDS_SYMBOL[network][i],
+            ALL_STAKES_SYMBOL[network][i],
+          ];
           ALL_RESULTS[network][i].network = net;
-        })
+        });
       });
 
       // 1. pool type에 따라 필터링 진행
@@ -209,19 +267,22 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       // ); //
       let ALL_LIST = [];
       for (let network in ALL_RESULTS) {
-        ALL_RESULTS[network].map(charger => {
-          if (charger.name === "9.3 Locked Pool 500" ||
-            charger.name === "9.15 BSC Zero-Burning Pool 20") {
-
+        ALL_RESULTS[network].map((charger) => {
+          if (
+            charger.name === "9.3 Locked Pool 500" ||
+            charger.name === "9.15 BSC Zero-Burning Pool 20"
+          ) {
           } else {
-            ALL_LIST.push(charger)
+            ALL_LIST.push(charger);
           }
         });
       }
 
       let tvl = 0;
-      ALL_LIST.map(charger => tvl += Number(fromWei(charger.totalSupply, "ether")))
-      setTvl(tvl * RCG_PRICE)
+      ALL_LIST.map(
+        (charger) => (tvl += Number(fromWei(charger.totalSupply, "ether")))
+      );
+      setTvl(tvl * RCG_PRICE);
       // if (params.type === "Locked") {
       //   // 해당 풀타입이 없을 때
       //   let catchZeroPool = [];
@@ -236,10 +297,10 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
       if (ALL_LIST.length === 0) {
         setChList(chargerInfo);
-        setFullList(chargerInfo)
+        setFullList(chargerInfo);
       } else {
         setChList(ALL_LIST);
-        setFullList(ALL_LIST)
+        setFullList(ALL_LIST);
       }
     };
     getList();
@@ -248,11 +309,11 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   };
 
   const filterByNetwork = (chargerList) => {
-    return chargerList.filter(charger => charger.network === network)
-  }
+    return chargerList.filter((charger) => charger.network === network);
+  };
   const filterByType = (chargerList) => {
-    return chargerList.filter(charger => charger.name.includes(params.type))
-  }
+    return chargerList.filter((charger) => charger.name.includes(params.type));
+  };
 
   // Whenever Staking type is changed, reload Pool list
   useEffect(async () => {
@@ -262,12 +323,12 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     } catch (err) {
       console.log(err);
     }
-  }, [])
+  }, []);
   useEffect(async () => {
     try {
-      let list
+      let list;
       if (network === "ALL" && params.type === "ALL") {
-        setChList(fullList)
+        setChList(fullList);
       } else if (network !== "ALL" && params.type === "ALL") {
         list = await filterByNetwork(fullList);
       } else if (network === "ALL" && params.type !== "ALL") {
@@ -277,9 +338,9 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         list = await filterByType(list);
       }
       if (list.length === 0) {
-        setChList(chargerInfo)
+        setChList(chargerInfo);
       } else {
-        setChList(list)
+        setChList(list);
       }
     } catch (err) {
       console.log(err);
@@ -352,7 +413,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   return (
     <Container>
       <Content>
-
         {/* <p
               className={
                 window.innerWidth > 1088
@@ -422,8 +482,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
             );
           })}
         </RowContainer>
-      </Content >
-    </Container >
+      </Content>
+    </Container>
   );
 }
 
@@ -507,14 +567,14 @@ const Title = styled.div`
   @media (min-width: 1088px) {
     display: flex;
     flex-direction: row;
-    justify-content: space-between	;
+    justify-content: space-between;
     align-items: flex-end;
   }
 `;
 const TitleWrapper = styled.div`
-display:flex;
-justify-content: space-between	;
-`
+  display: flex;
+  justify-content: space-between;
+`;
 const RowContainer = styled.div`
   display: flex;
   flex-direction: column;
