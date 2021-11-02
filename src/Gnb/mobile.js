@@ -405,7 +405,7 @@ const ConnectWallet = styled.div`
 const Footer = styled.div`
   display: flex;
   margin: 0 auto;
-  margin-top: 310px;
+  margin-top: 190px;
   // margin-bottom: 10vh;
   margin-bottom: 0px;
 

@@ -80,7 +80,7 @@ const Content = styled.div`
 `;
 const Line = styled.div`
   height: 2px;
-  margin: 40px 10px 0px 10px;
+  margin: 8px 10px 0px 10px;
   width: auto;
   background-color: #9314b2;
   box-shadow: 0 0 20px 0 #fff;

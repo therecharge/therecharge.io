@@ -258,6 +258,12 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
             ALL_STAKES_SYMBOL[network][i],
           ];
           ALL_RESULTS[network][i].network = net;
+          ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes(
+            "LP"
+          );
+          ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][
+            i
+          ].name.includes("Locked");
         });
       });
 
@@ -540,7 +546,7 @@ function makeNum(str = "0", decimal = 4) {
 }
 
 const Container = styled.div`
-  margin-top: 40px;
+  // margin-top: 20px;
   margin-bottom: 120px;
   display: flex;
   width: 100%;
@@ -589,7 +595,7 @@ const TitleWrapper = styled.div`
 const RowContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 40px 30px 0px 30px;
+  margin: 20px 30px 0px 30px;
 
   @media (min-width: 1088px) {
     margin: 0px;

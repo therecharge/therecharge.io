@@ -15,6 +15,12 @@ import SortBy from "./SortBy";
 // };
 
 function Header({ setNetwork, network, setParams, params, tvl }) {
+  const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
+    let newNum;
+    if (typeof num === "string") newNum = Number(num);
+    if (unitSeparator) return newNum.toLocaleString();
+    return newNum.toLocaleString("fullwide", { useGrouping: false });
+  };
   return (
     <Contain>
       <Title>
@@ -22,9 +28,15 @@ function Header({ setNetwork, network, setParams, params, tvl }) {
           {/* <Image params={params} /> */}
           <p className="Roboto_40pt_Black">Charger List</p>
           <TotalValue>
-            <Text className="Roboto_20pt_Regular">Total Value Locked</Text>
+            <Text
+              className="Roboto_20pt_Regular"
+              style={{ marginBottom: "8px" }}
+            >
+              Total Value Locked
+            </Text>
             <Value className="Roboto_30pt_Medium ">
-              {/* $ {convertNum(tvl, { unitSeparator: true })} */}$ {tvl}
+              {/* $ {tvl ? convertNum(tvl, { unitSeparator: true }) : 0} */}${" "}
+              {tvl}
             </Value>
           </TotalValue>
         </TitleWrapper>
@@ -50,7 +62,7 @@ const Test = styled.div`
 `;
 const Line = styled.div`
   height: 2px;
-  margin: 40px 10px 0px 00px;
+  margin: 8px 10px 0px 00px;
   width: 100%;
   background-color: #9314b2;
   box-shadow: 0px 0px 20px 0.5px white;

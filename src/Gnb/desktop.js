@@ -55,9 +55,7 @@ function Gnb() {
           onClick={() => window.open("https://therecharge.io", "_blank")}
         >
           <Logo>
-            <img src="/logo.png" />
-
-            <a className="Roboto_25pt_Regular">The Recharge</a>
+            <img src="/ic_defi_logo.svg" />
           </Logo>
         </HashLink>
         <Nav>
@@ -179,7 +177,7 @@ const Logo = styled.div`
   margin-left: 20px;
   align-items: center;
   img {
-    width: 40px;
+    width: 192.7px;
     height: 40px;
   }
 

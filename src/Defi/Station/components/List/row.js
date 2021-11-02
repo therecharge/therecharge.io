@@ -232,6 +232,7 @@ export default function Row({
 
   // console.log("poolNet", NETWORK.network[poolNet].chainId)
   // console.log("network", network)
+  console.log("Info", info);
   return (
     <Container>
       {isPopupOpen && (
@@ -250,23 +251,36 @@ export default function Row({
       <Title
         onClick={
           info.name == "Loading List.." ||
-            info.name == "There is currently no Charger List available."
-            ? () => { }
+          info.name == "There is currently no Charger List available."
+            ? () => {}
             : () => {
-              setOpen(!isOpen);
-              setRequireNetwork(NETWORK.network[poolNet].chainId);
-            }
+                setOpen(!isOpen);
+                setRequireNetwork(NETWORK.network[poolNet].chainId);
+              }
         }
         style={
           info.name === "Loading List.." ||
-            info.name == "There is currently no Charger List available."
+          info.name == "There is currently no Charger List available."
             ? { cursor: "not-allowed" }
             : { cursor: "pointer" }
         }
+        style={
+          window.innerWidth > 1088
+            ? { width: "100%", height: "80px" }
+            : { height: "119px" }
+        }
       >
-        <img className="chargerImage" src={`/img_station_${poolNet}.svg`} />
+        <img
+          className="chargerImage"
+          src={`/img_station_${poolNet}.svg`}
+          style={
+            window.innerWidth > 1088
+              ? { width: "100px", height: "80px" }
+              : { width: "150px", height: "119px" }
+          }
+        />
         <Status status={status} />
-        <Name status={status} name={name} />
+        <Name status={status} name={name} index={index} />
         <Apy status={status} apy={makeNum(apy, 2)} />
         <Btn status={status} isOpen={isOpen} />
       </Title>
@@ -286,20 +300,22 @@ export default function Row({
               />
             </PoolInfo>
             {account &&
-              (typeof network === "string" ? parseInt(network, 16) : network) ==
+            (typeof network === "string" ? parseInt(network, 16) : network) ==
               requireNetwork ? (
               <UserInfo account={account} className="innerMenu">
                 <Info
                   className="hide"
                   left="MY BAL"
-                  right={`${makeNum(weiToEther(userInfo.balance))} ${info ? info.symbol[0] : ""
-                    }`}
+                  right={`${makeNum(weiToEther(userInfo.balance))} ${
+                    info ? info.symbol[0] : ""
+                  }`}
                 />
                 <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
                 <Info
                   left="Reward"
-                  right={`${makeNum(weiToEther(userInfo.reward))} ${info ? info.symbol[1] : ""
-                    }`}
+                  right={`${makeNum(weiToEther(userInfo.reward))} ${
+                    info ? info.symbol[1] : ""
+                  }`}
                 />
               </UserInfo>
             ) : (
@@ -321,9 +337,9 @@ export default function Row({
                 />
                 {network &&
                   requireNetwork !=
-                  (typeof network === "string"
-                    ? parseInt(network, 16)
-                    : network) && (
+                    (typeof network === "string"
+                      ? parseInt(network, 16)
+                      : network) && (
                     <div className="warning">Wrong, Network!</div>
                   )}
               </UserInfo>
@@ -350,8 +366,8 @@ export default function Row({
                   userInfo.allowance !== "0"
                     ? "PLUG-IN"
                     : userInfo.address == "0x00"
-                      ? "Now Loading ..."
-                      : "APPROVE"
+                    ? "Now Loading ..."
+                    : "APPROVE"
                 } //어프로브 안되어 있으면 APPROVE로 대체 필요함.
                 onClick={() => {
                   if (status === "Inactive") {
@@ -383,10 +399,10 @@ export default function Row({
                     !account
                       ? "var(--gray-30)"
                       : status === "Inactive"
-                        ? "var(--gray-30)"
-                        : userInfo.reward > 0
-                          ? "var(--yellow)"
-                          : "var(--gray-30)"
+                      ? "var(--gray-30)"
+                      : userInfo.reward > 0
+                      ? "var(--yellow)"
+                      : "var(--gray-30)"
                   }
                   border=""
                   hcolor=""
@@ -396,26 +412,26 @@ export default function Row({
                   text="GET FILLED"
                   onClick={
                     params.type === "Locked"
-                      ? () => { }
+                      ? () => {}
                       : async () => {
-                        if (!account) {
-                          toast("Please connect to wallet");
-                        } else if (
-                          params.type == "Locked" &&
-                          status === "Active"
-                        ) {
-                          toast("This pool does not end");
-                        } else if (status === "Inactive") {
-                          toast("This pool is inactive");
-                        } else if (userInfo.reward > 0) {
-                          poolMethods.earn();
-                          await toast(
-                            'Please approve "GET FILLED" in your private wallet'
-                          );
-                        } else {
-                          toast("There is no withdrawable amount");
+                          if (!account) {
+                            toast("Please connect to wallet");
+                          } else if (
+                            params.type == "Locked" &&
+                            status === "Active"
+                          ) {
+                            toast("This pool does not end");
+                          } else if (status === "Inactive") {
+                            toast("This pool is inactive");
+                          } else if (userInfo.reward > 0) {
+                            poolMethods.earn();
+                            await toast(
+                              'Please approve "GET FILLED" in your private wallet'
+                            );
+                          } else {
+                            toast("There is no withdrawable amount");
+                          }
                         }
-                      }
                   }
                 />
               ) : (
@@ -493,50 +509,57 @@ function Status({ status }) {
   function color() {
     switch (status) {
       case "Close":
-        return "#D62828";
+        return "#b21a14";
       case "Inactive":
         return "#7E7E7E";
       case "Active":
-        return "#0EEF6D";
+        return "#0eef6d";
     }
   }
   return (
     <p
       className="Roboto_20pt_Black status"
       style={
-        window.innerWidth > 720
+        window.innerWidth > 1088
           ? {
-            marginLeft: "67px",
-            color: color(status),
-            width: "71.5px",
-            textAlign: "center",
-          }
+              marginLeft: "50px",
+              color: color(status),
+              width: "71.5px",
+              textAlign: "center",
+            }
           : {
-            marginLeft: "50px",
-            color: color(status),
-            width: "71.5px",
-            textAlign: "center",
-          }
+              marginTop: "20px",
+              marginLeft: "20px",
+              marginRight: "25px",
+              backgroundColor: color(status),
+              width: "15px",
+              height: "15px",
+              textAlign: "center",
+              borderRadius: "100px",
+            }
       }
     >
-      {status}
+      {window.innerWidth > 1088 ? status : <div />}
     </p>
   );
 }
-function Name({ status, name }) {
+function Name({ status, name, index }) {
   function color() {
     if (status != "Active") return "var(--gray-30)";
   }
+  const nameDiv = document.querySelectorAll(".tracingHeight");
+  // console.log("wwwwwwwwwwww", nameDiv[index].clientHeight);
   return (
     <div
-      className={`${window.innerWidth > 720 ? "Roboto_25pt_Black" : "Roboto_20pt_Black"
-        } name`}
+      className={`${
+        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_25pt_Black"
+      } name`}
       style={
-        window.innerWidth > 720
+        window.innerWidth > 1088
           ? {
-            marginLeft: "47px",
-            color: color(),
-          }
+              marginLeft: "47px",
+              color: color(),
+            }
           : { marginLeft: "5px", color: color() }
       }
     >
@@ -548,13 +571,21 @@ function Name({ status, name }) {
               : "/swap_rcg.svg"
           }
           style={
-            name === "11.1 Pancake LP Flexible Pool 1000"
-              ? { width: "70px" }
-              : {}
+            window.innerWidth > 1088
+              ? name === "11.1 Pancake LP Flexible Pool 1000"
+                ? { width: "70px", height: "40px" }
+                : { width: "40px", height: "40px" }
+              : name === "11.1 Pancake LP Flexible Pool 1000"
+              ? { width: "88px", height: "50px" }
+              : { width: "50px", height: "50px" }
           }
         />
       </div>
-      <div>{name}</div>
+      {/* <div>{name}</div> */}
+      <div className="tracingHeight">
+        <div>{name}</div>
+      </div>
+      {/* // <marquee direction="left">{name}</marquee> */}
     </div>
   );
 }
@@ -569,8 +600,9 @@ function Apy({ status, apy }) {
   }
   return (
     <p
-      className={`${window.innerWidth > 720 ? "Roboto_25pt_Black" : "Roboto_25pt_Black"
-        } apy`}
+      className={`${
+        window.innerWidth > 720 ? "Roboto_25pt_Black" : "Roboto_25pt_Black"
+      } apy`}
       style={{ color: color() }}
     >
       {status != "Inactive"

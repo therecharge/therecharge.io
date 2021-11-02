@@ -361,6 +361,18 @@ html {
   color: #ffffff;
 }
 
+.Roboto_30pt_Medium_L {
+  font-family: Roboto;
+  font-size: 30px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.3;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
 .Roboto_16pt_Bold {
   font-family: Roboto;
   font-size: 16px;

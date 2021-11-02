@@ -44,6 +44,7 @@ function Defi({ toast, t }) {
   const NETWORKS = require("../lib/networks.json");
   const CHARGERLIST_ABI = require("../lib/read_contract/abi/chargerList.json");
   const CHARGER_ABI = require("../lib/read_contract/abi/charger.json");
+  const ERC20_ABI = require("../lib/read_contract/abi/erc20.json");
 
   const [onLoading, setOnLoading] = useState(true);
   const [myPools, setMyPools] = useState(null);
@@ -210,9 +211,10 @@ function Defi({ toast, t }) {
       token0Price = makeNum(token0Price);
       token1Price = makeNum(token1Price);
       let TVL = makeNum("" + tvlData.data.TVL);
+
+      /* Start to get LP Locker */
+
       // console.log("TVL", tvlData);
-      // console.log(analData.data);
-      // console.log(token1Price);
       setAnalytics({
         ...analData.data,
         ERC: {
@@ -432,7 +434,26 @@ function Defi({ toast, t }) {
                     : 0}
                 </div>
                 <div className="text Roboto_16pt_Regular_Gray">
-                  Total Value Locked
+                  Total Value Deposited
+                </div>
+              </div>
+            </div>
+            <div className="container">
+              <div
+                className="center box"
+                style={{ display: "flex", flexDirection: "row", gap: "180px" }}
+              >
+                <div>
+                  <div className="title Roboto_30pt_Black">$ 0.00</div>
+                  <div className="text Roboto_16pt_Regular_Gray">
+                    Uniswap LP Locker
+                  </div>
+                </div>
+                <div>
+                  <div className="title Roboto_30pt_Black">$ 0.00</div>
+                  <div className="text Roboto_16pt_Regular_Gray">
+                    PancakeSwap LP Locker
+                  </div>
                 </div>
               </div>
             </div>
