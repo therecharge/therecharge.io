@@ -557,16 +557,18 @@ function Name({ status, name, index, isLP, isLocked }) {
 
   return (
     <div
-      className={`${
-        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
-      } name`}
+      className="Roboto_25pt_Black name"
       style={
         window.innerWidth > 1088
           ? {
               marginLeft: "47px",
               color: color(),
             }
-          : { marginLeft: "5px", color: color() }
+          : {
+              marginLeft: "5px",
+              marginRight: "5px",
+              color: color(),
+            }
       }
     >
       <div>
@@ -602,19 +604,8 @@ function Name({ status, name, index, isLP, isLocked }) {
               : "Flexible"}
           </div>
         )}
-        {window.innerWidth < 1088 ? (
-          name === "11.1 Flexible Pool 100" ||
-          name === "10. 1 Flexible Pool 100" ||
-          name === "10.1 Locked Pool 200" ||
-          name === "9.1 Locked Pool 100" ||
-          name === "Loading List.." ? (
-            <div>{name}</div>
-          ) : (
-            <marquee direction="left">{name}</marquee>
-          )
-        ) : (
-          <div>{name}</div>
-        )}
+
+        <div>{name}</div>
       </div>
     </div>
   );

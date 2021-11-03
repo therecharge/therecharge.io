@@ -262,7 +262,7 @@ function Defi({ toast, t }) {
           unitSeparator: true,
         })
       : 0;
-    console.log("!!!!!!!!!!!!!!!!!!!!!!", editedTVLData);
+    // console.log("!!!!!!!!!!!!!!!!!!!!!!", editedTVLData);
   }, 5000);
 
   useEffect(() => {

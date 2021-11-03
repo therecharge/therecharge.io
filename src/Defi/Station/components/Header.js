@@ -32,7 +32,7 @@ function Header({ setNetwork, network, setParams, params, tvl }) {
               className="Roboto_20pt_Regular"
               style={{ marginBottom: "8px" }}
             >
-              Total Value Locked
+              Total Value Deposited
             </Text>
             <Value className="Roboto_30pt_Medium ">
               {/* $ {tvl ? convertNum(tvl, { unitSeparator: true }) : 0} */}${" "}
