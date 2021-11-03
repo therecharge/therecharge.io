@@ -294,8 +294,16 @@ export default function Row({
         <Menu>
           <div className="part">
             <PoolInfo className="innerMenu">
-              <Info left="APY" right={makeNum(apy, 2) + "%"} />
-              <Info left="TVL" right={`${weiToEther(tvl)} ${info.symbol[1]}`} />
+              <Info
+                left="APY"
+                right={Number(makeNum(apy, 2)).toLocaleString() + " %"}
+              />
+              <Info
+                left="TVL"
+                right={`${Number(
+                  Number(weiToEther(tvl)).toFixed(2)
+                ).toLocaleString()} ${info.symbol[1]}`}
+              />
               <Info
                 left="LIMIT"
                 right={
