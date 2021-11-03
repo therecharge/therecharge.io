@@ -312,26 +312,16 @@ export default function Row({
                 <Info
                   className="hide"
                   left="MY BAL"
-<<<<<<< HEAD
                   right={`${makeNum(weiToEther(userInfo.balance))} ${
                     info ? info.symbol[0] : ""
                   }`}
-=======
-                  right={`${makeNum(weiToEther(userInfo.balance))} ${info ? info.symbol[1] : ""
-                    }`}
->>>>>>> 1f399b69808432bf2821f0ba66807830d1890f7e
                 />
                 <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
                 <Info
                   left="Reward"
-<<<<<<< HEAD
                   right={`${makeNum(weiToEther(userInfo.reward))} ${
                     info ? info.symbol[1] : ""
                   }`}
-=======
-                  right={`${makeNum(weiToEther(userInfo.reward))} ${info ? info.symbol[0] : ""
-                    }`}
->>>>>>> 1f399b69808432bf2821f0ba66807830d1890f7e
                 />
               </UserInfo>
             ) : (
