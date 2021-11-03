@@ -219,16 +219,17 @@ function Button({ type, text, setParams, pam, typeParam, SetclickType, i }) {
   return (
 
     <DropdownList
-      style={i === 3 || i === 4 ? { cursor: "not-allowed" } : {}}
+      // style={i === 3 || i === 4 ? { cursor: "not-allowed" } : {}}
       className="Roboto_20pt_Regular"
-      onClick={i === 3 || i === 4 ?
-        () => { } :
-        type !== pam.type ?
-          () => {
-            setParams(params)
-            SetclickType(typeParam.name)
-          }
-          : () => SetclickType(typeParam.name)
+      onClick={
+        // i === 3 || i === 4 ?
+        // () => { } :
+        // type !== pam.type ?
+        () => {
+          setParams(params)
+          SetclickType(typeParam.name)
+        }
+        // : () => SetclickType(typeParam.name)
       }
     >
       <div className="box">

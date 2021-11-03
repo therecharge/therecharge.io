@@ -14,7 +14,7 @@ function Station(props) {
     address: "0x", // useless?
   });
   const [network, setNetwork] = useState("ALL");
-  const [tvl, setTvl] = useState(0)
+  const [tvl, setTvl] = useState(0);
 
   // useEffect(() => {
   //   setParams({
@@ -27,10 +27,21 @@ function Station(props) {
     <Container>
       <Content>
         <span className="Roboto_50pt_Black pool-title1">Charging Station</span>
-        <Header setNetwork={setNetwork} network={network} setParams={setParams} params={params} tvl={tvl} />
+        <Header
+          setNetwork={setNetwork}
+          network={network}
+          setParams={setParams}
+          params={params}
+          tvl={tvl}
+        />
         {/* <Networks setNetwork={setNetwork} network={network} /> */}
         {/* <Slider setParams={setParams} params={params} /> */}
-        <List params={params} toast={props.toast} network={network} setTvl={setTvl} />
+        <List
+          params={params}
+          toast={props.toast}
+          network={network}
+          setTvl={setTvl}
+        />
       </Content>
     </Container>
   );
@@ -72,7 +83,7 @@ const Line = styled.div`
   margin: 40px 10px 0px 10px;
   width: auto;
   background-color: #9314b2;
-  box-shadow: 0px 0px 20px 0.5px white;
+  box-shadow: 0 0 20px 0 #fff;
 `;
 
 export default React.memo(Station);

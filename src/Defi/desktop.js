@@ -101,7 +101,7 @@ function Defi({ toast, t }) {
 
   const loadMyPools = async () => {
     try {
-      const NETWORK = NETWORKS[process.env.REACT_APP_VERSION];
+      const NETWORK = NETWORKS["mainnet"];
       const ERC_WEB3 = web3_R["ERC"];
       const BEP_WEB3 = web3_R["BEP"];
       const ERC_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress["ERC"];
@@ -277,10 +277,7 @@ function Defi({ toast, t }) {
                   <div className="text Roboto_16pt_Regular_L">
                     {t("De-Fi/Station/charging-station")}
                   </div>
-                  <HashLink
-                    to={"/defi/station"}
-                    style={{ textDecoration: "none" }}
-                  >
+                  <HashLink to={"/station"} style={{ textDecoration: "none" }}>
                     <div className="link Roboto_16pt_Regular_L">
                       {t("De-Fi/Station/charging-station-link")}
                     </div>
@@ -296,9 +293,9 @@ function Defi({ toast, t }) {
                   <div className="text Roboto_16pt_Regular_L">
                     {t("De-Fi/Station/recharge-swap")}
                   </div>
-                  <HashLink to={"defi/swap"} style={{ textDecoration: "none" }}>
+                  <HashLink to={"/swap"} style={{ textDecoration: "none" }}>
                     <div className="link Roboto_16pt_Regular_L">
-                      {t("De-Fi/Station/charging-station-link")}
+                      {t("De-Fi/Station/recharge-swap-link")}
                     </div>
                   </HashLink>
                 </div>
@@ -316,7 +313,7 @@ function Defi({ toast, t }) {
               <div className="content Roboto_30pt_Medium">
                 {t("De-Fi/Station/MyPool/ask-connect")}
               </div>
-              <WalletConnect
+              {/* <WalletConnect
                 need="2"
                 notConnected="Wallet Connect"
                 wrongNetwork="Change network"
@@ -324,7 +321,7 @@ function Defi({ toast, t }) {
                 w="366px"
                 h="40px"
                 fontsize="20px"
-              />
+              /> */}
             </div>
           ) : myPools === null ? (
             <Loading style={{ display: onLoading ? "" : "none" }}>
@@ -985,6 +982,7 @@ const Content = styled.div`
 const Line = styled.div`
   height: 2px;
   background-color: var(--purple);
+  box-shadow: 0 0 20px 0 #fff;
 `;
 
 const Loading = styled.div`

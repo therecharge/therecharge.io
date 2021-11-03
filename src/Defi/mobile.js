@@ -106,7 +106,7 @@ function Defi({ toast, t }) {
 
   const loadMyPools = async () => {
     try {
-      const NETWORK = NETWORKS[process.env.REACT_APP_VERSION];
+      const NETWORK = NETWORKS["mainnet"];
       const ERC_WEB3 = web3_R["ERC"];
       const BEP_WEB3 = web3_R["BEP"];
       const ERC_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress["ERC"];
@@ -285,10 +285,7 @@ function Defi({ toast, t }) {
                   <div className="text Roboto_25pt_Regular">
                     {t("De-Fi/Station/charging-station")}
                   </div>
-                  <HashLink
-                    to={"/defi/station"}
-                    style={{ textDecoration: "none" }}
-                  >
+                  <HashLink to={"/station"} style={{ textDecoration: "none" }}>
                     <div className="link Roboto_25pt_Regular">
                       {t("De-Fi/Station/charging-station-link")}
                     </div>
@@ -309,9 +306,9 @@ function Defi({ toast, t }) {
                   <div className="text Roboto_25pt_Regular">
                     {t("De-Fi/Station/recharge-swap")}
                   </div>
-                  <HashLink to={"defi/swap"} style={{ textDecoration: "none" }}>
+                  <HashLink to={"/swap"} style={{ textDecoration: "none" }}>
                     <div className="link Roboto_25pt_Regular">
-                      {t("De-Fi/Station/charging-station-link")}
+                      {t("De-Fi/Station/recharge-swap-link")}
                     </div>
                   </HashLink>
                 </div>
@@ -330,13 +327,13 @@ function Defi({ toast, t }) {
                 {t("De-Fi/Station/MyPool/ask-connect")}
               </div>
 
-              <WalletConnect
+              {/* <WalletConnect
                 need="2"
                 notConnected="Wallet Connect"
                 wrongNetwork="Change network for data"
                 m="auto"
                 w="540px"
-              />
+              /> */}
             </div>
           ) : myPools === null ? (
             <Loading style={{ display: onLoading ? "" : "none" }}>

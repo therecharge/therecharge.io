@@ -92,7 +92,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const HRC_WEB3 = web3_R.HRC;
     const ALL_WEB3 = [ETH_WEB3, BEP_WEB3, HRC_WEB3];
 
-    const NETWORK = NETWORKS[process.env.REACT_APP_VERSION];
+    const NETWORK = NETWORKS["mainnet"];
     // const TOKEN_ADDRESS = NETWORK.tokenAddress[network]; //
     const ETH_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress.ERC;
     const BEP_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress.BEP;
@@ -211,6 +211,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         ALL_NETWORK_CHARGERLIST.map((CHARGERLIST, network) => {
           return Promise.all(
             CHARGERLIST.map(async (CHARGER_ADDRESS, i) => {
+              if (ALL_STAKES_SYMBOL[network][i] != "RCG") return 0;
               const TOKEN_INSTANCE = createContractInstance(
                 ALL_WEB3[network],
                 ALL_RESULTS[network][i].stakeToken,
@@ -293,6 +294,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       //     test.unshift(catchZeroPool[0]);
       //   }
       // }
+      console.log("ALL_LIST", ALL_LIST.reverse());
 
       if (ALL_LIST.length === 0) {
         setChList(chargerInfo);
@@ -311,7 +313,17 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     return chargerList.filter((charger) => charger.network === network);
   };
   const filterByType = (chargerList) => {
-    return chargerList.filter((charger) => charger.name.includes(params.type));
+    if (params.isLP) {
+      return chargerList.filter(
+        (charger) =>
+          charger.name.includes(params.type) && charger.name.includes("LP")
+      );
+    } else {
+      return chargerList.filter(
+        (charger) =>
+          charger.name.includes(params.type) && !charger.name.includes("LP")
+      );
+    }
   };
 
   // Whenever Staking type is changed, reload Pool list
@@ -453,7 +465,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           </Sortby>
         </DropDownWrapper > */}
         <RowContainer>
-          {chList.map((charger, index) => {
+          {chList.reverse().map((charger, index) => {
             return (
               <div
                 className={params.isLP === true ? "disable" : ""}

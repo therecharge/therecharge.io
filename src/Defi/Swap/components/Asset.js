@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Web3 from "web3";
@@ -35,8 +35,8 @@ function Asset({ setParams }) {
     ETH: 0,
     HT: 0,
     BNB: 0,
-    FUP1: 0,
   });
+  const [fupBalance, setFupBalance] = useState(0);
 
   const loadBalance = async () => {
     const ETH = new Web3(
@@ -56,7 +56,6 @@ function Asset({ setParams }) {
       balanceETH,
       balanceHT,
       balanceBNB;
-    // balanceFUP;
 
     RCGeth = new ETH.eth.Contract(
       ERC20_ABI,
@@ -81,7 +80,6 @@ function Asset({ setParams }) {
         balanceETH,
         balanceHT,
         balanceBNB,
-        // balanceFUP
       ] = await Promise.all([
         RCGeth.methods.balanceOf(account).call(),
         RCGht.methods.balanceOf(account).call(),
@@ -89,7 +87,6 @@ function Asset({ setParams }) {
         ETH.eth.getBalance(account),
         HECO.eth.getBalance(account),
         BNB.eth.getBalance(account),
-        // axios.get(`https://fup.bridge.therecharge.io/point/${account}`)
       ]);
 
       balanceRCG = makeNum(weiToEther(balanceRCG));
@@ -98,8 +95,6 @@ function Asset({ setParams }) {
       balanceETH = makeNum(weiToEther(balanceETH));
       balanceHT = makeNum(weiToEther(balanceHT));
       balanceBNB = makeNum(weiToEther(balanceBNB));
-      // balanceFUP = balanceFUP.data.balance;
-      // console.log("balanceFUP", balanceFUP)
 
       setTokensBalance({
         ...tokensBalance,
@@ -109,7 +104,6 @@ function Asset({ setParams }) {
         ETH: balanceETH,
         HT: balanceHT,
         BNB: balanceBNB,
-        // FUP1: balanceFUP,
       });
     }
     // console.log(tokensBalance);
@@ -123,21 +117,47 @@ function Asset({ setParams }) {
         `https://fup.bridge.therecharge.io/point/${account}`
       );
     } catch (err) {
+      console.log(err);
       balanceFUP = { data: { balance: 0 } };
     }
     balanceFUP = balanceFUP.data.balance;
-    // console.log("balanceFUP", balanceFUP);
 
-    setTokensBalance({
-      ...tokensBalance,
-      FUP1: balanceFUP,
-    });
+    setFupBalance(balanceFUP);
   };
 
-  useEffect(() => {
+  const updateBalance = () => {
+    if (account) {
+      loadBalance();
+      loadFupBalance();
+    }
+  };
+
+  const useInterval = (callback, delay) => {
+    const savedCallback = useRef();
+
+    // Remember the latest callback.
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+
+    // Set up the interval.
+    useEffect(() => {
+      function tick() {
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+  };
+
+  useInterval(updateBalance, 3000);
+
+  useEffect(async () => {
     if (!account) return;
-    loadBalance();
-    loadFupBalance();
+    await loadBalance();
+    await loadFupBalance();
   }, [account]);
 
   return (
@@ -165,7 +185,7 @@ function Asset({ setParams }) {
             <Balance Image={ETH} symbol="ETH" balance={tokensBalance.ETH} />
             <Balance Image={HT} symbol="HT" balance={tokensBalance.HT} />
             <Balance Image={BNB} symbol="BNB" balance={tokensBalance.BNB} />
-            <Balance Image={FUP1} symbol="FUP" balance={tokensBalance.FUP1} />
+            <Balance Image={FUP1} symbol="FUP" balance={fupBalance} />
           </List>
         ) : (
           <List>
