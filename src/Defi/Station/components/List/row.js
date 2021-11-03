@@ -294,7 +294,7 @@ export default function Row({
         <Menu>
           <div className="part">
             <PoolInfo className="innerMenu">
-              <Info left="APY" right={makeNum(apy, 2)} />
+              <Info left="APY" right={makeNum(apy, 2) + "%"} />
               <Info left="TVL" right={`${weiToEther(tvl)} ${info.symbol[1]}`} />
               <Info
                 left="LIMIT"
@@ -313,14 +313,14 @@ export default function Row({
                   className="hide"
                   left="MY BAL"
                   right={`${makeNum(weiToEther(userInfo.balance))} ${
-                    info ? info.symbol[0] : ""
+                    info ? info.symbol[1] : ""
                   }`}
                 />
                 <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
                 <Info
                   left="Reward"
                   right={`${makeNum(weiToEther(userInfo.reward))} ${
-                    info ? info.symbol[1] : ""
+                    info ? info.symbol[0] : ""
                   }`}
                 />
               </UserInfo>
