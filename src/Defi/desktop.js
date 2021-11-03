@@ -257,11 +257,6 @@ function Defi({ toast, t }) {
   useInterval(() => {
     if (account) loadMyPools();
     loadAnalytics();
-    const editedTVLData = analytics.general.tvl
-      ? convertNum(analytics.general.tvl, {
-          unitSeparator: true,
-        })
-      : 0;
     // console.log("!!!!!!!!!!!!!!!!!!!!!!", editedTVLData);
   }, 5000);
 
@@ -434,10 +429,10 @@ function Defi({ toast, t }) {
                 <div className="title Roboto_30pt_Black">
                   ${" "}
                   {analytics.general.tvl
-                    ? convertNum(analytics.general.tvl, {
-                        unitSeparator: true,
-                      })
-                    : 0}
+                    ? Number(
+                        Number(analytics.general.tvl).toFixed(2)
+                      ).toLocaleString()
+                    : Number(0).toFixed(2)}
                 </div>
                 <div className="text Roboto_16pt_Regular_Gray">
                   Total Value Deposited
@@ -515,10 +510,12 @@ function Defi({ toast, t }) {
                   style={{ zIndex: "2" }}
                 >
                   {analytics.ERC.total
-                    ? convertNum(weiToEther(convertNum(analytics.ERC.total)), {
-                        unitSeparator: true,
-                      })
-                    : 0}{" "}
+                    ? Number(
+                        Number(
+                          weiToEther(convertNum(analytics.ERC.total))
+                        ).toFixed(2)
+                      ).toLocaleString()
+                    : Number(0).toFixed(2)}{" "}
                   RCG
                 </div>
                 <div
@@ -588,10 +585,12 @@ function Defi({ toast, t }) {
                   style={{ zIndex: "2" }}
                 >
                   {analytics.BEP.total
-                    ? convertNum(weiToEther(convertNum(analytics.BEP.total)), {
-                        unitSeparator: true,
-                      })
-                    : 0}{" "}
+                    ? Number(
+                        Number(
+                          weiToEther(convertNum(analytics.BEP.total))
+                        ).toFixed(2)
+                      ).toLocaleString()
+                    : Number(0).toFixed(2)}{" "}
                   RCG
                 </div>
                 <div
@@ -666,10 +665,12 @@ function Defi({ toast, t }) {
                   style={{ zIndex: "2" }}
                 >
                   {analytics.HRC.total
-                    ? convertNum(weiToEther(convertNum(analytics.HRC.total)), {
-                        unitSeparator: true,
-                      })
-                    : 0}{" "}
+                    ? Number(
+                        Number(
+                          weiToEther(convertNum(analytics.HRC.total))
+                        ).toFixed(2)
+                      ).toLocaleString()
+                    : Number(0).toFixed(2)}{" "}
                   RCG
                 </div>
                 <div

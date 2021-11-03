@@ -564,6 +564,18 @@ html {
   color: #ffffff;
 }
 
+.Roboto_25pt_Medium {
+  font-family: Roboto;
+  font-size: 25px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.3;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
 .Roboto_25pt_Regular {
   font-family: Roboto;
   font-size: 25px;

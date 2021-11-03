@@ -232,7 +232,7 @@ export default function Row({
 
   // console.log("poolNet", NETWORK.network[poolNet].chainId)
   // console.log("network", network)
-  console.log("info@@@@@@@@@@@@@@@@@@@@@@", info);
+  // console.log("info@@@@@@@@@@@@@@@@@@@@@@", info);
   return (
     <Container>
       {isPopupOpen && (
@@ -275,8 +275,8 @@ export default function Row({
           src={`/img_station_${poolNet}.svg`}
           style={
             window.innerWidth > 1088
-              ? { width: "100px", height: "80px" }
-              : { width: "150px", height: "119px" }
+              ? { width: "100px", height: "80px", opacity: "0.55" }
+              : { width: "150px", height: "119px", opacity: "0.55" }
           }
         />
         <Status status={status} />
@@ -557,17 +557,19 @@ function Name({ status, name, index, isLP, isLocked }) {
 
   return (
     <div
-      className="Roboto_25pt_Black name"
+      className="Roboto_25pt_Medium name"
       style={
         window.innerWidth > 1088
           ? {
               marginLeft: "47px",
               color: color(),
+              zIndex: "1",
             }
           : {
               marginLeft: "5px",
-              marginRight: "5px",
+              // marginRight: "2px",
               color: color(),
+              zIndex: "1",
             }
       }
     >
@@ -626,8 +628,10 @@ function Apy({ status, apy }) {
       } apy`}
       style={{ color: color() }}
     >
-      {status != "Inactive"
-        ? (apy == "+999999.99" ? "+999999.99" : apy) + "%"
+      {status !== "Inactive"
+        ? (apy === "+999999.99"
+            ? "+999999.99"
+            : Number(Number(apy).toFixed(2)).toLocaleString()) + "%"
         : "-"}
     </p>
   );

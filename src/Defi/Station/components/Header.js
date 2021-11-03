@@ -35,8 +35,7 @@ function Header({ setNetwork, network, setParams, params, tvl }) {
               Total Value Deposited
             </Text>
             <Value className="Roboto_30pt_Medium ">
-              {/* $ {tvl ? convertNum(tvl, { unitSeparator: true }) : 0} */}${" "}
-              {tvl}
+              ${Number(tvl.toFixed(2)).toLocaleString()}
             </Value>
           </TotalValue>
         </TitleWrapper>

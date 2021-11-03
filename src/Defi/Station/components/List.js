@@ -427,7 +427,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   //     </p>
   //   );
   // }
-  console.log("$$$$$$$$$$$$$$$$$$$$$", chList);
+  // console.log("$$$$$$$$$$$$$$$$$$$$$", chList);
   return (
     <Container>
       <Content>
