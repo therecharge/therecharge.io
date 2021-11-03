@@ -232,7 +232,7 @@ export default function Row({
 
   // console.log("poolNet", NETWORK.network[poolNet].chainId)
   // console.log("network", network)
-  console.log("Info", info);
+  console.log("info@@@@@@@@@@@@@@@@@@@@@@", info);
   return (
     <Container>
       {isPopupOpen && (
@@ -553,12 +553,12 @@ function Name({ status, name, index, isLP, isLocked }) {
   function color() {
     if (status != "Active") return "var(--gray-30)";
   }
-  // const nameDiv = document.querySelectorAll(".tracingHeight");
-  // console.log("wwwwwwwwwwww", nameDiv[index].clientHeight);
+  const nameDiv = document.querySelectorAll(".tracingHeight");
+
   return (
     <div
       className={`${
-        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_25pt_Black"
+        window.innerWidth > 1088 ? "Roboto_25pt_Black" : "Roboto_30pt_Black"
       } name`}
       style={
         window.innerWidth > 1088
@@ -588,7 +588,7 @@ function Name({ status, name, index, isLP, isLocked }) {
         />
       </div>
       {/* <div>{name}</div> */}
-      <div className="theme">
+      <div className="tracingHeight">
         {window.innerWidth > 1088 ? (
           <p />
         ) : (
@@ -602,9 +602,20 @@ function Name({ status, name, index, isLP, isLocked }) {
               : "Flexible"}
           </div>
         )}
-        <div>{name}</div>
+        {window.innerWidth < 1088 ? (
+          name === "11.1 Flexible Pool 100" ||
+          name === "10. 1 Flexible Pool 100" ||
+          name === "10.1 Locked Pool 200" ||
+          name === "9.1 Locked Pool 100" ||
+          name === "Loading List.." ? (
+            <div>{name}</div>
+          ) : (
+            <marquee direction="left">{name}</marquee>
+          )
+        ) : (
+          <div>{name}</div>
+        )}
       </div>
-      {/* // <marquee direction="left">{name}</marquee> */}
     </div>
   );
 }

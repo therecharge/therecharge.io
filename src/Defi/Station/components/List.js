@@ -427,6 +427,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   //     </p>
   //   );
   // }
+  console.log("$$$$$$$$$$$$$$$$$$$$$", chList);
   return (
     <Container>
       <Content>
@@ -481,20 +482,22 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
                     : {}
                 }
               >
-                <Row
-                  key={charger.name}
-                  index={index}
-                  status={charger.status} // active or not
-                  name={charger.name}
-                  tvl={charger.totalSupply}
-                  apy={charger.apy}
-                  info={charger}
-                  limit={charger.limit}
-                  params={params} // 버튼에 대한 분기처리 때문에 필요
-                  toast={toast}
-                  period={loadPoolPeriod(charger.startTime, charger.DURATION)}
-                  poolNet={charger.network}
-                />
+                <div style={{ cursor: "pointer" }}>
+                  <Row
+                    key={charger.name}
+                    index={index}
+                    status={charger.status} // active or not
+                    name={charger.name}
+                    tvl={charger.totalSupply}
+                    apy={charger.apy}
+                    info={charger}
+                    limit={charger.limit}
+                    params={params} // 버튼에 대한 분기처리 때문에 필요
+                    toast={toast}
+                    period={loadPoolPeriod(charger.startTime, charger.DURATION)}
+                    poolNet={charger.network}
+                  />
+                </div>
               </div>
             );
           })}

@@ -461,7 +461,40 @@ function Defi({ toast, t }) {
                       })
                     : 0}
                 </div>
-                <div className="text Roboto_25pt_Gray">Total Value Locked</div>
+                <div className="text Roboto_25pt_Gray">Total Value Deposit</div>
+              </div>
+            </div>
+            <div className="container">
+              <div
+                className="center box"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "20px",
+                  width: "620px",
+                  height: "226px",
+                }}
+              >
+                <div>
+                  <div
+                    className="Roboto_25pt_Black"
+                    style={{ textAlign: "center", marginBottom: "8px" }}
+                  >
+                    $ 0.00
+                  </div>
+                  <div className="text Roboto_25pt_Gray">Uniswap LP Locker</div>
+                </div>
+                <div>
+                  <div
+                    className="Roboto_25pt_Black"
+                    style={{ textAlign: "center", marginBottom: "8px" }}
+                  >
+                    $ 0.00
+                  </div>
+                  <div className="text Roboto_25pt_Gray">
+                    PancakeSwap LP Locker
+                  </div>
+                </div>
               </div>
             </div>
             <div className="container">
