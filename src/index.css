@@ -756,6 +756,18 @@ html {
   color: var(--gray-10);
 }
 
+.Roboto_18pt_Regular_L {
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
 .Roboto_19pt_Regular_L {
   font-family: Roboto;
   font-size: 18.5px;

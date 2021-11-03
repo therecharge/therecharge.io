@@ -280,7 +280,13 @@ export default function Row({
           }
         />
         <Status status={status} />
-        <Name status={status} name={name} index={index} />
+        <Name
+          status={status}
+          name={name}
+          index={index}
+          isLP={info.isLP}
+          isLocked={info.isLocked}
+        />
         <Apy status={status} apy={makeNum(apy, 2)} />
         <Btn status={status} isOpen={isOpen} />
       </Title>
@@ -543,11 +549,11 @@ function Status({ status }) {
     </p>
   );
 }
-function Name({ status, name, index }) {
+function Name({ status, name, index, isLP, isLocked }) {
   function color() {
     if (status != "Active") return "var(--gray-30)";
   }
-  const nameDiv = document.querySelectorAll(".tracingHeight");
+  // const nameDiv = document.querySelectorAll(".tracingHeight");
   // console.log("wwwwwwwwwwww", nameDiv[index].clientHeight);
   return (
     <div
@@ -582,7 +588,20 @@ function Name({ status, name, index }) {
         />
       </div>
       {/* <div>{name}</div> */}
-      <div className="tracingHeight">
+      <div className="theme">
+        {window.innerWidth > 1088 ? (
+          <p />
+        ) : (
+          <div className="class Roboto_18pt_Regular_L">
+            {isLP
+              ? isLocked
+                ? "LP Locked"
+                : "LP Flexible"
+              : isLocked
+              ? "Locked"
+              : "Flexible"}
+          </div>
+        )}
         <div>{name}</div>
       </div>
       {/* // <marquee direction="left">{name}</marquee> */}

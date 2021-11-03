@@ -24,7 +24,13 @@ function Station(props) {
   // }, [network]);
 
   return (
-    <Container>
+    <Container
+      style={
+        window.innerWidth > 1088
+          ? { marginTop: "80px" }
+          : { marginTop: "100.5px" }
+      }
+    >
       <Content>
         <span className="Roboto_50pt_Black pool-title1">Charging Station</span>
         <Header
@@ -47,7 +53,6 @@ function Station(props) {
   );
 }
 const Container = styled.div`
-  margin-top: 200px;
   display: flex;
   justify-content: center;
   width: 100vw;

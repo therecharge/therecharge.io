@@ -45,7 +45,6 @@ function Defi({ toast, t }) {
   const CHARGERLIST_ABI = require("../lib/read_contract/abi/chargerList.json");
   const CHARGER_ABI = require("../lib/read_contract/abi/charger.json");
   const ERC20_ABI = require("../lib/read_contract/abi/erc20.json");
-
   const [onLoading, setOnLoading] = useState(true);
   const [myPools, setMyPools] = useState(null);
   const [analytics, setAnalytics] = useState({
@@ -215,6 +214,7 @@ function Defi({ toast, t }) {
       /* Start to get LP Locker */
 
       // console.log("TVL", tvlData);
+
       setAnalytics({
         ...analData.data,
         ERC: {
@@ -257,6 +257,12 @@ function Defi({ toast, t }) {
   useInterval(() => {
     if (account) loadMyPools();
     loadAnalytics();
+    const editedTVLData = analytics.general.tvl
+      ? convertNum(analytics.general.tvl, {
+          unitSeparator: true,
+        })
+      : 0;
+    console.log("!!!!!!!!!!!!!!!!!!!!!!", editedTVLData);
   }, 5000);
 
   useEffect(() => {
