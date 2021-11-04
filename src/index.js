@@ -10,6 +10,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 /* Components */
 import Desktop from "./Desktop";
 import Mobile from "./Mobile";
+/* CSS */
 import "./index.css";
 
 /* Setting WalletConnect */
