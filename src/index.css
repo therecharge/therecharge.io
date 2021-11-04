@@ -137,6 +137,45 @@ html {
   width: 100%;
   overflow: auto;
 }
+/* @font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 900;
+  src: url(../public/fonts/Roboto-Black.ttf) format("ttf"),
+    url(../public/fonts/Roboto-Black.ttf) format("ttf"),
+    url(../public/fonts/Roboto-Black.ttf) format("opentype");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  src: url(../public/fonts/Roboto-Bold.ttf) format("ttf"),
+    url(../public/fonts/Roboto-Bold.ttf) format("ttf"),
+    url(../public/fonts/Roboto-Bold.ttf) format("opentype");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  src: url(../public/fonts/Roboto-Medium.ttf) format("ttf"),
+    url(../public/fonts/Roboto-Medium.ttf) format("ttf"),
+    url(../public/fonts/Roboto-Medium.ttf) format("opentype");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: url(../public/fonts/Roboto-Regular.ttf) format("ttf"),
+    url(../public/fonts/Roboto-Regular.ttf) format("ttf"),
+    url(../public/fonts/Roboto-Regular.ttf) format("opentype");
+} */
+
+* {
+  font-family: Roboto !important;
+}
 
 /*Color Palette*/
 :root {

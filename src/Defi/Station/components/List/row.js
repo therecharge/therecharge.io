@@ -540,6 +540,7 @@ function Status({ status }) {
               color: color(status),
               width: "71.5px",
               textAlign: "center",
+              zIndex: "1",
             }
           : {
               marginTop: "20px",
