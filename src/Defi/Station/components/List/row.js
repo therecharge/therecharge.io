@@ -232,7 +232,6 @@ export default function Row({
   // console.log("poolNet", NETWORK.network[poolNet].chainId)
   // console.log("network", network)
   // console.log("info@@@@@@@@@@@@@@@@@@@@@@", info);
-  status = "Close"; // FIXME
   return (
     <Container>
       {isPopupOpen && (
