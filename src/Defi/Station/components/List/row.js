@@ -366,7 +366,8 @@ export default function Row({
                 need={userInfo.address == "0x00" ? "2" : "2"}
                 // disable={userInfo.address == "0x00" ? false : false}
                 bgColor={
-                  status === "Active" ? "var(--purple)" : "var(--gray-30)"
+                  // status === "Active" ? "var(--purple)" : "var(--gray-30)"
+                  status === "Active" ? "var(--gray-30)" : "var(--gray-30)" // FIXME
                 }
                 border={name.includes("Flexible") ? "" : "locked"}
                 hcolor=""
@@ -395,7 +396,8 @@ export default function Row({
                       userInfo.allowance != "0" &&
                       userInfo.address != "0x00"
                     ) {
-                      setPopupOpen(!isPopupOpen);
+                      toast("PLUG-IN Not allowed"); // FIX ME
+                      // setPopupOpen(!isPopupOpen);
                     } else {
                       toast("Please wait for seconds");
                     }
