@@ -43,9 +43,8 @@ export default function Row({
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
-  const [requireNetwork, setRequireNetwork] = useRecoilState(
-    requireNetworkState
-  );
+  const [requireNetwork, setRequireNetwork] =
+    useRecoilState(requireNetworkState);
   const [web3_R] = useRecoilState(web3ReaderState);
   const WEB3 = web3_R[poolNet];
   const [isOpen, setOpen] = useState(false);
@@ -233,6 +232,7 @@ export default function Row({
   // console.log("poolNet", NETWORK.network[poolNet].chainId)
   // console.log("network", network)
   // console.log("info@@@@@@@@@@@@@@@@@@@@@@", info);
+  status = "Close"; // FIXME
   return (
     <Container>
       {isPopupOpen && (
