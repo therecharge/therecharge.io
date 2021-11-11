@@ -91,4 +91,4 @@ const Line = styled.div`
   box-shadow: 0 0 20px 0 #fff;
 `;
 
-export default React.memo(Station);
+export default /*React.memo(Station);*/Station

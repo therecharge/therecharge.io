@@ -27,7 +27,7 @@ const NETWORK = NETWORKS["mainnet"];
 //  2)style
 //  3)inner component
 //  4)render component with 3)inner component + 2)styles + 1)state
-export default function Row({
+function Row({
   status = "Inactive",
   name = "Charger No.000000",
   apy = "- %",
@@ -43,8 +43,7 @@ export default function Row({
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
-  const [requireNetwork, setRequireNetwork] =
-    useRecoilState(requireNetworkState);
+  const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
   const [web3_R] = useRecoilState(web3ReaderState);
   const WEB3 = web3_R[poolNet];
   const [isOpen, setOpen] = useState(false);
@@ -133,16 +132,8 @@ export default function Row({
     chargerAddress
   ) => {
     let ret = {};
-    const STAKE_INSTANCE = createContractInstance(
-      web3,
-      stakeTokenAddress,
-      ERC20_ABI
-    );
-    const POOL_INSTANCE = createContractInstance(
-      web3,
-      chargerAddress,
-      POOL_ABI
-    );
+    const STAKE_INSTANCE = createContractInstance(web3, stakeTokenAddress, ERC20_ABI);
+    const POOL_INSTANCE = createContractInstance(web3, chargerAddress, POOL_ABI);
     // const REWARD_INSTANCE = createContractInstance(web3, rewardTokenAddress, ERC20_ABI);
 
     // const [balance] = await stakeM.balanceOf(account).call();
@@ -188,10 +179,8 @@ export default function Row({
   const updateChargerInfoList = async () => {
     if (info.address === "0x0") return;
     if (account && isOpen) {
-      // await Promise.all([
       loadUserInfo();
       loadMethods(info.stakeToken, info.rewardToken, info.address);
-      // ]);
     }
   };
 
@@ -215,23 +204,21 @@ export default function Row({
     }, [delay]);
   };
 
-  useInterval(() => updateChargerInfoList(), 10000);
+  useInterval(updateChargerInfoList, 10000);
+
+  // useEffect(() => {
+  //   if (!account) return;
+  //   if (isOpen) loadUserInfo();
+  // }, [account, isOpen]);
 
   useEffect(() => {
     if (!account) return;
-    if (isOpen) loadUserInfo();
-  }, [account, isOpen]);
-
-  useEffect(() => {
-    // if (info.address === "0x0") return;
-    if (!account) return;
-    if (isOpen && account)
+    if (isOpen && account) {
       loadMethods(info.stakeToken, info.rewardToken, info.address);
+      loadUserInfo();
+    }
   }, [account, isOpen]);
 
-  // console.log("poolNet", NETWORK.network[poolNet].chainId)
-  // console.log("network", network)
-  // console.log("info@@@@@@@@@@@@@@@@@@@@@@", info);
   return (
     <Container>
       {isPopupOpen && (
@@ -436,14 +423,16 @@ export default function Row({
                           toast("This pool does not end");
                         } else if (status === "Inactive") {
                           toast("This pool is inactive");
-                        } else if (userInfo.reward > 0) {
+                        } else /*if (userInfo.reward > 0) 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다. */ {
                           poolMethods.earn();
                           await toast(
                             'Please approve "GET FILLED" in your private wallet'
                           );
-                        } else {
-                          toast("There is no withdrawable amount");
                         }
+                        // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
+                        // else {
+                        //   toast("There is no withdrawable amount");
+                        // }
                       }
                   }
                 />
@@ -468,14 +457,16 @@ export default function Row({
                   onClick={async () => {
                     if (!account) {
                       toast("Please connect to wallet");
-                    } else if (userInfo.balance > 0) {
+                    } else /* if (userInfo.balance > 0) 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.*/ {
                       poolMethods.exit();
                       await toast(
                         'Please approve "UNPLUG" in your private wallet'
                       );
-                    } else {
-                      toast("There is no withdrawable amount");
                     }
+                    // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
+                    // else {
+                    //   toast("There is no withdrawable amount");
+                    // }
                   }}
                 />
               ) : (
@@ -498,12 +489,11 @@ export default function Row({
                     if (!account) {
                       toast("Please connect to wallet");
                     } else if (status === "Close") {
-                      if (userInfo.balance > 0) {
-                        poolMethods.exit();
-                        await toast(
-                          'Please approve "UNPLUG" in your private wallet'
-                        );
-                      } else toast("There is no withdrawable amount");
+                      // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
+                      // if (userInfo.balance > 0) {
+                      poolMethods.exit();
+                      await toast('Please approve "UNPLUG" in your private wallet');
+                      // } else toast("There is no withdrawable amount");
                     } else {
                       toast("Please try after the pool service period ends");
                     }
@@ -799,3 +789,5 @@ const Pannel = styled.div`
   gap: 16px;
   border-radius: 0 0 10px 10px;
 `;
+
+export default Row;

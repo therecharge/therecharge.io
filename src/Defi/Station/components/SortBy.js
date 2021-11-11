@@ -89,7 +89,7 @@ const DropDownContents = styled.div`
   margin-top: 8px;
   z-index: 0;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
 `;
 const DropdownList = styled.div`
   padding: 10px 0px;
