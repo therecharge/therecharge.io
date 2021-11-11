@@ -268,7 +268,7 @@ function Row({
         <Status status={status} />
         <Name
           status={status}
-          name={name}
+          name={name === "11.2 Premier Locked Pool 300" ? "11.12 Premier Locked Pool 300" : name}
           index={index}
           isLP={info.isLP}
           isLocked={info.isLocked}
