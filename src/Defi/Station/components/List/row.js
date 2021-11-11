@@ -268,7 +268,13 @@ function Row({
         <Status status={status} />
         <Name
           status={status}
-          name={name === "11.2 Premier Locked Pool 300" ? "11.12 Premier Locked Pool 300" : name}
+          name={name === "11.2 Premier Locked Pool 300"
+            ? "11.12 Premier Locked Pool 300"
+            : name === "11.2 Locked Pool 200"
+              ? "11.12 Locked Pool 200"
+              : name === "11.2 Flexible Pool"
+                ? "11.12 Flexible Pool"
+                : name}
           index={index}
           isLP={info.isLP}
           isLocked={info.isLocked}
@@ -575,16 +581,16 @@ function Name({ status, name, index, isLP, isLocked }) {
       <div>
         <img
           src={
-            name === "11.1 Pancake LP Flexible Pool 1000"
+            name.includes("LP")
               ? "/img_station_rcgbnb.png"
               : "/swap_rcg.svg"
           }
           style={
             window.innerWidth > 1088
-              ? name === "11.1 Pancake LP Flexible Pool 1000"
+              ? name.includes("LP")
                 ? { width: "70px", height: "40px" }
                 : { width: "40px", height: "40px" }
-              : name === "11.1 Pancake LP Flexible Pool 1000"
+              : name.includes("LP")
                 ? { width: "88px", height: "50px" }
                 : { width: "50px", height: "50px" }
           }
