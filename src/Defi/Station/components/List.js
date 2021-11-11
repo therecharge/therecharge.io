@@ -248,8 +248,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         setChList(chargerInfo);
         setFullList(chargerInfo);
       } else {
-        setChList(ALL_LIST);
-        setFullList(ALL_LIST);
+        setChList(ALL_LIST.reverse());
+        setFullList(ALL_LIST.reverse());
       }
     };
     getList();
@@ -340,7 +340,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     <Container>
       <Content>
         <RowContainer>
-          {chList.reverse().map((charger, index) => {
+          {chList.map((charger, index) => {
             return (
               <div
                 // className={params.isLP === true ? "disable" : ""}

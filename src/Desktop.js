@@ -20,19 +20,20 @@ import i18next from "./locale/i18n";
 /* Store */
 import { web3ReaderState } from "./store/read-web3";
 
-function App({ toast, t }) {
-  return (
-    <div className="App">
-      <Gnb />
-      <Switch>
-        <Route
-          path="/station"
-          component={() => <Station toast={toast} />}
-        ></Route>
-        <Route path="/swap" component={() => <Swap toast={toast} />}></Route>
-        <Route path="/" component={Home}></Route>
-      </Switch>
-      <style jsx global>{`
+const App = React.memo(
+  ({ toast, t }) => {
+    return (
+      <div className="App">
+        <Gnb />
+        <Switch>
+          <Route
+            path="/station"
+            component={() => <Station toast={toast} />}
+          ></Route>
+          <Route path="/swap" component={() => <Swap toast={toast} />}></Route>
+          <Route path="/" component={Home}></Route>
+        </Switch>
+        <style jsx global>{`
         .App {
           display: flex;
           background-color: #02051c;
@@ -99,8 +100,12 @@ function App({ toast, t }) {
           padding: 5px 20px;
         }
       `}</style>
-    </div>
-  );
-}
+      </div>
+    );
+  },
+  (prevProps, nextProps) => {
+    return true;
+  }
+)
 
-export default React.memo(App);
+export default App;
