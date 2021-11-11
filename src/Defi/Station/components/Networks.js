@@ -61,12 +61,12 @@ function Networks({ setNetwork, network }) {
                 style={i === 3 ? { cursor: "not-allowed" } : {}}
                 onClick={
                   i === 3
-                    ? () => {}
+                    ? () => { }
                     : () => {
-                        SetclickNetwork(networkParam.name);
-                        setNetwork(networkParam.network);
-                        setRequireNetwork(networkParam.rpc);
-                      }
+                      SetclickNetwork(networkParam.name);
+                      setNetwork(networkParam.network);
+                      setRequireNetwork(networkParam.rpc);
+                    }
                 }
               >
                 {networkParam.name}
@@ -124,7 +124,7 @@ const DropDownContents = styled.div`
   background-color: rgba(0, 0, 0, 0.9);
   margin-top: 8px;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
 `;
 const DropdownList = styled.div`
   padding: 10px 0px;
