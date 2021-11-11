@@ -295,7 +295,7 @@ function Row({
                 right={
                   limit == 0
                     ? "UNLIMITED"
-                    : weiToEther(limit) + ` ${info.symbol[1]}`
+                    : limit + ` ${info.symbol[1]}`
                 }
               />
             </PoolInfo>
