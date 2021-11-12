@@ -5,7 +5,9 @@ import { useTranslation } from "react-i18next";
 // import Networks from "./components/Networks";
 // import Slider from "./components/Slider";
 import List from "./components/List";
+import List_Private from "./components/List_Private";
 import Header from "./components/Header";
+import Header_Private from "./components/Header_Private";
 function Station(props) {
   const [t] = useTranslation();
   const [params, setParams] = useState({
@@ -43,6 +45,13 @@ function Station(props) {
         {/* <Networks setNetwork={setNetwork} network={network} /> */}
         {/* <Slider setParams={setParams} params={params} /> */}
         <List
+          params={params}
+          toast={props.toast}
+          network={network}
+          setTvl={setTvl}
+        />
+        <Header_Private />
+        <List_Private
           params={params}
           toast={props.toast}
           network={network}
@@ -91,4 +100,4 @@ const Line = styled.div`
   box-shadow: 0 0 20px 0 #fff;
 `;
 
-export default /*React.memo(Station);*/Station
+export default /*React.memo(Station);*/ Station;
