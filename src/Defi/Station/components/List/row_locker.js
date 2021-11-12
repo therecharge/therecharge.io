@@ -372,8 +372,8 @@ function Row({
                 need={userInfo.address == "0x00" ? "2" : "2"}
                 // disable={userInfo.address == "0x00" ? false : false}
                 bgColor={
-                  // status === "Active" ? "var(--purple)" : "var(--gray-30)"
-                  status === "Active" ? "var(--gray-30)" : "var(--gray-30)" // FIXME
+                  status === "Active" ? "var(--purple)" : "var(--gray-30)"
+                  // status === "Active" ? "var(--gray-30)" : "var(--gray-30)" // FIXME
                 }
                 border="locked"
                 hcolor=""
@@ -402,8 +402,8 @@ function Row({
                       userInfo.allowance != "0" &&
                       userInfo.address != "0x00"
                     ) {
-                      toast("PLUG-IN Not allowed"); // FIX ME
-                      // setPopupOpen(!isPopupOpen);
+                      // toast("PLUG-IN Not allowed"); // FIX ME
+                      setPopupOpen(!isPopupOpen);
                     } else {
                       toast("Please wait for seconds");
                     }
