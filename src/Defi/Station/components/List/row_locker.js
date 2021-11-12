@@ -268,15 +268,11 @@ function Row({
       >
         <img
           className="chargerImage"
-          src={
-            name === "EVO - 1" || name === "EVO - 2" || name === "EVO - 3"
-              ? "/ic_locker.svg"
-              : `/img_station_${poolNet}.svg`
-          }
+          src="/ic_locker.svg"
           style={
             window.innerWidth > 1088
-              ? { width: "100px", height: "80px", opacity: "0.55" }
-              : { width: "150px", height: "119px", opacity: "0.55" }
+              ? { width: "46.2px", height: "60px", margin: "7px 0 0 20px" }
+              : { width: "46.2px", height: "60px", margin: "25px 0 0 20px" }
           }
         />
         <Status status={status} />
@@ -564,7 +560,7 @@ function Name({ status, name, index, isLP, isLocked }) {
       </div>
       {/* <div>{name}</div> */}
       <div className="tracingHeight">
-        {window.innerWidth > 1088 ? (
+        {/* {window.innerWidth > 1088 ? (
           <p />
         ) : (
           <div className="class Roboto_18pt_Regular_L">
@@ -576,7 +572,7 @@ function Name({ status, name, index, isLP, isLocked }) {
               ? "Locked"
               : "Flexible"}
           </div>
-        )}
+        )} */}
 
         <div>{name}</div>
       </div>
