@@ -239,7 +239,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           if (ALL_RESULTS[network][i].name === "11.2 Premier Locked Pool 300") {
             ALL_RESULTS[network][i].name = "11.12 Premier Locked Pool 200";
           } else if (ALL_RESULTS[network][i].name === "11.2 Locked Pool 200") {
-            ALL_RESULTS[network][i].name = "11.12 Premier Locked Pool 100";
+            ALL_RESULTS[network][i].name = "11.12 Locked Pool 100";
           }
 
           ALL_RESULTS[network][i].address = CHARGER_ADDRESS;
