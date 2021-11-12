@@ -43,8 +43,9 @@ function Row({
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
-  const [requireNetwork, setRequireNetwork] =
-    useRecoilState(requireNetworkState);
+  const [requireNetwork, setRequireNetwork] = useRecoilState(
+    requireNetworkState
+  );
   const [web3_R] = useRecoilState(web3ReaderState);
   const WEB3 = web3_R[poolNet];
   const [isOpen, setOpen] = useState(false);
@@ -267,7 +268,11 @@ function Row({
       >
         <img
           className="chargerImage"
-          src={`/img_station_${poolNet}.svg`}
+          src={
+            name === "EVO - 1" || name === "EVO - 2" || name === "EVO - 3"
+              ? "/ic_locker.svg"
+              : `/img_station_${poolNet}.svg`
+          }
           style={
             window.innerWidth > 1088
               ? { width: "100px", height: "80px", opacity: "0.55" }
@@ -531,8 +536,16 @@ function Row({
   );
 }
 
-function Status({ status }) {
+function Status({ name, status }) {
   function color() {
+    switch (name) {
+      case "EVO - 1":
+        return "#b21a14";
+      case "EVO - 2":
+        return "#b21a14";
+      case "EVO - 3":
+        return "#b21a14";
+    }
     switch (status) {
       case "Close":
         return "#b21a14";
@@ -540,6 +553,8 @@ function Status({ status }) {
         return "#7E7E7E";
       case "Active":
         return "#0eef6d";
+      case "Locked":
+        return "#b21a14";
     }
   }
   return (

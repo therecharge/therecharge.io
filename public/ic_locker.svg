@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48.154" height="62" viewBox="0 0 48.154 62">
+    <defs>
+        <filter id="패스_471" x="9.804" y="30.891" width="28.547" height="26.098" filterUnits="userSpaceOnUse">
+            <feOffset/>
+            <feGaussianBlur stdDeviation="1.5" result="blur"/>
+            <feFlood flood-color="#fff" flood-opacity=".584"/>
+            <feComposite operator="in" in2="blur"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <filter id="패스_472" x="21.724" y="28.088" width="10.608" height="17.544" filterUnits="userSpaceOnUse">
+            <feOffset/>
+            <feGaussianBlur stdDeviation="1.5" result="blur-2"/>
+            <feFlood flood-color="#fff" flood-opacity=".584"/>
+            <feComposite operator="in" in2="blur-2"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <filter id="패스_473" x="15.836" y="28.088" width="10.608" height="17.544" filterUnits="userSpaceOnUse">
+            <feOffset/>
+            <feGaussianBlur stdDeviation="1.5" result="blur-3"/>
+            <feFlood flood-color="#fff" flood-opacity=".584"/>
+            <feComposite operator="in" in2="blur-3"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <style>
+            .cls-2{fill:#ffb900}
+        </style>
+    </defs>
+    <g id="ic_locker" transform="translate(-423 -1063)">
+        <g id="그룹_286" data-name="그룹 286" style="opacity:.2">
+            <g style="filter:url(#패스_471)" transform="translate(423.004 1062.998)">
+                <path id="패스_471-2" data-name="패스 471" class="cls-2" d="M-296.7 819.107a.8.8 0 0 0-1.137.032.8.8 0 0 0 .032 1.137 8.088 8.088 0 0 1 2.559 5.935 8.175 8.175 0 0 1-8.166 8.166 8.175 8.175 0 0 1-8.165-8.166 8.09 8.09 0 0 1 2.558-5.935.8.8 0 0 0 .032-1.137.8.8 0 0 0-1.137-.032 9.684 9.684 0 0 0-3.062 7.1 9.784 9.784 0 0 0 9.773 9.774 9.785 9.785 0 0 0 9.774-9.774 9.682 9.682 0 0 0-3.061-7.1z" transform="translate(327.48 -783.5)"/>
+            </g>
+            <g style="filter:url(#패스_472)" transform="translate(423.004 1062.998)">
+                <path id="패스_472-2" data-name="패스 472" class="cls-2" d="M-294.926 823.327a.8.8 0 0 0 .8-.8v-6.936a.8.8 0 0 0-.8-.8.8.8 0 0 0-.8.8v6.936a.8.8 0 0 0 .8.8z" transform="translate(321.95 -782.2)"/>
+            </g>
+            <g style="filter:url(#패스_473)" transform="translate(423.004 1062.998)">
+                <path id="패스_473-2" data-name="패스 473" class="cls-2" d="M-303.545 823.327a.8.8 0 0 0 .8-.8v-6.936a.8.8 0 0 0-.8-.8.8.8 0 0 0-.8.8v6.936a.8.8 0 0 0 .8.8z" transform="translate(324.69 -782.2)"/>
+            </g>
+        </g>
+        <path id="패스_669" data-name="패스 669" d="M-323.426 782.385a13.862 13.862 0 0 1 13.846-13.846 13.862 13.862 0 0 1 13.846 13.846v9.231h-27.692zm36.923 43.847a2.31 2.31 0 0 1-2.308 2.308h-41.539a2.31 2.31 0 0 1-2.307-2.308v-32.308a2.311 2.311 0 0 1 2.307-2.308h41.539a2.311 2.311 0 0 1 2.308 2.308z" transform="translate(756.657 295.461)" style="fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:2px;opacity:.2"/>
+    </g>
+</svg>
