@@ -6,7 +6,7 @@ import { async } from "@aragon/ui/dist/ToastHub";
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
 export default function Popup({
-  close = () => { },
+  close = () => {},
   name,
   apy,
   info,
@@ -32,14 +32,23 @@ export default function Popup({
           />
           <div className="group1">
             <span className="Roboto_40pt_Black popup-title">STAKING</span>
-            <span className="Roboto_30pt_Regular popup-name">{name}</span>
+            <span className="Roboto_30pt_Regular popup-name">
+              {name === "EVO - 1"
+                ? "Private Locker 1"
+                : name === "EVO - 2"
+                ? "Private Locker 2"
+                : name === "EVO - 3"
+                ? "Private Locker 3"
+                : ""}
+            </span>
             <span className="Roboto_30pt_Regular popup-apy">
               {makeNum(apy, 2)} %
             </span>
             <span className="Roboto_20pt_Regular popup-available">
               Available:{" "}
-              {`${makeNum((userInfo.available - plAmount).toString())} ${info.symbol[1]
-                }`}
+              {`${makeNum((userInfo.available - plAmount).toString())} ${
+                info.symbol[1]
+              }`}
             </span>
             <input
               className="Roboto_20pt_Regular popup-input"
