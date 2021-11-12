@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 //components
 // import Image from "./List/image.js";
-import Row from "./List/row.js";
+import Row from "./List/row_locker.js";
 /* Libraries */
 import {
   getChargerList,
