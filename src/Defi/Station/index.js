@@ -17,6 +17,7 @@ function Station(props) {
   });
   const [network, setNetwork] = useState("ALL");
   const [tvl, setTvl] = useState(0);
+  const [privateTvl, setPrivateTvl] = useState(0);
 
   // useEffect(() => {
   //   setParams({
@@ -41,6 +42,7 @@ function Station(props) {
           setParams={setParams}
           params={params}
           tvl={tvl}
+          privateTvl={privateTvl}
         />
         {/* <Networks setNetwork={setNetwork} network={network} /> */}
         {/* <Slider setParams={setParams} params={params} /> */}
@@ -55,7 +57,7 @@ function Station(props) {
           params={params}
           toast={props.toast}
           network={network}
-          setTvl={setTvl}
+          setPrivateTvl={setPrivateTvl}
         />
       </Content>
     </Container>

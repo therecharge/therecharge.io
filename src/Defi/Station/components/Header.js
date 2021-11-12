@@ -14,7 +14,7 @@ import SortBy from "./SortBy";
 //   return newNum.toLocaleString("fullwide", { useGrouping: false });
 // };
 
-function Header({ setNetwork, network, setParams, params, tvl }) {
+function Header({ setNetwork, network, setParams, params, tvl, privateTvl }) {
   const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
     let newNum;
     if (typeof num === "string") newNum = Number(num);
@@ -35,7 +35,7 @@ function Header({ setNetwork, network, setParams, params, tvl }) {
               Total Value Deposited
             </Text>
             <Value className="Roboto_30pt_Medium ">
-              ${Number(tvl.toFixed(2)).toLocaleString()}
+              ${Number((tvl + privateTvl).toFixed(2)).toLocaleString()}
             </Value>
           </TotalValue>
         </TitleWrapper>

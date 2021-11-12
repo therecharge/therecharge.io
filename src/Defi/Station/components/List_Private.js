@@ -53,7 +53,7 @@ const chargerInfo = [
   },
 ];
 
-function List({ /*type, list,*/ params, toast, network, setTvl }) {
+function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
   const [t] = useTranslation();
   const [fullList, setFullList] = useState(loading_data);
   const [chList, setChList] = useState(loading_data);
@@ -249,10 +249,10 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           ALL_RESULTS[network][i].apy = getAPY(
             ALL_RESULTS[network][i].totalSupply,
             ALL_RESULTS[network][i].rewardAmount -
-              (ALL_RESULTS[network][i].rewardToken ==
+            (ALL_RESULTS[network][i].rewardToken ==
               ALL_RESULTS[network][i].stakeToken
-                ? ALL_RESULTS[network][i].totalSupply
-                : 0),
+              ? ALL_RESULTS[network][i].totalSupply
+              : 0),
             ALL_RESULTS[network][i].DURATION
           );
           ALL_RESULTS[network][i].symbol = [
@@ -290,7 +290,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       ALL_LIST.map(
         (charger) => (tvl += Number(fromWei(charger.totalSupply, "ether")))
       );
-      setTvl(tvl * RCG_PRICE);
+      setPrivateTvl(tvl * RCG_PRICE);
       // if (params.type === "Locked") {
       //   // 해당 풀타입이 없을 때
       //   let catchZeroPool = [];
