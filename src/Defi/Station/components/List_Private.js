@@ -121,9 +121,9 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const getList = async () => {
       const ETH_CHARGER_LIST = [];
       const BEP_CHARGER_LIST = [
-        "0xc6D502F4B01EeF38061A9FD45c30d2BebBD2C6a9",
-        "0x822aCc997B55A5713484ea518346a61fb5475879",
-        "0xdf67eE4DAa83B50a95a7a517723AfE2A0cC245d4",
+        "0xBda852B667e3DB881AD03a94db1b0233219bB777",
+        "0x2a188018e466069933c2dfcc7326C9b3874D2569",
+        "0x86d1Ecdfb61814bc8fD1f46C4Acb49a2C96a6c80",
       ];
       const HRC_CHARGER_LIST = []; //
       const ALL_NETWORK_CHARGERLIST = [
@@ -260,10 +260,12 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
             ALL_STAKES_SYMBOL[network][i],
           ];
           ALL_RESULTS[network][i].network = net;
-          ALL_RESULTS[network][i].isLP =
-            ALL_RESULTS[network][i].name.includes("LP");
-          ALL_RESULTS[network][i].isLocked =
-            ALL_RESULTS[network][i].name.includes("Locked");
+          ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes(
+            "LP"
+          );
+          ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][
+            i
+          ].name.includes("Locked");
         });
       });
 
