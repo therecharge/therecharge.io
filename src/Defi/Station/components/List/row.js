@@ -43,7 +43,8 @@ function Row({
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
-  const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
+  const [requireNetwork, setRequireNetwork] =
+    useRecoilState(requireNetworkState);
   const [web3_R] = useRecoilState(web3ReaderState);
   const WEB3 = web3_R[poolNet];
   const [isOpen, setOpen] = useState(false);
@@ -132,8 +133,16 @@ function Row({
     chargerAddress
   ) => {
     let ret = {};
-    const STAKE_INSTANCE = createContractInstance(web3, stakeTokenAddress, ERC20_ABI);
-    const POOL_INSTANCE = createContractInstance(web3, chargerAddress, POOL_ABI);
+    const STAKE_INSTANCE = createContractInstance(
+      web3,
+      stakeTokenAddress,
+      ERC20_ABI
+    );
+    const POOL_INSTANCE = createContractInstance(
+      web3,
+      chargerAddress,
+      POOL_ABI
+    );
     // const REWARD_INSTANCE = createContractInstance(web3, rewardTokenAddress, ERC20_ABI);
 
     // const [balance] = await stakeM.balanceOf(account).call();
@@ -237,16 +246,16 @@ function Row({
       <Title
         onClick={
           info.name == "Loading List.." ||
-            info.name == "There is currently no Charger List available."
-            ? () => { }
+          info.name == "There is currently no Charger List available."
+            ? () => {}
             : () => {
-              setOpen(!isOpen);
-              setRequireNetwork(NETWORK.network[poolNet].chainId);
-            }
+                setOpen(!isOpen);
+                setRequireNetwork(NETWORK.network[poolNet].chainId);
+              }
         }
         style={
           info.name === "Loading List.." ||
-            info.name == "There is currently no Charger List available."
+          info.name == "There is currently no Charger List available."
             ? { cursor: "not-allowed" }
             : { cursor: "pointer" }
         }
@@ -268,13 +277,15 @@ function Row({
         <Status status={status} />
         <Name
           status={status}
-          name={name === "11.2 Premier Locked Pool 300"
-            ? "11.12 Premier Locked Pool 300"
-            : name === "11.2 Locked Pool 200"
+          name={
+            name === "11.2 Premier Locked Pool 300"
+              ? "11.12 Premier Locked Pool 300"
+              : name === "11.2 Locked Pool 200"
               ? "11.12 Locked Pool 200"
               : name === "11.2 Flexible Pool"
-                ? "11.12 Flexible Pool"
-                : name}
+              ? "11.12 Flexible Pool"
+              : name
+          }
           index={index}
           isLP={info.isLP}
           isLocked={info.isLocked}
@@ -301,25 +312,28 @@ function Row({
                 right={
                   limit == 0
                     ? "UNLIMITED"
-                    : limit + ` ${info.symbol[1]}`
+                    : Number(weiToEther(limit)).toFixed(2).toLocaleString() +
+                      ` ${info.symbol[1]}`
                 }
               />
             </PoolInfo>
             {account &&
-              (typeof network === "string" ? parseInt(network, 16) : network) ==
+            (typeof network === "string" ? parseInt(network, 16) : network) ==
               requireNetwork ? (
               <UserInfo account={account} className="innerMenu">
                 <Info
                   className="hide"
                   left="MY BAL"
-                  right={`${makeNum(weiToEther(userInfo.balance))} ${info ? info.symbol[1] : ""
-                    }`}
+                  right={`${makeNum(weiToEther(userInfo.balance))} ${
+                    info ? info.symbol[1] : ""
+                  }`}
                 />
                 <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
                 <Info
                   left="Reward"
-                  right={`${makeNum(weiToEther(userInfo.reward))} ${info ? info.symbol[0] : ""
-                    }`}
+                  right={`${makeNum(weiToEther(userInfo.reward))} ${
+                    info ? info.symbol[0] : ""
+                  }`}
                 />
               </UserInfo>
             ) : (
@@ -341,9 +355,9 @@ function Row({
                 />
                 {network &&
                   requireNetwork !=
-                  (typeof network === "string"
-                    ? parseInt(network, 16)
-                    : network) && (
+                    (typeof network === "string"
+                      ? parseInt(network, 16)
+                      : network) && (
                     <div className="warning">Wrong, Network!</div>
                   )}
               </UserInfo>
@@ -360,7 +374,7 @@ function Row({
                   // status === "Active" ? "var(--purple)" : "var(--gray-30)"
                   status === "Active" ? "var(--gray-30)" : "var(--gray-30)" // FIXME
                 }
-                border={name.includes("Flexible") ? "" : /*"locked"*/""}
+                border={name.includes("Flexible") ? "" : /*"locked"*/ ""}
                 hcolor=""
                 radius="20px"
                 w="540px"
@@ -371,8 +385,8 @@ function Row({
                   userInfo.allowance !== "0"
                     ? "PLUG-IN"
                     : userInfo.address == "0x00"
-                      ? "Now Loading ..."
-                      : "APPROVE"
+                    ? "Now Loading ..."
+                    : "APPROVE"
                 } //어프로브 안되어 있으면 APPROVE로 대체 필요함.
                 onClick={() => {
                   if (status === "Inactive") {
@@ -406,10 +420,10 @@ function Row({
                   !account
                     ? "var(--gray-30)"
                     : status === "Inactive"
-                      ? "var(--gray-30)"
-                      : userInfo.reward > 0
-                        ? "var(--yellow)"
-                        : "var(--gray-30)"
+                    ? "var(--gray-30)"
+                    : userInfo.reward > 0
+                    ? "var(--yellow)"
+                    : "var(--gray-30)"
                 }
                 border=""
                 hcolor=""
@@ -419,28 +433,28 @@ function Row({
                 text="GET FILLED"
                 onClick={
                   params.type === "Locked"
-                    ? () => { }
+                    ? () => {}
                     : async () => {
-                      if (!account) {
-                        toast("Please connect to wallet");
-                      } else if (
-                        params.type == "Locked" &&
-                        status === "Active"
-                      ) {
-                        toast("This pool does not end");
-                      } else if (status === "Inactive") {
-                        toast("This pool is inactive");
-                      } else /*if (userInfo.reward > 0) 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다. */ {
-                        poolMethods.earn();
-                        await toast(
-                          'Please approve "GET FILLED" in your private wallet'
-                        );
+                        if (!account) {
+                          toast("Please connect to wallet");
+                        } else if (
+                          params.type == "Locked" &&
+                          status === "Active"
+                        ) {
+                          toast("This pool does not end");
+                        } else if (status === "Inactive") {
+                          toast("This pool is inactive");
+                        } /*if (userInfo.reward > 0) 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다. */ else {
+                          poolMethods.earn();
+                          await toast(
+                            'Please approve "GET FILLED" in your private wallet'
+                          );
+                        }
+                        // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
+                        // else {
+                        //   toast("There is no withdrawable amount");
+                        // }
                       }
-                      // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
-                      // else {
-                      //   toast("There is no withdrawable amount");
-                      // }
-                    }
                 }
               />
               {/* ) : (
@@ -464,7 +478,7 @@ function Row({
                   onClick={async () => {
                     if (!account) {
                       toast("Please connect to wallet");
-                    } else /* if (userInfo.balance > 0) 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.*/ {
+                    } /* if (userInfo.balance > 0) 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.*/ else {
                       poolMethods.exit();
                       await toast(
                         'Please approve "UNPLUG" in your private wallet'
@@ -485,7 +499,7 @@ function Row({
                       ? "var(--ultramarine-blue)"
                       : "var(--gray-30)"
                   }
-                  border={name.includes("Flexible") ? "" : /*"locked"*/""}
+                  border={name.includes("Flexible") ? "" : /*"locked"*/ ""}
                   hcolor=""
                   radius="20px"
                   w="540px"
@@ -499,7 +513,9 @@ function Row({
                       // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
                       // if (userInfo.balance > 0) {
                       poolMethods.exit();
-                      await toast('Please approve "UNPLUG" in your private wallet');
+                      await toast(
+                        'Please approve "UNPLUG" in your private wallet'
+                      );
                       // } else toast("There is no withdrawable amount");
                     } else {
                       toast("Please try after the pool service period ends");
@@ -532,22 +548,22 @@ function Status({ status }) {
       style={
         window.innerWidth > 1088
           ? {
-            marginLeft: "50px",
-            color: color(status),
-            width: "71.5px",
-            textAlign: "center",
-            zIndex: "1",
-          }
+              marginLeft: "50px",
+              color: color(status),
+              width: "71.5px",
+              textAlign: "center",
+              zIndex: "1",
+            }
           : {
-            marginTop: "20px",
-            marginLeft: "20px",
-            marginRight: "25px",
-            backgroundColor: color(status),
-            width: "15px",
-            height: "15px",
-            textAlign: "center",
-            borderRadius: "100px",
-          }
+              marginTop: "20px",
+              marginLeft: "20px",
+              marginRight: "25px",
+              backgroundColor: color(status),
+              width: "15px",
+              height: "15px",
+              textAlign: "center",
+              borderRadius: "100px",
+            }
       }
     >
       {window.innerWidth > 1088 ? status : <div />}
@@ -566,24 +582,22 @@ function Name({ status, name, index, isLP, isLocked }) {
       style={
         window.innerWidth > 1088
           ? {
-            marginLeft: "47px",
-            color: color(),
-            zIndex: "1",
-          }
+              marginLeft: "47px",
+              color: color(),
+              zIndex: "1",
+            }
           : {
-            marginLeft: "5px",
-            // marginRight: "2px",
-            color: color(),
-            zIndex: "1",
-          }
+              marginLeft: "5px",
+              // marginRight: "2px",
+              color: color(),
+              zIndex: "1",
+            }
       }
     >
       <div>
         <img
           src={
-            name.includes("LP")
-              ? "/img_station_rcgbnb.png"
-              : "/swap_rcg.svg"
+            name.includes("LP") ? "/img_station_rcgbnb.png" : "/swap_rcg.svg"
           }
           style={
             window.innerWidth > 1088
@@ -591,8 +605,8 @@ function Name({ status, name, index, isLP, isLocked }) {
                 ? { width: "70px", height: "40px" }
                 : { width: "40px", height: "40px" }
               : name.includes("LP")
-                ? { width: "88px", height: "50px" }
-                : { width: "50px", height: "50px" }
+              ? { width: "88px", height: "50px" }
+              : { width: "50px", height: "50px" }
           }
         />
       </div>
@@ -607,8 +621,8 @@ function Name({ status, name, index, isLP, isLocked }) {
                 ? "LP Locked"
                 : "LP Flexible"
               : isLocked
-                ? "Locked"
-                : "Flexible"}
+              ? "Locked"
+              : "Flexible"}
           </div>
         )}
 
@@ -628,14 +642,15 @@ function Apy({ status, apy }) {
   }
   return (
     <p
-      className={`${window.innerWidth > 720 ? "Roboto_25pt_Black" : "Roboto_25pt_Black"
-        } apy`}
+      className={`${
+        window.innerWidth > 720 ? "Roboto_25pt_Black" : "Roboto_25pt_Black"
+      } apy`}
       style={{ color: color() }}
     >
       {status !== "Inactive"
         ? (apy === "+999999.99"
-          ? "+999999.99"
-          : Number(Number(apy).toFixed(2)).toLocaleString()) + "%"
+            ? "+999999.99"
+            : Number(Number(apy).toFixed(2)).toLocaleString()) + "%"
         : "-"}
     </p>
   );
