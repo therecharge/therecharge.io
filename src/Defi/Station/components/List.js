@@ -262,7 +262,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
               ALL_RESULTS[network][i].stakeToken
                 ? ALL_RESULTS[network][i].totalSupply
                 : 0),
-            ALL_RESULTS[network][i].DURATION
+            ALL_RESULTS[network][i].DURATION,
+            ALL_RESULTS[network][i].name
           );
           ALL_RESULTS[network][i].symbol = [
             ALL_REWARDS_SYMBOL[network][i],
@@ -378,12 +379,19 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const updateChargerInfoList = () => {
     loadChargerList();
   };
-  const getAPY = (totalSupply, rewardAmount, DURATION) => {
+  const getAPY = (totalSupply, rewardAmount, DURATION, name) => {
     const Year = 1 * 365 * 24 * 60 * 60;
-    return (
-      ((rewardAmount * (Year / DURATION)) / totalSupply) *
-      100
-    ).toString();
+    if (name.includes("LP")) {
+      return (
+        (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
+        34
+      ).toString();
+    } else {
+      return (
+        ((rewardAmount * (Year / DURATION)) / totalSupply) *
+        100
+      ).toString();
+    }
   };
   const useInterval = (callback, delay) => {
     const savedCallback = useRef();
