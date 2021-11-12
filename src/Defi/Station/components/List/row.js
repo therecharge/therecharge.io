@@ -39,6 +39,7 @@ function Row({
   period, // loadPoolPeriod(-)
   poolNet,
   index,
+  startTime,
 }) {
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
@@ -376,9 +377,11 @@ function Row({
                 need={userInfo.address == "0x00" ? "2" : "2"}
                 // disable={userInfo.address == "0x00" ? false : false}
                 bgColor={
-                  status === "Active" ? "var(--purple)" : "var(--gray-30)"
+                  status === "Active" && startTime == "1636693200"
+                    ? "var(--purple)"
+                    : "var(--gray-30)"
                 }
-                border={name.includes("Flexible") ? "" : /*"locked"*/ ""}
+                border={name.includes("Flexible") ? "" : "locked"}
                 hcolor=""
                 radius="20px"
                 w="540px"
@@ -415,60 +418,64 @@ function Row({
                 }}
               />
               {/* 강제 출금 이용자들을 위해 한시적으로 적용합니다. */}
-              {/* {name.includes("Flexible") ? ( */}
-              <WalletConnect
-                need="0"
-                disable={true}
-                bgColor={
-                  !account
-                    ? "var(--gray-30)"
-                    : status === "Inactive"
-                    ? "var(--gray-30)"
-                    : userInfo.reward > 0
-                    ? "var(--yellow)"
-                    : "var(--gray-30)"
-                }
-                border=""
-                hcolor=""
-                radius="20px"
-                w="540px"
-                fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
-                text="GET FILLED"
-                onClick={
-                  params.type === "Locked"
-                    ? () => {}
-                    : async () => {
-                        if (!account) {
-                          toast("Please connect to wallet");
-                        } else if (
-                          params.type == "Locked" &&
-                          status === "Active"
-                        ) {
-                          toast("This pool does not end");
-                        } else if (status === "Inactive") {
-                          toast("This pool is inactive");
-                        } /*if (userInfo.reward > 0) 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다. */ else {
-                          poolMethods.earn();
-                          await toast(
-                            'Please approve "GET FILLED" in your private wallet'
-                          );
-                        }
-                        // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
-                        // else {
-                        //   toast("There is no withdrawable amount");
-                        // }
-                      }
-                }
-              />
-              {/* ) : (
-                <></>
-              )} */}
               {name.includes("Flexible") ? (
                 <WalletConnect
                   need="0"
                   disable={true}
                   bgColor={
-                    userInfo.balance > 0
+                    account && userInfo.reward > 0 && startTime == "1636693200"
+                      ? "var(--yellow)"
+                      : "var(--gray-30)"
+                    // !account
+                    //   ? "var(--gray-30)"
+                    //   : status === "Inactive"
+                    //   ? "var(--gray-30)"
+                    //   : userInfo.reward > 0
+                    //   ? "var(--yellow)"
+                    //   : "var(--gray-30)"
+                  }
+                  border=""
+                  hcolor=""
+                  radius="20px"
+                  w="540px"
+                  fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
+                  text="GET FILLED"
+                  onClick={
+                    params.type === "Locked"
+                      ? () => {}
+                      : async () => {
+                          if (!account) {
+                            toast("Please connect to wallet");
+                          } else if (
+                            params.type == "Locked" &&
+                            status === "Active"
+                          ) {
+                            toast("This pool does not end");
+                          } else if (status === "Inactive") {
+                            toast("This pool is inactive");
+                          }
+                          if (userInfo.reward > 0) {
+                            poolMethods.earn();
+                            await toast(
+                              'Please approve "GET FILLED" in your private wallet'
+                            );
+                          }
+                          // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
+                          else {
+                            toast("There is no withdrawable amount");
+                          }
+                        }
+                  }
+                />
+              ) : (
+                <></>
+              )}
+              {name.includes("Flexible") ? (
+                <WalletConnect
+                  need="0"
+                  disable={true}
+                  bgColor={
+                    userInfo.balance > 0 && startTime == "1636693200"
                       ? "var(--ultramarine-blue)"
                       : "var(--gray-30)"
                   }
@@ -481,16 +488,16 @@ function Row({
                   onClick={async () => {
                     if (!account) {
                       toast("Please connect to wallet");
-                    } /* if (userInfo.balance > 0) 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.*/ else {
+                    } else if (userInfo.balance > 0) {
                       poolMethods.exit();
                       await toast(
                         'Please approve "UNPLUG" in your private wallet'
                       );
                     }
                     // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
-                    // else {
-                    //   toast("There is no withdrawable amount");
-                    // }
+                    else {
+                      toast("There is no withdrawable amount");
+                    }
                   }}
                 />
               ) : (
@@ -498,11 +505,13 @@ function Row({
                   need="0"
                   disable={true}
                   bgColor={
-                    status === "Close" && userInfo.balance > 0
+                    status === "Close" &&
+                    userInfo.balance > 0 &&
+                    startTime == "1636693200"
                       ? "var(--ultramarine-blue)"
                       : "var(--gray-30)"
                   }
-                  border={name.includes("Flexible") ? "" : /*"locked"*/ ""}
+                  border={name.includes("Flexible") ? "" : "locked"}
                   hcolor=""
                   radius="20px"
                   w="540px"
@@ -513,13 +522,12 @@ function Row({
                     if (!account) {
                       toast("Please connect to wallet");
                     } else if (status === "Close") {
-                      // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
-                      // if (userInfo.balance > 0) {
-                      poolMethods.exit();
-                      await toast(
-                        'Please approve "UNPLUG" in your private wallet'
-                      );
-                      // } else toast("There is no withdrawable amount");
+                      if (userInfo.balance > 0) {
+                        poolMethods.exit();
+                        await toast(
+                          'Please approve "UNPLUG" in your private wallet'
+                        );
+                      } else toast("There is no withdrawable amount");
                     } else {
                       toast("Please try after the pool service period ends");
                     }

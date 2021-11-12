@@ -102,15 +102,31 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const TOKEN_ABI = require("../../../lib/read_contract/abi/erc20.json");
     const CHARGER_ABI = require("../../../lib/read_contract/abi/charger.json");
 
-    const ETH_CHARGERLIST_INSTANCE = createContractInstance(ETH_WEB3, ETH_CHARGERLIST_ADDRESS, CHARGERLIST_ABI);
-    const BEP_CHARGERLIST_INSTANCE = createContractInstance(BEP_WEB3, BEP_CHARGERLIST_ADDRESS, CHARGERLIST_ABI);
-    const HRC_CHARGERLIST_INSTANCE = createContractInstance(HRC_WEB3, HRC_CHARGERLIST_ADDRESS, CHARGERLIST_ABI); //
+    const ETH_CHARGERLIST_INSTANCE = createContractInstance(
+      ETH_WEB3,
+      ETH_CHARGERLIST_ADDRESS,
+      CHARGERLIST_ABI
+    );
+    const BEP_CHARGERLIST_INSTANCE = createContractInstance(
+      BEP_WEB3,
+      BEP_CHARGERLIST_ADDRESS,
+      CHARGERLIST_ABI
+    );
+    const HRC_CHARGERLIST_INSTANCE = createContractInstance(
+      HRC_WEB3,
+      HRC_CHARGERLIST_ADDRESS,
+      CHARGERLIST_ABI
+    ); //
 
     const getList = async () => {
       const ETH_CHARGER_LIST = await getChargerList(ETH_CHARGERLIST_INSTANCE);
       const BEP_CHARGER_LIST = await getChargerList(BEP_CHARGERLIST_INSTANCE);
       const HRC_CHARGER_LIST = await getChargerList(HRC_CHARGERLIST_INSTANCE); //
-      const ALL_NETWORK_CHARGERLIST = [ETH_CHARGER_LIST, BEP_CHARGER_LIST, HRC_CHARGER_LIST,];
+      const ALL_NETWORK_CHARGERLIST = [
+        ETH_CHARGER_LIST,
+        BEP_CHARGER_LIST,
+        HRC_CHARGER_LIST,
+      ];
 
       if (ETH_CHARGER_LIST.length === 0 && BEP_CHARGER_LIST.length === 0)
         return setChList(chargerInfo);
@@ -123,12 +139,20 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
       const ALL_CHARGER_INSTANCES = ALL_NETWORK_CHARGERLIST.map(
         (CHARGERLIST, network) => {
-          return CHARGERLIST.map(CHARGER_ADDRESS => createContractInstance(ALL_WEB3[network], CHARGER_ADDRESS, CHARGER_ABI))
+          return CHARGERLIST.map((CHARGER_ADDRESS) =>
+            createContractInstance(
+              ALL_WEB3[network],
+              CHARGER_ADDRESS,
+              CHARGER_ABI
+            )
+          );
         }
       );
       const ALL_CHARGERS_INFO = await Promise.all(
         ALL_CHARGER_INSTANCES.map(async (CHARGER_INSTANCES) => {
-          return Promise.all(CHARGER_INSTANCES.map((INSTANCE) => getChargerInfo(INSTANCE)));
+          return Promise.all(
+            CHARGER_INSTANCES.map((INSTANCE) => getChargerInfo(INSTANCE))
+          );
         })
       );
       ALL_CHARGERS_INFO.map((CHARGERS_INFO, network) => {
@@ -141,8 +165,14 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         ALL_NETWORK_CHARGERLIST.map(async (CHARGERLIST, network) => {
           return Promise.all(
             CHARGERLIST.map((CHARGER_ADDRESS, i) => {
-              const REWARDTOKEN_INSTANCE = createContractInstance(ALL_WEB3[network], ALL_RESULTS[network][i].rewardToken, TOKEN_ABI);
-              return REWARDTOKEN_INSTANCE.methods.balanceOf(CHARGER_ADDRESS).call();
+              const REWARDTOKEN_INSTANCE = createContractInstance(
+                ALL_WEB3[network],
+                ALL_RESULTS[network][i].rewardToken,
+                TOKEN_ABI
+              );
+              return REWARDTOKEN_INSTANCE.methods
+                .balanceOf(CHARGER_ADDRESS)
+                .call();
             })
           );
         })
@@ -151,7 +181,11 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         ALL_NETWORK_CHARGERLIST.map((CHARGERLIST, network) => {
           return Promise.all(
             CHARGERLIST.map((CHARGER_ADDRESS, i) => {
-              const TOKEN_INSTANCE = createContractInstance(ALL_WEB3[network], ALL_RESULTS[network][i].rewardToken, TOKEN_ABI);
+              const TOKEN_INSTANCE = createContractInstance(
+                ALL_WEB3[network],
+                ALL_RESULTS[network][i].rewardToken,
+                TOKEN_ABI
+              );
               return TOKEN_INSTANCE.methods.symbol().call();
             })
           );
@@ -161,7 +195,11 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         ALL_NETWORK_CHARGERLIST.map((CHARERLIST, network) => {
           return Promise.all(
             CHARERLIST.map((CHARGER_ADDRESS, i) => {
-              const TOKEN_INSTANCE = createContractInstance(ALL_WEB3[network], ALL_RESULTS[network][i].stakeToken, TOKEN_ABI);
+              const TOKEN_INSTANCE = createContractInstance(
+                ALL_WEB3[network],
+                ALL_RESULTS[network][i].stakeToken,
+                TOKEN_ABI
+              );
               return TOKEN_INSTANCE.methods.symbol().call();
             })
           );
@@ -172,7 +210,11 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           return Promise.all(
             CHARGERLIST.map(async (CHARGER_ADDRESS, i) => {
               if (ALL_STAKES_SYMBOL[network][i] != "RCG") return 0;
-              const TOKEN_INSTANCE = createContractInstance(ALL_WEB3[network], ALL_RESULTS[network][i].stakeToken, TOKEN_ABI);
+              const TOKEN_INSTANCE = createContractInstance(
+                ALL_WEB3[network],
+                ALL_RESULTS[network][i].stakeToken,
+                TOKEN_ABI
+              );
               return TOKEN_INSTANCE.methods.basePercent().call();
             })
           );
@@ -194,21 +236,32 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         }
         await CHARGERLIST.map((CHARGER_ADDRESS, i) => {
           ALL_RESULTS[network][i].address = CHARGER_ADDRESS;
-          ALL_RESULTS[network][i].status = loadActiveStatus(ALL_RESULTS[network][i]);
+          ALL_RESULTS[network][i].status = loadActiveStatus(
+            ALL_RESULTS[network][i]
+          );
           ALL_RESULTS[network][i].rewardAmount = ALL_REWARDS_AMOUNT[network][i];
-          ALL_RESULTS[network][i].basePercent = ALL_STAKES_BASEPERCENT[network][i];
+          ALL_RESULTS[network][i].basePercent =
+            ALL_STAKES_BASEPERCENT[network][i];
           ALL_RESULTS[network][i].apy = getAPY(
             ALL_RESULTS[network][i].totalSupply,
             ALL_RESULTS[network][i].rewardAmount -
-            (ALL_RESULTS[network][i].rewardToken == ALL_RESULTS[network][i].stakeToken
-              ? ALL_RESULTS[network][i].totalSupply
-              : 0),
+              (ALL_RESULTS[network][i].rewardToken ==
+              ALL_RESULTS[network][i].stakeToken
+                ? ALL_RESULTS[network][i].totalSupply
+                : 0),
             ALL_RESULTS[network][i].DURATION
           );
-          ALL_RESULTS[network][i].symbol = [ALL_REWARDS_SYMBOL[network][i], ALL_STAKES_SYMBOL[network][i]];
+          ALL_RESULTS[network][i].symbol = [
+            ALL_REWARDS_SYMBOL[network][i],
+            ALL_STAKES_SYMBOL[network][i],
+          ];
           ALL_RESULTS[network][i].network = net;
-          ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes("LP");
-          ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][i].name.includes("Locked");
+          ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes(
+            "LP"
+          );
+          ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][
+            i
+          ].name.includes("Locked");
         });
       });
 
@@ -219,7 +272,10 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       let ALL_LIST = [];
       for (let network in ALL_RESULTS) {
         ALL_RESULTS[network].map((charger) => {
-          if (charger.name === "9.3 Locked Pool 500" || charger.name === "9.15 BSC Zero-Burning Pool 20") {
+          if (
+            charger.name === "9.3 Locked Pool 500" ||
+            charger.name === "9.15 BSC Zero-Burning Pool 20"
+          ) {
           } else {
             ALL_LIST.push(charger);
           }
@@ -364,6 +420,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
                     toast={toast}
                     period={loadPoolPeriod(charger.startTime, charger.DURATION)}
                     poolNet={charger.network}
+                    startTime={charger.startTime}
                   />
                 </div>
               </div>
