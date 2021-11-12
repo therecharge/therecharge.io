@@ -279,13 +279,13 @@ function Row({
         <Name
           status={status}
           name={
-            name === "11.2 Premier Locked Pool 300"
-              ? "11.12 Premier Locked Pool 300"
-              : name === "11.2 Locked Pool 200"
-              ? "11.12 Locked Pool 200"
-              : name === "11.2 Flexible Pool"
-              ? "11.12 Flexible Pool"
-              : name
+            name === "EVO - 1"
+              ? "Private Locker 1"
+              : name === "EVO - 2"
+              ? "Private Locker 2"
+              : name === "EVO - 3"
+              ? "Private Locker 3"
+              : ""
           }
           index={index}
           isLP={info.isLP}
