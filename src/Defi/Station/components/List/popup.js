@@ -50,6 +50,12 @@ export default function Popup({
                 info.symbol[1]
               }`}
             </span>
+            <span
+              className="Roboto_16pt_Regular minimum"
+              // style={{ color: "var(--yellow)" }}
+            >
+              Minimum: {`${makeNum(info.minimum.toString())} ${info.symbol[1]}`}
+            </span>
             <input
               className="Roboto_20pt_Regular popup-input"
               type="number"
@@ -253,6 +259,11 @@ const Content = styled.div`
   }
   .popup-available {
     margin-top: 80px;
+  }
+
+  .minimum {
+    margin-top: 8px;
+    color: var(--yellow);
   }
   .popup-input {
     margin-top: 16px;

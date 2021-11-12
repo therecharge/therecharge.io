@@ -608,7 +608,7 @@ function Apy({ status, apy }) {
             ? "+999999.99"
             : Number(Number(apy).toFixed(2)).toLocaleString()) + "%"
         : "-"} */}
-      11.12.10 ~ 05.12.10
+      21.11.12 ~ 22.05.12
     </p>
   );
 }

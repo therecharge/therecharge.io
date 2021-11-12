@@ -235,10 +235,23 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
             break;
         }
         await CHARGERLIST.map((CHARGER_ADDRESS, i) => {
+          // 11.12 풀을 위해 임시적으로 사용됩니다.
+          if (ALL_RESULTS[network][i].name === "11.2 Premier Locked Pool 300") {
+            ALL_RESULTS[network][i].name = "11.12 Premier Locked Pool 200";
+          } else if (ALL_RESULTS[network][i].name === "11.2 Locked Pool 200") {
+            ALL_RESULTS[network][i].name = "11.12 Premier Locked Pool 100";
+          }
+
           ALL_RESULTS[network][i].address = CHARGER_ADDRESS;
           ALL_RESULTS[network][i].status = loadActiveStatus(
             ALL_RESULTS[network][i]
           );
+          // 컨트랙트에서 미니멈 값을 제대로 주기 전까지 일시적으로 사용합니다.
+          ALL_RESULTS[network][i].minimum = fromWei(
+            ALL_RESULTS[network][i].limit,
+            "ether"
+          );
+          //
           ALL_RESULTS[network][i].rewardAmount = ALL_REWARDS_AMOUNT[network][i];
           ALL_RESULTS[network][i].basePercent =
             ALL_STAKES_BASEPERCENT[network][i];
@@ -451,16 +464,25 @@ const loadPoolPeriod = (startTime, duration) => {
   return ret;
 };
 
-const loadActiveStatus = ({ totalSupply, startTime, DURATION, limit }) => {
+const loadActiveStatus = ({
+  totalSupply,
+  startTime,
+  DURATION,
+  limit,
+  name,
+}) => {
   startTime = Number(startTime);
   DURATION = Number(DURATION);
   let NOW = new Date().getTime() / 1000;
-  // console.log(limit, totalSupply);
+
+  // 11.1 풀을 위해 일시적으로 사용합니다.
+  if (name.includes("11.1 ")) return "Inactive";
+
   if (NOW < startTime) return "Inactive";
 
   if (NOW > startTime + DURATION) return "Close";
-
-  if (limit != "0" && totalSupply >= limit) return "Close";
+  // 리미트 설정 이전까지 잠정 주석처리 합니다.
+  // if (limit != "0" && totalSupply >= limit) return "Close";
   return "Active";
 };
 function makeNum(str = "0", decimal = 4) {

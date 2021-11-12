@@ -315,12 +315,13 @@ function Row({
               />
               <Info
                 left="LIMIT"
-                right={
-                  limit == 0
-                    ? "UNLIMITED"
-                    : Number(weiToEther(limit)).toFixed(2).toLocaleString() +
-                      ` ${info.symbol[1]}`
-                }
+                right="UNLIMITED"
+
+                //Fix Me, 리미트가 잘못 설정됨. 미니멈 값이 들어가 있음
+                // limit == 0
+                //   ? "UNLIMITED"
+                //   : Number(weiToEther(limit)).toFixed(2).toLocaleString() +
+                //     ` ${info.symbol[1]}`
               />
             </PoolInfo>
             {account &&
@@ -381,7 +382,11 @@ function Row({
                     ? "var(--purple)"
                     : "var(--gray-30)"
                 }
-                border={name.includes("Flexible") ? "" : "locked"}
+                border={
+                  name.includes("Flexible") || name.includes("11.1")
+                    ? ""
+                    : "locked"
+                }
                 hcolor=""
                 radius="20px"
                 w="540px"
@@ -418,7 +423,7 @@ function Row({
                 }}
               />
               {/* 강제 출금 이용자들을 위해 한시적으로 적용합니다. */}
-              {name.includes("Flexible") ? (
+              {name.includes("Flexible") || name.includes("11.1") ? (
                 <WalletConnect
                   need="0"
                   disable={true}
@@ -446,14 +451,16 @@ function Row({
                       : async () => {
                           if (!account) {
                             toast("Please connect to wallet");
-                          } else if (
-                            params.type == "Locked" &&
-                            status === "Active"
-                          ) {
-                            toast("This pool does not end");
-                          } else if (status === "Inactive") {
-                            toast("This pool is inactive");
                           }
+                          // 강제 출금자 위해 사용됩니다.
+                          // else if (
+                          //   params.type == "Locked" &&
+                          //   status === "Active"
+                          // ) {
+                          //   toast("This pool does not end");
+                          // } else if (status === "Inactive") {
+                          //   toast("This pool is inactive");
+                          // }
                           if (userInfo.reward > 0) {
                             poolMethods.earn();
                             await toast(
@@ -511,7 +518,11 @@ function Row({
                       ? "var(--ultramarine-blue)"
                       : "var(--gray-30)"
                   }
-                  border={name.includes("Flexible") ? "" : "locked"}
+                  border={
+                    name.includes("Flexible") || name.includes("11.1")
+                      ? ""
+                      : "locked"
+                  }
                   hcolor=""
                   radius="20px"
                   w="540px"
