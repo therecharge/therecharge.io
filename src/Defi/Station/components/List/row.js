@@ -248,16 +248,16 @@ function Row({
       <Title
         onClick={
           info.name == "Loading List.." ||
-          info.name == "There is currently no Charger List available."
-            ? () => {}
+            info.name == "There is currently no Charger List available."
+            ? () => { }
             : () => {
-                setOpen(!isOpen);
-                setRequireNetwork(NETWORK.network[poolNet].chainId);
-              }
+              setOpen(!isOpen);
+              setRequireNetwork(NETWORK.network[poolNet].chainId);
+            }
         }
         style={
           info.name === "Loading List.." ||
-          info.name == "There is currently no Charger List available."
+            info.name == "There is currently no Charger List available."
             ? { cursor: "not-allowed" }
             : { cursor: "pointer" }
         }
@@ -287,10 +287,10 @@ function Row({
             name === "11.2 Premier Locked Pool 300"
               ? "11.12 Premier Locked Pool 300"
               : name === "11.2 Locked Pool 200"
-              ? "11.12 Locked Pool 200"
-              : name === "11.2 Flexible Pool"
-              ? "11.12 Flexible Pool"
-              : name
+                ? "11.12 Locked Pool 200"
+                : name === "11.2 Flexible Pool"
+                  ? "11.12 Flexible Pool"
+                  : name
           }
           index={index}
           isLP={info.isLP}
@@ -317,30 +317,28 @@ function Row({
                 left="LIMIT"
                 right="UNLIMITED"
 
-                //Fix Me, 리미트가 잘못 설정됨. 미니멈 값이 들어가 있음
-                // limit == 0
-                //   ? "UNLIMITED"
-                //   : Number(weiToEther(limit)).toFixed(2).toLocaleString() +
-                //     ` ${info.symbol[1]}`
+              //Fix Me, 리미트가 잘못 설정됨. 미니멈 값이 들어가 있음
+              // limit == 0
+              //   ? "UNLIMITED"
+              //   : Number(weiToEther(limit)).toFixed(2).toLocaleString() +
+              //     ` ${info.symbol[1]}`
               />
             </PoolInfo>
             {account &&
-            (typeof network === "string" ? parseInt(network, 16) : network) ==
+              (typeof network === "string" ? parseInt(network, 16) : network) ==
               requireNetwork ? (
               <UserInfo account={account} className="innerMenu">
                 <Info
                   className="hide"
                   left="MY BAL"
-                  right={`${makeNum(weiToEther(userInfo.balance))} ${
-                    info ? info.symbol[1] : ""
-                  }`}
+                  right={`${makeNum(weiToEther(userInfo.balance))} ${info ? info.symbol[1] : ""
+                    }`}
                 />
                 <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
                 <Info
                   left="Reward"
-                  right={`${makeNum(weiToEther(userInfo.reward))} ${
-                    info ? info.symbol[0] : ""
-                  }`}
+                  right={`${makeNum(weiToEther(userInfo.reward))} ${info ? info.symbol[0] : ""
+                    }`}
                 />
               </UserInfo>
             ) : (
@@ -362,9 +360,9 @@ function Row({
                 />
                 {network &&
                   requireNetwork !=
-                    (typeof network === "string"
-                      ? parseInt(network, 16)
-                      : network) && (
+                  (typeof network === "string"
+                    ? parseInt(network, 16)
+                    : network) && (
                     <div className="warning">Wrong, Network!</div>
                   )}
               </UserInfo>
@@ -383,7 +381,7 @@ function Row({
                     : "var(--gray-30)"
                 }
                 border={
-                  name.includes("Flexible") || name.includes("11.1")
+                  name.includes("Flexible") || name.includes("11.1 ")
                     ? ""
                     : "locked"
                 }
@@ -397,8 +395,8 @@ function Row({
                   userInfo.allowance !== "0"
                     ? "PLUG-IN"
                     : userInfo.address == "0x00"
-                    ? "Now Loading ..."
-                    : "APPROVE"
+                      ? "Now Loading ..."
+                      : "APPROVE"
                 } //어프로브 안되어 있으면 APPROVE로 대체 필요함.
                 onClick={() => {
                   if (status === "Inactive") {
@@ -423,7 +421,7 @@ function Row({
                 }}
               />
               {/* 강제 출금 이용자들을 위해 한시적으로 적용합니다. */}
-              {name.includes("Flexible") || name.includes("11.1") ? (
+              {name.includes("Flexible") || name.includes("11.1 ") ? (
                 <WalletConnect
                   need="0"
                   disable={true}
@@ -447,31 +445,31 @@ function Row({
                   text="GET FILLED"
                   onClick={
                     params.type === "Locked"
-                      ? () => {}
+                      ? () => { }
                       : async () => {
-                          if (!account) {
-                            toast("Please connect to wallet");
-                          }
-                          // 강제 출금자 위해 사용됩니다.
-                          // else if (
-                          //   params.type == "Locked" &&
-                          //   status === "Active"
-                          // ) {
-                          //   toast("This pool does not end");
-                          // } else if (status === "Inactive") {
-                          //   toast("This pool is inactive");
-                          // }
-                          if (userInfo.reward > 0) {
-                            poolMethods.earn();
-                            await toast(
-                              'Please approve "GET FILLED" in your private wallet'
-                            );
-                          }
-                          // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
-                          else {
-                            toast("There is no withdrawable amount");
-                          }
+                        if (!account) {
+                          toast("Please connect to wallet");
                         }
+                        // 강제 출금자 위해 사용됩니다.
+                        // else if (
+                        //   params.type == "Locked" &&
+                        //   status === "Active"
+                        // ) {
+                        //   toast("This pool does not end");
+                        // } else if (status === "Inactive") {
+                        //   toast("This pool is inactive");
+                        // }
+                        if (userInfo.reward > 0) {
+                          poolMethods.earn();
+                          await toast(
+                            'Please approve "GET FILLED" in your private wallet'
+                          );
+                        }
+                        // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
+                        else {
+                          toast("There is no withdrawable amount");
+                        }
+                      }
                   }
                 />
               ) : (
@@ -513,13 +511,13 @@ function Row({
                   disable={true}
                   bgColor={
                     status === "Close" &&
-                    userInfo.balance > 0 &&
-                    startTime == "1636693200"
+                      userInfo.balance > 0 &&
+                      startTime == "1636693200"
                       ? "var(--ultramarine-blue)"
                       : "var(--gray-30)"
                   }
                   border={
-                    name.includes("Flexible") || name.includes("11.1")
+                    name.includes("Flexible") || name.includes("11.1 ")
                       ? ""
                       : "locked"
                   }
@@ -580,22 +578,22 @@ function Status({ name, status }) {
       style={
         window.innerWidth > 1088
           ? {
-              marginLeft: "50px",
-              color: color(status),
-              width: "71.5px",
-              textAlign: "center",
-              zIndex: "1",
-            }
+            marginLeft: "50px",
+            color: color(status),
+            width: "71.5px",
+            textAlign: "center",
+            zIndex: "1",
+          }
           : {
-              marginTop: "20px",
-              marginLeft: "20px",
-              marginRight: "25px",
-              backgroundColor: color(status),
-              width: "15px",
-              height: "15px",
-              textAlign: "center",
-              borderRadius: "100px",
-            }
+            marginTop: "20px",
+            marginLeft: "20px",
+            marginRight: "25px",
+            backgroundColor: color(status),
+            width: "15px",
+            height: "15px",
+            textAlign: "center",
+            borderRadius: "100px",
+          }
       }
     >
       {window.innerWidth > 1088 ? status : <div />}
@@ -614,16 +612,16 @@ function Name({ status, name, index, isLP, isLocked }) {
       style={
         window.innerWidth > 1088
           ? {
-              marginLeft: "47px",
-              color: color(),
-              zIndex: "1",
-            }
+            marginLeft: "47px",
+            color: color(),
+            zIndex: "1",
+          }
           : {
-              marginLeft: "5px",
-              // marginRight: "2px",
-              color: color(),
-              zIndex: "1",
-            }
+            marginLeft: "5px",
+            // marginRight: "2px",
+            color: color(),
+            zIndex: "1",
+          }
       }
     >
       <div>
@@ -637,8 +635,8 @@ function Name({ status, name, index, isLP, isLocked }) {
                 ? { width: "70px", height: "40px" }
                 : { width: "40px", height: "40px" }
               : name.includes("LP")
-              ? { width: "88px", height: "50px" }
-              : { width: "50px", height: "50px" }
+                ? { width: "88px", height: "50px" }
+                : { width: "50px", height: "50px" }
           }
         />
       </div>
@@ -653,8 +651,8 @@ function Name({ status, name, index, isLP, isLocked }) {
                 ? "LP Locked"
                 : "LP Flexible"
               : isLocked
-              ? "Locked"
-              : "Flexible"}
+                ? "Locked"
+                : "Flexible"}
           </div>
         )}
 
@@ -674,15 +672,14 @@ function Apy({ status, apy }) {
   }
   return (
     <p
-      className={`${
-        window.innerWidth > 720 ? "Roboto_25pt_Black" : "Roboto_25pt_Black"
-      } apy`}
+      className={`${window.innerWidth > 720 ? "Roboto_25pt_Black" : "Roboto_25pt_Black"
+        } apy`}
       style={{ color: color() }}
     >
       {status !== "Inactive"
         ? (apy === "+999999.99"
-            ? "+999999.99"
-            : Number(Number(apy).toFixed(2)).toLocaleString()) + "%"
+          ? "+999999.99"
+          : Number(Number(apy).toFixed(2)).toLocaleString()) + "%"
         : "-"}
     </p>
   );
