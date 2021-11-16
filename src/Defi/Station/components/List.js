@@ -312,16 +312,12 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
       ALL_LIST.sort((charger1, charger2) => charger2.startTime - charger1.startTime)
 
-
       // UNISWAP LP POOL을 위해 임시적으로 사용합니다.
 
       // ALL_LIST.reverse()
       // console.log("ALL_LIST", ALL_LIST)
       // let lastCharger = ALL_LIST.pop()
       // ALL_LIST.unshift(lastCharger)
-
-
-      console.log("NEW ALL_LIST", ALL_LIST)
 
 
       if (ALL_LIST.length === 0) {
