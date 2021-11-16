@@ -243,12 +243,18 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           }
 
           ALL_RESULTS[network][i].address = CHARGER_ADDRESS;
-          ALL_RESULTS[network][i].status = loadActiveStatus(ALL_RESULTS[network][i]);
+          ALL_RESULTS[network][i].status = loadActiveStatus(
+            ALL_RESULTS[network][i]
+          );
           // 컨트랙트에서 미니멈 값을 제대로 주기 전까지 일시적으로 사용합니다.
-          ALL_RESULTS[network][i].minimum = fromWei(ALL_RESULTS[network][i].limit, "ether");
+          ALL_RESULTS[network][i].minimum = fromWei(
+            ALL_RESULTS[network][i].limit,
+            "ether"
+          );
 
           ALL_RESULTS[network][i].rewardAmount = ALL_REWARDS_AMOUNT[network][i];
-          ALL_RESULTS[network][i].basePercent = ALL_STAKES_BASEPERCENT[network][i];
+          ALL_RESULTS[network][i].basePercent =
+            ALL_STAKES_BASEPERCENT[network][i];
           ALL_RESULTS[network][i].symbol = [
             ALL_REWARDS_SYMBOL[network][i],
             ALL_STAKES_SYMBOL[network][i],
@@ -257,22 +263,32 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           ALL_RESULTS[network][i].apy = getAPY(
             ALL_RESULTS[network][i].totalSupply,
             ALL_RESULTS[network][i].rewardAmount -
-            (ALL_RESULTS[network][i].rewardToken ==
+              (ALL_RESULTS[network][i].rewardToken ==
               ALL_RESULTS[network][i].stakeToken
-              ? ALL_RESULTS[network][i].totalSupply
-              : 0),
+                ? ALL_RESULTS[network][i].totalSupply
+                : 0),
             ALL_RESULTS[network][i].DURATION,
             ALL_RESULTS[network][i].name,
             ALL_RESULTS[network][i].network
           );
-          ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes("LP");
-          ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][i].name.includes("Locked");
+          ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes(
+            "LP"
+          );
+          ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][
+            i
+          ].name.includes("Locked");
           ALL_RESULTS[network][i].poolTVL =
-            ALL_RESULTS[network][i].isLP && ALL_RESULTS[network][i].network === "BEP"
-              ? 25.6082687419 * Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether")) * RCG_PRICE
-              : ALL_RESULTS[network][i].isLP && ALL_RESULTS[network][i].network === "ERC"
-                ? 4272102.29339 * Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether"))
-                : Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether")) * RCG_PRICE
+            ALL_RESULTS[network][i].isLP &&
+            ALL_RESULTS[network][i].network === "BEP"
+              ? 25.6082687419 *
+                Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether")) *
+                RCG_PRICE
+              : ALL_RESULTS[network][i].isLP &&
+                ALL_RESULTS[network][i].network === "ERC"
+              ? 4272102.29339 *
+                Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether"))
+              : Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether")) *
+                RCG_PRICE;
         });
       });
 
@@ -310,7 +326,9 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       //   }
       // }
 
-      ALL_LIST.sort((charger1, charger2) => charger2.startTime - charger1.startTime)
+      ALL_LIST.sort(
+        (charger1, charger2) => charger2.startTime - charger1.startTime
+      );
 
       // UNISWAP LP POOL을 위해 임시적으로 사용합니다.
 
@@ -319,8 +337,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       // let lastCharger = ALL_LIST.pop()
       // ALL_LIST.unshift(lastCharger)
 
-      console.log("ALL_LIST", ALL_LIST)
-
+      console.log("ALL_LIST", ALL_LIST);
 
       if (ALL_LIST.length === 0) {
         setChList(chargerInfo);
@@ -392,18 +409,22 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     if (name.includes("LP")) {
       if (network === "BEP") {
         // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25).toString())
-        return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25).toString();
+        return (
+          (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
+          25
+        ).toString();
       } else if (network === "ERC") {
-
         // console.log(toBN(rewardAmount))
         // console.log(fromWei(rewardAmount, "ether"))
         // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString())
         // return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString();
-        return "~1,000%"
+        return "2,813";
       }
     } else {
       return (
-        ((rewardAmount * (Year / DURATION)) / totalSupply) * 100).toString();
+        ((rewardAmount * (Year / DURATION)) / totalSupply) *
+        100
+      ).toString();
     }
   };
 
