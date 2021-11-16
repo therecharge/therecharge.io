@@ -411,14 +411,17 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25).toString())
         return (
           (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
-          25
+          25.6328762768
         ).toString();
       } else if (network === "ERC") {
         // console.log(toBN(rewardAmount))
         // console.log(fromWei(rewardAmount, "ether"))
         // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString())
         // return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString();
-        return "2,813";
+        return (
+          (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
+          966514.761619
+        ).toString();
       }
     } else {
       return (
@@ -537,6 +540,30 @@ function makeNum(str = "0", decimal = 4) {
   else {
     return arr[0] + "." + arr[1].substr(0, decimal);
   }
+}
+
+function convert(n) {
+  var sign = +n < 0 ? "-" : "",
+    toStr = n.toString();
+  if (!/e/i.test(toStr)) {
+    return n;
+  }
+  var [lead, decimal, pow] = n
+    .toString()
+    .replace(/^-/, "")
+    .replace(/^([0-9]+)(e.*)/, "$1.$2")
+    .split(/e|\./);
+  return +pow < 0
+    ? sign +
+        "0." +
+        "0".repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
+        lead +
+        decimal
+    : sign +
+        lead +
+        (+pow >= decimal.length
+          ? decimal + "0".repeat(Math.max(+pow - decimal.length || 0, 0))
+          : decimal.slice(0, +pow) + "." + decimal.slice(+pow));
 }
 
 const Container = styled.div`
