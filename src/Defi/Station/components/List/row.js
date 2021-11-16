@@ -40,6 +40,7 @@ function Row({
   poolNet,
   index,
   startTime,
+  poolTVL
 }) {
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
@@ -295,6 +296,7 @@ function Row({
           index={index}
           isLP={info.isLP}
           isLocked={info.isLocked}
+          info={info}
         />
         <Apy status={status} apy={makeNum(apy, 2)} />
         <Btn status={status} isOpen={isOpen} />
@@ -309,9 +311,7 @@ function Row({
               />
               <Info
                 left="TVL"
-                right={`${Number(
-                  Number(weiToEther(tvl)).toFixed(2)
-                ).toLocaleString()} ${info.symbol[1]}`}
+                right={`$ ${Number(poolTVL.toFixed(2)).toLocaleString()}`}
               />
               <Info
                 left="LIMIT"
@@ -376,7 +376,7 @@ function Row({
                 need={userInfo.address == "0x00" ? "2" : "2"}
                 // disable={userInfo.address == "0x00" ? false : false}
                 bgColor={
-                  status === "Active" && startTime == "1636693200"
+                  status === "Active"  /*&& startTime == "1636693200"*/
                     ? "var(--purple)"
                     : "var(--gray-30)"
                 }
@@ -426,7 +426,7 @@ function Row({
                   need="0"
                   disable={true}
                   bgColor={
-                    account && userInfo.reward > 0 && startTime == "1636693200"
+                    account && userInfo.reward > 0 /* && startTime == "1636693200"*/
                       ? "var(--yellow)"
                       : "var(--gray-30)"
                     // !account
@@ -600,7 +600,7 @@ function Status({ name, status }) {
     </p>
   );
 }
-function Name({ status, name, index, isLP, isLocked }) {
+function Name({ status, name, info, isLP, isLocked }) {
   function color() {
     if (status != "Active") return "var(--gray-30)";
   }
@@ -627,7 +627,11 @@ function Name({ status, name, index, isLP, isLocked }) {
       <div>
         <img
           src={
-            name.includes("LP") ? "/img_station_rcgbnb.png" : "/swap_rcg.svg"
+            isLP
+              ? info.network === "ERC"
+                ? "/img_rcgusdc.svg"
+                : "/img_station_rcgbnb.png"
+              : "/swap_rcg.svg"
           }
           style={
             window.innerWidth > 1088

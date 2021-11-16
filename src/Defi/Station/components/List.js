@@ -52,7 +52,7 @@ const chargerInfo = [
     network: "ERC",
   },
 ];
-
+//
 function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const [t] = useTranslation();
   const [fullList, setFullList] = useState(loading_data);
@@ -243,39 +243,36 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           }
 
           ALL_RESULTS[network][i].address = CHARGER_ADDRESS;
-          ALL_RESULTS[network][i].status = loadActiveStatus(
-            ALL_RESULTS[network][i]
-          );
+          ALL_RESULTS[network][i].status = loadActiveStatus(ALL_RESULTS[network][i]);
           // 컨트랙트에서 미니멈 값을 제대로 주기 전까지 일시적으로 사용합니다.
-          ALL_RESULTS[network][i].minimum = fromWei(
-            ALL_RESULTS[network][i].limit,
-            "ether"
-          );
-          //
+          ALL_RESULTS[network][i].minimum = fromWei(ALL_RESULTS[network][i].limit, "ether");
+
           ALL_RESULTS[network][i].rewardAmount = ALL_REWARDS_AMOUNT[network][i];
-          ALL_RESULTS[network][i].basePercent =
-            ALL_STAKES_BASEPERCENT[network][i];
-          ALL_RESULTS[network][i].apy = getAPY(
-            ALL_RESULTS[network][i].totalSupply,
-            ALL_RESULTS[network][i].rewardAmount -
-              (ALL_RESULTS[network][i].rewardToken ==
-              ALL_RESULTS[network][i].stakeToken
-                ? ALL_RESULTS[network][i].totalSupply
-                : 0),
-            ALL_RESULTS[network][i].DURATION,
-            ALL_RESULTS[network][i].name
-          );
+          ALL_RESULTS[network][i].basePercent = ALL_STAKES_BASEPERCENT[network][i];
           ALL_RESULTS[network][i].symbol = [
             ALL_REWARDS_SYMBOL[network][i],
             ALL_STAKES_SYMBOL[network][i],
           ];
           ALL_RESULTS[network][i].network = net;
-          ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes(
-            "LP"
+          ALL_RESULTS[network][i].apy = getAPY(
+            ALL_RESULTS[network][i].totalSupply,
+            ALL_RESULTS[network][i].rewardAmount -
+            (ALL_RESULTS[network][i].rewardToken ==
+              ALL_RESULTS[network][i].stakeToken
+              ? ALL_RESULTS[network][i].totalSupply
+              : 0),
+            ALL_RESULTS[network][i].DURATION,
+            ALL_RESULTS[network][i].name,
+            ALL_RESULTS[network][i].network
           );
-          ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][
-            i
-          ].name.includes("Locked");
+          ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes("LP");
+          ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][i].name.includes("Locked");
+          ALL_RESULTS[network][i].poolTVL =
+            ALL_RESULTS[network][i].isLP && ALL_RESULTS[network][i].network === "BEP"
+              ? 25.6082687419 * Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether")) * RCG_PRICE
+              : ALL_RESULTS[network][i].isLP && ALL_RESULTS[network][i].network === "ERC"
+                ? 4272102.29339 * Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether"))
+                : Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether")) * RCG_PRICE
         });
       });
 
@@ -312,7 +309,15 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       //     test.unshift(catchZeroPool[0]);
       //   }
       // }
-      console.log("ALL_LIST", ALL_LIST.reverse());
+
+      // ALL_LIST.sort((charger1, charger2) => charger2.startTime - charger1.startTime)
+
+
+      // UNISWAP LP POOL을 위해 임시적으로 사용합니다.
+      ALL_LIST.reverse()
+      let lastCharger = ALL_LIST.pop()
+      ALL_LIST.unshift(lastCharger)
+
 
       if (ALL_LIST.length === 0) {
         setChList(chargerInfo);
@@ -379,20 +384,20 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const updateChargerInfoList = () => {
     loadChargerList();
   };
-  const getAPY = (totalSupply, rewardAmount, DURATION, name) => {
+  const getAPY = (totalSupply, rewardAmount, DURATION, name, network) => {
     const Year = 1 * 365 * 24 * 60 * 60;
     if (name.includes("LP")) {
-      return (
-        (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
-        34
-      ).toString();
+      if (network === "BEP") {
+        return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25).toString();
+      } else if (network === "ERC") {
+        return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString();
+      }
     } else {
       return (
-        ((rewardAmount * (Year / DURATION)) / totalSupply) *
-        100
-      ).toString();
+        ((rewardAmount * (Year / DURATION)) / totalSupply) * 100).toString();
     }
   };
+
   const useInterval = (callback, delay) => {
     const savedCallback = useRef();
 
@@ -442,6 +447,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
                     period={loadPoolPeriod(charger.startTime, charger.DURATION)}
                     poolNet={charger.network}
                     startTime={charger.startTime}
+                    poolTVL={charger.poolTVL}
                   />
                 </div>
               </div>
