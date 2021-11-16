@@ -669,7 +669,7 @@ function Name({ status, name, info, isLP, isLocked }) {
 function Apy({ status, apy }) {
   function color() {
     if (status != "Active") return "var(--gray-30)";
-    if (apy == "+999999.99") return "var(--green)";
+    if (apy == "+999999.99" || apy == "~1,000%") return "var(--green)";
     if (apy >= 100) return "var(--green)";
     if (apy >= 50) return "var(--red)";
     return "var(--yellow)";
@@ -683,7 +683,9 @@ function Apy({ status, apy }) {
       {status !== "Inactive"
         ? (apy === "+999999.99"
           ? "+999999.99"
-          : Number(Number(apy).toFixed(2)).toLocaleString()) + "%"
+          : apy == "~1,000%"
+            ? "~1,000%"
+            : Number(Number(apy).toFixed(2)).toLocaleString()) + "%"
         : "-"}
     </p>
   );

@@ -13,7 +13,7 @@ import {
   // getTokenInfo,
   getChargerInfo,
 } from "../../../lib/read_contract/Station";
-import { fromWei } from "web3-utils";
+import { fromWei, toBN } from "web3-utils";
 /* Store */
 import { web3ReaderState } from "../../../store/read-web3";
 // import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
@@ -319,6 +319,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       // let lastCharger = ALL_LIST.pop()
       // ALL_LIST.unshift(lastCharger)
 
+      console.log("ALL_LIST", ALL_LIST)
+
 
       if (ALL_LIST.length === 0) {
         setChList(chargerInfo);
@@ -389,9 +391,15 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const Year = 1 * 365 * 24 * 60 * 60;
     if (name.includes("LP")) {
       if (network === "BEP") {
+        // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25).toString())
         return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25).toString();
       } else if (network === "ERC") {
-        return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString();
+
+        // console.log(toBN(rewardAmount))
+        // console.log(fromWei(rewardAmount, "ether"))
+        // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString())
+        // return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString();
+        return "~1,000%"
       }
     } else {
       return (
