@@ -127,7 +127,8 @@ body {
   /* min-height: unset; */
   margin: 0px;
   padding: 0px;
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   overflow-y: auto;
 }
 
@@ -136,6 +137,64 @@ html {
   /* height: 100% !important; */
   width: 100%;
   overflow: auto;
+}
+/* roboto-100 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 100;
+  src: url(./fonts/roboto-v29-latin-100.woff2) format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url(./fonts/roboto-v29-latin-100.woff) format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-300 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  src: local(""), url(./fonts/roboto-v29-latin-300.woff2) format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url(./fonts/roboto-v29-latin-300.woff) format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-regular - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: local(""), url(./fonts/roboto-v29-latin-regular.woff2) format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url(./fonts/roboto-v29-latin-regular.woff) format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-500 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  src: local(""), url(./fonts/roboto-v29-latin-500.woff2) format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url(./fonts/roboto-v29-latin-500.woff) format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-700 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  src: local(""), url(./fonts/roboto-v29-latin-700.woff2) format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url(./fonts/roboto-v29-latin-700.woff) format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-900 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 900;
+  src: local(""), url(./fonts/roboto-v29-latin-900.woff2) format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url(./fonts/roboto-v29-latin-900.woff) format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+* {
+  font-family: Roboto !important;
 }
 
 /*Color Palette*/
@@ -241,6 +300,18 @@ html {
   color: #ffffff;
 }
 
+.Roboto_40pt_Medium_C {
+  font-family: Roboto;
+  font-size: 40px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+}
+
 .Roboto_35pt_Black {
   font-family: Roboto;
   font-size: 35px;
@@ -251,18 +322,6 @@ html {
   letter-spacing: normal;
   text-align: center;
   color: #ffffff;
-}
-
-.Roboto_35pt_Black_Yellow {
-  font-family: Roboto;
-  font-size: 35px;
-  font-weight: 900;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.31;
-  letter-spacing: normal;
-  text-align: center;
-  color: #ffb900;
 }
 
 .Roboto_35pt_Bold {
@@ -359,6 +418,18 @@ html {
   letter-spacing: normal;
   text-align: center;
   color: #ffffff;
+}
+
+.Roboto_30pt_Medium_L {
+  font-family: Roboto;
+  font-size: 30px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.3;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
 }
 
 .Roboto_16pt_Bold {
@@ -529,6 +600,18 @@ html {
   color: var(--yellow);
 }
 
+.Roboto_25pt_Gray {
+  font-family: Roboto;
+  font-size: 25px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 0.8;
+  letter-spacing: normal;
+  text-align: center;
+  color: var(--gray-10);
+}
+
 .Roboto_25pt_Black {
   font-family: Roboto;
   font-size: 25px;
@@ -538,6 +621,18 @@ html {
   line-height: 1.32;
   letter-spacing: normal;
   color: #ffffff;
+}
+
+.Roboto_25pt_Medium {
+  font-family: Roboto;
+  font-size: 25px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.3;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
 }
 
 .Roboto_25pt_Regular {
@@ -732,13 +827,13 @@ html {
   color: var(--gray-10);
 }
 
-.Roboto_14pt_Regular {
+.Roboto_18pt_Regular_L {
   font-family: Roboto;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
-  line-height: 1.36;
+  line-height: 1.33;
   letter-spacing: normal;
   text-align: left;
   color: #fff;

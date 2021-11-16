@@ -1,7 +1,10 @@
 {
-  "name": "recharge",
+  "name": "app.therecharge.io",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "14"
+  },
   "dependencies": {
     "@aragon/ui": "^1.7.0",
     "@fullpage/react-fullpage": "^0.1.19",

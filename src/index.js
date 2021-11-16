@@ -1,9 +1,8 @@
-/* Libraries */
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import reportWebVitals from "./reportWebVitals";
 import { BrowserView, MobileView } from "react-device-detect";
+import reportWebVitals from "./reportWebVitals";
 import { Main, ToastHub, Toast, textStyle } from "@aragon/ui";
 import { RecoilRoot } from "recoil";
 import Web3Modal from "web3modal";
@@ -11,7 +10,9 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 /* Components */
 import Desktop from "./Desktop";
 import Mobile from "./Mobile";
+/* CSS */
 import "./index.css";
+
 /* Setting WalletConnect */
 const providerOptions = {
   metamask: {
@@ -54,29 +55,27 @@ ReactDOM.render(
     <Main layout={false} scrollView={true} theme={false}>
       <ToastHub>
         <Toast>
-          {(toast) => {
-            return (
-              <div>
-                <RecoilRoot>
-                  {/* <UpdateToastState toast={toast} /> */}
-                  <BrowserView>
-                    <BrowserRouter>
-                      {window.innerWidth > 1024 ? (
-                        <Desktop web3Modal={web3Modal} toast={toast} />
-                      ) : (
-                        <Mobile web3Modal={web3Modal} toast={toast} />
-                      )}
-                    </BrowserRouter>
-                  </BrowserView>
-                  <MobileView>
-                    <BrowserRouter>
+          {toast => (
+            <div>
+              <RecoilRoot>
+                {/* <UpdateToastState toast={toast} /> */}
+                <BrowserView>
+                  <BrowserRouter>
+                    {window.innerWidth > 1088 ? (
+                      <Desktop web3Modal={web3Modal} toast={toast} />
+                    ) : (
                       <Mobile web3Modal={web3Modal} toast={toast} />
-                    </BrowserRouter>
-                  </MobileView>
-                </RecoilRoot>
-              </div>
-            );
-          }}
+                    )}
+                  </BrowserRouter>
+                </BrowserView>
+                <MobileView>
+                  <BrowserRouter>
+                    <Mobile web3Modal={web3Modal} toast={toast} />
+                  </BrowserRouter>
+                </MobileView>
+              </RecoilRoot>
+            </div>
+          )}
         </Toast>
       </ToastHub>
     </Main>
