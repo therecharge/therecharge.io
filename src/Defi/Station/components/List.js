@@ -57,6 +57,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const [t] = useTranslation();
   const [fullList, setFullList] = useState(loading_data);
   const [chList, setChList] = useState(loading_data);
+
   // const [isOpen, setOpen] = useState(false);
   const [web3_R] = useRecoilState(web3ReaderState);
   const NETWORKS = require("../../../lib/networks.json");
@@ -313,10 +314,11 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       // ALL_LIST.sort((charger1, charger2) => charger2.startTime - charger1.startTime)
 
 
+      // UNISWAP LP POOL을 위해 임시적으로 사용합니다.
       ALL_LIST.reverse()
       let lastCharger = ALL_LIST.pop()
       ALL_LIST.unshift(lastCharger)
-      console.log("NEW ALL_LIST", ALL_LIST);
+
 
       if (ALL_LIST.length === 0) {
         setChList(chargerInfo);

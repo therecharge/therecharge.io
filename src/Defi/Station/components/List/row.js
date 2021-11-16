@@ -374,7 +374,7 @@ function Row({
                 need={userInfo.address == "0x00" ? "2" : "2"}
                 // disable={userInfo.address == "0x00" ? false : false}
                 bgColor={
-                  status === "Active" && startTime == "1636693200"
+                  status === "Active"  /*&& startTime == "1636693200"*/
                     ? "var(--purple)"
                     : "var(--gray-30)"
                 }
@@ -424,7 +424,7 @@ function Row({
                   need="0"
                   disable={true}
                   bgColor={
-                    account && userInfo.reward > 0 && startTime == "1636693200"
+                    account && userInfo.reward > 0 /* && startTime == "1636693200"*/
                       ? "var(--yellow)"
                       : "var(--gray-30)"
                     // !account
