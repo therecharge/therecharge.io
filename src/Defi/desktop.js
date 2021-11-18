@@ -20,6 +20,7 @@ import { useRecoilState } from "recoil";
 import { HashLink } from "react-router-hash-link";
 import { accountState } from "../store/web3";
 import { web3ReaderState } from "../store/read-web3";
+import { tvdState } from "../store/data";
 
 const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
   let newNum;
@@ -41,6 +42,7 @@ const weiToEther = (wei) => {
 function Defi({ toast, t }) {
   const [account] = useRecoilState(accountState);
   const [web3_R] = useRecoilState(web3ReaderState);
+  const [tvd, setTvd] = useRecoilState(tvdState);
   const NETWORKS = require("../lib/networks.json");
   const CHARGERLIST_ABI = require("../lib/read_contract/abi/chargerList.json");
   const CHARGER_ABI = require("../lib/read_contract/abi/charger.json");
@@ -48,10 +50,10 @@ function Defi({ toast, t }) {
   const [onLoading, setOnLoading] = useState(true);
   const [myPools, setMyPools] = useState(null);
   const [analytics, setAnalytics] = useState({
-    ERC: {},
-    HRC: {},
-    BEP: {},
-    general: {},
+    numberOf: {},
+    totalCirculation: {},
+    // BEP: {},
+    // general: {},
   });
 
   const data = React.useMemo(() => (myPools === null ? [] : myPools), [
@@ -195,8 +197,44 @@ function Defi({ toast, t }) {
 
   const loadAnalytics = async () => {
     try {
+      const BEP_WEB3 = web3_R["BEP"];
+      const RCG_bsc_CONTRACT_ADDRESS =
+        "0x0A9B1C9893aE0BE97A6d31AdBc39bCd6737B4922";
+      const RCG_TOKEN_ADDRESS = "0x2d94172436d869c1e3c094bead272508fab0d9e3";
+      const WBNB_TOKEN_ADDRESS = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+
+      const RCG_TOKEN_INSTANCE = createContractInstance(
+        BEP_WEB3,
+        RCG_TOKEN_ADDRESS,
+        ERC20_ABI
+      );
+      const WBNB_TOKEN_INSTANCE = createContractInstance(
+        BEP_WEB3,
+        WBNB_TOKEN_ADDRESS,
+        ERC20_ABI
+      );
+
+      let [RCG_balance, WBNB_balance] = await Promise.all([
+        await RCG_TOKEN_INSTANCE.methods
+          .balanceOf(RCG_bsc_CONTRACT_ADDRESS)
+          .call(),
+        await WBNB_TOKEN_INSTANCE.methods
+          .balanceOf(RCG_bsc_CONTRACT_ADDRESS)
+          .call(),
+      ]);
+
+      //Get Token Price
+      const coinPriceData = await axios.get(
+        `https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd`
+      );
+      const BNBPrice = coinPriceData.data["binancecoin"].usd;
+
+      const RCG_bsc_price = ((WBNB_balance / RCG_balance) * BNBPrice).toFixed(
+        4
+      );
+
       const [analData, priceData, tvlData] = await Promise.all([
-        axios.get(`https://bridge.therecharge.io/analytics`),
+        axios.get(`https://analytics.api.therecharge.io/`),
         axios.post(
           `https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`,
           {
@@ -214,16 +252,17 @@ function Defi({ toast, t }) {
       /* Start to get LP Locker */
 
       // console.log("TVL", tvlData);
+      // console.log("analData", analData);
 
       setAnalytics({
         ...analData.data,
-        ERC: {
-          ...analData.data.ERC,
-          price: token0Price, // 이더리움 유니스왑 실시간 가격
-        },
-        general: { tvl: TVL },
+        // ERC: {
+        //   ...analData.data.ERC,
+        rcg_eth_price: token0Price, // 이더리움 유니스왑 실시간 가격
+        rcg_bsc_price: RCG_bsc_price,
+        // },
+        // general: { tvl: TVL },
       });
-      // console.log(analytics);
       /**
        * ERC: {},
        * HRC: {},
@@ -428,11 +467,14 @@ function Defi({ toast, t }) {
               <div className="center box exception">
                 <div className="title Roboto_30pt_Black">
                   ${" "}
-                  {analytics.general.tvl
+                  {/* {analytics.general.tvl
                     ? Number(
                         Number(analytics.general.tvl).toFixed(2)
                       ).toLocaleString()
-                    : Number(0).toFixed(2)}
+                    : Number(0).toFixed(2)} */}
+                  {tvd
+                    ? Number(Number(tvd).toFixed(2)).toLocaleString()
+                    : Number(3065361.95).toLocaleString()}
                 </div>
                 <div className="text Roboto_16pt_Regular_Gray">
                   Total Value Deposited
@@ -473,8 +515,8 @@ function Defi({ toast, t }) {
               <div className="right box exception">
                 <div className="item">
                   <div className="title Roboto_16pt_Bold">
-                    {analytics.general.ServicesPlugged
-                      ? analytics.general.ServicesPlugged
+                    {analytics.numberOf.Plugged
+                      ? analytics.numberOf.Plugged
                       : 0}
                   </div>
                   <div className="text Roboto_12pt_Regular_L_Gray">
@@ -483,8 +525,8 @@ function Defi({ toast, t }) {
                 </div>
                 <div className="item">
                   <div className="title Roboto_16pt_Bold">
-                    {analytics.general.ChargersActivated
-                      ? analytics.general.ChargersActivated
+                    {analytics.numberOf.Charger
+                      ? analytics.numberOf.Charger
                       : 0}
                   </div>
                   <div className="text Roboto_12pt_Regular_L_Gray">
@@ -493,8 +535,8 @@ function Defi({ toast, t }) {
                 </div>
                 <div className="item">
                   <div className="title Roboto_16pt_Bold">
-                    {analytics.general.BridgesActivated
-                      ? analytics.general.BridgesActivated
+                    {analytics.numberOf.Bridges
+                      ? analytics.numberOf.Bridges
                       : 0}
                   </div>
                   <div className="text Roboto_12pt_Regular_L_Gray">
@@ -509,10 +551,10 @@ function Defi({ toast, t }) {
                   className="title title Roboto_20pt_Medium_C"
                   style={{ zIndex: "2" }}
                 >
-                  {analytics.ERC.total
+                  {analytics.totalCirculation.eth
                     ? Number(
                         Number(
-                          weiToEther(convertNum(analytics.ERC.total))
+                          weiToEther(convertNum(analytics.totalCirculation.eth))
                         ).toFixed(2)
                       ).toLocaleString()
                     : Number(0).toFixed(2)}{" "}
@@ -546,7 +588,10 @@ function Defi({ toast, t }) {
                   </div>
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
-                      $ {analytics.ERC.price ? makeNum(analytics.ERC.price) : 0}
+                      ${" "}
+                      {analytics.rcg_eth_price
+                        ? makeNum(analytics.rcg_eth_price)
+                        : 0}
                     </div>
                     <div className="text Roboto_12pt_Regular_L_Gray">
                       Current RCG Price($) ERC20 Uniswap
@@ -556,9 +601,10 @@ function Defi({ toast, t }) {
                 <div className="content">
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
-                      {analytics.ERC.swapped
+                      {/* {analytics.ERC.swapped
                         ? makeNum(analytics.ERC.swapped)
-                        : 0}
+                        : 0} */}
+                      0
                     </div>
                     <div className="text Roboto_12pt_Regular_L_Gray">
                       RCG (ERC20) Swapped in
@@ -566,10 +612,10 @@ function Defi({ toast, t }) {
                   </div>
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
-                      {analytics.ERC.conversion
+                      {/* {analytics.ERC.conversion
                         ? makeNum(analytics.ERC.conversion)
-                        : 0}{" "}
-                      RCG
+                        : 0}{" "} */}
+                      0 RCG
                     </div>
                     <div className="text Roboto_12pt_Regular_L_Gray">
                       Accumulated Conversion Fee(ERC20)
@@ -584,10 +630,10 @@ function Defi({ toast, t }) {
                   className="title title Roboto_20pt_Medium_C"
                   style={{ zIndex: "2" }}
                 >
-                  {analytics.BEP.total
+                  {analytics.totalCirculation.bsc
                     ? Number(
                         Number(
-                          weiToEther(convertNum(analytics.BEP.total))
+                          weiToEther(convertNum(analytics.totalCirculation.bsc))
                         ).toFixed(2)
                       ).toLocaleString()
                     : Number(0).toFixed(2)}{" "}
@@ -621,12 +667,7 @@ function Defi({ toast, t }) {
                   </div>
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
-                      ${" "}
-                      {analytics.BEP.price
-                        ? analytics.BEP.price === "0"
-                          ? "-"
-                          : makeNum(analytics.BEP.price)
-                        : 0}
+                      $ {analytics.rcg_bsc_price ? analytics.rcg_bsc_price : 0}
                     </div>
                     <div className="text Roboto_12pt_Regular_L_Gray">
                       Current RCG Price($) BEP20 Pancakeswap
@@ -636,9 +677,10 @@ function Defi({ toast, t }) {
                 <div className="content">
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
-                      {analytics.BEP.swapped
+                      {/* {analytics.BEP.swapped
                         ? makeNum(analytics.BEP.swapped)
-                        : 0}
+                        : 0} */}
+                      0
                     </div>
                     <div className="text Roboto_12pt_Regular_L_Gray">
                       RCG (BEP20) Swapped in
@@ -646,10 +688,10 @@ function Defi({ toast, t }) {
                   </div>
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
-                      {analytics.BEP.conversion
+                      {/* {analytics.BEP.conversion
                         ? makeNum(analytics.BEP.conversion)
-                        : 0}{" "}
-                      RCG
+                        : 0}{" "} */}
+                      0 RCG
                     </div>
                     <div className="text Roboto_12pt_Regular_L_Gray">
                       Accumulated Conversion Fee(BEP20)
@@ -664,10 +706,12 @@ function Defi({ toast, t }) {
                   className="title title Roboto_20pt_Medium_C"
                   style={{ zIndex: "2" }}
                 >
-                  {analytics.HRC.total
+                  {analytics.totalCirculation.heco
                     ? Number(
                         Number(
-                          weiToEther(convertNum(analytics.HRC.total))
+                          weiToEther(
+                            convertNum(analytics.totalCirculation.heco)
+                          )
                         ).toFixed(2)
                       ).toLocaleString()
                     : Number(0).toFixed(2)}{" "}
@@ -703,11 +747,12 @@ function Defi({ toast, t }) {
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
                       ${" "}
-                      {analytics.HRC.price
+                      {/* {analytics.HRC.price
                         ? analytics.HRC.price === "0"
                           ? "-"
                           : makeNum(analytics.HRC.price)
-                        : 0}
+                        : 0} */}
+                      0
                     </div>
                     <div className="text Roboto_12pt_Regular_L_Gray">
                       Current RCG Price($) HRC20-Mdex
@@ -717,9 +762,10 @@ function Defi({ toast, t }) {
                 <div className="content">
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
-                      {analytics.HRC.swapped
+                      {/* {analytics.HRC.swapped
                         ? makeNum(analytics.HRC.swapped)
-                        : 0}
+                        : 0} */}
+                      0
                     </div>
                     <div className="text Roboto_12pt_Regular_L_Gray">
                       RCG (HRC20) Swapped in
@@ -727,10 +773,10 @@ function Defi({ toast, t }) {
                   </div>
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
-                      {analytics.HRC.conversion
+                      {/* {analytics.HRC.conversion
                         ? makeNum(analytics.HRC.conversion)
-                        : 0}{" "}
-                      RCG
+                        : 0}{" "} */}
+                      0 RCG
                     </div>
                     <div className="text Roboto_12pt_Regular_L_Gray">
                       Accumulated Conversion Fee(HRC20)
@@ -742,7 +788,6 @@ function Defi({ toast, t }) {
           </div>
         </div>
       </Content>
-
       <Footer />
     </Container>
   );

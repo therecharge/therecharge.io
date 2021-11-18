@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useRecoilState } from "recoil";
+import { tvdState } from "../../../store/data";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Networks from "./Networks";
@@ -15,12 +16,16 @@ import SortBy from "./SortBy";
 // };
 
 function Header({ setNetwork, network, setParams, params, tvl, privateTvl }) {
+  const [tvd, setTvd] = useRecoilState(tvdState);
+
   const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
     let newNum;
     if (typeof num === "string") newNum = Number(num);
     if (unitSeparator) return newNum.toLocaleString();
     return newNum.toLocaleString("fullwide", { useGrouping: false });
   };
+
+  setTvd(tvl + privateTvl);
   return (
     <Contain>
       <Title>

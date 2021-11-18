@@ -249,10 +249,10 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
           ALL_RESULTS[network][i].apy = getAPY(
             ALL_RESULTS[network][i].totalSupply,
             ALL_RESULTS[network][i].rewardAmount -
-            (ALL_RESULTS[network][i].rewardToken ==
+              (ALL_RESULTS[network][i].rewardToken ==
               ALL_RESULTS[network][i].stakeToken
-              ? ALL_RESULTS[network][i].totalSupply
-              : 0),
+                ? ALL_RESULTS[network][i].totalSupply
+                : 0),
             ALL_RESULTS[network][i].DURATION
           );
           ALL_RESULTS[network][i].symbol = [
@@ -266,6 +266,18 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
           ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][
             i
           ].name.includes("Locked");
+          ALL_RESULTS[network][i].poolTVL =
+            ALL_RESULTS[network][i].isLP &&
+            ALL_RESULTS[network][i].network === "BEP"
+              ? 25.6082687419 *
+                Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether")) *
+                RCG_PRICE
+              : ALL_RESULTS[network][i].isLP &&
+                ALL_RESULTS[network][i].network === "ERC"
+              ? 4272102.29339 *
+                Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether"))
+              : Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether")) *
+                RCG_PRICE;
         });
       });
 
@@ -424,6 +436,7 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
                     toast={toast}
                     period={loadPoolPeriod(charger.startTime, charger.DURATION)}
                     poolNet={charger.network}
+                    poolTVL={charger.poolTVL}
                   />
                 </div>
               </div>

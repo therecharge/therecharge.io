@@ -39,6 +39,7 @@ function Row({
   period, // loadPoolPeriod(-)
   poolNet,
   index,
+  poolTVL,
 }) {
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
@@ -304,9 +305,7 @@ function Row({
               />
               <Info
                 left="TVL"
-                right={`${Number(
-                  Number(weiToEther(tvl)).toFixed(2)
-                ).toLocaleString()} ${info.symbol[1]}`}
+                right={`$ ${Number(poolTVL.toFixed(2)).toLocaleString()}`}
               />
               <Info
                 left="LIMIT"
