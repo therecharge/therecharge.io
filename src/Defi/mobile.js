@@ -499,7 +499,7 @@ function Defi({ toast, t }) {
                   ${" "}
                   {tvd
                     ? Number(Number(tvd).toFixed(2)).toLocaleString()
-                    : Number(Number(3065361.95).toFixed(2)).toLocaleString()}
+                    : Number(3065361.95).toLocaleString()}
                 </div>
                 <div className="text Roboto_25pt_Gray">Total Value Deposit</div>
               </div>
