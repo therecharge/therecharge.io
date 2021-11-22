@@ -263,10 +263,10 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           ALL_RESULTS[network][i].apy = getAPY(
             ALL_RESULTS[network][i].totalSupply,
             ALL_RESULTS[network][i].rewardAmount -
-            (ALL_RESULTS[network][i].rewardToken ==
+              (ALL_RESULTS[network][i].rewardToken ==
               ALL_RESULTS[network][i].stakeToken
-              ? ALL_RESULTS[network][i].totalSupply
-              : 0),
+                ? ALL_RESULTS[network][i].totalSupply
+                : 0),
             ALL_RESULTS[network][i].DURATION,
             ALL_RESULTS[network][i].name,
             ALL_RESULTS[network][i].network
@@ -279,15 +279,15 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           ].name.includes("Locked");
           ALL_RESULTS[network][i].poolTVL =
             ALL_RESULTS[network][i].isLP &&
-              ALL_RESULTS[network][i].network === "BEP"
+            ALL_RESULTS[network][i].network === "BEP"
               ? 25.6082687419 *
-              Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether")) *
-              RCG_PRICE
+                Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether")) *
+                RCG_PRICE
               : ALL_RESULTS[network][i].isLP &&
                 ALL_RESULTS[network][i].network === "ERC"
-                ? 4272102.29339 *
+              ? 4272102.29339 *
                 Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether"))
-                : Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether")) *
+              : Number(fromWei(ALL_RESULTS[network][i].totalSupply, "ether")) *
                 RCG_PRICE;
         });
       });
@@ -329,6 +329,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       ALL_LIST.sort(
         (charger1, charger2) => charger2.startTime - charger1.startTime
       );
+      console.log(ALL_LIST);
 
       // UNISWAP LP POOL을 위해 임시적으로 사용합니다.
 
@@ -525,6 +526,8 @@ const loadActiveStatus = ({
   // 11.1 풀을 위해 일시적으로 사용합니다.
   if (name.includes("11.1 ")) return "Inactive";
 
+  if (name.includes("11.12 ")) return "Close";
+
   if (NOW < startTime) return "Inactive";
 
   if (NOW > startTime + DURATION) return "Close";
@@ -555,15 +558,15 @@ function convert(n) {
     .split(/e|\./);
   return +pow < 0
     ? sign +
-    "0." +
-    "0".repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
-    lead +
-    decimal
+        "0." +
+        "0".repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
+        lead +
+        decimal
     : sign +
-    lead +
-    (+pow >= decimal.length
-      ? decimal + "0".repeat(Math.max(+pow - decimal.length || 0, 0))
-      : decimal.slice(0, +pow) + "." + decimal.slice(+pow));
+        lead +
+        (+pow >= decimal.length
+          ? decimal + "0".repeat(Math.max(+pow - decimal.length || 0, 0))
+          : decimal.slice(0, +pow) + "." + decimal.slice(+pow));
 }
 
 const Container = styled.div`
