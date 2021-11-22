@@ -448,6 +448,9 @@ function Row({
                     params.type === "Locked"
                       ? () => { }
                       : async () => {
+                        if (name === "11.16 Uniswap LP Flexible Pool 777" || name === "11.2 Flexible Pool") {
+                          return toast("금일 18시까지 잠정 중단 됩니다.");
+                        }
                         if (!account) {
                           toast("Please connect to wallet");
                         }
