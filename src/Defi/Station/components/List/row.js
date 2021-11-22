@@ -404,19 +404,20 @@ function Row({
                   if (status === "Inactive") {
                     toast("This pool is inactive");
                   } else if (status === "Active") {
-                    if (
-                      userInfo.allowance == "0" &&
-                      userInfo.address != "0x00"
-                    ) {
-                      poolMethods.approve();
-                    } else if (
-                      userInfo.allowance != "0" &&
-                      userInfo.address != "0x00"
-                    ) {
-                      setPopupOpen(!isPopupOpen);
-                    } else {
-                      toast("Please wait for seconds");
-                    }
+                    toast("This pool is closed");
+                    // if (
+                    //   userInfo.allowance == "0" &&
+                    //   userInfo.address != "0x00"
+                    // ) {
+                    //   poolMethods.approve();
+                    // } else if (
+                    //   userInfo.allowance != "0" &&
+                    //   userInfo.address != "0x00"
+                    // ) {
+                    //   setPopupOpen(!isPopupOpen);
+                    // } else {
+                    //   toast("Please wait for seconds");
+                    // }
                   } else {
                     toast("This pool is closed");
                   }
@@ -537,16 +538,20 @@ function Row({
                     // Locked인 경우에, period가 종료된 이후에 출금할 수 있음
                     if (!account) {
                       toast("Please connect to wallet");
-                    } else if (status === "Close") {
-                      if (userInfo.balance > 0) {
-                        // 보상 오류로 balance 추가 됩니다 FIX ME
-                        poolMethods.exit(userInfo.balance);
-                        await toast(
-                          'Please approve "UNPLUG" in your private wallet'
-                        );
-                      } else toast("There is no withdrawable amount");
-                    } else {
-                      toast("Please try after the pool service period ends");
+                    }
+                    // else if (status === "Close") {
+                    //   if (userInfo.balance > 0) {
+                    //     // 보상 오류로 balance 추가 됩니다 FIX ME
+                    //     poolMethods.exit(userInfo.balance);
+                    //     await toast(
+                    //       'Please approve "UNPLUG" in your private wallet'
+                    //     );
+                    //   } else toast("There is no withdrawable amount");
+                    // } else {
+                    //   toast("Please try after the pool service period ends");
+                    // }
+                    else {
+                      toast("Your balance and reward will be sent to your wallet");
                     }
                   }}
                 />
