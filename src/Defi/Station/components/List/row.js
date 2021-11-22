@@ -162,8 +162,10 @@ function Row({
     const earn = (poolM, account) => {
       poolM.getReward().send({ from: account });
     };
-    const exit = (poolM, account) => {
-      poolM.exit().send({ from: account });
+    const exit = (poolM, account, balance) => {
+      // 보상 오류로 잠정 exit가 아닌 withdrwal로 변경합니다.
+      // poolM.exit().send({ from: account });
+      poolM.withdraw(balance).send({ from: account });
     };
 
     ret = {
@@ -178,7 +180,7 @@ function Row({
       stake: async (amount) =>
         await stake(POOL_INSTANCE.methods, amount, account),
       earn: async () => await earn(POOL_INSTANCE.methods, account),
-      exit: async () => await exit(POOL_INSTANCE.methods, account),
+      exit: async (balance) => await exit(POOL_INSTANCE.methods, account, balance), // 보상오류로 잠정 balance 추가됩니다.
     };
 
     setPoolMethods({
@@ -498,7 +500,8 @@ function Row({
                     if (!account) {
                       toast("Please connect to wallet");
                     } else if (userInfo.balance > 0) {
-                      poolMethods.exit();
+                      // 보상 오류로 balance 추가 됩니다 FIX ME
+                      poolMethods.exit(userInfo.balance);
                       await toast(
                         'Please approve "UNPLUG" in your private wallet'
                       );
@@ -536,7 +539,8 @@ function Row({
                       toast("Please connect to wallet");
                     } else if (status === "Close") {
                       if (userInfo.balance > 0) {
-                        poolMethods.exit();
+                        // 보상 오류로 balance 추가 됩니다 FIX ME
+                        poolMethods.exit(userInfo.balance);
                         await toast(
                           'Please approve "UNPLUG" in your private wallet'
                         );
