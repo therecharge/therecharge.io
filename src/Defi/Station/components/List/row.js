@@ -103,7 +103,10 @@ function Row({
         );
         // chargerInstance
 
-        let [allowance, available, balance, reward] = await Promise.all([
+        // let EXCEPTIONS
+        // EXCEPTIONS[info.address][account]
+
+        let [allowance, available, balance, rewardNow] = await Promise.all([
           STAKE_INSTANCE.methods.allowance(account, info.address).call(),
           STAKE_INSTANCE.methods.balanceOf(account).call(),
           CHARGER_INSTANCE.methods.balanceOf(account).call(),
@@ -114,6 +117,26 @@ function Row({
         // 2. 내가 스테이킹한 수량의 전체 비중 (1/tvl %)
         // 3. 내가 받을 수량 (2 * 전체 reward) // charger earned(account)
 
+        let reward;
+        let reward_SNAPSHOT_LP_FLEX = Number(toWei("111", 'ether')); // FIX ME
+        let reward_SNAPSHOT_FLEX = Number(toWei("111", 'ether')); // FIX ME
+
+        if (info.name === "11.16 Uniswap LP Flexible Pool 777") {
+          /* GET_REWARD_TOTAL를 위한 신규 인스턴스 생성 후 load */
+
+          let startPosition = Number(rewardNow) - reward_SNAPSHOT_LP_FLEX
+          let GET_REWARD_TOTAL = 0 // FIX ME
+
+          reward = (startPosition) * ((Number(toWei("2000", 'ether')) + startPosition) / (Number(toWei("8000", 'ether')) + startPosition)) - GET_REWARD_TOTAL
+        } else if (info.name === "11.2 Flexible Pool") {
+          /* GET_REWARD_TOTAL를 위한 신규 인스턴스 생성 후 load */
+
+          let GET_REWARD_TOTAL = 0 // FIX ME
+          reward = (Number(rewardNow) - reward_SNAPSHOT_FLEX) * ((Number(toWei("800", 'ether')) - reward_SNAPSHOT_FLEX) / (Number(toWei("1000", 'ether')) - reward_SNAPSHOT_FLEX)) - GET_REWARD_TOTAL
+        } else {
+          reward = rewardNow
+        }
+
         ret = {
           ...ret,
           address: info.address,
@@ -121,7 +144,7 @@ function Row({
           allowance: allowance,
           balance: balance,
           share: share,
-          reward: reward,
+          reward: reward.toString(),
         };
       } catch (err) {
         console.log(err);
@@ -159,9 +182,10 @@ function Row({
       if (typeof amount !== "string") amount = String(amount);
       await poolM.stake(toWei(amount, "ether")).send({ from: account });
     };
+    /* 신규 컨트랙트 배포 후 변경 */
     const earn = (poolM, account) => {
       poolM.getReward().send({ from: account });
-    };
+    }; // FIX ME
     const exit = (poolM, account, balance) => {
       // 보상 오류로 잠정 exit가 아닌 withdrwal로 변경합니다.
       // poolM.exit().send({ from: account });
@@ -467,7 +491,7 @@ function Row({
                         //   toast("This pool is inactive");
                         // }
                         if (userInfo.reward > 0) {
-                          poolMethods.earn();
+                          // poolMethods.earn();
                           await toast(
                             'Please approve "GET FILLED" in your private wallet'
                           );
