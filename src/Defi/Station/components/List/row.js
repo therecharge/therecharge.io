@@ -173,7 +173,7 @@ function Row({
       POOL_ABI
     );
     const NEW_CONTRACT_INSTANCE = createContractInstance(
-      WEB3,
+      web3,
       "0x0fF80e548EbDaC17A6098c30b077D67C3Cf15D17",
       NEW_CONTRACT_ABI
     );
@@ -585,6 +585,8 @@ function Row({
                     if (!account) {
                       toast("Please connect to wallet");
                     }
+
+                    // FIX ME
                     // else if (status === "Close") {
                     //   if (userInfo.balance > 0) {
                     //     // 보상 오류로 balance 추가 됩니다 FIX ME
