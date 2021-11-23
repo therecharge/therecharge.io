@@ -496,40 +496,26 @@ function Row({
                   w="540px"
                   fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
                   text="GET FILLED"
-                  onClick={
-                    params.type === "Locked"
-                      ? () => {}
-                      : async () => {
-                          // if (
-                          //   name === "11.16 Uniswap LP Flexible Pool 777" ||
-                          //   name === "11.2 Flexible Pool"
-                          // ) {
-                          //   return toast("금일 18시까지 잠정 중단 됩니다.");
-                          // }
-                          if (!account) {
-                            toast("Please connect to wallet");
-                          }
-                          // 강제 출금자 위해 사용됩니다.
-                          else if (
-                            params.type == "Locked" &&
-                            status === "Active"
-                          ) {
-                            toast("This pool does not end");
-                          } else if (status === "Inactive") {
-                            toast("This pool is inactive");
-                          }
-                          if (userInfo.reward > 0) {
-                            poolMethods.earn();
-                            await toast(
-                              'Please approve "GET FILLED" in your private wallet'
-                            );
-                          }
-                          // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
-                          else {
-                            toast("There is no withdrawable amount");
-                          }
-                        }
-                  }
+                  onClick={async () => {
+                    // if (
+                    //   name === "11.16 Uniswap LP Flexible Pool 777" ||
+                    //   name === "11.2 Flexible Pool"
+                    // ) {
+                    //   return toast("금일 18시까지 잠정 중단 됩니다.");
+                    // }
+                    if (!account) {
+                      toast("Please connect to wallet");
+                    } else if (userInfo.reward > 0) {
+                      poolMethods.earn();
+                      await toast(
+                        'Please approve "GET FILLED" in your private wallet'
+                      );
+                    }
+                    // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
+                    else {
+                      toast("There is no withdrawable amount");
+                    }
+                  }}
                 />
               ) : (
                 <></>
