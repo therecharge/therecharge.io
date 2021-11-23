@@ -19,6 +19,31 @@ import { useRecoilState } from "recoil";
 import { accountState } from "../store/web3";
 import { web3ReaderState } from "../store/read-web3";
 import { tvdState } from "../store/data";
+import { uniLpLockerState } from "../store/data";
+
+function convert(n) {
+  var sign = +n < 0 ? "-" : "",
+    toStr = n.toString();
+  if (!/e/i.test(toStr)) {
+    return n;
+  }
+  var [lead, decimal, pow] = n
+    .toString()
+    .replace(/^-/, "")
+    .replace(/^([0-9]+)(e.*)/, "$1.$2")
+    .split(/e|\./);
+  return +pow < 0
+    ? sign +
+        "0." +
+        "0".repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
+        lead +
+        decimal
+    : sign +
+        lead +
+        (+pow >= decimal.length
+          ? decimal + "0".repeat(Math.max(+pow - decimal.length || 0, 0))
+          : decimal.slice(0, +pow) + "." + decimal.slice(+pow));
+}
 
 const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
   let newNum;
@@ -41,6 +66,7 @@ function Defi({ toast, t }) {
   const [account] = useRecoilState(accountState);
   const [web3_R] = useRecoilState(web3ReaderState);
   const [tvd, setTvd] = useRecoilState(tvdState);
+  const [uniLpLocker, setUniLpLocker] = useRecoilState(uniLpLockerState);
   const NETWORKS = require("../lib/networks.json");
   const CHARGERLIST_ABI = require("../lib/read_contract/abi/chargerList.json");
   const CHARGER_ABI = require("../lib/read_contract/abi/charger.json");
@@ -203,10 +229,15 @@ function Defi({ toast, t }) {
   const loadAnalytics = async () => {
     try {
       const BEP_WEB3 = web3_R["BEP"];
+      const ERC_WEB3 = web3_R["ERC"];
       const RCG_bsc_CONTRACT_ADDRESS =
         "0x0A9B1C9893aE0BE97A6d31AdBc39bCd6737B4922";
+      const UNISWAP_LP_LOCKER_ADDRESS =
+        "0x9c20be0f142fb34f10e33338026fb1dd9e308da3";
       const RCG_TOKEN_ADDRESS = "0x2d94172436d869c1e3c094bead272508fab0d9e3";
       const WBNB_TOKEN_ADDRESS = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+      const UNISWAP_LP_HOLDER_ADDRESS =
+        "0x384e5de8c108805d6a1d5bf4c2aaa0b390ea018b";
 
       const RCG_TOKEN_INSTANCE = createContractInstance(
         BEP_WEB3,
@@ -218,15 +249,31 @@ function Defi({ toast, t }) {
         WBNB_TOKEN_ADDRESS,
         ERC20_ABI
       );
+      const UNISWAP_LP_LOCKER_INSTANCE = createContractInstance(
+        ERC_WEB3,
+        UNISWAP_LP_LOCKER_ADDRESS,
+        ERC20_ABI
+      );
 
-      let [RCG_balance, WBNB_balance] = await Promise.all([
+      let [
+        RCG_balance,
+        WBNB_balance,
+        UNISWAP_LP_LOCKER_balance,
+      ] = await Promise.all([
         await RCG_TOKEN_INSTANCE.methods
           .balanceOf(RCG_bsc_CONTRACT_ADDRESS)
           .call(),
         await WBNB_TOKEN_INSTANCE.methods
           .balanceOf(RCG_bsc_CONTRACT_ADDRESS)
           .call(),
+        await UNISWAP_LP_LOCKER_INSTANCE.methods
+          .balanceOf(UNISWAP_LP_HOLDER_ADDRESS)
+          .call(),
       ]);
+
+      setUniLpLocker(
+        Number(fromWei(UNISWAP_LP_LOCKER_balance, "ether")) * 4058179.031940315
+      );
 
       //Get Token Price
       const coinPriceData = await axios.get(
@@ -265,6 +312,7 @@ function Defi({ toast, t }) {
         //   ...analData.data.ERC,
         rcg_eth_price: token0Price, // 이더리움 유니스왑 실시간 가격
         rcg_bsc_price: RCG_bsc_price,
+        uniswap_lp_locker: Number(uniLpLocker.toFixed(2)).toLocaleString(),
         // },
         // general: { tvl: TVL },
       });
@@ -499,7 +547,7 @@ function Defi({ toast, t }) {
                   ${" "}
                   {tvd
                     ? Number(Number(tvd).toFixed(2)).toLocaleString()
-                    : Number(3065361.95).toLocaleString()}
+                    : Number(3777126.17).toLocaleString()}
                 </div>
                 <div className="text Roboto_25pt_Gray">Total Value Deposit</div>
               </div>
@@ -520,7 +568,13 @@ function Defi({ toast, t }) {
                     className="Roboto_25pt_Black"
                     style={{ textAlign: "center", marginBottom: "8px" }}
                   >
-                    $ 0.00
+                    {`$ 
+                    ${
+                      analytics.uniswap_lp_locker
+                        ? analytics.uniswap_lp_locker
+                        : "0.00"
+                    }
+                    `}
                   </div>
                   <div className="text Roboto_25pt_Gray">Uniswap LP Locker</div>
                 </div>
@@ -859,7 +913,7 @@ const Content = styled.div`
   margin: auto auto;
   margin-bottom: 20px;
   width: 720px;
-
+  justify-content: center;
   height: fit-content; // 조정 필요
 
   color: var(--white);

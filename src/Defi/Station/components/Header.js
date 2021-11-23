@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { tvdState } from "../../../store/data";
+import { uniLpLockerState } from "../../../store/data";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Networks from "./Networks";
@@ -17,6 +18,7 @@ import SortBy from "./SortBy";
 
 function Header({ setNetwork, network, setParams, params, tvl, privateTvl }) {
   const [tvd, setTvd] = useRecoilState(tvdState);
+  const [uniLpLocker, setUniLpLocker] = useRecoilState(uniLpLockerState);
 
   const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
     let newNum;
@@ -25,7 +27,7 @@ function Header({ setNetwork, network, setParams, params, tvl, privateTvl }) {
     return newNum.toLocaleString("fullwide", { useGrouping: false });
   };
 
-  setTvd(tvl + privateTvl);
+  setTvd(tvl + privateTvl + uniLpLocker);
   return (
     <Contain>
       <Title>
@@ -40,7 +42,10 @@ function Header({ setNetwork, network, setParams, params, tvl, privateTvl }) {
               Total Value Deposited
             </Text>
             <Value className="Roboto_30pt_Medium ">
-              ${Number((tvl + privateTvl).toFixed(2)).toLocaleString()}
+              $
+              {Number(
+                (tvl + privateTvl + uniLpLocker).toFixed(2)
+              ).toLocaleString()}
             </Value>
           </TotalValue>
         </TitleWrapper>
