@@ -192,9 +192,11 @@ function Row({
     };
     /* 신규 컨트랙트 배포 후 변경 */
     const earn = (name, poolM, account) => {
-      info.name === "11.2 Flexible Pool"
-        ? poolM.getReward(account).send({ from: account })
-        : poolM.getReward().send({ from: account });
+      if (info.name === "11.2 Flexible Pool") {
+        poolM.getReward(account).send({ from: account });
+      } else {
+        poolM.getReward().send({ from: account });
+      }
     }; // FIX ME
     const exit = (poolM, account, balance) => {
       // 보상 오류로 잠정 exit가 아닌 withdrwal로 변경합니다.
@@ -213,10 +215,13 @@ function Row({
         ),
       stake: async (amount) =>
         await stake(POOL_INSTANCE.methods, amount, account),
-      earn: async () =>
-        info.name === "11.2 Flexible Pool"
-          ? await earn(info.name, NEW_CONTRACT_INSTANCE.methods, account)
-          : await earn(info.name, POOL_INSTANCE.methods, account),
+      earn: async () => {
+        if (info.name === "11.2 Flexible Pool") {
+          await earn(info.name, NEW_CONTRACT_INSTANCE.methods, account);
+        } else {
+          await earn(info.name, POOL_INSTANCE.methods, account);
+        }
+      },
       exit: async (balance) =>
         await exit(POOL_INSTANCE.methods, account, balance), // 보상오류로 잠정 balance 추가됩니다.
     };
