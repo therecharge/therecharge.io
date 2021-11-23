@@ -422,7 +422,7 @@ function Row({
                 need={userInfo.address == "0x00" ? "2" : "2"}
                 // disable={userInfo.address == "0x00" ? false : false}
                 bgColor={
-                  status === "Active" && startTime == "1636693200"
+                  status === "Active" /*&& startTime == "1636693200"*/
                     ? "var(--purple)"
                     : "var(--gray-30)"
                 }
@@ -473,7 +473,8 @@ function Row({
                   need="0"
                   disable={true}
                   bgColor={
-                    account && userInfo.reward > 0 && startTime == "1636693200"
+                    account &&
+                    userInfo.reward > 0 /*&& startTime == "1636693200"*/
                       ? "var(--yellow)"
                       : "var(--gray-30)"
                     // !account
@@ -533,7 +534,7 @@ function Row({
                   need="0"
                   disable={true}
                   bgColor={
-                    userInfo.balance > 0 && startTime == "1636693200"
+                    userInfo.balance > 0 /*&& startTime == "1636693200"*/
                       ? "var(--ultramarine-blue)"
                       : "var(--gray-30)"
                   }
@@ -564,10 +565,9 @@ function Row({
                   need="0"
                   disable={true}
                   bgColor={
-                    status === "Close" &&
-                    userInfo.balance > 0 &&
-                    startTime == "1636693200"
-                      ? "var(--ultramarine-blue)"
+                    status === "Closed" && userInfo.balance > 0
+                      ? /*&& startTime == "1636693200"*/
+                        "var(--ultramarine-blue)"
                       : "var(--gray-30)"
                   }
                   border={
@@ -623,7 +623,7 @@ function Status({ name, status }) {
         return "#b21a14";
     }
     switch (status) {
-      case "Close":
+      case "Closed":
         return "#b21a14";
       case "Inactive":
         return "#7E7E7E";
@@ -741,9 +741,10 @@ function Apy({ status, apy }) {
   function color() {
     if (status != "Active") return "var(--gray-30)";
     if (apy == "+999999.99") return "var(--green)";
-    if (apy >= 100) return "var(--green)";
-    if (apy >= 50) return "var(--red)";
-    return "var(--yellow)";
+    // FIX ME
+    if (apy >= 0) return "var(--green)";
+    // if (apy >= 50) return "var(--yellow)";
+    return "var(--red)";
   }
   return (
     <p

@@ -329,7 +329,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       ALL_LIST.sort(
         (charger1, charger2) => charger2.startTime - charger1.startTime
       );
-      console.log(ALL_LIST);
+
+      ALL_LIST.sort((charger1, charger2) => charger2.apy - charger1.apy);
 
       // UNISWAP LP POOL을 위해 임시적으로 사용합니다.
 
@@ -406,29 +407,37 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     loadChargerList();
   };
   const getAPY = (totalSupply, rewardAmount, DURATION, name, network) => {
+    console.log(name);
     const Year = 1 * 365 * 24 * 60 * 60;
-    if (name.includes("LP")) {
-      if (network === "BEP") {
-        // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25).toString())
+    if (
+      name === "11.16 Uniswap LP Flexible Pool 777" ||
+      name === "11.2 Flexible Pool"
+    ) {
+      if (name.includes("LP")) {
+        if (network === "BEP") {
+          // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25).toString())
+          return (
+            (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
+            25.6328762768
+          ).toString();
+        } else if (network === "ERC") {
+          // console.log(toBN(rewardAmount))
+          // console.log(fromWei(rewardAmount, "ether"))
+          // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString())
+          // return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString();
+          return (
+            (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
+            966514.761619
+          ).toString();
+        }
+      } else {
         return (
-          (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
-          25.6328762768
-        ).toString();
-      } else if (network === "ERC") {
-        // console.log(toBN(rewardAmount))
-        // console.log(fromWei(rewardAmount, "ether"))
-        // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString())
-        // return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString();
-        return (
-          (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
-          966514.761619
+          ((rewardAmount * (Year / DURATION)) / totalSupply) *
+          100
         ).toString();
       }
     } else {
-      return (
-        ((rewardAmount * (Year / DURATION)) / totalSupply) *
-        100
-      ).toString();
+      return 0;
     }
   };
 
@@ -526,11 +535,13 @@ const loadActiveStatus = ({
   // 11.1 풀을 위해 일시적으로 사용합니다.
   if (name.includes("11.1 ")) return "Inactive";
 
-  if (name.includes("11.12 ")) return "Close";
+  if (name.includes("10.1 ")) return "Inactive";
+
+  if (name.includes("11.12 ")) return "Closed";
 
   if (NOW < startTime) return "Inactive";
 
-  if (NOW > startTime + DURATION) return "Close";
+  if (NOW > startTime + DURATION) return "Closed";
   // 리미트 설정 이전까지 잠정 주석처리 합니다.
   // if (limit != "0" && totalSupply >= limit) return "Close";
   return "Active";
