@@ -341,7 +341,7 @@ function Defi({ toast, t }) {
         Number(fromWei(UNISWAP_LP_balance, "ether")) * uni_lp_price
       );
 
-      console.log(uniLpLocker);
+      // console.log(uniLpLocker);
 
       setAnalytics({
         ...analData.data,
