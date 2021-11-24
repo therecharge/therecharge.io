@@ -646,7 +646,7 @@ function Defi({ toast, t }) {
                     {/* {analytics.numberOf.Charger
                       ? analytics.numberOf.Charger
                       : 0} */}
-                    11
+                    2
                   </div>
                   <div className="text Roboto_20pt_Regular_Gray">
                     Number of Chargers{<br />}Activated
