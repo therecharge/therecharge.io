@@ -317,10 +317,11 @@ function Defi({ toast, t }) {
       // console.log("analData", analData);
 
       let uni_lp_price =
-        Number(fromWei(RCG_eth_TOKEN_balance, "ether")) *
-        token0Price *
-        2 *
-        0.95;
+        (Number(fromWei(RCG_eth_TOKEN_balance, "ether")) *
+          token0Price *
+          2 *
+          0.95) /
+        0.242903245740529089;
       // console.log("RCG_eth_TOKEN_balance", RCG_eth_TOKEN_balance);
 
       setUniLpLocker(
@@ -568,7 +569,7 @@ function Defi({ toast, t }) {
                   ${" "}
                   {tvd
                     ? Number(Number(tvd).toFixed(2)).toLocaleString()
-                    : Number(3195417.17).toLocaleString()}
+                    : Number(3853711.54).toLocaleString()}
                 </div>
                 <div className="text Roboto_25pt_Gray">Total Value Deposit</div>
               </div>

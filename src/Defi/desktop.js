@@ -234,7 +234,7 @@ function Defi({ toast, t }) {
 
       const RCG_bsc_CONTRACT_ADDRESS =
         "0x0A9B1C9893aE0BE97A6d31AdBc39bCd6737B4922";
-      const UNISWAP_LP_HOLDER_ADDRESS =
+      const UNISWAP_LP_LOCKER_ADDRESS =
         "0x384e5de8c108805d6a1d5bf4c2aaa0b390ea018b";
 
       const RCG_TOKEN_INSTANCE = createContractInstance(
@@ -273,7 +273,7 @@ function Defi({ toast, t }) {
           .balanceOf(RCG_bsc_CONTRACT_ADDRESS)
           .call(),
         await UNISWAP_LP_INSTANCE.methods
-          .balanceOf(UNISWAP_LP_HOLDER_ADDRESS)
+          .balanceOf(UNISWAP_LP_LOCKER_ADDRESS)
           .call(),
         await RCG_eth_TOKEN_INSTANCE.methods
           .balanceOf(UNISWAP_LP_ADDRESS)
@@ -317,31 +317,44 @@ function Defi({ toast, t }) {
 
       // console.log("TVL", tvlData);
       // console.log("analData", analData);
-
       // console.log("RCG_eth_TOKEN_balance", RCG_eth_TOKEN_balance);
       // console.log("RCG_eth_TOKEN_balance_type", typeof RCG_eth_TOKEN_balance);
-      // console.log(
-      //   "RCG_eth_TOKEN_balance_fromWei",
-      //   fromWei(RCG_eth_TOKEN_balance, "ether")
-      // );
-      // console.log("RCG_eth_TOKEN_Price", token0Price);
-      // console.log(
-      //   "RCG_eth_TOKEN_balance_fromWei * price * 2 * 0.95",
-      //   Number(fromWei(RCG_eth_TOKEN_balance, "ether")) * token0Price * 2 * 0.95
-      // );
+      console.log(
+        "UNISWAP LP 컨트랙트가 보유한 RCG(eth)(단위: RCG) : ",
+        fromWei(RCG_eth_TOKEN_balance, "ether")
+      );
+      console.log("UNISWAP LP 총발행량 : ", 0.242903245740529089);
+      console.log("RCG(eth) 개당 가격(단위: $) : ", token0Price);
+      console.log(
+        "UNISWAP LP 개당 가격(단위: RCG) = UNISWAP LP 컨트랙트가 보유한 RCG(eth) * 2 * 0.95 / UNISWAP LP 총 발행량",
+        "$ " +
+          (Number(fromWei(RCG_eth_TOKEN_balance, "ether")) *
+            token0Price *
+            2 *
+            0.95) /
+            0.242903245740529089
+      );
 
       let uni_lp_price =
-        Number(fromWei(RCG_eth_TOKEN_balance, "ether")) *
-        token0Price *
-        2 *
-        0.95;
+        (Number(fromWei(RCG_eth_TOKEN_balance, "ether")) *
+          token0Price *
+          2 *
+          0.95) /
+        0.242903245740529089;
       // console.log("RCG_eth_TOKEN_balance", RCG_eth_TOKEN_balance);
 
+      console.log(
+        "UNI_LP_LOCKER가 보유한 balance(단위: RCG) : ",
+        fromWei(UNISWAP_LP_balance, "ether")
+      );
       setUniLpLocker(
         Number(fromWei(UNISWAP_LP_balance, "ether")) * uni_lp_price
       );
 
-      // console.log(uniLpLocker);
+      console.log(
+        "UNI_LP_LOCKER가 보유한 balance의 달러가치(단위: $) : ",
+        uniLpLocker
+      );
 
       setAnalytics({
         ...analData.data,
@@ -564,7 +577,7 @@ function Defi({ toast, t }) {
                     : Number(0).toFixed(2)} */}
                   {tvd
                     ? Number(Number(tvd).toFixed(2)).toLocaleString()
-                    : Number(3195417.17).toLocaleString()}
+                    : Number(3853711.54).toLocaleString()}
                 </div>
                 <div className="text Roboto_16pt_Regular_Gray">
                   Total Value Deposited
