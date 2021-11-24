@@ -264,6 +264,7 @@ function Defi({ toast, t }) {
         RCG_balance,
         WBNB_balance,
         UNISWAP_LP_balance,
+        UNISWAP_LP_totalSupply,
         RCG_eth_TOKEN_balance,
       ] = await Promise.all([
         await RCG_TOKEN_INSTANCE.methods
@@ -275,6 +276,7 @@ function Defi({ toast, t }) {
         await UNISWAP_LP_INSTANCE.methods
           .balanceOf(UNISWAP_LP_LOCKER_ADDRESS)
           .call(),
+        await UNISWAP_LP_INSTANCE.methods.totalSupply().call(),
         await RCG_eth_TOKEN_INSTANCE.methods
           .balanceOf(UNISWAP_LP_ADDRESS)
           .call(),
@@ -332,7 +334,7 @@ function Defi({ toast, t }) {
             token0Price *
             2 *
             0.95) /
-            0.242903245740529089
+            Number(fromWei(UNISWAP_LP_totalSupply, "ether"))
       );
 
       let uni_lp_price =
@@ -340,7 +342,7 @@ function Defi({ toast, t }) {
           token0Price *
           2 *
           0.95) /
-        0.242903245740529089;
+        Number(fromWei(UNISWAP_LP_totalSupply, "ether"));
       // console.log("RCG_eth_TOKEN_balance", RCG_eth_TOKEN_balance);
 
       console.log(
