@@ -225,12 +225,15 @@ function Defi({ toast, t }) {
     try {
       const BEP_WEB3 = web3_R["BEP"];
       const ERC_WEB3 = web3_R["ERC"];
-      const RCG_bsc_CONTRACT_ADDRESS =
-        "0x0A9B1C9893aE0BE97A6d31AdBc39bCd6737B4922";
-      const UNISWAP_LP_LOCKER_ADDRESS =
-        "0x9c20be0f142fb34f10e33338026fb1dd9e308da3";
+
       const RCG_TOKEN_ADDRESS = "0x2d94172436d869c1e3c094bead272508fab0d9e3";
       const WBNB_TOKEN_ADDRESS = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+      const UNISWAP_LP_ADDRESS = "0x9C20be0f142FB34F10E33338026fB1DD9e308da3";
+      const RCG_eth_TOKEN_ADDRESS =
+        "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30";
+
+      const RCG_bsc_CONTRACT_ADDRESS =
+        "0x0A9B1C9893aE0BE97A6d31AdBc39bCd6737B4922";
       const UNISWAP_LP_HOLDER_ADDRESS =
         "0x384e5de8c108805d6a1d5bf4c2aaa0b390ea018b";
 
@@ -245,16 +248,23 @@ function Defi({ toast, t }) {
         ERC20_ABI
       );
 
-      const UNISWAP_LP_LOCKER_INSTANCE = createContractInstance(
+      const RCG_eth_TOKEN_INSTANCE = createContractInstance(
         ERC_WEB3,
-        UNISWAP_LP_LOCKER_ADDRESS,
+        RCG_eth_TOKEN_ADDRESS,
+        ERC20_ABI
+      );
+
+      const UNISWAP_LP_INSTANCE = createContractInstance(
+        ERC_WEB3,
+        UNISWAP_LP_ADDRESS,
         ERC20_ABI
       );
 
       let [
         RCG_balance,
         WBNB_balance,
-        UNISWAP_LP_LOCKER_balance,
+        UNISWAP_LP_balance,
+        RCG_eth_TOKEN_balance,
       ] = await Promise.all([
         await RCG_TOKEN_INSTANCE.methods
           .balanceOf(RCG_bsc_CONTRACT_ADDRESS)
@@ -262,18 +272,19 @@ function Defi({ toast, t }) {
         await WBNB_TOKEN_INSTANCE.methods
           .balanceOf(RCG_bsc_CONTRACT_ADDRESS)
           .call(),
-        await UNISWAP_LP_LOCKER_INSTANCE.methods
+        await UNISWAP_LP_INSTANCE.methods
           .balanceOf(UNISWAP_LP_HOLDER_ADDRESS)
+          .call(),
+        await RCG_eth_TOKEN_INSTANCE.methods
+          .balanceOf(UNISWAP_LP_ADDRESS)
           .call(),
       ]);
 
-      setUniLpLocker(
-        Number(fromWei(UNISWAP_LP_LOCKER_balance, "ether")) * 4058179.031940315
-      );
+      // console.log("RCG_eth_TOKEN_balance", RCG_eth_TOKEN_balance);
 
       // console.log(
-      //   "UNISWAP_LP_LOCKER_balance",
-      //   Number(fromWei(UNISWAP_LP_LOCKER_balance, "ether")) * 4058179.031940315
+      //   "UNISWAP_LP_balance",
+      //   Number(fromWei(UNISWAP_LP_balance, "ether")) * 4058179.031940315
       // );
 
       //Get Token Price
@@ -306,6 +317,31 @@ function Defi({ toast, t }) {
 
       // console.log("TVL", tvlData);
       // console.log("analData", analData);
+
+      // console.log("RCG_eth_TOKEN_balance", RCG_eth_TOKEN_balance);
+      // console.log("RCG_eth_TOKEN_balance_type", typeof RCG_eth_TOKEN_balance);
+      // console.log(
+      //   "RCG_eth_TOKEN_balance_fromWei",
+      //   fromWei(RCG_eth_TOKEN_balance, "ether")
+      // );
+      // console.log("RCG_eth_TOKEN_Price", token0Price);
+      // console.log(
+      //   "RCG_eth_TOKEN_balance_fromWei * price * 2 * 0.95",
+      //   Number(fromWei(RCG_eth_TOKEN_balance, "ether")) * token0Price * 2 * 0.95
+      // );
+
+      let uni_lp_price =
+        Number(fromWei(RCG_eth_TOKEN_balance, "ether")) *
+        token0Price *
+        2 *
+        0.95;
+      // console.log("RCG_eth_TOKEN_balance", RCG_eth_TOKEN_balance);
+
+      setUniLpLocker(
+        Number(fromWei(UNISWAP_LP_balance, "ether")) * uni_lp_price
+      );
+
+      console.log(uniLpLocker);
 
       setAnalytics({
         ...analData.data,
@@ -528,7 +564,7 @@ function Defi({ toast, t }) {
                     : Number(0).toFixed(2)} */}
                   {tvd
                     ? Number(Number(tvd).toFixed(2)).toLocaleString()
-                    : Number(3777126.17).toLocaleString()}
+                    : Number(3195417.17).toLocaleString()}
                 </div>
                 <div className="text Roboto_16pt_Regular_Gray">
                   Total Value Deposited
