@@ -74,9 +74,13 @@ function Defi({ toast, t }) {
   const [onLoading, setOnLoading] = useState(true);
   const [myPools, setMyPools] = useState(null);
   const [analytics, setAnalytics] = useState({
-    numberOf: {},
     totalCirculation: {},
-    // BEP: {},
+    numberOf: {},
+    Accumulated: {
+      eth: {},
+      bsc: {},
+      heco: {},
+    },
     // general: {},
   });
 
