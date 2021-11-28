@@ -646,10 +646,9 @@ function Defi({ toast, t }) {
                     className="title Roboto_25pt_Black"
                     style={{ textAlign: "center" }}
                   >
-                    {/* {analytics.numberOf.Charger
+                    {analytics.numberOf.Charger
                       ? analytics.numberOf.Charger
-                      : 0} */}
-                    2
+                      : 0}
                   </div>
                   <div className="text Roboto_20pt_Regular_Gray">
                     Number of Chargers{<br />}Activated
@@ -702,10 +701,16 @@ function Defi({ toast, t }) {
                 <div className="content le">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {/* {analytics.ERC.redemption
-                        ? makeNum(analytics.ERC.redemption)
-                        : 0}{" "}RCG */}
-                      -
+                      {analytics.Accumulated.eth.Redemption
+                        ? Number(
+                            Number(
+                              weiToEther(
+                                convertNum(analytics.Accumulated.eth.Redemption)
+                              )
+                            ).toFixed(2)
+                          ).toLocaleString()
+                        : Number(0).toFixed(2)}{" "}
+                      RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Carbon Redemption ERC20
@@ -726,10 +731,16 @@ function Defi({ toast, t }) {
                 <div className="content">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {/* {analytics.ERC.swapped
-                        ? makeNum(analytics.ERC.swapped)
-                        : 0} */}
-                      0
+                      {analytics.Accumulated.eth.SwappedIn
+                        ? Number(
+                            Number(
+                              weiToEther(
+                                convertNum(analytics.Accumulated.eth.SwappedIn)
+                              )
+                            ).toFixed(2)
+                          ).toLocaleString()
+                        : Number(0).toFixed(2)}{" "}
+                      RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       RCG (ERC20) Swapped in
@@ -737,10 +748,18 @@ function Defi({ toast, t }) {
                   </div>
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {/* {analytics.ERC.conversion
-                        ? makeNum(analytics.ERC.conversion)
-                        : 0}{" "} */}
-                      0 RCG
+                      {analytics.Accumulated.eth.ConversionFee
+                        ? Number(
+                            Number(
+                              weiToEther(
+                                convertNum(
+                                  analytics.Accumulated.eth.ConversionFee
+                                )
+                              )
+                            ).toFixed(2)
+                          ).toLocaleString()
+                        : Number(0).toFixed(2)}{" "}
+                      RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Conversion Fee(ERC20)
@@ -781,11 +800,16 @@ function Defi({ toast, t }) {
                 <div className="content le">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {/* {analytics.BEP.redemption
-                        ? makeNum(analytics.BEP.redemption)
-                        : 0}{" "}
-                      RCG */}
-                      -
+                      {analytics.Accumulated.bsc.Redemption
+                        ? Number(
+                            Number(
+                              weiToEther(
+                                convertNum(analytics.Accumulated.bsc.Redemption)
+                              )
+                            ).toFixed(2)
+                          ).toLocaleString()
+                        : Number(0).toFixed(2)}{" "}
+                      RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Carbon Redemption BEP20
@@ -803,10 +827,16 @@ function Defi({ toast, t }) {
                 <div className="content">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {/* {analytics.BEP.swapped
-                        ? makeNum(analytics.BEP.swapped)
-                        : 0} */}
-                      0
+                      {analytics.Accumulated.bsc.SwappedIn
+                        ? Number(
+                            Number(
+                              weiToEther(
+                                convertNum(analytics.Accumulated.bsc.SwappedIn)
+                              )
+                            ).toFixed(2)
+                          ).toLocaleString()
+                        : Number(0).toFixed(2)}{" "}
+                      RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       RCG (BEP20) Swapped in
@@ -814,10 +844,18 @@ function Defi({ toast, t }) {
                   </div>
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {/* {analytics.BEP.conversion
-                        ? makeNum(analytics.BEP.conversion)
-                        : 0}{" "} */}
-                      0 RCG
+                      {analytics.Accumulated.bsc.ConversionFee
+                        ? Number(
+                            Number(
+                              weiToEther(
+                                convertNum(
+                                  analytics.Accumulated.bsc.ConversionFee
+                                )
+                              )
+                            ).toFixed(2)
+                          ).toLocaleString()
+                        : Number(0).toFixed(2)}{" "}
+                      RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Conversion Fee(BEP20)
@@ -860,11 +898,18 @@ function Defi({ toast, t }) {
                 <div className="content le">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {/* {analytics.HRC.redemption
-                        ? makeNum(analytics.HRC.redemption)
-                        : 0}{" "}
-                      RCG */}
-                      -
+                      {analytics.Accumulated.heco.Redemption
+                        ? Number(
+                            Number(
+                              weiToEther(
+                                convertNum(
+                                  analytics.Accumulated.heco.Redemption
+                                )
+                              )
+                            ).toFixed(2)
+                          ).toLocaleString()
+                        : Number(0).toFixed(2)}{" "}
+                      RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Carbon Redemption HRC20
@@ -888,10 +933,16 @@ function Defi({ toast, t }) {
                 <div className="content">
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {/* {analytics.HRC.swapped
-                        ? makeNum(analytics.HRC.swapped)
-                        : 0} */}
-                      0
+                      {analytics.Accumulated.heco.SwappedIn
+                        ? Number(
+                            Number(
+                              weiToEther(
+                                convertNum(analytics.Accumulated.heco.SwappedIn)
+                              )
+                            ).toFixed(2)
+                          ).toLocaleString()
+                        : Number(0).toFixed(2)}{" "}
+                      RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       RCG (HRC20) Swapped in
@@ -899,10 +950,18 @@ function Defi({ toast, t }) {
                   </div>
                   <div className="item">
                     <div className="title Roboto_20pt_Black">
-                      {/* {analytics.HRC.conversion
-                        ? makeNum(analytics.HRC.conversion)
-                        : 0}{" "} */}
-                      0 RCG
+                      {analytics.Accumulated.heco.ConversionFee
+                        ? Number(
+                            Number(
+                              weiToEther(
+                                convertNum(
+                                  analytics.Accumulated.heco.ConversionFee
+                                )
+                              )
+                            ).toFixed(2)
+                          ).toLocaleString()
+                        : Number(0).toFixed(2)}{" "}
+                      RCG
                     </div>
                     <div className="text Roboto_20pt_Regular_Gray">
                       Accumulated Conversion Fee(HRC20)
