@@ -650,9 +650,10 @@ function Defi({ toast, t }) {
                     className="title Roboto_25pt_Black"
                     style={{ textAlign: "center" }}
                   >
-                    {analytics.numberOf.Charger
+                    {/* {analytics.numberOf.Charger
                       ? analytics.numberOf.Charger
-                      : 0}
+                      : 0} */}
+                    1
                   </div>
                   <div className="text Roboto_20pt_Regular_Gray">
                     Number of Chargers{<br />}Activated
