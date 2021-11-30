@@ -330,7 +330,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         (charger1, charger2) => charger2.startTime - charger1.startTime
       );
 
-      ALL_LIST.sort((charger1, charger2) => charger2.apy - charger1.apy);
+      // ALL_LIST.sort((charger1, charger2) => charger2.apy - charger1.apy);
 
       // UNISWAP LP POOL을 위해 임시적으로 사용합니다.
 
