@@ -410,6 +410,14 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     console.log(name);
     const Year = 1 * 365 * 24 * 60 * 60;
 
+    if (
+      name === "11.12 Pancake LP Locked Pool 300" ||
+      name === "11.12 Premier Locked Pool 200" ||
+      name === "11.12 Locked Pool 100"
+    ) {
+      return 0;
+    }
+
     if (name.includes("LP")) {
       if (network === "BEP") {
         // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25).toString())
