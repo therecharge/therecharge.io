@@ -409,35 +409,29 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const getAPY = (totalSupply, rewardAmount, DURATION, name, network) => {
     console.log(name);
     const Year = 1 * 365 * 24 * 60 * 60;
-    if (
-      name === "11.16 Uniswap LP Flexible Pool 777" ||
-      name === "11.2 Flexible Pool"
-    ) {
-      if (name.includes("LP")) {
-        if (network === "BEP") {
-          // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25).toString())
-          return (
-            (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
-            25.6328762768
-          ).toString();
-        } else if (network === "ERC") {
-          // console.log(toBN(rewardAmount))
-          // console.log(fromWei(rewardAmount, "ether"))
-          // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString())
-          // return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString();
-          return (
-            (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
-            966514.761619
-          ).toString();
-        }
-      } else {
+
+    if (name.includes("LP")) {
+      if (network === "BEP") {
+        // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25).toString())
         return (
-          ((rewardAmount * (Year / DURATION)) / totalSupply) *
-          100
+          (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
+          25.6328762768
+        ).toString();
+      } else if (network === "ERC") {
+        // console.log(toBN(rewardAmount))
+        // console.log(fromWei(rewardAmount, "ether"))
+        // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString())
+        // return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString();
+        return (
+          (((rewardAmount * (Year / DURATION)) / totalSupply) * 100) /
+          966514.761619
         ).toString();
       }
     } else {
-      return 0;
+      return (
+        ((rewardAmount * (Year / DURATION)) / totalSupply) *
+        100
+      ).toString();
     }
   };
 
