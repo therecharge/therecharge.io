@@ -8,7 +8,23 @@ import List from "./components/List";
 import List_Private from "./components/List_Private";
 import Header from "./components/Header";
 import Header_Private from "./components/Header_Private";
-function Station(props) {
+function Station({
+  toast,
+  loadChargerList,
+  chList,
+  setChList,
+  fullList,
+  setFullList,
+  tvl,
+  setTvl,
+  loadPrivateChargerList,
+  chListPrivate,
+  setChListPrivate,
+  fullListPrivate,
+  setFullListPrivate,
+  privateTvl,
+  setPrivateTvl,
+}) {
   const [t] = useTranslation();
   const [params, setParams] = useState({
     type: "ALL",
@@ -16,8 +32,6 @@ function Station(props) {
     address: "0x", // useless?
   });
   const [network, setNetwork] = useState("ALL");
-  const [tvl, setTvl] = useState(0);
-  const [privateTvl, setPrivateTvl] = useState(0);
 
   // useEffect(() => {
   //   setParams({
@@ -48,16 +62,26 @@ function Station(props) {
         {/* <Slider setParams={setParams} params={params} /> */}
         <List
           params={params}
-          toast={props.toast}
+          toast={toast}
           network={network}
+          loadChargerList={loadChargerList}
           setTvl={setTvl}
+          chList={chList}
+          setChList={setChList}
+          fullList={fullList}
+          setFullList={setFullList}
         />
         <Header_Private />
         <List_Private
           params={params}
-          toast={props.toast}
+          toast={toast}
           network={network}
+          loadPrivateChargerList={loadPrivateChargerList}
           setPrivateTvl={setPrivateTvl}
+          chListPrivate={chListPrivate}
+          setChListPrivate={setChListPrivate}
+          fullListPrivate={fullListPrivate}
+          setFullListPrivate={setFullListPrivate}
         />
       </Content>
     </Container>

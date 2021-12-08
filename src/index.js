@@ -55,7 +55,7 @@ ReactDOM.render(
     <Main layout={false} scrollView={true} theme={false}>
       <ToastHub>
         <Toast>
-          {toast => (
+          {(toast) => (
             <div>
               <RecoilRoot>
                 {/* <UpdateToastState toast={toast} /> */}

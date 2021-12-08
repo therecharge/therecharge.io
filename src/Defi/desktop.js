@@ -64,7 +64,7 @@ const weiToEther = (wei) => {
   return fromWei(wei, "ether");
 };
 
-function Defi({ toast, t }) {
+function Defi({ toast, t, loadAnalytics, analytics }) {
   const [account] = useRecoilState(accountState);
   const [web3_R] = useRecoilState(web3ReaderState);
   const [tvd, setTvd] = useRecoilState(tvdState);
@@ -75,16 +75,6 @@ function Defi({ toast, t }) {
   const ERC20_ABI = require("../lib/read_contract/abi/erc20.json");
   const [onLoading, setOnLoading] = useState(true);
   const [myPools, setMyPools] = useState(null);
-  const [analytics, setAnalytics] = useState({
-    totalCirculation: {},
-    numberOf: {},
-    Accumulated: {
-      eth: {},
-      bsc: {},
-      heco: {},
-    },
-    // general: {},
-  });
 
   const data = React.useMemo(() => (myPools === null ? [] : myPools), [
     myPools,
@@ -220,164 +210,6 @@ function Defi({ toast, t }) {
       // console.log("ALL_OF_CHARCERS_INFO", ALL_OF_CHARCERS_INFO)
 
       setMyPools(ALL_OF_CHARCERS_INFO);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const loadAnalytics = async () => {
-    try {
-      const BEP_WEB3 = web3_R["BEP"];
-      const ERC_WEB3 = web3_R["ERC"];
-
-      const RCG_TOKEN_ADDRESS = "0x2d94172436d869c1e3c094bead272508fab0d9e3";
-      const WBNB_TOKEN_ADDRESS = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
-      const UNISWAP_LP_ADDRESS = "0x9C20be0f142FB34F10E33338026fB1DD9e308da3";
-      const RCG_eth_TOKEN_ADDRESS =
-        "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30";
-
-      const RCG_bsc_CONTRACT_ADDRESS =
-        "0x0A9B1C9893aE0BE97A6d31AdBc39bCd6737B4922";
-      const UNISWAP_LP_LOCKER_ADDRESS =
-        "0x384e5de8c108805d6a1d5bf4c2aaa0b390ea018b";
-
-      const RCG_TOKEN_INSTANCE = createContractInstance(
-        BEP_WEB3,
-        RCG_TOKEN_ADDRESS,
-        ERC20_ABI
-      );
-      const WBNB_TOKEN_INSTANCE = createContractInstance(
-        BEP_WEB3,
-        WBNB_TOKEN_ADDRESS,
-        ERC20_ABI
-      );
-
-      const RCG_eth_TOKEN_INSTANCE = createContractInstance(
-        ERC_WEB3,
-        RCG_eth_TOKEN_ADDRESS,
-        ERC20_ABI
-      );
-
-      const UNISWAP_LP_INSTANCE = createContractInstance(
-        ERC_WEB3,
-        UNISWAP_LP_ADDRESS,
-        ERC20_ABI
-      );
-
-      let [
-        RCG_balance,
-        WBNB_balance,
-        UNISWAP_LP_balance,
-        UNISWAP_LP_totalSupply,
-        RCG_eth_TOKEN_balance,
-      ] = await Promise.all([
-        await RCG_TOKEN_INSTANCE.methods
-          .balanceOf(RCG_bsc_CONTRACT_ADDRESS)
-          .call(),
-        await WBNB_TOKEN_INSTANCE.methods
-          .balanceOf(RCG_bsc_CONTRACT_ADDRESS)
-          .call(),
-        await UNISWAP_LP_INSTANCE.methods
-          .balanceOf(UNISWAP_LP_LOCKER_ADDRESS)
-          .call(),
-        await UNISWAP_LP_INSTANCE.methods.totalSupply().call(),
-        await RCG_eth_TOKEN_INSTANCE.methods
-          .balanceOf(UNISWAP_LP_ADDRESS)
-          .call(),
-      ]);
-
-      // console.log("RCG_eth_TOKEN_balance", RCG_eth_TOKEN_balance);
-
-      // console.log(
-      //   "UNISWAP_LP_balance",
-      //   Number(fromWei(UNISWAP_LP_balance, "ether")) * 4058179.031940315
-      // );
-
-      //Get Token Price
-      const coinPriceData = await axios.get(
-        `https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd`
-      );
-      const BNBPrice = coinPriceData.data["binancecoin"].usd;
-
-      const RCG_bsc_price = ((WBNB_balance / RCG_balance) * BNBPrice).toFixed(
-        4
-      );
-
-      const [analData, priceData, tvlData] = await Promise.all([
-        axios.get(`https://analytics.api.therecharge.io/`),
-        axios.post(
-          `https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`,
-          {
-            query:
-              'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
-          }
-        ),
-        axios.get(`https://api.therecharge.io/tvl`),
-      ]);
-      let { token0Price, token1Price } = priceData.data.data.pairs[0];
-      token0Price = makeNum(token0Price);
-      token1Price = makeNum(token1Price);
-      let TVL = makeNum("" + tvlData.data.TVL);
-
-      /* Start to get LP Locker */
-
-      // console.log("TVL", tvlData);
-      // console.log("analData", analData);
-      // console.log("RCG_eth_TOKEN_balance", RCG_eth_TOKEN_balance);
-      // console.log("RCG_eth_TOKEN_balance_type", typeof RCG_eth_TOKEN_balance);
-      console.log(
-        "UNISWAP LP 컨트랙트가 보유한 RCG(eth)(단위: RCG) : ",
-        fromWei(RCG_eth_TOKEN_balance, "ether")
-      );
-      console.log("UNISWAP LP 총발행량 : ", 0.242903245740529089);
-      console.log("RCG(eth) 개당 가격(단위: $) : ", token0Price);
-      console.log(
-        "UNISWAP LP 개당 가격(단위: RCG) = UNISWAP LP 컨트랙트가 보유한 RCG(eth) * 2 * 0.95 / UNISWAP LP 총 발행량",
-        "$ " +
-          (Number(fromWei(RCG_eth_TOKEN_balance, "ether")) *
-            token0Price *
-            2 *
-            0.95) /
-            Number(fromWei(UNISWAP_LP_totalSupply, "ether"))
-      );
-
-      let uni_lp_price =
-        (Number(fromWei(RCG_eth_TOKEN_balance, "ether")) *
-          token0Price *
-          2 *
-          0.95) /
-        Number(fromWei(UNISWAP_LP_totalSupply, "ether"));
-      // console.log("RCG_eth_TOKEN_balance", RCG_eth_TOKEN_balance);
-
-      console.log(
-        "UNI_LP_LOCKER가 보유한 balance(단위: RCG) : ",
-        fromWei(UNISWAP_LP_balance, "ether")
-      );
-      setUniLpLocker(
-        Number(fromWei(UNISWAP_LP_balance, "ether")) * uni_lp_price
-      );
-
-      console.log(
-        "UNI_LP_LOCKER가 보유한 balance의 달러가치(단위: $) : ",
-        uniLpLocker
-      );
-
-      setAnalytics({
-        ...analData.data,
-        // ERC: {
-        //   ...analData.data.ERC,
-        rcg_eth_price: token0Price, // 이더리움 유니스왑 실시간 가격
-        rcg_bsc_price: RCG_bsc_price,
-        uniswap_lp_locker: Number(uniLpLocker.toFixed(2)).toLocaleString(),
-        // },
-        // general: { tvl: TVL },
-      });
-      /**
-       * ERC: {},
-       * HRC: {},
-       * general: {},
-       */
-      console.log(analytics);
     } catch (err) {
       console.log(err);
     }
