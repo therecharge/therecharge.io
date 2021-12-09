@@ -575,7 +575,7 @@ function Defi({ toast, t }) {
                   ${" "}
                   {tvd
                     ? Number(Number(tvd).toFixed(2)).toLocaleString()
-                    : Number(3853711.54).toLocaleString()}
+                    : Number(3478866.78).toLocaleString()}
                 </div>
                 <div className="text Roboto_25pt_Gray">Total Value Deposit</div>
               </div>
@@ -653,7 +653,7 @@ function Defi({ toast, t }) {
                     {/* {analytics.numberOf.Charger
                       ? analytics.numberOf.Charger
                       : 0} */}
-                    1
+                    3
                   </div>
                   <div className="text Roboto_20pt_Regular_Gray">
                     Number of Chargers{<br />}Activated
