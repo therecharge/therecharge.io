@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import WalletConnect from "../Components/Common/WalletConnect";
 import { useTranslation } from "react-i18next";
+import { SolanaAdapter } from "../Components/Common/SolanaAdapter";
 
 function Gnb({ getTitle }) {
   const sidemenuInitialState = {
@@ -95,6 +96,8 @@ function Gnb({ getTitle }) {
           </div>
         </div>
 
+        <SolanaAdapter> </SolanaAdapter>
+        {/* 
         <WalletConnect
           need="2"
           notConnected="Wallet Connect"
@@ -103,7 +106,7 @@ function Gnb({ getTitle }) {
           w="302px"
           h="50px"
           fontsize="20px"
-        />
+        /> */}
 
         <Footer>
           <div className="footer">
