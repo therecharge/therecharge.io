@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Component } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Language from "../Components/Desktop/Language";
 import { HashLink } from "react-router-hash-link";
 import WalletConnect from "../Components/Common/WalletConnect";
 import { useRecoilState } from "recoil";
+import { SolanaAdapter } from "../Components/Common/SolanaAdapter";
 import {
   modalPoolOpenState,
   modalSwapOpenState,
@@ -18,9 +19,8 @@ function Gnb() {
 
   const [modalPoolOpen, setModalPoolOpen] = useRecoilState(modalPoolOpenState);
   const [modalSwapOpen, setModalSwapOpen] = useRecoilState(modalSwapOpenState);
-  const [modalPool2Open, setModalPool2Open] = useRecoilState(
-    modalPool2OpenState
-  );
+  const [modalPool2Open, setModalPool2Open] =
+    useRecoilState(modalPool2OpenState);
 
   // const homeSection = useScrollSection('home');
   // const aboutSection = useScrollSection('about');
@@ -124,7 +124,8 @@ function Gnb() {
           </HashLink>
         </Nav>
         {/* <Language /> */}
-        <WalletConnectContainer>
+        <SolanaAdapter> </SolanaAdapter>
+        {/* <WalletConnectContainer>
           <WalletConnect
             need="2"
             notConnected="Wallet Connect"
@@ -134,7 +135,7 @@ function Gnb() {
             fontsize="20px"
             fontClass="Roboto_20pt_Light"
           />
-        </WalletConnectContainer>
+        </WalletConnectContainer> */}
       </SubContainer>
     </Container>
   );
