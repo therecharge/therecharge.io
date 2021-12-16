@@ -3,24 +3,39 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import Dropdown from "./Dropdown";
 import WalletConnect from "../../../Components/Common/WalletConnect";
+import { SolanaAdapter } from "../../../Components/Common/SolanaAdapter";
 import Popup from "./popup";
 //store
 import { useRecoilState } from "recoil";
 import { requireNetworkState } from "../../../store/web3";
+import { accountState } from "../../../store/web3";
 
 import { ReactComponent as RCGeth } from "./assets/RCGETH.svg";
 import { ReactComponent as RCGbnb } from "./assets/RCGBNB.svg";
 import { ReactComponent as RCGht } from "./assets/RCGHT.svg";
+import { ReactComponent as RCGsol } from "./assets/RCGSOL.svg";
 import { ReactComponent as FUP } from "./assets/FUP.svg";
 import { ReactComponent as Active } from "./assets/swap_arrow.svg";
 import { ReactComponent as Inactive } from "./assets/swap_arrow_deactive.svg";
 
+//Libraraies
+import axios from "axios";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+const web3 = require("@solana/web3.js");
+
 function AssetSwap({ toast }) {
   const [t] = useTranslation();
+  const { connection } = useConnection();
+  const { publicKey, sendTransaction } = useWallet();
   const [requireNetwork, setRequireNetwork] = useRecoilState(
     requireNetworkState
   );
+  const [account] = useRecoilState(accountState);
+
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [recipeId, setRecipeId] = useState("");
+  const [bridgeAddress, setBridgeAddress] = useState("");
+
   const [recipe, setRecipe] = useState({
     from: {
       token: "RCG",
@@ -39,12 +54,14 @@ function AssetSwap({ toast }) {
       "(Ethereum Network)": 1,
       "(Huobi ECO Chain Network)": 128,
       "(Binance Smart Chain Network)": 56,
+      "(Solana Network)": 100,
       "": 1,
     },
     network: {
       "(Ethereum Network)": "ERC",
       "(Huobi ECO Chain Network)": "HRC",
       "(Binance Smart Chain Network)": "BEP",
+      "(Solana Network)": "SOL",
       "": 1,
     },
     tokenAddress: {
@@ -57,6 +74,7 @@ function AssetSwap({ toast }) {
       1: 5,
       128: 0.5,
       56: 0.3,
+      100: 0.3,
     },
   });
 
@@ -64,25 +82,52 @@ function AssetSwap({ toast }) {
     // ["RCG", "(Huobi ECO Chain Network)", RCGht],
     ["RCG", "(Ethereum Network)", RCGeth],
     ["RCG", "(Binance Smart Chain Network)", RCGbnb],
+    // ["RCG", "(Solana Network)", RCGsol],
     ["PiggyCell Point", "", FUP],
   ];
-  const toList1 = [
-    ["RCG", "(Ethereum Network)", RCGeth],
-    ["RCG", "(Binance Smart Chain Network)", RCGbnb],
-  ];
-  const toList2 = [
-    // ["RCG", "(Huobi ECO Chain Network)", RCGht],
-    ["RCG", "(Binance Smart Chain Network)", RCGbnb],
-  ];
-  const toList3 = [
+
+  const toList = [
     // ["RCG", "(Huobi ECO Chain Network)", RCGht],
     ["RCG", "(Ethereum Network)", RCGeth],
+    ["RCG", "(Binance Smart Chain Network)", RCGbnb],
+    ["RCG", "(Solana Network)", RCGsol],
+    // ["PiggyCell Point", "", FUP],
   ];
-  const toList4 = [["RCG", "(Huobi ECO Chain Network)", RCGht]];
+
+  const toList2 = [["RCG", "(Binance Smart Chain Network)", RCGbnb]];
+
+  const getRecipeId = async () => {
+    //set SwapFromTo
+    let swapFrom, swapTo;
+    if (recipe.from.network === "(Ethereum Network)") swapFrom = "ETH";
+    if (recipe.from.network === "(Binance Smart Chain Network)")
+      swapFrom = "BSC";
+    // if(recipe.from.network === RCGsol) swapFrom = "ETH"
+
+    if (recipe.to.network === "(Ethereum Network)") swapTo = "ETH";
+    if (recipe.to.network === "(Binance Smart Chain Network)") swapTo = "BSC";
+    if (recipe.to.network === "(Solana Network)") swapTo = "SOL";
+
+    let result = await axios.post("https://sol-bridge.therecharge.io/create", {
+      chain: [swapFrom, swapTo],
+      address: [account, publicKey.toString()],
+    });
+    console.log("solAddress", publicKey.toString());
+    console.log(result);
+    setRecipeId(result.data.id);
+    setBridgeAddress(result.data.bridge);
+  };
 
   useEffect(() => {
     setRequireNetwork(recipe.chainId[recipe.from.network]);
   }, []);
+
+  // useEffect(() => {
+  //   // setRequireNetwork(recipe.chainId[recipe.from.network]);
+  //   getSolanaAccount();
+  //   getRecipeId();
+  //   sendRCG();
+  // }, [solAccount]);
 
   return (
     <Container>
@@ -96,6 +141,8 @@ function AssetSwap({ toast }) {
             }}
             toast={toast}
             isPopupOpen={isPopupOpen}
+            recipeId={recipeId}
+            bridgeAddress={bridgeAddress}
           />
         )}
         <Dropdown
@@ -107,9 +154,24 @@ function AssetSwap({ toast }) {
           unselectedList={fromList}
           title="FROM"
         />
+        {/* {recipe.from.network === "(Solana Network)" ? (
+          //  && !solAccount
+          <div
+            style={{
+              display: "flex",
+              marginTop: "5px",
+              justifyContent: "flex-end",
+            }}
+          >
+            <SolanaAdapter />
+          </div>
+        ) : (
+          <div />
+        )} */}
         <Arrow
           style={
-            recipe.from.token === "PiggyCell Point"
+            recipe.from.token === "PiggyCell Point" ||
+            recipe.to.network === "(Solana Network)"
               ? {
                   width: "60px",
                   height: "60px",
@@ -124,7 +186,8 @@ function AssetSwap({ toast }) {
                 }
           }
           onClick={
-            recipe.from.token === "PiggyCell Point"
+            recipe.from.token === "PiggyCell Point" ||
+            recipe.to.network === "(Solana Network)"
               ? () => {}
               : () => {
                   setRecipe({
@@ -137,7 +200,12 @@ function AssetSwap({ toast }) {
                 }
           }
         >
-          {recipe.from.token !== "PiggyCell Point" ? <Active /> : <Inactive />}
+          {recipe.from.token === "PiggyCell Point" ||
+          recipe.to.network === "(Solana Network)" ? (
+            <Inactive />
+          ) : (
+            <Active />
+          )}
         </Arrow>
         <Dropdown
           recipe={recipe}
@@ -146,18 +214,11 @@ function AssetSwap({ toast }) {
           symbol={recipe.to.token}
           network={recipe.to.network}
           unselectedList={
-            // recipe.from.index === 0
-            //   ? toList2
-            //   : recipe.from.index === 1
-            //   ? toList3
-            //   : recipe.from.index === 2
-            //   ? toList4
-            //   : // : recipe.from.index === 3
-            // ? toList4
-            []
+            recipe.from.token === "PiggyCell Point" ? toList2 : toList
           }
           title="TO"
         />
+
         {recipe.from.token !== "PiggyCell Point" ? (
           <WalletConnect
             need="2"
@@ -178,7 +239,13 @@ function AssetSwap({ toast }) {
             // text="'SWAP' will be open soon"
             // onClick={() => console.log("")}
             text="SWAP"
-            onClick={() => setPopupOpen(!isPopupOpen)}
+            onClick={async () => {
+              if (recipe.to.network === "(Solana Network)") {
+                await getRecipeId();
+                setPopupOpen(!isPopupOpen);
+              }
+              setPopupOpen(!isPopupOpen);
+            }}
           />
         ) : (
           <WalletConnect

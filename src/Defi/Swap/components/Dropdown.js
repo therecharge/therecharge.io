@@ -9,6 +9,9 @@ import { ReactComponent as Close } from "./assets/dropdown-open.svg";
 import { useRecoilState } from "recoil";
 import { requireNetworkState } from "../../../store/web3";
 
+//Libraries
+import { SolanaAdapter } from "../../../Components/Common/SolanaAdapter";
+
 export default function Dropdown({
   Image = RCGeth,
   symbol = "RCG",
@@ -26,6 +29,21 @@ export default function Dropdown({
   return (
     <Container>
       <Title className="Roboto_30pt_Black">{title}</Title>
+      {title === "TO" && recipe.to.network === "(Solana Network)" ? (
+        //  && !solAccount
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            position: "absolute",
+            right: "0px",
+          }}
+        >
+          <SolanaAdapter />
+        </div>
+      ) : (
+        <div />
+      )}
       <List
         style={
           open
@@ -53,7 +71,12 @@ export default function Dropdown({
                   }
               : { borderRadius: "20px" }
           }
-          onClick={title === "TO" ? () => {} : () => setOpen(!open)}
+          // onClick={title === "TO" ? () => {} : () => setOpen(!open)}
+          onClick={
+            recipe.from.token === "PiggyCell Point" && title === "TO"
+              ? () => {}
+              : () => setOpen(!open)
+          }
         >
           <div
             className="img"
@@ -134,19 +157,34 @@ export default function Dropdown({
                           to: {
                             token: "RCG",
                             network:
-                              token[1] === "(Binance Smart Chain Network)"
-                                ? "(Ethereum Network)"
-                                : "(Binance Smart Chain Network)",
+                              token[0] === "PiggyCell Point"
+                                ? "(Binance Smart Chain Network)"
+                                : token[1] === recipe.to.network
+                                ? recipe.from.network
+                                : recipe.to.network,
                             image:
-                              token[1] === "(Binance Smart Chain Network)"
-                                ? RCGeth
-                                : RCGbnb,
+                              token[0] === "PiggyCell Point"
+                                ? RCGbnb
+                                : token[1] === recipe.to.network
+                                ? recipe.from.image
+                                : recipe.to.image,
                             index: 0,
                           },
                         });
                         setRequireNetwork(recipe.chainId[token[1]]);
                         setOpen(!open);
                       } else {
+                        if (recipe.from.token === "PiggyCell Point") {
+                          setRecipe({
+                            ...recipe,
+                            to: {
+                              token: "RCG",
+                              network: "(Binance Smart Chain Network)",
+                              image: "RCGbnb",
+                              index: 2,
+                            },
+                          });
+                        }
                         setRecipe({
                           ...recipe,
                           to: {
@@ -182,6 +220,7 @@ export default function Dropdown({
 }
 const Container = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
   gap: 20px;
   //   width: 100%;

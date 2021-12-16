@@ -961,6 +961,106 @@ function Defi({ toast, t }) {
                 </div>
               </div>
             </div>
+            <div className="container">
+              <div className="left box">
+                <div
+                  className="title title Roboto_20pt_Medium_C"
+                  style={{ zIndex: "2" }}
+                >
+                  {/* {analytics.totalCirculation.eth
+                    ? Number(
+                        Number(
+                          weiToEther(convertNum(analytics.totalCirculation.eth))
+                        ).toFixed(2)
+                      ).toLocaleString()
+                    : Number(0).toFixed(2)}{" "} */}
+                  0 RCG
+                </div>
+                <div
+                  className="text Roboto_12pt_Regular_L_Gray"
+                  style={{ zIndex: "2" }}
+                >
+                  Total Circulating Supply in SOL
+                </div>
+                <div className="logo4">
+                  <img
+                    src="/img_sol_back.svg"
+                    style={{ width: "127.6px", height: "100px" }}
+                  />
+                </div>
+              </div>
+              <div className="right box">
+                <div className="content le">
+                  <div className="item">
+                    <div className="title Roboto_16pt_Bold">
+                      {/* {analytics.Accumulated.eth.Redemption
+                        ? Number(
+                            Number(
+                              weiToEther(
+                                convertNum(analytics.Accumulated.eth.Redemption)
+                              )
+                            ).toFixed(2)
+                          ).toLocaleString()
+                        : Number(0).toFixed(2)}{" "} */}
+                      0.00 RCG
+                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">
+                      Accumulated Carbon Redemption SOL
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="title Roboto_16pt_Bold">
+                      ${" "}
+                      {/* {analytics.rcg_eth_price
+                        ? makeNum(analytics.rcg_eth_price)
+                        : 0} */}
+                      0
+                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">
+                      Current RCG Price($) SOL DEX
+                    </div>
+                  </div>
+                </div>
+                <div className="content">
+                  <div className="item">
+                    <div className="title Roboto_16pt_Bold">
+                      {/* {analytics.Accumulated.eth.SwappedIn
+                        ? Number(
+                            Number(
+                              weiToEther(
+                                convertNum(analytics.Accumulated.eth.SwappedIn)
+                              )
+                            ).toFixed(2)
+                          ).toLocaleString()
+                        : Number(0).toFixed(2)}{" "} */}
+                      0.00 RCG
+                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">
+                      RCG (SOL) Swapped in
+                    </div>
+                  </div>
+                  <div className="item">
+                    <div className="title Roboto_16pt_Bold">
+                      {/* {analytics.Accumulated.eth.ConversionFee
+                        ? Number(
+                            Number(
+                              weiToEther(
+                                convertNum(
+                                  analytics.Accumulated.eth.ConversionFee
+                                )
+                              )
+                            ).toFixed(2)
+                          ).toLocaleString()
+                        : Number(0).toFixed(2)}{" "} */}
+                      0.00 RCG
+                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">
+                      Accumulated Conversion Fee(SOL)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Content>
@@ -1160,6 +1260,11 @@ const Content = styled.div`
             position: absolute;
             bottom: 20px;
             right: 153px;
+          }
+          .logo4 {
+            position: absolute;
+            bottom: 20px;
+            right: 136px;
           }
         }
 

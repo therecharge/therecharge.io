@@ -24,6 +24,8 @@ export default function Popup({
   setRecipe,
   toast,
   isPopupOpen,
+  recipeId,
+  bridgeAddress,
 }) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [web3_r] = useRecoilState(web3ReaderState);
@@ -39,6 +41,7 @@ export default function Popup({
       return;
     },
   });
+  const [transactionId, setTransactionId] = useState("");
 
   const SetPercent = (x) => {
     setRecipe({
@@ -54,7 +57,7 @@ export default function Popup({
     if (!account) return;
     try {
       let ret = {};
-
+      console.log("bridgeAddress", bridgeAddress);
       const Token_reader = createContractInstance(
         web3_r[recipe.network[recipe.from.network]],
         swapTokenAddress,
@@ -64,9 +67,22 @@ export default function Popup({
       let available = await getSwapAvailableTokenAmount(Token_reader, account);
       const swap = async (swapAmount) => {
         try {
-          await swapI.methods
+          let txid = await swapI.methods
             .transfer(bridgeAddress, toWei(swapAmount, "ether"))
             .send({ from: account, value: "0" });
+
+          if (recipe.to.network === "(Solana Network)") {
+            console.log("started submission");
+            let result = await axios.post(
+              "https://sol-bridge.therecharge.io/submission",
+              {
+                id: recipeId,
+                txid: txid.transactionHash,
+              }
+            );
+            console.log(result);
+            console.log("finished submission");
+          }
         } catch (err) {
           console.log(err);
         }
@@ -136,13 +152,29 @@ export default function Popup({
       );
     } else if (
       (recipe.to.network === "(Huobi ECO Chain Network)" &&
-        recipe.from.network === "((Binance Smart Chain Network)") ||
+        recipe.from.network === "(Binance Smart Chain Network)") ||
       (recipe.from.network === "(Huobi ECO Chain Network)" &&
         recipe.to.network === "(Binance Smart Chain Network)")
     ) {
       loadMethods(
         recipe.tokenAddress[recipe.chainId[recipe.from.network]],
         "0x05A21AECa80634097e4acE7D4E589bdA0EE30b25"
+      );
+    } else if (
+      recipe.to.network === "(Solana Network)" &&
+      recipe.from.network === "(Binance Smart Chain Network)"
+    ) {
+      loadMethods(
+        recipe.tokenAddress[recipe.chainId[recipe.from.network]],
+        bridgeAddress
+      );
+    } else if (
+      recipe.to.network === "(Solana Network)" &&
+      recipe.from.network === "(Ethereum Network)"
+    ) {
+      loadMethods(
+        recipe.tokenAddress[recipe.chainId[recipe.from.network]],
+        bridgeAddress
       );
     }
     if (isPopupOpen && recipe.from.token === "PiggyCell Point") getFupBalance();
@@ -157,6 +189,7 @@ export default function Popup({
     }
   }, []);
 
+  console.log(poolMethods);
   return (
     <Background>
       <Container>
@@ -279,6 +312,8 @@ export default function Popup({
             {`Conversion Fee: ${
               recipe.from.token === "PiggyCell Point"
                 ? 0
+                : recipe.to.network === "(Solana Network)"
+                ? 0.3
                 : recipe.conversionFee[recipe.chainId[recipe.to.network]]
             } ${recipe.from.token}`}
           </span>
@@ -318,6 +353,8 @@ export default function Popup({
               left="Current Conversion Fee"
               right={`${
                 recipe.from.token === "PiggyCell Point"
+                  ? 0
+                  : recipe.to.network === "(Solana Network)"
                   ? 0
                   : recipe.conversionFee[recipe.chainId[recipe.to.network]]
               } ${recipe.from.token}`}

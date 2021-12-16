@@ -4,7 +4,7 @@ import Home from "./Defi/mobile";
 import Station from "./Defi/Station";
 import Swap from "./Defi/Swap";
 /* Libraries */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Route, Switch } from "react-router-dom";
 import Web3 from "web3";
 import styled from "styled-components";
@@ -15,6 +15,21 @@ import {
   modalSwapOpenState,
   modalPool2OpenState,
 } from "./store/modal";
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { clusterApiUrl } from "@solana/web3.js";
+import {
+  getLedgerWallet,
+  getPhantomWallet,
+  getSlopeWallet,
+  getSolflareWallet,
+  getSolletExtensionWallet,
+  getSolletWallet,
+  getTorusWallet,
+} from "@solana/wallet-adapter-wallets";
 
 const Mobile = React.memo(
   ({ web3Modal, toast }) => {
@@ -160,6 +175,22 @@ const Mobile = React.memo(
       }
     };
 
+    // setting solana wallet
+    const network = WalletAdapterNetwork.Devnet;
+    const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+    const wallets = useMemo(
+      () => [
+        getPhantomWallet(),
+        getSlopeWallet(),
+        getSolflareWallet(),
+        getTorusWallet(),
+        getLedgerWallet(),
+        getSolletWallet({ network }),
+        getSolletExtensionWallet({ network }),
+      ],
+      [network]
+    );
+
     useEffect(() => {
       setPage(window.location.pathname);
     }, []);
@@ -172,24 +203,26 @@ const Mobile = React.memo(
 
     return (
       <Main layout={false}>
-        <div className={"desktop " + getTitle()}>
-          <Gnb
-            connectWallet={ConnectWallet}
-            onDisconnect={onDisconnect}
-            account={account}
-            getTitle={getTitle}
-            modalPoolOpen={modalPoolOpen}
-            modal2Open={modal2Open}
-            modalSwapOpen={modalSwapOpen}
-            setModalPoolOpen={setModalPoolOpen}
-            setModal2Open={setModal2Open}
-            setModalSwapOpen={setModalSwapOpen}
-            params={params}
-            setParams={setParams}
-          />
+        <ConnectionProvider endpoint={endpoint}>
+          <WalletProvider wallets={wallets} autoConnect>
+            <div className={"desktop " + getTitle()}>
+              <Gnb
+                connectWallet={ConnectWallet}
+                onDisconnect={onDisconnect}
+                account={account}
+                getTitle={getTitle}
+                modalPoolOpen={modalPoolOpen}
+                modal2Open={modal2Open}
+                modalSwapOpen={modalSwapOpen}
+                setModalPoolOpen={setModalPoolOpen}
+                setModal2Open={setModal2Open}
+                setModalSwapOpen={setModalSwapOpen}
+                params={params}
+                setParams={setParams}
+              />
 
-          <Switch>
-            {/* <Route
+              <Switch>
+                {/* <Route
               path="/defi"
               component={() => (
                 <Defi
@@ -210,72 +243,74 @@ const Mobile = React.memo(
                 />
               )}
             ></Route> */}
-            <Route
-              path="/station"
-              component={() => <Station toast={toast} />}
-            ></Route>
-            <Route
-              path="/swap"
-              component={() => <Swap toast={toast} />}
-            ></Route>
-            <Route path="/" component={Home}></Route>
-          </Switch>
-          <style jsx global>{`
-            body {
-              width: 100%;
-              margin: 0px;
-              padding: 0px;
-              font-family: "Roboto", sans-serif;
-              background-color: #03051d;
-            }
-            div {
-              outline: none;
-            }
-            .desktop {
-              display: flex;
-              width: 100%;
-              // background: url(/bg_main_bottom.svg);
-              background-color: #02051c;
-              // background-size: cover;
-              // background-position: bottom 0px center;
-            }
-            .about {
-              // background: url(/bg_about_bottom.svg);
-              background-color: #02051c;
-              // background-size: cover;
-              // background-position: bottom 0px center;
-            }
-            .recharge {
-              // background: url(/bg_recharge_bottom.svg);
-              background-color: #02051c;
-              // background-size: cover;
-              // background-position: bottom 0px center;
-            }
-            .station {
-              // background: url(/bg_station_bottom.svg);
-              background-color: #02051c;
-              // background-size: cover;
-              // background-position: bottom 0px center;
-            }
-            .docs {
-              // background: none;
-              background-color: #02051c;
-              // background-size: cover;
-              // background-position: bottom 0px center;
-            }
-            body::-webkit-scrollbar {
-              width: 5px;
-            }
-            body::-webkit-scrollbar-thumb {
-              background-color: #2f3542;
-              border-radius: 3px;
-            }
-            body::-webkit-scrollbar-track {
-              background-color: #02051c;
-              border-radius: 3px;
-            }
-          `}</style>
-        </div>
+                <Route
+                  path="/station"
+                  component={() => <Station toast={toast} />}
+                ></Route>
+                <Route
+                  path="/swap"
+                  component={() => <Swap toast={toast} />}
+                ></Route>
+                <Route path="/" component={Home}></Route>
+              </Switch>
+              <style jsx global>{`
+                body {
+                  width: 100%;
+                  margin: 0px;
+                  padding: 0px;
+                  font-family: "Roboto", sans-serif;
+                  background-color: #03051d;
+                }
+                div {
+                  outline: none;
+                }
+                .desktop {
+                  display: flex;
+                  width: 100%;
+                  // background: url(/bg_main_bottom.svg);
+                  background-color: #02051c;
+                  // background-size: cover;
+                  // background-position: bottom 0px center;
+                }
+                .about {
+                  // background: url(/bg_about_bottom.svg);
+                  background-color: #02051c;
+                  // background-size: cover;
+                  // background-position: bottom 0px center;
+                }
+                .recharge {
+                  // background: url(/bg_recharge_bottom.svg);
+                  background-color: #02051c;
+                  // background-size: cover;
+                  // background-position: bottom 0px center;
+                }
+                .station {
+                  // background: url(/bg_station_bottom.svg);
+                  background-color: #02051c;
+                  // background-size: cover;
+                  // background-position: bottom 0px center;
+                }
+                .docs {
+                  // background: none;
+                  background-color: #02051c;
+                  // background-size: cover;
+                  // background-position: bottom 0px center;
+                }
+                body::-webkit-scrollbar {
+                  width: 5px;
+                }
+                body::-webkit-scrollbar-thumb {
+                  background-color: #2f3542;
+                  border-radius: 3px;
+                }
+                body::-webkit-scrollbar-track {
+                  background-color: #02051c;
+                  border-radius: 3px;
+                }
+              `}</style>
+            </div>
+          </WalletProvider>
+        </ConnectionProvider>
       </Main>
     );
   },
