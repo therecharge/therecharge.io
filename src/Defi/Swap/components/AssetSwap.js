@@ -171,37 +171,37 @@ function AssetSwap({ toast }) {
         <Arrow
           style={
             recipe.from.token === "PiggyCell Point" ||
-            recipe.to.network === "(Solana Network)"
+              recipe.to.network === "(Solana Network)"
               ? {
-                  width: "60px",
-                  height: "60px",
-                  margin: "40px auto",
-                  cursor: "not-allowed",
-                }
+                width: "60px",
+                height: "60px",
+                margin: "40px auto",
+                cursor: "not-allowed",
+              }
               : {
-                  width: "60px",
-                  height: "60px",
-                  margin: "40px auto",
-                  cursor: "pointer",
-                }
+                width: "60px",
+                height: "60px",
+                margin: "40px auto",
+                cursor: "pointer",
+              }
           }
           onClick={
             recipe.from.token === "PiggyCell Point" ||
-            recipe.to.network === "(Solana Network)"
-              ? () => {}
+              recipe.to.network === "(Solana Network)"
+              ? () => { }
               : () => {
-                  setRecipe({
-                    ...recipe,
-                    from: recipe.to,
-                    to: recipe.from,
-                    swapAmount: "",
-                  });
-                  setRequireNetwork(recipe.chainId[recipe.to.network]);
-                }
+                setRecipe({
+                  ...recipe,
+                  from: recipe.to,
+                  to: recipe.from,
+                  swapAmount: "",
+                });
+                setRequireNetwork(recipe.chainId[recipe.to.network]);
+              }
           }
         >
           {recipe.from.token === "PiggyCell Point" ||
-          recipe.to.network === "(Solana Network)" ? (
+            recipe.to.network === "(Solana Network)" ? (
             <Inactive />
           ) : (
             <Active />

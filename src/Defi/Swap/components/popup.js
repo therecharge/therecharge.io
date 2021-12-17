@@ -5,6 +5,7 @@ import { ReactComponent as PopupArrow } from "./assets/swap_popup_arrow.svg";
 import WalletConnect from "../../../Components/Common/WalletConnect";
 import { fromWei, toWei } from "web3-utils";
 import axios from "axios";
+import { RotateCircleLoading } from "react-loadingg";
 //store
 import { useRecoilState } from "recoil";
 import { web3State, accountState } from "../../../store/web3";
@@ -19,7 +20,7 @@ const ERC20_ABI = require("../../abis/ERC20ABI.json");
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
 export default function Popup({
-  close = () => {},
+  close = () => { },
   recipe,
   setRecipe,
   toast,
@@ -42,6 +43,7 @@ export default function Popup({
     },
   });
   const [transactionId, setTransactionId] = useState("");
+  const [onLoading, setOnLoading] = useState(true);
 
   const SetPercent = (x) => {
     setRecipe({
@@ -67,6 +69,8 @@ export default function Popup({
       let available = await getSwapAvailableTokenAmount(Token_reader, account);
       const swap = async (swapAmount) => {
         try {
+          /* loading start */
+          setOnLoading(true);
           let txid = await swapI.methods
             .transfer(bridgeAddress, toWei(swapAmount, "ether"))
             .send({ from: account, value: "0" });
@@ -80,11 +84,15 @@ export default function Popup({
                 txid: txid.transactionHash,
               }
             );
-            console.log(result);
+            console.log("result of swap bridge method :", result);
             console.log("finished submission");
+            /* loading finished */
+            /* finish standard : result status */
+            if (result.status == 200) setOnLoading(false);
           }
         } catch (err) {
           console.log(err);
+          setOnLoading(false);
         }
       };
 
@@ -256,7 +264,7 @@ export default function Popup({
               }}
               onClick={
                 recipe.from.token === "PiggyCell Point"
-                  ? () => {}
+                  ? () => { }
                   : () => SetPercent(25)
               }
             >
@@ -271,7 +279,7 @@ export default function Popup({
               }}
               onClick={
                 recipe.from.token === "PiggyCell Point"
-                  ? () => {}
+                  ? () => { }
                   : () => SetPercent(50)
               }
             >
@@ -286,7 +294,7 @@ export default function Popup({
               }}
               onClick={
                 recipe.from.token === "PiggyCell Point"
-                  ? () => {}
+                  ? () => { }
                   : () => SetPercent(75)
               }
             >
@@ -301,7 +309,7 @@ export default function Popup({
               }}
               onClick={
                 recipe.from.token === "PiggyCell Point"
-                  ? () => {}
+                  ? () => { }
                   : () => SetPercent(100)
               }
             >
@@ -309,13 +317,12 @@ export default function Popup({
             </div>
           </QuickSelect>
           <span className="Roboto_20pt_Regular popup-caution">
-            {`Conversion Fee: ${
-              recipe.from.token === "PiggyCell Point"
-                ? 0
-                : recipe.to.network === "(Solana Network)"
+            {`Conversion Fee: ${recipe.from.token === "PiggyCell Point"
+              ? 0
+              : recipe.to.network === "(Solana Network)"
                 ? 0.3
                 : recipe.conversionFee[recipe.chainId[recipe.to.network]]
-            } ${recipe.from.token}`}
+              } ${recipe.from.token}`}
           </span>
           <div className="wallet">
             <WalletConnect
@@ -351,19 +358,17 @@ export default function Popup({
             /> */}
             <Info
               left="Current Conversion Fee"
-              right={`${
-                recipe.from.token === "PiggyCell Point"
-                  ? 0
-                  : recipe.to.network === "(Solana Network)"
+              right={`${recipe.from.token === "PiggyCell Point"
+                ? 0
+                : recipe.to.network === "(Solana Network)"
                   ? 0
                   : recipe.conversionFee[recipe.chainId[recipe.to.network]]
-              } ${recipe.from.token}`}
+                } ${recipe.from.token}`}
             />
             <Info
               left={`${recipe.from.token} to Swap`}
-              right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${
-                recipe.from.token
-              }`}
+              right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${recipe.from.token
+                }`}
             />
             {/* <Info
               left={`${recipe.from.token} to Redeem`}
@@ -380,18 +385,27 @@ export default function Popup({
                 recipe.from.token === "PiggyCell Point"
                   ? recipe.swapAmount - 0
                   : (recipe.swapAmount -
-                      0.000000000000001 -
-                      recipe.conversionFee[recipe.chainId[recipe.to.network]] >
+                    0.000000000000001 -
+                    recipe.conversionFee[recipe.chainId[recipe.to.network]] >
                     0
-                      ? recipe.swapAmount -
-                        0.000000000000001 -
-                        recipe.conversionFee[recipe.chainId[recipe.to.network]]
-                      : 0
-                    ).toString()
+                    ? recipe.swapAmount -
+                    0.000000000000001 -
+                    recipe.conversionFee[recipe.chainId[recipe.to.network]]
+                    : 0
+                  ).toString()
               )} ${recipe.from.token}`}
             />
           </InfoContainer>
         </Content>
+        <Loading style={{ display: onLoading ? "" : "none" }}>
+          <div className="box">
+            <RotateCircleLoading
+              color="#9314b2"
+              style={{ margin: "auto", marginTop: "67.6px" }}
+            />
+            <div className="text Roboto_30pt_Black">Loading…</div>
+          </div>
+        </Loading>
       </Container>
     </Background>
   );
@@ -583,5 +597,32 @@ const InfoContainer = styled.div`
   @media (min-width: 1088px) {
     width: 540px;
     margin: 20px auto;
+  }
+`;
+const Loading = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 7;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  // background-color: rgba(0, 0, 0, 0.5);
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    height: 255px;
+    background-color: var(--midnight);
+    // background-color: rgba(0, 0, 0, 1);
+    border-radius: 20px;
+
+    .text {
+      margin: auto;
+      margin-bottom: 67.6px;
+    }
   }
 `;
