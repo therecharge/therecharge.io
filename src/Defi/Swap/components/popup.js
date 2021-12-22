@@ -165,7 +165,14 @@ export default function Popup({
               const mint = new web3_sol.PublicKey(
                 "3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko"
               );
-
+              const Token = new splToken.Token(
+                connection,
+                new web3_sol.PublicKey(
+                  "3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko"
+                ),
+                splToken.TOKEN_PROGRAM_ID,
+                publicKey
+              );
               const fromTokenAccount = await getAssociatedTokenAddress(
                 mint,
                 fromPublicKey
@@ -175,7 +182,16 @@ export default function Popup({
                 mint,
                 toPublicKey
               );
-              console.log("toTokenAccount", toTokenAccount);
+              // Get the token account of the fromWallet Solana address, if it does not exist, create it
+              // const fromTokenAccount =
+              //   await Token.getOrCreateAssociatedAccountInfo(fromPublicKey);
+
+              // //get the Token account of the toWallet Solana address, if it does not exist, create it
+              // const toTokenAccount =
+              //   await Token.getOrCreateAssociatedAccountInfo(toPublicKey);
+              console.log("connection", connection);
+              console.log("fromTokenAccount", fromTokenAccount.toString());
+              console.log("toTokenAccount", toTokenAccount.toString());
               const transaction = new web3_sol.Transaction().add(
                 // createTransferInstruction(
                 //   fromTokenAccount, // source
@@ -194,8 +210,15 @@ export default function Popup({
                   // web3_sol.SystemProgram.programId,
                   [],
                   // swapAmount
+<<<<<<< HEAD
                   new splToken.u64((swapAmount * 1000000000).toString()),
                   9
+=======
+                  new splToken.u64(swapAmount.toString()),
+                  9
+                  // new TokenAmount(1000)
+                  // BigInt.asUintN(64, 1000000000)
+>>>>>>> 23748ece963d4ab86800cffd3a1e1f1e7deffe03
                 )
                 // splToken.Token.createTransferInstruction(
                 //   splToken.TOKEN_PROGRAM_ID,
@@ -208,8 +231,16 @@ export default function Popup({
                 //   // BigInt.asUintN(64, 1000000000)
                 // )
               );
+              // await Token.transfer(
+              //   // splToken.TOKEN_PROGRAM_ID,
+              //   fromTokenAccount,
+              //   toTokenAccount,
+              //   web3_sol.SystemProgram.programId,
+              //   [],
+              //   1000
+              // );
 
-              console.log(swapAmount);
+              // console.log(swapAmount);
 
               const blockHash = await connection.getRecentBlockhash();
               console.log("blockHash", blockHash);
@@ -218,11 +249,21 @@ export default function Popup({
               // transaction.keys = Array();
 
               console.log("before sigdn", transaction);
+<<<<<<< HEAD
               let signed = await signTransaction(transaction);
               console.log("signed", signed);
               txid = await connection.sendRawTransaction(signed.serialize());
 
               console.log("finished send");
+=======
+              let signature = await sendTransaction(transaction, connection);
+              console.log("signed", signature);
+              await connection.confirmTransaction(signature, "processed");
+              // await connection.sendRawTransaction(signed.serialize());
+
+              console.log("finished send");
+              txid = signature;
+>>>>>>> 23748ece963d4ab86800cffd3a1e1f1e7deffe03
               console.log("sol_from_txid", txid);
             } catch (err) {
               console.log(err);

@@ -43,12 +43,10 @@ const Mobile = React.memo(
 
     const [page, setPage] = useState("/");
     const [countDown, setCountDown] = useState(null);
-    const [modalPoolOpen, setModalPoolOpen] = useRecoilState(
-      modalPoolOpenState
-    );
-    const [modalSwapOpen, setModalSwapOpen] = useRecoilState(
-      modalSwapOpenState
-    );
+    const [modalPoolOpen, setModalPoolOpen] =
+      useRecoilState(modalPoolOpenState);
+    const [modalSwapOpen, setModalSwapOpen] =
+      useRecoilState(modalSwapOpenState);
     const [modal2Open, setModal2Open] = useRecoilState(modalPool2OpenState);
     const [params, setParams] = useState({
       type: "Flexible",
