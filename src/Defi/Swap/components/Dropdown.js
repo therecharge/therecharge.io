@@ -28,22 +28,38 @@ export default function Dropdown({
 
   return (
     <Container>
-      <Title className="Roboto_30pt_Black">{title}</Title>
-      {title === "TO" && recipe.to.network === "(Solana Network)" ? (
-        //  && !solAccount
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            position: "absolute",
-            right: "0px",
-          }}
-        >
-          <SolanaAdapter />
-        </div>
-      ) : (
-        <div />
-      )}
+      <Title className="Roboto_30pt_Black">
+        {title}
+        {title === "TO" && recipe.to.network === "(Solana Network)" ? (
+          //  && !solAccount
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              position: "absolute",
+              right: "0px",
+              top: "0px",
+            }}
+          >
+            <SolanaAdapter />
+          </div>
+        ) : title === "FROM" && recipe.from.network === "(Solana Network)" ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              position: "absolute",
+              right: "0px",
+              top: "0px",
+            }}
+          >
+            <SolanaAdapter />
+          </div>
+        ) : (
+          <div />
+        )}
+      </Title>
+
       <List
         style={
           open
@@ -141,7 +157,7 @@ export default function Dropdown({
                           ? "0px 0px 20px 20px"
                           : j === 2
                           ? "0px 0px 20px 20px"
-                          : "0px 0px 20px 20px",
+                          : "0px 0px 0px 0px",
                     }}
                     // 글로벌 상태 requiredNetwork 설정 필요
                     onClick={() => {
@@ -192,6 +208,18 @@ export default function Dropdown({
                             network: token[1],
                             image: token[2],
                             index: i,
+                          },
+                          from: {
+                            token: "RCG",
+                            network:
+                              token[1] === recipe.from.network
+                                ? recipe.to.network
+                                : recipe.from.network,
+                            image:
+                              token[1] === recipe.from.network
+                                ? recipe.to.image
+                                : recipe.from.image,
+                            index: 0,
                           },
                         });
                         setOpen(!open);

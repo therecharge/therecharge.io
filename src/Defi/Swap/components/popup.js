@@ -6,6 +6,7 @@ import WalletConnect from "../../../Components/Common/WalletConnect";
 import { fromWei, toWei } from "web3-utils";
 import axios from "axios";
 import { RotateCircleLoading } from "react-loadingg";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 //store
 import { useRecoilState } from "recoil";
 import { web3State, accountState } from "../../../store/web3";
@@ -14,19 +15,62 @@ import { web3ReaderState } from "../../../store/read-web3";
 import {
   createContractInstance,
   getSwapAvailableTokenAmount,
+  getAssociatedTokenAddress,
+  createTransferInstruction,
 } from "../../../lib/read_contract/Swap.js";
+import BN from "bn.js";
 
 const ERC20_ABI = require("../../abis/ERC20ABI.json");
 
+class TokenAmount extends BN {
+  /**
+   * Convert to Buffer representation
+   */
+  toBuffer() {
+    const a = super.toArray().reverse();
+    const b = Buffer.from(a);
+    if (b.length === 8) {
+      return b;
+    }
+
+    if (b.length >= 8) {
+      throw new Error("TokenAmount too large");
+    }
+
+    const zeroPad = Buffer.alloc(8);
+    b.copy(zeroPad);
+    return zeroPad;
+  }
+
+  /**
+   * Construct a TokenAmount from Buffer representation
+   */
+  static fromBuffer(buffer) {
+    if (buffer.length !== 8) {
+      throw new Error(`Invalid buffer length: ${buffer.length}`);
+    }
+
+    return new BN(
+      [...buffer]
+        .reverse()
+        .map((i) => `00${i.toString(16)}`.slice(-2))
+        .join(""),
+      16
+    );
+  }
+}
+const web3_sol = require("@solana/web3.js");
+const splToken = require("@solana/spl-token");
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
 export default function Popup({
-  close = () => { },
+  close = () => {},
   recipe,
   setRecipe,
   toast,
   isPopupOpen,
   recipeId,
   bridgeAddress,
+  addresses,
 }) {
   const [web3, setWeb3] = useRecoilState(web3State);
   const [web3_r] = useRecoilState(web3ReaderState);
@@ -43,7 +87,10 @@ export default function Popup({
     },
   });
   const [transactionId, setTransactionId] = useState("");
-  const [onLoading, setOnLoading] = useState(true);
+  const [onLoading, setOnLoading] = useState(false);
+
+  const { connection } = useConnection();
+  const { publicKey, signTransaction, sendTransaction } = useWallet();
 
   const SetPercent = (x) => {
     setRecipe({
@@ -59,23 +106,132 @@ export default function Popup({
     if (!account) return;
     try {
       let ret = {};
+      let Token_reader, swapI, available;
       console.log("bridgeAddress", bridgeAddress);
-      const Token_reader = createContractInstance(
-        web3_r[recipe.network[recipe.from.network]],
-        swapTokenAddress,
-        ERC20_ABI
-      );
-      const swapI = createContractInstance(web3, swapTokenAddress, ERC20_ABI);
-      let available = await getSwapAvailableTokenAmount(Token_reader, account);
+
+      if (recipe.from.network !== "(Solana Network)") {
+        Token_reader = createContractInstance(
+          web3_r[recipe.network[recipe.from.network]],
+          swapTokenAddress,
+          ERC20_ABI
+        );
+
+        swapI = createContractInstance(web3, swapTokenAddress, ERC20_ABI);
+
+        available = await getSwapAvailableTokenAmount(Token_reader, account);
+      } else {
+        let result = await axios({
+          url: `https://api.mainnet-beta.solana.com`,
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          data: [
+            {
+              jsonrpc: "2.0",
+              id: 1,
+              method: "getTokenAccountsByOwner",
+              params: [
+                addresses[0],
+                {
+                  mint: "3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko",
+                },
+                {
+                  encoding: "jsonParsed",
+                },
+              ],
+            },
+          ],
+        });
+        console.log(result);
+        available =
+          result.data[0].result.value[0].account.data.parsed.info.tokenAmount
+            .amount / 1000000000;
+      }
       const swap = async (swapAmount) => {
         try {
           /* loading start */
-          setOnLoading(true);
-          let txid = await swapI.methods
-            .transfer(bridgeAddress, toWei(swapAmount, "ether"))
-            .send({ from: account, value: "0" });
+          // setOnLoading(true);
+          let txid;
 
-          if (recipe.to.network === "(Solana Network)") {
+          if (recipe.from.network === "(Solana Network)") {
+            try {
+              console.log("started solana transaction");
+
+              const fromPublicKey = new web3_sol.PublicKey(addresses[0]);
+              const toPublicKey = new web3_sol.PublicKey(bridgeAddress);
+              const mint = new web3_sol.PublicKey(
+                "3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko"
+              );
+
+              const fromTokenAccount = await getAssociatedTokenAddress(
+                mint,
+                fromPublicKey
+              );
+
+              const toTokenAccount = await getAssociatedTokenAddress(
+                mint,
+                toPublicKey
+              );
+              console.log("toTokenAccount", toTokenAccount);
+              const transaction = new web3_sol.Transaction().add(
+                // createTransferInstruction(
+                //   fromTokenAccount, // source
+                //   toTokenAccount, // dest
+                //   publicKey,
+                //   swapAmount * 1000000000,
+                //   [],
+                //   splToken.TOKEN_PROGRAM_ID
+                // )
+                splToken.Token.createTransferInstruction(
+                  splToken.TOKEN_PROGRAM_ID,
+                  fromTokenAccount,
+                  toTokenAccount,
+                  publicKey,
+                  [],
+                  1000
+                  // new TokenAmount(1000)
+                  // BigInt.asUintN(64, 1000000000)
+                )
+                // splToken.Token.createTransferInstruction(
+                //   splToken.TOKEN_PROGRAM_ID,
+                //   fromTokenAccount,
+                //   toTokenAccount,
+                //   publicKey,
+                //   [],
+                //   1001
+                //   // new TokenAmount(1000)
+                //   // BigInt.asUintN(64, 1000000000)
+                // )
+              );
+
+              console.log(swapAmount);
+
+              const blockHash = await connection.getRecentBlockhash();
+              console.log("blockHash", blockHash);
+              transaction.feePayer = await publicKey;
+              transaction.recentBlockhash = await blockHash.blockhash;
+              // transaction.keys = Array();
+
+              console.log("before sigdn", transaction);
+              let signed = await signTransaction(transaction);
+              console.log("signed", signed);
+              await connection.sendRawTransaction(signed.serialize());
+
+              console.log("finished send");
+              txid = signed;
+              console.log("sol_from_txid", txid);
+            } catch (err) {
+              console.log(err);
+            }
+          } else {
+            txid = await swapI.methods
+              .transfer(bridgeAddress, swapAmount.toString())
+              .send({ from: account, value: "0" });
+          }
+
+          if (
+            recipe.from.network === "(Solana Network)" ||
+            recipe.to.network === "(Solana Network)"
+          ) {
             console.log("started submission");
             let result = await axios.post(
               "https://sol-bridge.therecharge.io/submission",
@@ -88,7 +244,7 @@ export default function Popup({
             console.log("finished submission");
             /* loading finished */
             /* finish standard : result status */
-            if (result.status == 200) setOnLoading(false);
+            // if (result.status == 200) setOnLoading(false);
           }
         } catch (err) {
           console.log(err);
@@ -169,16 +325,20 @@ export default function Popup({
         "0x05A21AECa80634097e4acE7D4E589bdA0EE30b25"
       );
     } else if (
-      recipe.to.network === "(Solana Network)" &&
-      recipe.from.network === "(Binance Smart Chain Network)"
+      (recipe.to.network === "(Solana Network)" &&
+        recipe.from.network === "(Binance Smart Chain Network)") ||
+      (recipe.from.network === "(Solana Network)" &&
+        recipe.to.network === "(Binance Smart Chain Network)")
     ) {
       loadMethods(
         recipe.tokenAddress[recipe.chainId[recipe.from.network]],
         bridgeAddress
       );
     } else if (
-      recipe.to.network === "(Solana Network)" &&
-      recipe.from.network === "(Ethereum Network)"
+      (recipe.to.network === "(Solana Network)" &&
+        recipe.from.network === "(Ethereum Network)") ||
+      (recipe.from.network === "(Solana Network)" &&
+        recipe.to.network === "(Ethereum Network)")
     ) {
       loadMethods(
         recipe.tokenAddress[recipe.chainId[recipe.from.network]],
@@ -264,7 +424,7 @@ export default function Popup({
               }}
               onClick={
                 recipe.from.token === "PiggyCell Point"
-                  ? () => { }
+                  ? () => {}
                   : () => SetPercent(25)
               }
             >
@@ -279,7 +439,7 @@ export default function Popup({
               }}
               onClick={
                 recipe.from.token === "PiggyCell Point"
-                  ? () => { }
+                  ? () => {}
                   : () => SetPercent(50)
               }
             >
@@ -294,7 +454,7 @@ export default function Popup({
               }}
               onClick={
                 recipe.from.token === "PiggyCell Point"
-                  ? () => { }
+                  ? () => {}
                   : () => SetPercent(75)
               }
             >
@@ -309,7 +469,7 @@ export default function Popup({
               }}
               onClick={
                 recipe.from.token === "PiggyCell Point"
-                  ? () => { }
+                  ? () => {}
                   : () => SetPercent(100)
               }
             >
@@ -317,16 +477,22 @@ export default function Popup({
             </div>
           </QuickSelect>
           <span className="Roboto_20pt_Regular popup-caution">
-            {`Conversion Fee: ${recipe.from.token === "PiggyCell Point"
-              ? 0
-              : recipe.to.network === "(Solana Network)"
+            {`Conversion Fee: ${
+              recipe.from.token === "PiggyCell Point"
+                ? 0
+                : recipe.to.network === "(Solana Network)"
                 ? 0.3
                 : recipe.conversionFee[recipe.chainId[recipe.to.network]]
-              } ${recipe.from.token}`}
+            } ${recipe.from.token}`}
           </span>
           <div className="wallet">
             <WalletConnect
-              need="2"
+              need={
+                recipe.from.network === "(Solana Network)" ||
+                recipe.to.network === "(Solana Network)"
+                  ? "1"
+                  : "2"
+              }
               bgColor="#9314B2"
               hcolor=""
               border="3px solid #9314B2"
@@ -358,17 +524,19 @@ export default function Popup({
             /> */}
             <Info
               left="Current Conversion Fee"
-              right={`${recipe.from.token === "PiggyCell Point"
-                ? 0
-                : recipe.to.network === "(Solana Network)"
+              right={`${
+                recipe.from.token === "PiggyCell Point"
+                  ? 0
+                  : recipe.to.network === "(Solana Network)"
                   ? 0
                   : recipe.conversionFee[recipe.chainId[recipe.to.network]]
-                } ${recipe.from.token}`}
+              } ${recipe.from.token}`}
             />
             <Info
               left={`${recipe.from.token} to Swap`}
-              right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${recipe.from.token
-                }`}
+              right={`${makeNum(recipe.swapAmount ? recipe.swapAmount : 0)} ${
+                recipe.from.token
+              }`}
             />
             {/* <Info
               left={`${recipe.from.token} to Redeem`}
@@ -385,14 +553,14 @@ export default function Popup({
                 recipe.from.token === "PiggyCell Point"
                   ? recipe.swapAmount - 0
                   : (recipe.swapAmount -
-                    0.000000000000001 -
-                    recipe.conversionFee[recipe.chainId[recipe.to.network]] >
+                      0.000000000000001 -
+                      recipe.conversionFee[recipe.chainId[recipe.to.network]] >
                     0
-                    ? recipe.swapAmount -
-                    0.000000000000001 -
-                    recipe.conversionFee[recipe.chainId[recipe.to.network]]
-                    : 0
-                  ).toString()
+                      ? recipe.swapAmount -
+                        0.000000000000001 -
+                        recipe.conversionFee[recipe.chainId[recipe.to.network]]
+                      : 0
+                    ).toString()
               )} ${recipe.from.token}`}
             />
           </InfoContainer>
