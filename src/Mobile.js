@@ -176,7 +176,7 @@ const Mobile = React.memo(
     };
 
     // setting solana wallet
-    const network = WalletAdapterNetwork.Devnet;
+    const network = WalletAdapterNetwork["mainnet-beta"];
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
     const wallets = useMemo(
       () => [

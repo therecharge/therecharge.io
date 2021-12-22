@@ -8,7 +8,7 @@ import Popup from "./popup";
 //store
 import { useRecoilState } from "recoil";
 import { requireNetworkState } from "../../../store/web3";
-import { accountState } from "../../../store/web3";
+import { accountState, solAccountState } from "../../../store/web3";
 
 import { ReactComponent as RCGeth } from "./assets/RCGETH.svg";
 import { ReactComponent as RCGbnb } from "./assets/RCGBNB.svg";
@@ -31,7 +31,7 @@ function AssetSwap({ toast }) {
     requireNetworkState
   );
   const [account] = useRecoilState(accountState);
-
+  const [solAddress, setSolAddress] = useRecoilState(solAccountState);
   const [addresses, setAddresses] = useState([]);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [recipeId, setRecipeId] = useState("");
@@ -71,10 +71,10 @@ function AssetSwap({ toast }) {
       56: "0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
     },
     conversionFee: {
-      //11.16 edited
+      //12.23 edited
       1: 5,
       128: 0.5,
-      56: 0.3,
+      56: 0.5,
       100: 0.3,
     },
   });
@@ -109,20 +109,25 @@ function AssetSwap({ toast }) {
     if (recipe.to.network === "(Binance Smart Chain Network)") swapTo = "BSC";
     if (recipe.to.network === "(Solana Network)") swapTo = "SOL";
 
-    setAddresses(
+    await setSolAddress(publicKey.toString());
+    await setAddresses(
       swapFrom === "SOL"
         ? [publicKey.toString(), account]
         : [account, publicKey.toString()]
     );
+    console.log("addresses", addresses);
 
     let result = await axios.post("https://sol-bridge.therecharge.io/create", {
       chain: [swapFrom, swapTo],
-      address: addresses,
+      address:
+        swapFrom === "SOL"
+          ? [publicKey.toString(), account]
+          : [account, publicKey.toString()],
     });
-    console.log("solAddress", publicKey.toString());
+
     console.log(result);
-    setRecipeId(result.data.id);
-    setBridgeAddress(result.data.bridge);
+    await setRecipeId(result.data.id);
+    await setBridgeAddress(result.data.bridge);
   };
 
   useEffect(() => {
@@ -222,12 +227,7 @@ function AssetSwap({ toast }) {
 
         {recipe.from.token !== "PiggyCell Point" ? (
           <WalletConnect
-            need={
-              recipe.from.network === "(Solana Network)" ||
-              recipe.to.network === "(Solana Network)"
-                ? "1"
-                : "2"
-            }
+            need={recipe.from.network === "(Solana Network)" ? "1" : "2"}
             bgColor="var(--purple)"
             border="4px solid #9314B2"
             // bgColor="var(--gray-30)"

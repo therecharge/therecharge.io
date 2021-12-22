@@ -8,6 +8,7 @@ import WalletConnect from "../../../Components/Common/WalletConnect";
 import { ReactComponent as RCGeth } from "./assets/RCGETH.svg";
 import { ReactComponent as RCGht } from "./assets/RCGHT.svg";
 import { ReactComponent as RCGbnb } from "./assets/RCGBNB.svg";
+import { ReactComponent as RCGsol } from "./assets/RCGSOL.svg";
 import { ReactComponent as ETH } from "./assets/ETH.svg";
 import { ReactComponent as HT } from "./assets/HT.svg";
 import { ReactComponent as BNB } from "./assets/BNB.svg";
@@ -17,6 +18,7 @@ import { ReactComponent as FUP1 } from "./assets/FUP1.svg";
 import { useRecoilState } from "recoil";
 import {
   accountState,
+  solAccountState,
   networkState,
   requireNetworkState,
 } from "../../../store/web3";
@@ -26,6 +28,7 @@ const ERC20_ABI = require("../../abis/ERC20ABI.json");
 function Asset({ setParams }) {
   const [t] = useTranslation();
   const [account] = useRecoilState(accountState);
+  const [solAccount] = useRecoilState(solAccountState);
   const [network] = useRecoilState(networkState);
   const [requireNetwork] = useRecoilState(requireNetworkState);
   const [tokensBalance, setTokensBalance] = useState({
@@ -37,6 +40,7 @@ function Asset({ setParams }) {
     BNB: 0,
   });
   const [fupBalance, setFupBalance] = useState(0);
+  const [RCGSOLBalance, setRCGSOLBalance] = useState(0);
 
   const loadBalance = async () => {
     const ETH = new Web3(
@@ -125,10 +129,47 @@ function Asset({ setParams }) {
     setFupBalance(balanceFUP);
   };
 
+  const loadRCGSOLBalance = async () => {
+    let balanceRCGSOL;
+    let result = await axios({
+      url: `https://api.mainnet-beta.solana.com`,
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      data: [
+        {
+          jsonrpc: "2.0",
+          id: 1,
+          method: "getTokenAccountsByOwner",
+          params: [
+            solAccount,
+            {
+              mint: "3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko",
+            },
+            {
+              encoding: "jsonParsed",
+            },
+          ],
+        },
+      ],
+    });
+
+    if (result.data[0].result) {
+      balanceRCGSOL = makeNum(
+        result.data[0].result.value[0].account.data.parsed.info.tokenAmount
+          .amount / 1000000000
+      );
+    } else {
+      balanceRCGSOL = 0;
+    }
+
+    setRCGSOLBalance(balanceRCGSOL);
+  };
+
   const updateBalance = () => {
     if (account) {
       loadBalance();
       loadFupBalance();
+      // loadRCGSOLBalance();
     }
   };
 
@@ -158,7 +199,13 @@ function Asset({ setParams }) {
     if (!account) return;
     await loadBalance();
     await loadFupBalance();
+    // await loadRCGSOLBalance();
   }, [account]);
+
+  // useEffect(async () => {
+  //   if (!account) return;
+  //   await loadRCGSOLBalance();
+  // }, [solAccount]);
 
   return (
     <Container>
@@ -182,6 +229,7 @@ function Asset({ setParams }) {
               symbol="RCG"
               balance={tokensBalance["BEP RCG"]}
             />
+            {/* <Balance Image={RCGsol} symbol="RCG" balance={RCGSOLBalance} /> */}
             <Balance Image={ETH} symbol="ETH" balance={tokensBalance.ETH} />
             <Balance Image={HT} symbol="HT" balance={tokensBalance.HT} />
             <Balance Image={BNB} symbol="BNB" balance={tokensBalance.BNB} />

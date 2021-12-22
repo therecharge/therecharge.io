@@ -38,7 +38,7 @@ import { web3ReaderState } from "./store/read-web3";
 const App = React.memo(
   ({ toast, t }) => {
     // setting solana wallet
-    const network = WalletAdapterNetwork.Devnet;
+    const network = WalletAdapterNetwork["mainnet-beta"];
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
     const wallets = useMemo(
       () => [

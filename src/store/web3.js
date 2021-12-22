@@ -5,7 +5,6 @@
 // const { atom } = require("recoil");
 import { atom } from "recoil";
 
-
 export const web3State = atom({
   key: "web3",
   default: undefined,
@@ -18,6 +17,10 @@ export const providerState = atom({
 });
 export const accountState = atom({
   key: "account",
+  default: undefined,
+});
+export const solAccountState = atom({
+  key: "solAccount",
   default: undefined,
 });
 export const networkState = atom({

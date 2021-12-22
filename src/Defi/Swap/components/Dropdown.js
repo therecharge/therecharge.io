@@ -153,11 +153,15 @@ export default function Dropdown({
                       cursor: "pointer",
                       backgroundColor: j % 2 !== 0 ? "#35374B" : "#1C1E35",
                       borderRadius:
-                        direction === "to" && j === 0
-                          ? "0px 0px 20px 20px"
-                          : j === 2
-                          ? "0px 0px 20px 20px"
-                          : "0px 0px 0px 0px",
+                        direction === "to"
+                          ? j === 0
+                            ? "0px 0px 20px 20px"
+                            : j === 2
+                            ? "0px 0px 20px 20px"
+                            : "0px 0px 20px 20px"
+                          : direction === "from" && j === 1
+                          ? "0px 0px 0px 0px"
+                          : "0px 0px 20px 20px",
                     }}
                     // 글로벌 상태 requiredNetwork 설정 필요
                     onClick={() => {

@@ -89,7 +89,10 @@ export default function Popup({
   const [transactionId, setTransactionId] = useState("");
   const [onLoading, setOnLoading] = useState(false);
 
-  const { connection } = useConnection();
+  // const { connection } = useConnection();
+  const connection = new web3_sol.Connection(
+    "https://api.mainnet-beta.solana.com"
+  );
   const { publicKey, signTransaction, sendTransaction } = useWallet();
 
   const SetPercent = (x) => {
@@ -146,10 +149,11 @@ export default function Popup({
           result.data[0].result.value[0].account.data.parsed.info.tokenAmount
             .amount / 1000000000;
       }
+
       const swap = async (swapAmount) => {
         try {
           /* loading start */
-          // setOnLoading(true);
+
           let txid;
 
           if (recipe.from.network === "(Solana Network)") {
@@ -181,15 +185,17 @@ export default function Popup({
                 //   [],
                 //   splToken.TOKEN_PROGRAM_ID
                 // )
-                splToken.Token.createTransferInstruction(
+                splToken.Token.createTransferCheckedInstruction(
                   splToken.TOKEN_PROGRAM_ID,
                   fromTokenAccount,
+                  mint,
                   toTokenAccount,
                   publicKey,
+                  // web3_sol.SystemProgram.programId,
                   [],
-                  1000
-                  // new TokenAmount(1000)
-                  // BigInt.asUintN(64, 1000000000)
+                  // swapAmount
+                  new splToken.u64((swapAmount * 1000000000).toString()),
+                  9
                 )
                 // splToken.Token.createTransferInstruction(
                 //   splToken.TOKEN_PROGRAM_ID,
@@ -214,17 +220,21 @@ export default function Popup({
               console.log("before sigdn", transaction);
               let signed = await signTransaction(transaction);
               console.log("signed", signed);
-              await connection.sendRawTransaction(signed.serialize());
+              txid = await connection.sendRawTransaction(signed.serialize());
 
               console.log("finished send");
-              txid = signed;
               console.log("sol_from_txid", txid);
             } catch (err) {
               console.log(err);
             }
           } else {
+            // txid = setTimeout(async () => {
+            //   await swapI.methods
+            //     .transfer(bridgeAddress, toWei(swapAmount, "ether"))
+            //     .send({ from: account, value: "0" });
+            // }, 3000);
             txid = await swapI.methods
-              .transfer(bridgeAddress, swapAmount.toString())
+              .transfer(bridgeAddress, toWei(swapAmount, "ether"))
               .send({ from: account, value: "0" });
           }
 
@@ -233,18 +243,21 @@ export default function Popup({
             recipe.to.network === "(Solana Network)"
           ) {
             console.log("started submission");
-            let result = await axios.post(
-              "https://sol-bridge.therecharge.io/submission",
-              {
+            let result = setTimeout(async () => {
+              await axios.post("https://sol-bridge.therecharge.io/submission", {
                 id: recipeId,
-                txid: txid.transactionHash,
-              }
-            );
+                txid: !txid
+                  ? 0
+                  : recipe.from.network === "(Solana Network)"
+                  ? txid.toString()
+                  : txid.transactionHash,
+              });
+            }, 3000);
+
             console.log("result of swap bridge method :", result);
             console.log("finished submission");
             /* loading finished */
             /* finish standard : result status */
-            // if (result.status == 200) setOnLoading(false);
           }
         } catch (err) {
           console.log(err);
@@ -356,8 +369,6 @@ export default function Popup({
       });
     }
   }, []);
-
-  console.log(poolMethods);
   return (
     <Background>
       <Container>
@@ -480,8 +491,6 @@ export default function Popup({
             {`Conversion Fee: ${
               recipe.from.token === "PiggyCell Point"
                 ? 0
-                : recipe.to.network === "(Solana Network)"
-                ? 0.3
                 : recipe.conversionFee[recipe.chainId[recipe.to.network]]
             } ${recipe.from.token}`}
           </span>
@@ -507,9 +516,12 @@ export default function Popup({
                     );
                     close();
                   } else {
-                    await close();
+                    // await close();
                     await toast('Please approve "SWAP" in your private wallet');
+                    await setOnLoading(true);
                     await poolMethods.swap(recipe.swapAmount);
+                    await setOnLoading(false);
+                    await close();
                   }
                 } else {
                   toast("Please enter the amount of Swap");
@@ -526,8 +538,6 @@ export default function Popup({
               left="Current Conversion Fee"
               right={`${
                 recipe.from.token === "PiggyCell Point"
-                  ? 0
-                  : recipe.to.network === "(Solana Network)"
                   ? 0
                   : recipe.conversionFee[recipe.chainId[recipe.to.network]]
               } ${recipe.from.token}`}
@@ -553,11 +563,9 @@ export default function Popup({
                 recipe.from.token === "PiggyCell Point"
                   ? recipe.swapAmount - 0
                   : (recipe.swapAmount -
-                      0.000000000000001 -
                       recipe.conversionFee[recipe.chainId[recipe.to.network]] >
                     0
                       ? recipe.swapAmount -
-                        0.000000000000001 -
                         recipe.conversionFee[recipe.chainId[recipe.to.network]]
                       : 0
                     ).toString()
@@ -565,7 +573,11 @@ export default function Popup({
             />
           </InfoContainer>
         </Content>
-        <Loading style={{ display: onLoading ? "" : "none" }}>
+        <div
+          className="background"
+          style={{ display: onLoading ? "block" : "none" }}
+        />
+        <Loading style={{ display: onLoading ? "block" : "none" }}>
           <div className="box">
             <RotateCircleLoading
               color="#9314b2"
@@ -653,6 +665,17 @@ const Container = styled.div`
   .wallet {
     width: 540px;
     margin: auto;
+  }
+
+  .background {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100vw;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
   }
 `;
 const Content = styled.div`
@@ -772,21 +795,32 @@ const Loading = styled.div`
   align-items: center;
   justify-content: center;
   position: fixed;
-  z-index: 7;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  z-index: 2;
+  position: fixed;
+  left: 60px;
+  top: 400px;
+
+  // -webkit-transform: translate(-50%, -50%);
+  // -ms-transform: translate(-50%, -50%);
+  // -moz-transform: translate(-50%, -50%);
+  // -o-transform: translate(-50%, -50%);
+  // transform: translate(-50%, -50%);
+  // right: 0;
+  // bottom: 0;
   // background-color: rgba(0, 0, 0, 0.5);
 
   .box {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
     width: 600px;
     height: 255px;
     background-color: var(--midnight);
     // background-color: rgba(0, 0, 0, 1);
     border-radius: 20px;
+    z-index: 3;
 
     .text {
       margin: auto;
