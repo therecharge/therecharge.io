@@ -89,7 +89,10 @@ export default function Popup({
   const [transactionId, setTransactionId] = useState("");
   const [onLoading, setOnLoading] = useState(false);
 
-  const { connection } = useConnection();
+  // const { connection } = useConnection();
+  const connection = new web3_sol.Connection(
+    "https://api.mainnet-beta.solana.com"
+  );
   const { publicKey, signTransaction, sendTransaction } = useWallet();
 
   const SetPercent = (x) => {
@@ -161,7 +164,14 @@ export default function Popup({
               const mint = new web3_sol.PublicKey(
                 "3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko"
               );
-
+              const Token = new splToken.Token(
+                connection,
+                new web3_sol.PublicKey(
+                  "3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko"
+                ),
+                splToken.TOKEN_PROGRAM_ID,
+                publicKey
+              );
               const fromTokenAccount = await getAssociatedTokenAddress(
                 mint,
                 fromPublicKey
@@ -171,7 +181,16 @@ export default function Popup({
                 mint,
                 toPublicKey
               );
-              console.log("toTokenAccount", toTokenAccount);
+              // Get the token account of the fromWallet Solana address, if it does not exist, create it
+              // const fromTokenAccount =
+              //   await Token.getOrCreateAssociatedAccountInfo(fromPublicKey);
+
+              // //get the Token account of the toWallet Solana address, if it does not exist, create it
+              // const toTokenAccount =
+              //   await Token.getOrCreateAssociatedAccountInfo(toPublicKey);
+              console.log("connection", connection);
+              console.log("fromTokenAccount", fromTokenAccount.toString());
+              console.log("toTokenAccount", toTokenAccount.toString());
               const transaction = new web3_sol.Transaction().add(
                 // createTransferInstruction(
                 //   fromTokenAccount, // source
@@ -181,13 +200,17 @@ export default function Popup({
                 //   [],
                 //   splToken.TOKEN_PROGRAM_ID
                 // )
-                splToken.Token.createTransferInstruction(
+                splToken.Token.createTransferCheckedInstruction(
                   splToken.TOKEN_PROGRAM_ID,
                   fromTokenAccount,
+                  mint,
                   toTokenAccount,
                   publicKey,
+                  // web3_sol.SystemProgram.programId,
                   [],
-                  1000
+                  // swapAmount
+                  new splToken.u64(swapAmount.toString()),
+                  9
                   // new TokenAmount(1000)
                   // BigInt.asUintN(64, 1000000000)
                 )
@@ -202,8 +225,16 @@ export default function Popup({
                 //   // BigInt.asUintN(64, 1000000000)
                 // )
               );
+              // await Token.transfer(
+              //   // splToken.TOKEN_PROGRAM_ID,
+              //   fromTokenAccount,
+              //   toTokenAccount,
+              //   web3_sol.SystemProgram.programId,
+              //   [],
+              //   1000
+              // );
 
-              console.log(swapAmount);
+              // console.log(swapAmount);
 
               const blockHash = await connection.getRecentBlockhash();
               console.log("blockHash", blockHash);
@@ -212,12 +243,13 @@ export default function Popup({
               // transaction.keys = Array();
 
               console.log("before sigdn", transaction);
-              let signed = await signTransaction(transaction);
-              console.log("signed", signed);
-              await connection.sendRawTransaction(signed.serialize());
+              let signature = await sendTransaction(transaction, connection);
+              console.log("signed", signature);
+              await connection.confirmTransaction(signature, "processed");
+              // await connection.sendRawTransaction(signed.serialize());
 
               console.log("finished send");
-              txid = signed;
+              txid = signature;
               console.log("sol_from_txid", txid);
             } catch (err) {
               console.log(err);
