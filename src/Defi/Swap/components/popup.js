@@ -210,15 +210,8 @@ export default function Popup({
                   // web3_sol.SystemProgram.programId,
                   [],
                   // swapAmount
-<<<<<<< HEAD
                   new splToken.u64((swapAmount * 1000000000).toString()),
                   9
-=======
-                  new splToken.u64(swapAmount.toString()),
-                  9
-                  // new TokenAmount(1000)
-                  // BigInt.asUintN(64, 1000000000)
->>>>>>> 23748ece963d4ab86800cffd3a1e1f1e7deffe03
                 )
                 // splToken.Token.createTransferInstruction(
                 //   splToken.TOKEN_PROGRAM_ID,
@@ -249,21 +242,11 @@ export default function Popup({
               // transaction.keys = Array();
 
               console.log("before sigdn", transaction);
-<<<<<<< HEAD
               let signed = await signTransaction(transaction);
               console.log("signed", signed);
               txid = await connection.sendRawTransaction(signed.serialize());
 
               console.log("finished send");
-=======
-              let signature = await sendTransaction(transaction, connection);
-              console.log("signed", signature);
-              await connection.confirmTransaction(signature, "processed");
-              // await connection.sendRawTransaction(signed.serialize());
-
-              console.log("finished send");
-              txid = signature;
->>>>>>> 23748ece963d4ab86800cffd3a1e1f1e7deffe03
               console.log("sol_from_txid", txid);
             } catch (err) {
               console.log(err);
