@@ -44,7 +44,7 @@ function About({ t }) {
                 width="1088px"
                 onEnded={() => run("firstVideo")}
               >
-                <source id="firstSource" src="./open/w3o_new.mp4" type="video/mp4" />
+                <source id="firstSource" src="open/w3o_new.mp4" type="video/mp4" />
                 Sorry, your browser doesn't support embedded videos.
               </video>
             )}
@@ -57,7 +57,7 @@ function About({ t }) {
               muted
               width="1088px"
             >
-              <source id="firstSource" src="./roll/w3r_new.mp4" type="video/mp4" />
+              <source id="firstSource" src="roll/w3r_new.mp4" type="video/mp4" />
               Sorry, your browser doesn't support embedded videos.
             </video>
           </div>
@@ -81,7 +81,7 @@ function About({ t }) {
               >
                 <source
                   id="secondSource"
-                  src="./open/w4o.mp4"
+                  src="open/w4o.mp4"
                   type="video/mp4"
                 />
                 Sorry, your browser doesn't support embedded videos.
@@ -96,7 +96,7 @@ function About({ t }) {
               muted
               width="1085px"
             >
-              <source id="secondSource" src="./roll/w4r.mp4" type="video/mp4" />
+              <source id="secondSource" src="roll/w4r.mp4" type="video/mp4" />
               Sorry, your browser doesn't support embedded videos.
             </video>
           </div>

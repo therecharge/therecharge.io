@@ -67,7 +67,7 @@ function About({ t }) {
                 height="862px"
                 onEnded={() => run("firstVideo")}
               >
-                <source id="firstSource" src="./open/m3o_new.mp4" type="video/mp4" />
+                <source id="firstSource" src="open/m3o_new.mp4" type="video/mp4" />
                 Sorry, your browser doesn't support embedded videos.
               </video>
             )}
@@ -82,7 +82,7 @@ function About({ t }) {
               width="620px"
               height="862px"
             >
-              <source id="firstSource" src="./roll/m3r_new.mp4" type="video/mp4" />
+              <source id="firstSource" src="roll/m3r_new.mp4" type="video/mp4" />
               Sorry, your browser doesn't support embedded videos.
             </video>
             {/* <img
@@ -123,7 +123,7 @@ function About({ t }) {
               >
                 <source
                   id="secondSource"
-                  src="./open/m4o.mp4"
+                  src="open/m4o.mp4"
                   type="video/mp4"
                 />
                 Sorry, your browser doesn't support embedded videos.
@@ -140,7 +140,7 @@ function About({ t }) {
               width="584px"
               height="460px"
             >
-              <source id="secondSource" src="./roll/m4r.mp4" type="video/mp4" />
+              <source id="secondSource" src="roll/m4r.mp4" type="video/mp4" />
               Sorry, your browser doesn't support embedded videos.
             </video>
             {/* <img
