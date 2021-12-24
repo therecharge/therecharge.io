@@ -13,7 +13,7 @@ function Recharge({ t }) {
             <div className="left">
               <img
                 src="/RTfeature1.png"
-                style={{ width: "120px", height: "99.6px" }}
+                style={{ width: "120px", height: "99.1px" }}
               />
             </div>
             <div className="right">
@@ -61,7 +61,7 @@ function Recharge({ t }) {
             <div className="left">
               <img
                 src="/RTfeature4.png"
-                style={{ width: "120px", height: "103.5px" }}
+                style={{ width: "120px", height: "131.1px" }}
               />
             </div>
             <div className="right">
