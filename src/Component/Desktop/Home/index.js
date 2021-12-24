@@ -156,7 +156,7 @@ function Home({ t }) {
                   >
                     <source
                       id="secondSource"
-                      src="/open/w2o.mp4"
+                      src="/open/w2o_new.mp4"
                       type="video/mp4"
                     />
                     {t("Home/text/if-cannot-embed-videos")}
@@ -173,7 +173,7 @@ function Home({ t }) {
                 >
                   <source
                     id="secondSource"
-                    src="/roll/w2r.mp4"
+                    src="/roll/w2r_new.mp4"
                     type="video/mp4"
                   />
                   {t("Home/text/if-cannot-embed-videos")}
@@ -222,7 +222,7 @@ function Home({ t }) {
                 {t("Home/Visioning/text/22Q1")}
               </div>
               <div className="text Roboto_20pt_Regular_L">
-                Q2
+                Q2 - Q3
                 <br />
                 {t("Home/Visioning/text/22Q2")}
               </div>
@@ -245,6 +245,34 @@ function Home({ t }) {
               >
                 <img src="/ic_etheteum.svg" />
               </div>
+
+              <div
+                className="partner"
+                onClick={() => {
+                  window.open(
+                    "https://www.binance.org/en/smartChain",
+                    "_blank"
+                  );
+                }}
+              >
+                <img src="/ic_binancesmartchain.svg" />
+              </div>
+              <div
+                className="partner"
+                onClick={() => {
+                  window.open(
+                    "https://solana.com/ko",
+                    "_blank"
+                  );
+                }}
+              >
+                <img src="/ic_solana.svg" />
+              </div>
+            </div>
+
+
+
+            <div className="tier">
               <div
                 className="partner"
                 onClick={() => {
@@ -257,33 +285,12 @@ function Home({ t }) {
                 className="partner"
                 onClick={() => {
                   window.open(
-                    "https://www.binance.org/en/smartChain",
-                    "_blank"
-                  );
-                }}
-              >
-                <img src="/ic_binancesmartchain.svg" />
-              </div>
-            </div>
-            <div className="tier">
-              <div
-                className="partner"
-                onClick={() => {
-                  window.open(
                     "https://www.certik.org/projects/therecharge",
                     "_blank"
                   );
                 }}
               >
                 <img src="/ic_certick.svg" />
-              </div>
-              <div
-                className="partner"
-                onClick={() => {
-                  window.open("https://www.kakaomobility.com/", "_blank");
-                }}
-              >
-                <img src="/ic_kakao.svg" />
               </div>
               <div
                 className="partner"
@@ -303,14 +310,22 @@ function Home({ t }) {
               >
                 <img src="/ic_piggycell.svg" />
               </div>
-              {/* <div
+              <div
+                className="partner"
+                onClick={() => {
+                  window.open("https://www.kakaomobility.com/", "_blank");
+                }}
+              >
+                <img src="/ic_kakao.svg" />
+              </div>
+              <div
                 className="partner"
                 onClick={() => {
                   window.open("http://www.keyeast.co.kr/index/", "_blank");
                 }}
               >
                 <img src="/ic_keyeast.svg" />
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

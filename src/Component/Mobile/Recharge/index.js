@@ -56,7 +56,7 @@ function Recharge({ t }) {
       </Content>
 
       <Content
-        id="rechargeSection3"
+        id="rechargeSection2"
         style={window.innerHeight > 1500 ? { minHeight: "900px" } : {}}
       >
         <div className="third">
@@ -150,15 +150,53 @@ function Recharge({ t }) {
               >
                 0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b
               </div>
+              <div>{t("RechargeToken/Distribution/sol")} : </div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  window.open(
+                    "https://solscan.io/token/ 3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko",
+                    "_blank"
+                  )
+                }
+              >
+                3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko
+              </div>
             </div>
+          </div>
+        </div>
+      </Content>
+      <Content id="rechargeSection3">
+        <div className="third">
+          <div className="theme text Roboto_50pt_Black_Mobile">NFT</div>
+          <Line />
+          <img src="theNFTRecharge.png" style={{ width: "348px" }} />
+          <h1 className="text Roboto_40pt_Black" style={{ marginBottom: "80px" }}>
+            {t("RechargeToken/NFTRecharge/title")}
+          </h1>
+          <p className="text Roboto_30pt_Regular_Mobile" style={{ marginBottom: "120px" }}>
+            {t("RechargeToken/NFTRecharge/content")}
+          </p>
+          <div
+            className="button text Roboto_30pt_Regular_Mobile"
+            onClick={() => {
+              window.open("https://nft.therecharge.io/");
+
+            }}
+          >
+            Go to The Recharge NFT
+            <div className="arrow">〉</div>
           </div>
         </div>
       </Content>
       <Content id="rechargeSection4">
         <div className="fourth">
-          <div className="theme text Roboto_50pt_Black_Mobile">Governance</div>
+          <div className="theme text Roboto_50pt_Black_Mobile" style={{ marginBottom: "20px" }}>Governance</div>
           <Line />
-          <img src="ic-snap.png" />
+          <div>
+
+            <img src="ic-snap.png" />
+          </div>
           <h1 className="text Roboto_40pt_Black">
             {t("RechargeToken/Governance/title")}
           </h1>
@@ -247,13 +285,13 @@ const Content = styled.div`
     flex-direction: column;
     margin: 0 auto;
     width: 720px;
-    margin-top: 100px;
+    margin-top: 180px;
     margin-bottom: 50px;
 
     .theme {
       display: flex;
       margin: 0 auto;
-      margin-top: 180px;
+      /* margin-top: 180px; */
       margin-bottom: 16px;
       text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
     }
@@ -268,9 +306,9 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     margin: 0 auto;
+    /* margin-top: 120px; */
     width: 720px;
     .theme {
-      margin-top: 300px;
       margin-bottom: 16px;
       text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
     }
@@ -325,7 +363,7 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     margin: auto 50px;
-    margin-top: 85px;
+    margin-top: 180px;
     width: 100%;
     color: var(--white);
 
@@ -392,12 +430,42 @@ const Content = styled.div`
         word-break: break-all;
       }
     }
-  }
+    .button {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      box-sizing: border-box;
+      padding-left: 25px;
+      // border-radius: 30px;
 
+      margin: 0 auto;
+      /* margin-bottom: 300px; */
+      width: 400px;
+      height: 60px;
+      padding: 0 20px;
+      box-sizing: border-box;
+      border: 1px solid var(--bright-sky-blue);
+      border-radius: 30px;
+      .arrow {
+        margin: auto 0;
+        font-size: 25px;
+        font-weight: bold;
+        margin-left: 20px;
+        margin-right: -5px;
+        color: var(--bright-sky-blue);
+      }
+    }
+    .button:hover {
+      background-color: var(--bright-sky-blue);
+      .arrow {
+        color: var(--white);
+      }
+  }
+  }
   .fourth {
     display: flex;
     margin: 0 50px;
-    margin-top: 100px;
+    margin-top: 180px;
     flex-direction: column;
     align-items: center;
     width: 100%;

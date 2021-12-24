@@ -211,7 +211,7 @@ function Gnb({ getTitle }) {
             <div>
               <HashLink
                 className="Roboto_25pt_Regular"
-                to={"/recharge#rechargeSection3"}
+                to={"/recharge#rechargeSection2"}
                 onClick={() => {
                   setMenuOpen(false);
                   setSidemenuOpen({
@@ -223,6 +223,23 @@ function Gnb({ getTitle }) {
                 Distribution
               </HashLink>
             </div>
+
+            <div>
+              <HashLink
+                className="Roboto_25pt_Regular"
+                to={"/recharge#rechargeSection3"}
+                onClick={() => {
+                  setMenuOpen(false);
+                  setSidemenuOpen({
+                    ...sidemenuInitialState,
+                    recharge: false,
+                  });
+                }}
+              >
+                NFT
+              </HashLink>
+            </div>
+
             <div>
               <HashLink
                 className="Roboto_25pt_Regular"
@@ -419,10 +436,10 @@ function Gnb({ getTitle }) {
                 <div
                   className="logo"
                   onClick={() =>
-                    (window.location =
-                      i18n.language == "en"
-                        ? "https://t.me/therecharge_official"
-                        : "https://t.me/therecharge_officialkr")
+                  (window.location =
+                    i18n.language == "en"
+                      ? "https://t.me/therecharge_official"
+                      : "https://t.me/therecharge_officialkr")
                   }
                 >
                   <img src="/footer4.png" />
@@ -461,6 +478,14 @@ function Gnb({ getTitle }) {
                   }}
                 >
                   <img src="/footer6.png" />
+                </div>
+                <div
+                  className="logo"
+                  onClick={() => {
+                    window.open(t("Footer/sns/solscan"), "_blank");
+                  }}
+                >
+                  <img src="/footer9.png" alt="" />
                 </div>
                 <div className="logo">
                   <a href="mailto:info@therecharge.io">
@@ -663,15 +688,16 @@ const LaunchApp = styled.div`
 `;
 
 const Bottom = styled.div`
-  position: fixed;
+  position: relative;
   bottom: 30px;
 `;
 
 const Footer = styled.div`
   display: flex;
   margin: 0 auto;
-  // margin-top: 200px;
-  // margin-bottom: 10vh;
+  position:abolute;
+  margin-top: 200px;
+  margin-bottom: 10vh; 
   margin-bottom: 0px;
 
   .footer {

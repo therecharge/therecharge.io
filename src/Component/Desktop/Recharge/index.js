@@ -76,7 +76,7 @@ function Recharge({ t }) {
         </div>
       </Content>
 
-      <Content id="rechargeSection3">
+      <Content id="rechargeSection2">
         <div className="third">
           <div className="theme Roboto_50pt_Black">Distribution</div>
           <Line />
@@ -143,18 +143,6 @@ function Recharge({ t }) {
                   >
                     0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30
                   </div>
-                  <div>{t("RechargeToken/Distribution/bep20")} : </div>
-                  <div
-                    style={{ cursor: "pointer" }}
-                    onClick={() =>
-                      window.open(
-                        "https://bscscan.com//token/0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
-                        "_blank"
-                      )
-                    }
-                  >
-                    0x2D94172436D869c1e3c094BeaD272508faB0d9E3
-                  </div>
                   <div>{t("RechargeToken/Distribution/hrc20")} : </div>
                   <div
                     style={{ cursor: "pointer" }}
@@ -167,6 +155,31 @@ function Recharge({ t }) {
                   >
                     0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b
                   </div>
+                  <div>{t("RechargeToken/Distribution/bep20")} : </div>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      window.open(
+                        "https://bscscan.com//token/0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
+                        "_blank"
+                      )
+                    }
+                  >
+                    0x2D94172436D869c1e3c094BeaD272508faB0d9E3
+                  </div>
+
+                  <div>{t("RechargeToken/Distribution/sol")} : </div>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      window.open(
+                        "https://hecoinfo.com//token/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+                        "_blank"
+                      )
+                    }
+                  >
+                    3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko
+                  </div>
                 </div>
               </div>
             </div>
@@ -176,6 +189,41 @@ function Recharge({ t }) {
           </div>
         </div>
       </Content>
+
+      <Content id="rechargeSection3">
+        <div className="second">
+          <div className="theme Roboto_50pt_Black">NFT</div>
+          <Line />
+          <div className="desc" >
+            <div className="left">
+              <img
+                src="/theNFTRecharge.png"
+                style={{ width: "160px", height: "71.7px" }}
+              />
+            </div>
+            <div className="right">
+              <div className="topic Roboto_30pt_Black_L">
+                {t("RechargeToken/NFTRecharge/title")}
+              </div>
+              <div className="text Roboto_20pt_Regular_L">
+                {t("RechargeToken/NFTRecharge/content")}
+              </div>
+              <div
+                className="button Roboto_20pt_Regular_L"
+                onClick={() =>
+                  window.open("https://nft.therecharge.io/")
+                }
+              >
+                <div style={{ margin: "auto", marginLeft: "0" }}>
+                  Go to The Recharge NFT
+                </div>
+                <div className="arrow">〉</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Content>
+
 
       <Content id="rechargeSection4">
         <div className="fourth">
@@ -296,38 +344,52 @@ const Content = styled.div`
       text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
     }
     .desc {
-      width: 1048px;
+      display: flex;
+      margin: 0 auto;
       margin-left: 40px;
       margin-top: 80px;
-      .subTheme {
-        margin-bottom: 40px;
+      .left {
+        margin-right: 80px;
       }
-      .tier {
-        display: flex;
-        justify-content: space-between;
-        color: var(--white);
-        .box {
-          .title {
-            margin-top: 40px;
-          }
-          .line {
-            width: 176px;
-            height: 2px;
-            background-color: var(--white);
-            margin-top: 8px;
-            margin-bottom: 40px;
-          }
-          .text {
-            margin-bottom: 20px;
-          }
+      .right {
+        .topic {
+          margin-bottom: 20px;
+        }
+        .text {
+          width: 848px;
+          margin-bottom: 20px;
         }
       }
     }
-    .notice {
-      margin-left: 40px;
-      color: var(--bright-sky-blue);
+    .button {
+      display: flex;
+      justify-content: space-between;
+      width: 300px;
+      height: 40px;
+      padding: 0 20px;
+      box-sizing: border-box;
+      border: 1px solid var(--bright-sky-blue);
+      border-radius: 20px;
+      cursor: pointer;
+      .arrow {
+        margin: auto 0;
+        font-size: 12px;
+        font-weight: bold;
+        margin-left: 20px;
+        margin-right: -5px;
+        color: var(--bright-sky-blue);
+      }
+    }
+    .button:hover {
+      background-color: var(--bright-sky-blue);
+      .arrow {
+        color: var(--white);
+      }
     }
   }
+  
+  
+
   .third {
     display: flex;
     flex-direction: column;

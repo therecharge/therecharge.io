@@ -160,7 +160,7 @@ function Home({ t }) {
                 >
                   <source
                     id="firstSource"
-                    src="/open/m2o.mp4"
+                    src="/open/m2o_new.mp4"
                     type="video/mp4"
                   />
                   Sorry, your browser doesn't support embedded videos.
@@ -177,7 +177,7 @@ function Home({ t }) {
                 width="620px"
                 height="521px"
               >
-                <source id="firstSource" src="/roll/m2r.mp4" type="video/mp4" />
+                <source id="firstSource" src="/roll/m2r_new.mp4" type="video/mp4" />
                 Sorry, your browser doesn't support embedded videos.
               </video>
             </div>
@@ -367,7 +367,7 @@ function Home({ t }) {
                   </div>
                 </div>
                 <div className="quater" style={{ marginBottom: "20px" }}>
-                  <div className="text Roboto_25pt_Regular_Mobile">Q2</div>
+                  <div className="text Roboto_25pt_Regular_Mobile">Q2 - Q3</div>
                   <div className="text Roboto_25pt_Regular_Mobile">
                     {t("Home/Visioning/text/22Q2")}
                   </div>
@@ -396,11 +396,33 @@ function Home({ t }) {
               <div
                 className="partner"
                 onClick={() =>
-                  (window.location = "https://www.hecochain.com/en-us/")
+                  (window.location = "https://www.binance.org/en/smartChain")
                 }
               >
                 <img
                   src="/homePV2.png"
+                  style={{ width: "242px", height: "57.7px" }}
+                />
+              </div>
+            </div>
+            <div className="tier">
+              <div
+                className="partner"
+                onClick={() => (window.location = "https://solana.com/ko/")}
+              >
+                <img
+                  src="/homePV3.png"
+                  style={{ width: "242px", height: "29.4px" }}
+                />
+              </div>
+              <div
+                className="partner"
+                onClick={() =>
+                  (window.location = "https://www.hecochain.com/en-us/")
+                }
+              >
+                <img
+                  src="/homePV4.png"
                   style={{ width: "242px", height: "29.1px" }}
                 />
               </div>
@@ -408,35 +430,11 @@ function Home({ t }) {
             <div className="tier">
               <div
                 className="partner"
-                onClick={() =>
-                  (window.location = "https://www.binance.org/en/smartChain")
-                }
-              >
-                <img
-                  src="/homePV8.png"
-                  style={{ width: "242px", height: "57.7px" }}
-                />
-              </div>
-              <div
-                className="partner"
                 onClick={() => (window.location = "https://www.certik.org/")}
               >
                 <img
-                  src="/homePV3.png"
+                  src="/homePV5.png"
                   style={{ width: "242px", height: "57.7px" }}
-                />
-              </div>
-            </div>
-            <div className="tier">
-              <div
-                className="partner"
-                onClick={() =>
-                  (window.location = "https://www.kakaomobility.com/")
-                }
-              >
-                <img
-                  src="/homePV4.png"
-                  style={{ width: "242px", height: "38.9px" }}
                 />
               </div>
               <div
@@ -446,32 +444,48 @@ function Home({ t }) {
                 }
               >
                 <img
-                  src="/homePV5.png"
+                  src="/homePV6.png"
                   style={{ width: "242px", height: "86.8px" }}
                 />
               </div>
             </div>
+
             <div className="tier">
               <div
                 className="partner"
                 onClick={() => (window.location = "https://piggycell.com/")}
               >
                 <img
-                  src="/homePV6.png"
+                  src="/homePV7.png"
                   style={{ width: "242px", height: "114.9px" }}
                 />
               </div>
-              {/* <div
+              <div
+                className="partner"
+                onClick={() =>
+                  (window.location = "https://www.kakaomobility.com/")
+                }
+              >
+                <img
+                  src="/homePV8.png"
+                  style={{ width: "242px", height: "38.9px" }}
+                />
+              </div>
+            </div>
+            <div className="tier">
+              <div
                 className="partner"
                 onClick={() =>
                   (window.location = "http://www.keyeast.co.kr/index/")
                 }
               >
                 <img
-                  src="/homePV7.png"
+                  src="/homePV9.png"
                   style={{ width: "242px", height: "29.8px" }}
                 />
-              </div> */}
+              </div>
+
+
             </div>
           </div>
         </div>

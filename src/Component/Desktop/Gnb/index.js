@@ -41,11 +41,11 @@ function Gnb() {
         <Logo>
           <HashLink
             to={"/#home"}
-            // onClick={() => {
-            //   setModalPoolOpen(false);
-            //   setModalPool2Open(false);
-            //   setModalSwapOpen(false);
-            // }}
+          // onClick={() => {
+          //   setModalPoolOpen(false);
+          //   setModalPool2Open(false);
+          //   setModalSwapOpen(false);
+          // }}
           >
             <img src="/logo.png" />
           </HashLink>
@@ -103,9 +103,14 @@ function Gnb() {
                   <a className="Roboto_14pt_Regular">Features</a>
                 </div>
               </HashLink>
-              <HashLink to={"/recharge#rechargeSection3"}>
+              <HashLink to={"/recharge#rechargeSection2"}>
                 <div>
                   <a className="Roboto_14pt_Regular">Distribution</a>
+                </div>
+              </HashLink>
+              <HashLink to={"/recharge#rechargeSection3"}>
+                <div>
+                  <a className="Roboto_14pt_Regular">NFT</a>
                 </div>
               </HashLink>
               <HashLink to={"/recharge#rechargeSection4"}>

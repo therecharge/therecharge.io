@@ -74,6 +74,15 @@ function Footer({ t }) {
           >
             <img src="/footer6.png" alt="" />
           </div>
+
+          <div
+            className="logo"
+            onClick={() => {
+              window.open(t("Footer/sns/solscan"), "_blank");
+            }}
+          >
+            <img src="/footer9.png" alt="" />
+          </div>
         </div>
         <div className="bottom" style={{ fontSize: "12px" }}>
           @ 2021 Recharge Labs Ltd.

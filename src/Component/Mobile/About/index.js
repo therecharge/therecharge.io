@@ -45,10 +45,10 @@ function About({ t }) {
       style={
         modalOpen
           ? {
-              position: "fixed",
-              // width: "100%",
-              // backgroundColor: "#02051c",
-            }
+            position: "fixed",
+            // width: "100%",
+            // backgroundColor: "#02051c",
+          }
           : {}
       }
     >
@@ -67,7 +67,7 @@ function About({ t }) {
                 height="862px"
                 onEnded={() => run("firstVideo")}
               >
-                <source id="firstSource" src="/open/m3o.mp4" type="video/mp4" />
+                <source id="firstSource" src="/open/m3o_new.mp4" type="video/mp4" />
                 Sorry, your browser doesn't support embedded videos.
               </video>
             )}
@@ -82,7 +82,7 @@ function About({ t }) {
               width="620px"
               height="862px"
             >
-              <source id="firstSource" src="/roll/m3r.mp4" type="video/mp4" />
+              <source id="firstSource" src="/roll/m3r_new.mp4" type="video/mp4" />
               Sorry, your browser doesn't support embedded videos.
             </video>
             {/* <img
@@ -187,13 +187,13 @@ function About({ t }) {
           <div className="members">
             <div
               className="nft"
-              // style={{ cursor: "pointer" }}
-              // onClick={() => {
-              //   window.open(
-              //     "https://www.bakeryswap.org/#/exchange/artworkInfo/17054/0/1?type=111&level=v3",
-              //     "_blank"
-              //   );
-              // }}
+            // style={{ cursor: "pointer" }}
+            // onClick={() => {
+            //   window.open(
+            //     "https://www.bakeryswap.org/#/exchange/artworkInfo/17054/0/1?type=111&level=v3",
+            //     "_blank"
+            //   );
+            // }}
             >
               <img
                 style={{ width: "169px", height: "238px" }}
@@ -292,13 +292,13 @@ function About({ t }) {
           <div className="members">
             <div
               className="nft"
-              // style={{ cursor: "pointer" }}
-              // onClick={() => {
-              //   window.open(
-              //     "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
-              //     "_blank"
-              //   );
-              // }}
+            // style={{ cursor: "pointer" }}
+            // onClick={() => {
+            //   window.open(
+            //     "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
+            //     "_blank"
+            //   );
+            // }}
             >
               <img
                 style={{ width: "169px", height: "238px" }}
@@ -317,13 +317,13 @@ function About({ t }) {
           <div className="members">
             <div
               className="nft"
-              // style={{ cursor: "pointer" }}
-              // onClick={() => {
-              //   window.open(
-              //     "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
-              //     "_blank"
-              //   );
-              // }}
+            // style={{ cursor: "pointer" }}
+            // onClick={() => {
+            //   window.open(
+            //     "https://www.bakeryswap.org/#/exchange/artworkInfo/16348/0/1?type=111&level=v3",
+            //     "_blank"
+            //   );
+            // }}
             >
               <img
                 style={{ width: "169px", height: "238px" }}
