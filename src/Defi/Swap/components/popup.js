@@ -276,7 +276,7 @@ export default function Popup({
                   ? txid.toString()
                   : txid.transactionHash,
               });
-            }, 3000);
+            }, 10000);
 
             console.log("result of swap bridge method :", result);
             console.log("finished submission");
