@@ -71,7 +71,7 @@ function Home({ t }) {
             >
               <source
                 id="mainSource"
-                src={"/logo/" + `${startVideo}` + ".mp4"}
+                src={"./logo/" + `${startVideo}` + ".mp4"}
                 type="video/mp4"
               />
               {t("Home/text/if-cannot-embed-videos")}
@@ -117,7 +117,7 @@ function Home({ t }) {
                   >
                     <source
                       id="firstSource"
-                      src="/open/w1o.mp4"
+                      src="./open/w1o.mp4"
                       type="video/mp4"
                     />
                     {t("Home/text/if-cannot-embed-videos")}
@@ -134,7 +134,7 @@ function Home({ t }) {
                 >
                   <source
                     id="firstSource"
-                    src="/roll/w1r.mp4"
+                    src="./roll/w1r.mp4"
                     type="video/mp4"
                   />
                   {t("Home/text/if-cannot-embed-videos")}
@@ -156,7 +156,7 @@ function Home({ t }) {
                   >
                     <source
                       id="secondSource"
-                      src="/open/w2o_new.mp4"
+                      src="./open/w2o_new.mp4"
                       type="video/mp4"
                     />
                     {t("Home/text/if-cannot-embed-videos")}
@@ -171,10 +171,9 @@ function Home({ t }) {
                   muted
                   width="1088px"
                 >
-
                   <source
                     id="secondSource"
-                    src="/roll/w2r_new.mp4"
+                    src="./roll/w2r_new.mp4"
                     type="video/mp4"
                   />
                   {t("Home/text/if-cannot-embed-videos")}
@@ -261,17 +260,12 @@ function Home({ t }) {
               <div
                 className="partner"
                 onClick={() => {
-                  window.open(
-                    "https://solana.com/ko",
-                    "_blank"
-                  );
+                  window.open("https://solana.com/ko", "_blank");
                 }}
               >
                 <img src="/ic_solana.svg" />
               </div>
             </div>
-
-
 
             <div className="tier">
               <div
