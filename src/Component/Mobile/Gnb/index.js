@@ -57,7 +57,7 @@ function Gnb({ getTitle }) {
           </div>
         </div>
         <div className="dropdown">
-          <Link
+          <div
             onClick={() => {
               setSidemenuOpen({
                 ...sidemenuInitialState,
@@ -70,8 +70,9 @@ function Gnb({ getTitle }) {
                 : "Roboto_35pt_Nomal"
             }
           >
+            {" "}
             About
-          </Link>
+          </div>
           <div
             className="dropdownContent"
             style={
@@ -172,7 +173,7 @@ function Gnb({ getTitle }) {
         </div>
 
         <div className="dropdown">
-          <Link
+          <div
             onClick={() => {
               setSidemenuOpen({
                 ...sidemenuInitialState,
@@ -186,7 +187,7 @@ function Gnb({ getTitle }) {
             }
           >
             Recharge Token
-          </Link>
+          </div>
           <div
             className="dropdownContent"
             style={
@@ -274,7 +275,7 @@ function Gnb({ getTitle }) {
         </div>
 
         <div className="dropdown">
-          <Link
+          <div
             onClick={() => {
               setSidemenuOpen({
                 ...sidemenuInitialState,
@@ -288,7 +289,7 @@ function Gnb({ getTitle }) {
             }
           >
             Docs
-          </Link>
+          </div>
           <div
             className="dropdownContent"
             style={
@@ -436,10 +437,10 @@ function Gnb({ getTitle }) {
                 <div
                   className="logo"
                   onClick={() =>
-                  (window.location =
-                    i18n.language == "en"
-                      ? "https://t.me/therecharge_official"
-                      : "https://t.me/therecharge_officialkr")
+                    (window.location =
+                      i18n.language == "en"
+                        ? "https://t.me/therecharge_official"
+                        : "https://t.me/therecharge_officialkr")
                   }
                 >
                   <img src="/footer4.png" />
@@ -695,9 +696,9 @@ const Bottom = styled.div`
 const Footer = styled.div`
   display: flex;
   margin: 0 auto;
-  position:abolute;
+  position: abolute;
   margin-top: 200px;
-  margin-bottom: 10vh; 
+  margin-bottom: 10vh;
   margin-bottom: 0px;
 
   .footer {

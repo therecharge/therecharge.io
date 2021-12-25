@@ -173,7 +173,7 @@ function Recharge({ t }) {
                     style={{ cursor: "pointer" }}
                     onClick={() =>
                       window.open(
-                        "https://hecoinfo.com//token/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
+                        "https://solscan.io/token/3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko",
                         "_blank"
                       )
                     }
@@ -194,7 +194,7 @@ function Recharge({ t }) {
         <div className="second">
           <div className="theme Roboto_50pt_Black">NFT</div>
           <Line />
-          <div className="desc" >
+          <div className="desc">
             <div className="left">
               <img
                 src="/theNFTRecharge.png"
@@ -210,9 +210,7 @@ function Recharge({ t }) {
               </div>
               <div
                 className="button Roboto_20pt_Regular_L"
-                onClick={() =>
-                  window.open("https://nft.therecharge.io/")
-                }
+                onClick={() => window.open("https://nft.therecharge.io/")}
               >
                 <div style={{ margin: "auto", marginLeft: "0" }}>
                   Go to The Recharge NFT
@@ -223,7 +221,6 @@ function Recharge({ t }) {
           </div>
         </div>
       </Content>
-
 
       <Content id="rechargeSection4">
         <div className="fourth">
@@ -387,8 +384,6 @@ const Content = styled.div`
       }
     }
   }
-  
-  
 
   .third {
     display: flex;

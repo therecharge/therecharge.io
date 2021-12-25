@@ -1,6 +1,7 @@
 {
   "name": "recharge",
   "version": "0.1.0",
+  "homepage":"./",
   "private": true,
   "dependencies": {
     "@aragon/ui": "^1.7.0",

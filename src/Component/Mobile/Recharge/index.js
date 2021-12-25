@@ -113,7 +113,7 @@ function Recharge({ t }) {
             <h1 className="text Roboto_40pt_Black_L">
               {t("RechargeToken/Distribution/recharge-token-address")}
             </h1>
-            <div className="text Roboto_25pt_Light ">
+            <div className="text Roboto_15pt_Regular_L">
               <div>{t("RechargeToken/Distribution/erc20")} : </div>
               <div
                 style={{ cursor: "pointer" }}
@@ -155,7 +155,7 @@ function Recharge({ t }) {
                 style={{ cursor: "pointer" }}
                 onClick={() =>
                   window.open(
-                    "https://solscan.io/token/ 3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko",
+                    "https://solscan.io/token/3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko",
                     "_blank"
                   )
                 }
@@ -171,17 +171,22 @@ function Recharge({ t }) {
           <div className="theme text Roboto_50pt_Black_Mobile">NFT</div>
           <Line />
           <img src="theNFTRecharge.png" style={{ width: "348px" }} />
-          <h1 className="text Roboto_40pt_Black" style={{ marginBottom: "80px" }}>
+          <h1
+            className="text Roboto_40pt_Black"
+            style={{ marginBottom: "80px" }}
+          >
             {t("RechargeToken/NFTRecharge/title")}
           </h1>
-          <p className="text Roboto_30pt_Regular_Mobile" style={{ marginBottom: "120px" }}>
+          <p
+            className="text Roboto_30pt_Regular_Mobile"
+            style={{ marginBottom: "120px" }}
+          >
             {t("RechargeToken/NFTRecharge/content")}
           </p>
           <div
             className="button text Roboto_30pt_Regular_Mobile"
             onClick={() => {
               window.open("https://nft.therecharge.io/");
-
             }}
           >
             Go to The Recharge NFT
@@ -191,10 +196,14 @@ function Recharge({ t }) {
       </Content>
       <Content id="rechargeSection4">
         <div className="fourth">
-          <div className="theme text Roboto_50pt_Black_Mobile" style={{ marginBottom: "20px" }}>Governance</div>
+          <div
+            className="theme text Roboto_50pt_Black_Mobile"
+            style={{ marginBottom: "20px" }}
+          >
+            Governance
+          </div>
           <Line />
           <div>
-
             <img src="ic-snap.png" />
           </div>
           <h1 className="text Roboto_40pt_Black">
@@ -460,7 +469,7 @@ const Content = styled.div`
       .arrow {
         color: var(--white);
       }
-  }
+    }
   }
   .fourth {
     display: flex;

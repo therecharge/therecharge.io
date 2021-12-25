@@ -192,7 +192,7 @@ function Home({ t }) {
           <div className="desc">
             <div className="image">
               <video autoPlay loop muted preload="metadata" width="1088px">
-                <source src="/roll/w5r.mp4" type="video/mp4" />
+                <source src="./roll/w5r.mp4" type="video/mp4" />
                 {t("Home/text/if-cannot-embed-videos")}
               </video>
             </div>

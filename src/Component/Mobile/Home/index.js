@@ -106,7 +106,7 @@ function Home({ t }) {
                   >
                     <source
                       id="firstSource"
-                      src="/open/m1o.mp4"
+                      src="./open/m1o.mp4"
                       type="video/mp4"
                     />
                     Sorry, your browser doesn't support embedded videos.
@@ -125,7 +125,7 @@ function Home({ t }) {
                 >
                   <source
                     id="firstSource"
-                    src="/roll/m1r.mp4"
+                    src="./roll/m1r.mp4"
                     type="video/mp4"
                   />
                   Sorry, your browser doesn't support embedded videos.
@@ -160,7 +160,7 @@ function Home({ t }) {
                 >
                   <source
                     id="firstSource"
-                    src="/open/m2o_new.mp4"
+                    src="./open/m2o_new.mp4"
                     type="video/mp4"
                   />
                   Sorry, your browser doesn't support embedded videos.
@@ -177,7 +177,11 @@ function Home({ t }) {
                 width="620px"
                 height="521px"
               >
-                <source id="firstSource" src="/roll/m2r_new.mp4" type="video/mp4" />
+                <source
+                  id="firstSource"
+                  src="./roll/m2r_new.mp4"
+                  type="video/mp4"
+                />
                 Sorry, your browser doesn't support embedded videos.
               </video>
             </div>
@@ -257,7 +261,7 @@ function Home({ t }) {
             >
               <source
                 id="mainSource"
-                src={"/logo/" + `${startVideo}` + ".mp4"}
+                src={"./logo/" + `${startVideo}` + ".mp4"}
                 type="video/mp4"
               />
               Sorry, your browser doesn't support embedded videos.
@@ -323,7 +327,7 @@ function Home({ t }) {
                 width="39px"
                 height="1088px"
               >
-                <source id="fifVi" src="/roll/m5r.mp4" type="video/mp4" />
+                <source id="fifVi" src="./roll/m5r.mp4" type="video/mp4" />
                 Sorry, your browser doesn't support embedded videos.
               </video>
               {/* <img
@@ -484,8 +488,6 @@ function Home({ t }) {
                   style={{ width: "242px", height: "29.8px" }}
                 />
               </div>
-
-
             </div>
           </div>
         </div>
