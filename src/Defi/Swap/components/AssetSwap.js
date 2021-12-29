@@ -220,7 +220,11 @@ function AssetSwap({ toast }) {
           symbol={recipe.to.token}
           network={recipe.to.network}
           unselectedList={
-            recipe.from.token === "PiggyCell Point" ? toList2 : toList
+            recipe.from.token === "PiggyCell Point" ||
+            recipe.from.network === "(Ethereum Network)" ||
+            recipe.from.network === "(Solana Network)"
+              ? toList2
+              : toList
           }
           title="TO"
         />

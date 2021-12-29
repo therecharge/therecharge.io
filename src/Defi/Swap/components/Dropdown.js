@@ -89,7 +89,10 @@ export default function Dropdown({
           }
           // onClick={title === "TO" ? () => {} : () => setOpen(!open)}
           onClick={
-            recipe.from.token === "PiggyCell Point" && title === "TO"
+            (recipe.from.token === "PiggyCell Point" ||
+              recipe.from.network === "(Ethereum Network)" ||
+              recipe.from.network === "(Solana Network)") &&
+            title === "TO"
               ? () => {}
               : () => setOpen(!open)
           }
@@ -177,13 +180,17 @@ export default function Dropdown({
                           to: {
                             token: "RCG",
                             network:
-                              token[0] === "PiggyCell Point"
+                              token[0] === "PiggyCell Point" ||
+                              token[1] === "(Ethereum Network)" ||
+                              token[1] === "(Solana Network)"
                                 ? "(Binance Smart Chain Network)"
                                 : token[1] === recipe.to.network
                                 ? recipe.from.network
                                 : recipe.to.network,
                             image:
-                              token[0] === "PiggyCell Point"
+                              token[0] === "PiggyCell Point" ||
+                              token[1] === "(Ethereum Network)" ||
+                              token[1] === "(Solana Network)"
                                 ? RCGbnb
                                 : token[1] === recipe.to.network
                                 ? recipe.from.image
@@ -194,7 +201,11 @@ export default function Dropdown({
                         setRequireNetwork(recipe.chainId[token[1]]);
                         setOpen(!open);
                       } else {
-                        if (recipe.from.token === "PiggyCell Point") {
+                        if (
+                          recipe.from.token === "PiggyCell Point" ||
+                          recipe.from.network === "(Ethereum Network)" ||
+                          recipe.from.network === "(Solana Network)"
+                        ) {
                           setRecipe({
                             ...recipe,
                             to: {

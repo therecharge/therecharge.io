@@ -12,10 +12,12 @@ import { ReactComponent as RCGsol } from "./assets/RCGSOL.svg";
 import { ReactComponent as ETH } from "./assets/ETH.svg";
 import { ReactComponent as HT } from "./assets/HT.svg";
 import { ReactComponent as BNB } from "./assets/BNB.svg";
+import { ReactComponent as SOL } from "./assets/SOL.svg";
 import { ReactComponent as FUP } from "./assets/FUP.svg";
 import { ReactComponent as FUP1 } from "./assets/FUP1.svg";
 //store
 import { useRecoilState } from "recoil";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import {
   accountState,
   solAccountState,
@@ -24,9 +26,11 @@ import {
 } from "../../../store/web3";
 import axios from "axios";
 const ERC20_ABI = require("../../abis/ERC20ABI.json");
+const web3_sol = require("@solana/web3.js");
 
 function Asset({ setParams }) {
   const [t] = useTranslation();
+  const { publicKey, sendTransaction } = useWallet();
   const [account] = useRecoilState(accountState);
   const [solAccount] = useRecoilState(solAccountState);
   const [network] = useRecoilState(networkState);
@@ -35,9 +39,11 @@ function Asset({ setParams }) {
     "ERC RCG": 0,
     "HRC RCG": 0,
     "BEP RCG": 0,
+    "SOL RCG": 0,
     ETH: 0,
     HT: 0,
     BNB: 0,
+    SOL: 0,
   });
   const [fupBalance, setFupBalance] = useState(0);
   const [RCGSOLBalance, setRCGSOLBalance] = useState(0);
@@ -50,6 +56,7 @@ function Asset({ setParams }) {
     );
     const HECO = new Web3("https://http-mainnet.hecochain.com");
     const BNB = new Web3("https://bsc-dataseed.binance.org/");
+    const SOL = new web3_sol.Connection("https://api.mainnet-beta.solana.com");
 
     let RCGeth,
       RCGht,
@@ -57,9 +64,12 @@ function Asset({ setParams }) {
       balanceRCG,
       balanceHRCRCG,
       balanceBEPRCG,
+      balanceRCGSOL,
       balanceETH,
       balanceHT,
-      balanceBNB;
+      balanceBNB,
+      balanceSOL,
+      result;
 
     RCGeth = new ETH.eth.Contract(
       ERC20_ABI,
@@ -100,14 +110,51 @@ function Asset({ setParams }) {
       balanceHT = makeNum(weiToEther(balanceHT));
       balanceBNB = makeNum(weiToEther(balanceBNB));
 
+      if (publicKey.toString()) {
+        result = await axios({
+          url: `https://api.mainnet-beta.solana.com`,
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          data: [
+            {
+              jsonrpc: "2.0",
+              id: 1,
+              method: "getTokenAccountsByOwner",
+              params: [
+                publicKey.toString(),
+                {
+                  mint: "3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko",
+                },
+                {
+                  encoding: "jsonParsed",
+                },
+              ],
+            },
+          ],
+        });
+
+        if (result.data[0].result) {
+          balanceRCGSOL = makeNum(
+            result.data[0].result.value[0].account.data.parsed.info.tokenAmount
+              .amount / 1e9
+          );
+        } else {
+          balanceRCGSOL = 0;
+        }
+
+        balanceSOL = makeNum((await SOL.getBalance(publicKey)) / 1e9);
+      }
+
       setTokensBalance({
         ...tokensBalance,
         "ERC RCG": balanceRCG,
         "HRC RCG": balanceHRCRCG,
         "BEP RCG": balanceBEPRCG,
+        "SOL RCG": balanceRCGSOL,
         ETH: balanceETH,
         HT: balanceHT,
         BNB: balanceBNB,
+        SOL: balanceSOL,
       });
     }
     // console.log(tokensBalance);
@@ -129,47 +176,10 @@ function Asset({ setParams }) {
     setFupBalance(balanceFUP);
   };
 
-  const loadRCGSOLBalance = async () => {
-    let balanceRCGSOL;
-    let result = await axios({
-      url: `https://api.mainnet-beta.solana.com`,
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      data: [
-        {
-          jsonrpc: "2.0",
-          id: 1,
-          method: "getTokenAccountsByOwner",
-          params: [
-            solAccount,
-            {
-              mint: "3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko",
-            },
-            {
-              encoding: "jsonParsed",
-            },
-          ],
-        },
-      ],
-    });
-
-    if (result.data[0].result) {
-      balanceRCGSOL = makeNum(
-        result.data[0].result.value[0].account.data.parsed.info.tokenAmount
-          .amount / 1000000000
-      );
-    } else {
-      balanceRCGSOL = 0;
-    }
-
-    setRCGSOLBalance(balanceRCGSOL);
-  };
-
   const updateBalance = () => {
     if (account) {
       loadBalance();
       loadFupBalance();
-      // loadRCGSOLBalance();
     }
   };
 
@@ -199,13 +209,7 @@ function Asset({ setParams }) {
     if (!account) return;
     await loadBalance();
     await loadFupBalance();
-    // await loadRCGSOLBalance();
   }, [account]);
-
-  // useEffect(async () => {
-  //   if (!account) return;
-  //   await loadRCGSOLBalance();
-  // }, [solAccount]);
 
   return (
     <Container>
@@ -219,20 +223,27 @@ function Asset({ setParams }) {
               symbol="RCG"
               balance={tokensBalance["ERC RCG"]}
             />
-            <Balance
-              Image={RCGht}
-              symbol="RCG"
-              balance={tokensBalance["HRC RCG"]}
-            />
+            <Balance Image={ETH} symbol="ETH" balance={tokensBalance.ETH} />
+
             <Balance
               Image={RCGbnb}
               symbol="RCG"
               balance={tokensBalance["BEP RCG"]}
             />
-            {/* <Balance Image={RCGsol} symbol="RCG" balance={RCGSOLBalance} /> */}
-            <Balance Image={ETH} symbol="ETH" balance={tokensBalance.ETH} />
-            <Balance Image={HT} symbol="HT" balance={tokensBalance.HT} />
             <Balance Image={BNB} symbol="BNB" balance={tokensBalance.BNB} />
+            <Balance
+              Image={RCGsol}
+              symbol="RCG"
+              balance={tokensBalance["SOL RCG"]}
+            />
+            <Balance Image={SOL} symbol="SOL" balance={tokensBalance.SOL} />
+            <Balance
+              Image={RCGht}
+              symbol="RCG"
+              balance={tokensBalance["HRC RCG"]}
+            />
+            <Balance Image={HT} symbol="HT" balance={tokensBalance.HT} />
+
             <Balance Image={FUP1} symbol="FUP" balance={fupBalance} />
           </List>
         ) : (
