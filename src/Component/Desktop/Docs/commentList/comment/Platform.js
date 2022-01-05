@@ -45,6 +45,32 @@ function Platform() {
         the Recharge ecosystem, providing stable services with awareness of the
         transaction fees and inclusion of various exchanges.
       </div>
+
+      <div className="subTitle Roboto_20pt_Black_L">4-3 The Recharge NFT</div>
+      <div className="text Roboto_20pt_Regular_L">
+            Unique and verified digital artworks for electric powered vehicles from bikes to cars.
+            The Recharge NFT is launched on Solana network, a decentralized blockchain built to
+            provide best NFT experiences for users.
+            All funds raised from The Recharge NFT will be used to help boost The Recharge
+            Ecosystem.
+      </div>
+      <div className="subTitle Roboto_20pt_Black_L">1st edition – Recharge Neon Car</div>
+      <div className="text Roboto_20pt_Regular_L">
+            Unique and verified digital artworks for electric powered vehicles from bikes to cars.
+            The Recharge NFT is launched on Solana network, a decentralized blockchain built to
+            provide best NFT experiences for users.
+            All funds raised from The Recharge NFT will be used to help boost The Recharge
+            Ecosystem.
+      </div>
+
+      <div className="subTitle Roboto_20pt_Black_L">2nd edition – Recharge Supercharged Bike</div>
+      <div className="text Roboto_20pt_Regular_L">
+            The 2nd edition of The Recharge NFT that boosts The Recharge NFT holder’s benefits.
+            Recharge Supercharged Bike are designed and prepared by one of the top artists. Only
+            whitelisted wallets can mint Recharge Supercharged Bike.
+      </div>
+
+      <div className="text Roboto_20pt_Regular_L">Additional editions to be updated when available</div>
     </Container>
   );
 }

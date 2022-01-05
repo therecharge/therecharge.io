@@ -156,10 +156,10 @@ function Docs({ match, t }) {
                 </div>
               </div>
             </div>
-            <div className="topic Roboto_30pt_Black_L unactive">
-              <span className="on">Onepager</span>
-              <span className="off">Coming Soon</span>
-            </div>
+            {/*<div className="topic Roboto_30pt_Black_L unactive">*/}
+            {/*  <span className="on">Onepager</span>*/}
+            {/*  <span className="off">Coming Soon</span>*/}
+            {/*</div>*/}
             <div className="topic Roboto_30pt_Black_L unactive">
               <a
                 onClick={() =>
