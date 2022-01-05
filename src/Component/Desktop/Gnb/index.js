@@ -136,9 +136,9 @@ function Gnb() {
                 </div>
               </HashLink>
 
-              <div className="unactive" style={{ cursor: "not-allowed" }}>
-                Onepager
-              </div>
+              {/*<div className="unactive" style={{ cursor: "not-allowed" }}>*/}
+              {/*  Onepager*/}
+              {/*</div>*/}
               <div>
                 <a
                   className="Roboto_14pt_Regular"
