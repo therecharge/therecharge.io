@@ -283,6 +283,9 @@ function Business() {
         ○ Governance reserve (10%): 100,000,000 RCG
       </div>
       <div className="subText Roboto_20pt_Regular_L">
+        ○ Marketing (5%): 50,000,000 RCG
+      </div>
+      <div className="subText Roboto_20pt_Regular_L">
         ○ Private sales (5%): 50,000,000 RCG
       </div>
       <div className="subText Roboto_20pt_Regular_L">
