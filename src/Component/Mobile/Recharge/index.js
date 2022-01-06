@@ -90,8 +90,8 @@ function Recharge({ t }) {
               <p>{t("RechargeToken/Distribution/development")}</p>
               <p>{t("RechargeToken/Distribution/exchanges/decentralized")}</p>
               <p>{t("RechargeToken/Distribution/exchanges/centralized")}</p>
-              <p>{t("RechargeToken/Distribution/marketing")}</p>
               <p>{t("RechargeToken/Distribution/governance-reserve")}</p>
+              <p>{t("RechargeToken/Distribution/marketing")}</p>
               <p>{t("RechargeToken/Distribution/private-sales")}</p>
               <p>{t("RechargeToken/Distribution/team")}</p>
               <p>{t("RechargeToken/Distribution/advisors")}</p>
