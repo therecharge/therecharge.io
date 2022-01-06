@@ -45,7 +45,8 @@ function Business() {
         environmental-friendly blockchain economy.
       </div>
       <div className="text Roboto_20pt_Regular_L">
-          We will unveil next ecosystem partners through our communication channels in 2022.
+        We will unveil next ecosystem partners through our communication
+        channels in 2022.
       </div>
 
       <div className="subTitle Roboto_20pt_Black_L">
@@ -229,16 +230,14 @@ function Business() {
         incentives in accordance with the results of their votes.
       </div>
 
-      <div className="subTitle Roboto_20pt_Black_L">
-          3-5. The Recharge NFT
-      </div>
+      <div className="subTitle Roboto_20pt_Black_L">3-5. The Recharge NFT</div>
       <div className="text Roboto_20pt_Regular_L">
-          The Recharge NFT has begun to further expand The Recharge ecosystem. Unique
-          and verified digital artworks for electric powered vehicles from bikes to cars.
-          The Recharge NFT is launched on Solana network, a decentralized blockchain built
-          to provide best NFT experiences for users.
-          All funds raised from The Recharge NFT will be used to help boost The Recharge
-          Ecosystem.
+        The Recharge NFT has begun to further expand The Recharge ecosystem.
+        Unique and verified digital artworks for electric powered vehicles from
+        bikes to cars. The Recharge NFT is launched on Solana network, a
+        decentralized blockchain built to provide best NFT experiences for
+        users. All funds raised from The Recharge NFT will be used to help boost
+        The Recharge Ecosystem.
       </div>
       <div className="subTitle Roboto_20pt_Black_L">
         3-6. Recharge Token Information
@@ -294,9 +293,9 @@ function Business() {
         ○ Advisor (2%): 20,000,000 RCG
       </div>
 
-        <div className="text Roboto_20pt_Regular_L">
-            *RCG on Solana is minted as much as swapped from other mainnets
-        </div>
+      <div className="text Roboto_20pt_Regular_L">
+        *RCG on Solana is minted as much as swapped from other mainnets
+      </div>
     </Container>
   );
 }

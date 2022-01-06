@@ -9,55 +9,51 @@ function Vision() {
       <div className="semiTitle Roboto_20pt_Black_L">2021</div>
       <div className="subText Roboto_20pt_Regular_L">Q2</div>
       <div className="subText Roboto_20pt_Regular_L">
-        - Rechage issued on Huobi Eco Chain
+        - RCG launch (HRC, ERC, BSC)
       </div>
       <div className="text Roboto_20pt_Regular_L">
-        - Recharge issued on Ethereum Network and Binance Smart Chain
+        - Soft Launch of The Recharge
       </div>
       <div className="subText Roboto_20pt_Regular_L">Q3</div>
       <div className="subText Roboto_20pt_Regular_L">
-            - Charging Station (De-Fi) launched
+        - Charging Station (De-Fi) launched
       </div>
       <div className="text Roboto_20pt_Regular_L">
-            - Initial Liquidity Offering on DEX
+        - Initial Liquidity Offering on DEX
       </div>
       <div className="subText Roboto_20pt_Regular_L">Q4</div>
       <div className="subText Roboto_20pt_Regular_L">
-            - Integration of Point to Token system on PiggyCell
+        - Integration of Point to Token system on PiggyCell
       </div>
       <div className="subText Roboto_20pt_Regular_L">
-            - 1st Platform Subsidy Provided
+        - 1st Platform Subsidy Provided
       </div>
       <div className="subText Roboto_20pt_Regular_L">
-            - Major Liquidity provided on DEX
+        - Major Liquidity provided on DEX
       </div>
       <div className="text Roboto_20pt_Regular_L">
-            - Solana Mainnet integration on Recharge Swap
+        - Solana Mainnet integration on Recharge Swap
       </div>
       <div className="semiTitle Roboto_20pt_Black_L">2022</div>
       <div className="subText Roboto_20pt_Regular_L">Q1</div>
+      <div className="subText Roboto_20pt_Regular_L">- The Recharge – NFT</div>
       <div className="subText Roboto_20pt_Regular_L">
-            - The Recharge – NFT
+        - The Recharge NFT Minting activated
       </div>
       <div className="subText Roboto_20pt_Regular_L">
-            - The Recharge NFT Minting activated
-      </div>
-      <div className="subText Roboto_20pt_Regular_L">
-            - Solana Mainnet integration
+        - Solana Mainnet integration
       </div>
       <div className="text Roboto_20pt_Regular_L">
-          - DEX integration Phase 1
+        - DEX integration Phase 1
       </div>
       <div className="subText Roboto_20pt_Regular_L">Q2 - Q3</div>
       <div className="subText Roboto_20pt_Regular_L">
-          -  E-Bike Sharing Adoption
+        - E-Bike Sharing Adoption
       </div>
       <div className="subText Roboto_20pt_Regular_L">
-          - Point to Token Integration
+        - Point to Token Integration
       </div>
-      <div className="subText Roboto_20pt_Regular_L">
-          - De-Fi 2.0 Update
-      </div>
+      <div className="subText Roboto_20pt_Regular_L">- De-Fi 2.0 Update</div>
       {/*<div className="subTitle Roboto_20pt_Black_L">5-2. Team members</div>*/}
       {/*<div className="subTitle Roboto_20pt_Black_L">*/}
       {/*  Jake Kim, Chief Technical Officer,*/}

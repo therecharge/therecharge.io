@@ -63,6 +63,18 @@ function Term() {
         platform. A lock-up is performed in some cases so that unstaking is not
         possible for a certain period of time during service.
       </div>
+
+      <div className="subTitle Roboto_20pt_Black_L">
+        ✓ NFT (Non-Fungible Token)
+      </div>
+      <div className="text Roboto_20pt_Regular_L">
+        A non-fungible token is a unique and non-interchangeable unit of data
+        stored on a blockchain, a form of digital ledger. NFTs can be associated
+        with reproducible digital files such as photos, videos, and audio. NFTs
+        use a digital ledger to provide a public certificate of authenticity or
+        proof of ownership, but do not restrict the sharing or copying of the
+        underlying digital files.
+      </div>
     </Container>
   );
 }

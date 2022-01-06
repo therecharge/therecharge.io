@@ -40,7 +40,7 @@ function Platform() {
       <div className="text Roboto_20pt_Regular_L">
         The Frequent Use Points can be swapped with Recharge Tokens through the
         Recharge swap (Exchange Rate applies). In addition, Recharge swap
-        supports Cross Chain Bridge between ERC-20, BEP-20, and HRC-20 on
+        supports Cross Chain Bridge between ERC-20, BEP-20, and HRC-20, SPL on
         demand. This was done in consideration of the continuous expansion of
         the Recharge ecosystem, providing stable services with awareness of the
         transaction fees and inclusion of various exchanges.
@@ -48,29 +48,36 @@ function Platform() {
 
       <div className="subTitle Roboto_20pt_Black_L">4-3 The Recharge NFT</div>
       <div className="text Roboto_20pt_Regular_L">
-            Unique and verified digital artworks for electric powered vehicles from bikes to cars.
-            The Recharge NFT is launched on Solana network, a decentralized blockchain built to
-            provide best NFT experiences for users.
-            All funds raised from The Recharge NFT will be used to help boost The Recharge
-            Ecosystem.
+        Unique and verified digital artworks for electric powered vehicles from
+        bikes to cars. The Recharge NFT is launched on Solana network, a
+        decentralized blockchain built to provide best NFT experiences for
+        users. All funds raised from The Recharge NFT will be used to help boost
+        The Recharge Ecosystem.
       </div>
-      <div className="subTitle Roboto_20pt_Black_L">1st edition – Recharge Neon Car</div>
+      <div className="subTitle Roboto_20pt_Black_L">
+        1st edition – Recharge Neon Car
+      </div>
       <div className="text Roboto_20pt_Regular_L">
-            Unique and verified digital artworks for electric powered vehicles from bikes to cars.
-            The Recharge NFT is launched on Solana network, a decentralized blockchain built to
-            provide best NFT experiences for users.
-            All funds raised from The Recharge NFT will be used to help boost The Recharge
-            Ecosystem.
+        Unique and verified digital artworks for electric powered vehicles from
+        bikes to cars. The Recharge NFT is launched on Solana network, a
+        decentralized blockchain built to provide best NFT experiences for
+        users. All funds raised from The Recharge NFT will be used to help boost
+        The Recharge Ecosystem.
       </div>
 
-      <div className="subTitle Roboto_20pt_Black_L">2nd edition – Recharge Supercharged Bike</div>
+      <div className="subTitle Roboto_20pt_Black_L">
+        2nd edition – Recharge Supercharged Bike
+      </div>
       <div className="text Roboto_20pt_Regular_L">
-            The 2nd edition of The Recharge NFT that boosts The Recharge NFT holder’s benefits.
-            Recharge Supercharged Bike are designed and prepared by one of the top artists. Only
-            whitelisted wallets can mint Recharge Supercharged Bike.
+        The 2nd edition of The Recharge NFT that boosts The Recharge NFT
+        holder’s benefits. Recharge Supercharged Bike are designed and prepared
+        by one of the top artists. Only whitelisted wallets can mint Recharge
+        Supercharged Bike.
       </div>
 
-      <div className="text Roboto_20pt_Regular_L">Additional editions to be updated when available</div>
+      <div className="text Roboto_20pt_Regular_L">
+        Additional editions to be updated when available
+      </div>
     </Container>
   );
 }

@@ -178,8 +178,8 @@ function Docs({ match, t }) {
             </div>
           </div>
           <div className="topic unactive Roboto_40pt_Black">
-            <span className="on">Onepager</span>
-            <span className="off">Coming Soon</span>
+            {/*<span className="on">Onepager</span>*/}
+            {/*<span className="off">Coming Soon</span>*/}
           </div>
           <div className="topic Roboto_40pt_Black">
             <a

@@ -312,10 +312,10 @@ function Gnb({ getTitle }) {
               </HashLink>
             </div>
             <div>
-              <a className="unactive Roboto_25pt_Regular">
-                <span className="on">Onepager</span>
-                <span className="off">Coming Soon</span>
-              </a>
+              {/*<a className="unactive Roboto_25pt_Regular">*/}
+              {/*  <span className="on">Onepager</span>*/}
+              {/*  <span className="off">Coming Soon</span>*/}
+              {/*</a>*/}
             </div>
             <div>
               <a className="Roboto_25pt_Regular">

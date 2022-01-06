@@ -9,10 +9,10 @@ function Vision() {
       <div className="semiTitle Roboto_20pt_Black_L">2021</div>
       <div className="subText Roboto_20pt_Regular_L">Q2</div>
       <div className="subText Roboto_20pt_Regular_L">
-        - Rechage issued on Huobi Eco Chain
+        - RCG launch (HRC, ERC, BSC)
       </div>
       <div className="text Roboto_20pt_Regular_L">
-        - Recharge issued on Ethereum Network and Binance Smart Chain
+        - Soft Launch of The Recharge
       </div>
       <div className="subText Roboto_20pt_Regular_L">Q3</div>
       <div className="subText Roboto_20pt_Regular_L">
@@ -23,52 +23,63 @@ function Vision() {
       </div>
       <div className="subText Roboto_20pt_Regular_L">Q4</div>
       <div className="subText Roboto_20pt_Regular_L">
-        - Integration of Point to Token system
+        - Integration of Point to Token system on PiggyCell
+      </div>
+      <div className="subText Roboto_20pt_Regular_L">
+        - 1st Platform Subsidy Provided
+      </div>
+      <div className="subText Roboto_20pt_Regular_L">
+        - Major Liquidity provided on DEX
       </div>
       <div className="text Roboto_20pt_Regular_L">
-        - Recharge Swap (Cross-Chain Bridge) Launched
+        - Solana Mainnet integration on Recharge Swap
       </div>
       <div className="semiTitle Roboto_20pt_Black_L">2022</div>
       <div className="subText Roboto_20pt_Regular_L">Q1</div>
+      <div className="subText Roboto_20pt_Regular_L">- The Recharge – NFT</div>
       <div className="subText Roboto_20pt_Regular_L">
-        - EV Charging Complex 1st unveiling
+        - The Recharge NFT Minting activated
+      </div>
+      <div className="subText Roboto_20pt_Regular_L">
+        - Solana Mainnet integration
       </div>
       <div className="text Roboto_20pt_Regular_L">
-        - Adoption of EV Charging Complex into Recharge Ecosystem
+        - DEX integration Phase 1
       </div>
-      <div className="subText Roboto_20pt_Regular_L">Q2</div>
+      <div className="subText Roboto_20pt_Regular_L">Q2 - Q3</div>
       <div className="subText Roboto_20pt_Regular_L">
-        - EV Charging Complex Opening
-      </div>
-      <div className="text Roboto_20pt_Regular_L">
-        - 3rd Recharge Ecosystem Partner Service Unveiling
-      </div>
-      <div className="subTitle Roboto_20pt_Black_L">5-2. Team members</div>
-      <div className="subTitle Roboto_20pt_Black_L">
-        Jake Kim, Chief Technical Officer,
-      </div>
-      <div className="subText Roboto_20pt_Regular_L">- CTO at 100 Percent</div>
-      <div className="subText Roboto_20pt_Regular_L">
-        - Software Developer at TMON
+        - E-Bike Sharing Adoption
       </div>
       <div className="subText Roboto_20pt_Regular_L">
-        - Application Developer at Kakao Corp
+        - Point to Token Integration
       </div>
-      <div className="text Roboto_20pt_Regular_L">
-        - Lead at Kakao Enterprise AI Development Team
-      </div>
-      <div className="subTitle Roboto_20pt_Black_L">
-        Ethan Kang, Chief Marketing Officer
-      </div>
-      <div className="subText Roboto_20pt_Regular_L">
-        - CSO/CMO at 100 Percent
-      </div>
-      <div className="subText Roboto_20pt_Regular_L">
-        - CSO at Thinkingwolf (Marketing Agency)
-      </div>
-      <div className="text Roboto_20pt_Regular_L">
-        - CMO at Zipdoc (Interior O2O Platform)
-      </div>
+      <div className="subText Roboto_20pt_Regular_L">- De-Fi 2.0 Update</div>
+      {/*<div className="subTitle Roboto_20pt_Black_L">5-2. Team members</div>*/}
+      {/*<div className="subTitle Roboto_20pt_Black_L">*/}
+      {/*  Jake Kim, Chief Technical Officer,*/}
+      {/*</div>*/}
+      {/*<div className="subText Roboto_20pt_Regular_L">- CTO at 100 Percent</div>*/}
+      {/*<div className="subText Roboto_20pt_Regular_L">*/}
+      {/*  - Software Developer at TMON*/}
+      {/*</div>*/}
+      {/*<div className="subText Roboto_20pt_Regular_L">*/}
+      {/*  - Application Developer at Kakao Corp*/}
+      {/*</div>*/}
+      {/*<div className="text Roboto_20pt_Regular_L">*/}
+      {/*  - Lead at Kakao Enterprise AI Development Team*/}
+      {/*</div>*/}
+      {/*<div className="subTitle Roboto_20pt_Black_L">*/}
+      {/*  Ethan Kang, Chief Marketing Officer*/}
+      {/*</div>*/}
+      {/*<div className="subText Roboto_20pt_Regular_L">*/}
+      {/*  - CSO/CMO at 100 Percent*/}
+      {/*</div>*/}
+      {/*<div className="subText Roboto_20pt_Regular_L">*/}
+      {/*  - CSO at Thinkingwolf (Marketing Agency)*/}
+      {/*</div>*/}
+      {/*<div className="text Roboto_20pt_Regular_L">*/}
+      {/*  - CMO at Zipdoc (Interior O2O Platform)*/}
+      {/*</div>*/}
     </Container>
   );
 }

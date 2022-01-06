@@ -45,8 +45,8 @@ function Business() {
         environmental-friendly blockchain economy.
       </div>
       <div className="text Roboto_20pt_Regular_L">
-        We expect to unveil the 2nd Ecosystem partner “EV Charging Complex”
-        through our communication channels in Q3, 2021.
+        We will unveil next ecosystem partners through our communication
+        channels in 2022.
       </div>
 
       <div className="subTitle Roboto_20pt_Black_L">
@@ -229,12 +229,22 @@ function Business() {
         participating in the governance voting can receive Recharge Tokens as
         incentives in accordance with the results of their votes.
       </div>
+
+      <div className="subTitle Roboto_20pt_Black_L">3-5. The Recharge NFT</div>
+      <div className="text Roboto_20pt_Regular_L">
+        The Recharge NFT has begun to further expand The Recharge ecosystem.
+        Unique and verified digital artworks for electric powered vehicles from
+        bikes to cars. The Recharge NFT is launched on Solana network, a
+        decentralized blockchain built to provide best NFT experiences for
+        users. All funds raised from The Recharge NFT will be used to help boost
+        The Recharge Ecosystem.
+      </div>
       <div className="subTitle Roboto_20pt_Black_L">
-        3-5. Recharge Token Information
+        3-6. Recharge Token Information
       </div>
       <div className="subText Roboto_20pt_Regular_L">○ Token symbol: RCG</div>
       <div className="subText Roboto_20pt_Regular_L">
-        ○ Types of mainnet: ERC-20, BEP-20, HRC-20
+        ○ Types of mainnet: ERC-20, BEP-20, HRC-20, Solana
       </div>
       <div className="subText Roboto_20pt_Regular_L">
         ○ Token contract address
@@ -248,8 +258,11 @@ function Business() {
       <div className="text Roboto_20pt_Regular_L">
         ■ HRC-20: 0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b
       </div>
+      <div className="text Roboto_20pt_Regular_L">
+        ■ Solana (SPL): 3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko
+      </div>
       <div className="subTitle Roboto_20pt_Black_L">
-        3-6 Recharge Token Distribution
+        3-7 Recharge Token Distribution
       </div>
       <div className="subText Roboto_20pt_Regular_L">
         ○ Total supply: 1,000,000,000 RCG (100%)
@@ -277,6 +290,9 @@ function Business() {
       </div>
       <div className="text Roboto_20pt_Regular_L">
         ○ Advisor (2%): 20,000,000 RCG
+      </div>
+      <div className="text Roboto_20pt_Regular_L">
+        *RCG on Solana is minted as much as swapped from other mainnets
       </div>
     </Container>
   );
