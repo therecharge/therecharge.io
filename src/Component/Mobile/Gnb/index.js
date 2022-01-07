@@ -109,21 +109,21 @@ function Gnb({ getTitle }) {
                 Recharge Virtuous Cycle
               </HashLink>
             </div>
-            <div>
-              <HashLink
-                className="Roboto_25pt_Regular"
-                to={"/about#aboutSection3"}
-                onClick={() => {
-                  setMenuOpen(false);
-                  setSidemenuOpen({
-                    ...sidemenuInitialState,
-                    about: false,
-                  });
-                }}
-              >
-                Team members
-              </HashLink>
-            </div>
+            {/*<div>*/}
+            {/*  <HashLink*/}
+            {/*    className="Roboto_25pt_Regular"*/}
+            {/*    to={"/about#aboutSection3"}*/}
+            {/*    onClick={() => {*/}
+            {/*      setMenuOpen(false);*/}
+            {/*      setSidemenuOpen({*/}
+            {/*        ...sidemenuInitialState,*/}
+            {/*        about: false,*/}
+            {/*      });*/}
+            {/*    }}*/}
+            {/*  >*/}
+            {/*    Team members*/}
+            {/*  </HashLink>*/}
+            {/*</div>*/}
             <div>
               <HashLink
                 className="Roboto_25pt_Regular"

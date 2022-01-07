@@ -113,86 +113,86 @@ function About({ t }) {
           </div>
         </div>
       </Content>
-      <Content id="aboutSection3">
-        <div className="third">
-          <div className="theme text Roboto_50pt_Black">Team members</div>
-          <div className="members">
-            <div
-              className="nft"
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                window.open(
-                  "https://www.bakeryswap.org/#/exchange/artworkInfo/16350/0/1?type=111&level=v3",
-                  "_blank"
-                );
-              }}
-            >
-              <img
-                style={{ width: "169px", height: "238px" }}
-                src="./aboutJaylee.png"
-              />
-            </div>
-            <div className="member">
-              <div className="name text Roboto_20pt_Black_L">
-                {t("About/Member/jayLee/title")}
-              </div>
-              <div className="desc text Roboto_19pt_Regular_L">
-                {t("About/Member/jayLee/content")}
-              </div>
-            </div>
-          </div>
-          <div className="members">
-            <div
-              className="nft"
-              // style={{ cursor: "pointer" }}
-              // onClick={() => {
-              //   window.open(
-              //     "https://www.bakeryswap.org/#/exchange/artworkInfo/17054/0/1?type=111&level=v3",
-              //     "_blank"
-              //   );
-              // }}
-            >
-              <img
-                style={{ width: "169px", height: "238px" }}
-                src="./aboutJakekim.png"
-              />
-            </div>
-            <div className="member">
-              <div className="name text Roboto_20pt_Black_L">
-                {t("About/Member/jakeKim/title")}
-              </div>
-              <div className="desc text Roboto_19pt_Regular_L">
-                {t("About/Member/jakeKim/content")}
-              </div>
-            </div>
-          </div>
-          <div className="members">
-            <div
-              className="nft"
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                window.open(
-                  "https://www.bakeryswap.org/#/exchange/artworkInfo/17054/0/1?type=111&level=v3",
-                  "_blank"
-                );
-              }}
-            >
-              <img
-                style={{ width: "169px", height: "238px" }}
-                src="./aboutEk.png"
-              />
-            </div>
-            <div className="member">
-              <div className="name text Roboto_20pt_Black_L">
-                {t("About/Member/ethanKang/title")}
-              </div>
-              <div className="desc text Roboto_19pt_Regular_L">
-                {t("About/Member/ethanKang/content")}
-              </div>
-            </div>
-          </div>
-        </div>
-      </Content>
+      {/*<Content id="aboutSection3">*/}
+      {/*  <div className="third">*/}
+      {/*    <div className="theme text Roboto_50pt_Black">Team members</div>*/}
+      {/*    <div className="members">*/}
+      {/*      <div*/}
+      {/*        className="nft"*/}
+      {/*        style={{ cursor: "pointer" }}*/}
+      {/*        onClick={() => {*/}
+      {/*          window.open(*/}
+      {/*            "https://www.bakeryswap.org/#/exchange/artworkInfo/16350/0/1?type=111&level=v3",*/}
+      {/*            "_blank"*/}
+      {/*          );*/}
+      {/*        }}*/}
+      {/*      >*/}
+      {/*        <img*/}
+      {/*          style={{ width: "169px", height: "238px" }}*/}
+      {/*          src="./aboutJaylee.png"*/}
+      {/*        />*/}
+      {/*      </div>*/}
+      {/*      <div className="member">*/}
+      {/*        <div className="name text Roboto_20pt_Black_L">*/}
+      {/*          {t("About/Member/jayLee/title")}*/}
+      {/*        </div>*/}
+      {/*        <div className="desc text Roboto_19pt_Regular_L">*/}
+      {/*          {t("About/Member/jayLee/content")}*/}
+      {/*        </div>*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*    <div className="members">*/}
+      {/*      <div*/}
+      {/*        className="nft"*/}
+      {/*        // style={{ cursor: "pointer" }}*/}
+      {/*        // onClick={() => {*/}
+      {/*        //   window.open(*/}
+      {/*        //     "https://www.bakeryswap.org/#/exchange/artworkInfo/17054/0/1?type=111&level=v3",*/}
+      {/*        //     "_blank"*/}
+      {/*        //   );*/}
+      {/*        // }}*/}
+      {/*      >*/}
+      {/*        <img*/}
+      {/*          style={{ width: "169px", height: "238px" }}*/}
+      {/*          src="./aboutJakekim.png"*/}
+      {/*        />*/}
+      {/*      </div>*/}
+      {/*      <div className="member">*/}
+      {/*        <div className="name text Roboto_20pt_Black_L">*/}
+      {/*          {t("About/Member/jakeKim/title")}*/}
+      {/*        </div>*/}
+      {/*        <div className="desc text Roboto_19pt_Regular_L">*/}
+      {/*          {t("About/Member/jakeKim/content")}*/}
+      {/*        </div>*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*    <div className="members">*/}
+      {/*      <div*/}
+      {/*        className="nft"*/}
+      {/*        style={{ cursor: "pointer" }}*/}
+      {/*        onClick={() => {*/}
+      {/*          window.open(*/}
+      {/*            "https://www.bakeryswap.org/#/exchange/artworkInfo/17054/0/1?type=111&level=v3",*/}
+      {/*            "_blank"*/}
+      {/*          );*/}
+      {/*        }}*/}
+      {/*      >*/}
+      {/*        <img*/}
+      {/*          style={{ width: "169px", height: "238px" }}*/}
+      {/*          src="./aboutEk.png"*/}
+      {/*        />*/}
+      {/*      </div>*/}
+      {/*      <div className="member">*/}
+      {/*        <div className="name text Roboto_20pt_Black_L">*/}
+      {/*          {t("About/Member/ethanKang/title")}*/}
+      {/*        </div>*/}
+      {/*        <div className="desc text Roboto_19pt_Regular_L">*/}
+      {/*          {t("About/Member/ethanKang/content")}*/}
+      {/*        </div>*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      {/*</Content>*/}
       <Content id="aboutSection4">
         <div className="third">
           <div className="theme text Roboto_50pt_Black">Advisors</div>
