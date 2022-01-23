@@ -5,6 +5,7 @@ import Dropdown from "./Dropdown";
 import WalletConnect from "../../../Components/Common/WalletConnect";
 import { SolanaAdapter } from "../../../Components/Common/SolanaAdapter";
 import Popup from "./popup";
+import RedeemPopup from "./redeemPopup";
 //store
 import { useRecoilState } from "recoil";
 import { requireNetworkState } from "../../../store/web3";
@@ -27,13 +28,13 @@ function AssetSwap({ toast }) {
   const [t] = useTranslation();
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
-  const [requireNetwork, setRequireNetwork] = useRecoilState(
-    requireNetworkState
-  );
+  const [requireNetwork, setRequireNetwork] =
+    useRecoilState(requireNetworkState);
   const [account] = useRecoilState(accountState);
   const [solAddress, setSolAddress] = useRecoilState(solAccountState);
   const [addresses, setAddresses] = useState([]);
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [isRedeemPopupOpen, setRedeemPopupOpen] = useState(false);
   const [recipeId, setRecipeId] = useState("");
   const [bridgeAddress, setBridgeAddress] = useState("");
 
@@ -153,6 +154,20 @@ function AssetSwap({ toast }) {
             }}
             toast={toast}
             isPopupOpen={isPopupOpen}
+            recipeId={recipeId}
+            bridgeAddress={bridgeAddress}
+            addresses={addresses}
+          />
+        )}
+        {isRedeemPopupOpen && (
+          <RedeemPopup
+            recipe={recipe}
+            setRecipe={setRecipe}
+            close={() => {
+              setRedeemPopupOpen(false);
+            }}
+            toast={toast}
+            isRedeemPopupOpen={isRedeemPopupOpen}
             recipeId={recipeId}
             bridgeAddress={bridgeAddress}
             addresses={addresses}
@@ -283,6 +298,17 @@ function AssetSwap({ toast }) {
             onClick={() => setPopupOpen(!isPopupOpen)}
           />
         )}
+        {recipe.from.network === "(Solana Network)" ||
+        recipe.to.network === "(Solana Network)" ? (
+          <Redeem
+            onClick={async () => {
+              await getRecipeId();
+              setRedeemPopupOpen(!isRedeemPopupOpen);
+            }}
+          >
+            REDEEM
+          </Redeem>
+        ) : null}
       </Content>
     </Container>
   );
@@ -298,7 +324,7 @@ const Container = styled.div`
     justify-content: center;
     width: 714px;
     // height: 704px;
-    height: 670px;
+    height: 770px;
     margin: 0px 0px 0px 20px;
   }
 `;
@@ -320,6 +346,36 @@ const Arrow = styled.div`
   &:hover {
     border-radius: 5px;
     box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
+  }
+`;
+
+const Redeem = styled.div`
+  width: 540px;
+  height: 80px;
+  margin: 0 auto;
+  padding: 20px 0;
+  border-radius: 20px;
+  background-color: var(--ultramarine-blue);
+  font-family: Roboto;
+  font-size: 30px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  @media (min-width: 1088px) {
+    width: 474px;
+    height: 60px;
+    padding: 18px 0;
+    font-size: 20px;
   }
 `;
 

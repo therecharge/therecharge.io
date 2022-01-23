@@ -406,7 +406,7 @@ export default function Popup({
               });
             }}
             className="popup-close"
-            style={{ position: "absolute", right: "0" }}
+            style={{ position: "absolute", right: "0", cursor: "pointer" }}
           />
           <div className="group1">
             <span className="Roboto_40pt_Black popup-title">SWAP</span>
