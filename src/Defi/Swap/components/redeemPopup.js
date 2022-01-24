@@ -18,10 +18,18 @@ export default function Popup({
     console.log("submissionAddresses", addresses);
     console.log("submissionTxId", transactionId);
     let result = setTimeout(async () => {
-      await axios.post("https://sol-bridge.therecharge.io/submission", {
-        id: recipeId,
-        txid: transactionId,
-      });
+      await axios
+        .post("https://sol-bridge.therecharge.io/submission", {
+          id: recipeId,
+          txid: transactionId,
+        })
+        .then((res) => {
+          if (res.data === "Is already spent") {
+            alert("This TxId has already been dealt with");
+          } else if (res.status === "201") {
+            alert("Your tokens have been successfully redeemed");
+          }
+        });
     }, 10000);
   };
 
@@ -74,9 +82,15 @@ export default function Popup({
               className="popup-input"
               placeholder="Leave here"
               value={
-                transactionId.length < 20
+                recipe.from.network === "(Solana Network)"
+                  ? transactionId.length < 20
+                    ? transactionId
+                    : transactionId.slice(0, 10) +
+                      "..." +
+                      transactionId.slice(80)
+                  : transactionId.length < 20
                   ? transactionId
-                  : transactionId.slice(0, 10) + "..." + transactionId.slice(80)
+                  : transactionId.slice(0, 10) + "..." + transactionId.slice(56)
               }
               style={{ marginBottom: "16px", color: "white" }}
               onChange={(e) => {
