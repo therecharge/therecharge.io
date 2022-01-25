@@ -120,7 +120,11 @@ export default function Popup({
           >
             Confirm Redemption
           </Redeem>
-          <Detail>More details</Detail>
+          <Detail
+            onClick={() => window.open("https://bit.ly/3AoWg21", "_blank")}
+          >
+            More details
+          </Detail>
         </Content>
         <div
           className="background"
@@ -317,46 +321,7 @@ const Content = styled.div`
     margin-bottom: 80px;
   }
 `;
-const QuickSelect = styled.div`
-  display: flex;
-  margin: 16px auto;
-  gap: 20px;
-  .sel-max {
-    background-color: white;
-    span {
-      color: black;
-    }
-  }
-  div {
-    display: flex;
-    width: 100px;
-    height: 50px;
-    border: 1px solid white;
-    border-radius: 10px;
-    span {
-      margin: auto auto;
-    }
-  }
-  div:hover {
-    background-color: #ffffff;
-    span {
-      color: var(--black-30);
-    }
-  }
-`;
-const InfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 540px;
-  margin: 0 auto;
-  margin-top: 40px;
-  gap: 12px;
 
-  @media (min-width: 1088px) {
-    width: 540px;
-    margin: 20px auto;
-  }
-`;
 const Loading = styled.div`
   display: flex;
   align-items: center;
@@ -437,4 +402,8 @@ const Detail = styled.div`
   letter-spacing: normal;
   text-align: center;
   color: #fff;
+  cursor: pointer;
+  :hover {
+    color: var(--yellow);
+  }
 `;
