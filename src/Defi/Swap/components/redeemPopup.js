@@ -15,8 +15,8 @@ export default function Popup({
   const [onLoading, setOnLoading] = useState(false);
 
   const postSubmission = async () => {
-    console.log("submissionAddresses", addresses);
-    console.log("submissionTxId", transactionId);
+    // console.log("submissionAddresses", addresses);
+    // console.log("submissionTxId", transactionId);
     let result = setTimeout(async () => {
       await axios
         .post("https://sol-bridge.therecharge.io/submission", {
@@ -27,7 +27,7 @@ export default function Popup({
           if (res.data === "Is already spent") {
             alert("This TxId has already been dealt with");
           } else if (res.status === "201") {
-            alert("Your tokens have been successfully redeemed");
+            alert("Your tokens have been successfully transferred");
           }
         });
     }, 10000);
@@ -74,9 +74,9 @@ export default function Popup({
               <div>{addresses[1].slice(0, 20) + "..."}</div>
             </div>
             <div className="Roboto_30pt_Medium">
-              {`${
-                recipe.from.network === "(Solana Network)" ? "SOL" : "BSC"
-              } TXID`}
+              {recipe.from.network === "(Solana Network)"
+                ? "SOL Signature"
+                : "BSC TXID"}
             </div>
             <input
               className="popup-input"
@@ -95,13 +95,17 @@ export default function Popup({
               style={{ marginBottom: "16px", color: "white" }}
               onChange={(e) => {
                 setTransactionId(e.target.value);
-                console.log("transactionId", transactionId);
+                // console.log("transactionId", transactionId);
               }}
             />
           </div>
 
           <span className="Roboto_20pt_Regular popup-caution">
-            {`Paste your transaction hash(TXID) on ${
+            {`Paste your ${
+              recipe.from.network === "(Solana Network)"
+                ? "signature"
+                : "transaction hash(TXID)"
+            } on ${
               recipe.from.network === "(Solana Network)" ? "SOL" : "BSC"
             } Scan`}
           </span>
