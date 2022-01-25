@@ -273,7 +273,25 @@ function Gnb({ getTitle }) {
             </div>
           </div>
         </div>
-
+        <div className="dropdown">
+          <div className={"Roboto_35pt_Nomal"}>
+            <a
+              href="https://nft.therecharge.io/"
+              target="_blank"
+              onClick={() => {
+                setMenuOpen(false);
+                setSidemenuOpen({
+                  home: false,
+                  about: false,
+                  recharge: false,
+                  docs: false,
+                });
+              }}
+            >
+              NFT
+            </a>
+          </div>
+        </div>
         <div className="dropdown">
           <div
             onClick={() => {

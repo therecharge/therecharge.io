@@ -126,6 +126,16 @@ function Gnb() {
             </div>
           </div>
           <div className="dropdown">
+            <a
+              style={{ cursor: "pointer" }}
+              className="title Roboto_16pt_Regular"
+              href="https://nft.therecharge.io/"
+              target="_blank"
+            >
+              NFT
+            </a>
+          </div>
+          <div className="dropdown">
             <HashLink to={"/docs/1#whitepaper"}>
               <a className="title Roboto_16pt_Regular">Docs</a>
             </HashLink>
