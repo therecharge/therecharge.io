@@ -555,7 +555,8 @@ function Row({
                   need="0"
                   disable={true}
                   bgColor={
-                    status === "Closed" && userInfo.balance > 0
+                    status === "Closed" &&
+                    (userInfo.balance > 0 || userInfo.reward > 0)
                       ? /*&& startTime == "1636693200"*/
                         "var(--ultramarine-blue)"
                       : "var(--gray-30)"
@@ -578,7 +579,8 @@ function Row({
 
                     // FIX ME
                     else if (status === "Closed") {
-                      if (userInfo.balance > 0) {
+                      // Fix Me
+                      if (userInfo.balance > 0 || userInfo.reward > 0) {
                         // 보상 오류로 balance 추가 됩니다 FIX ME
                         poolMethods.exit(userInfo.balance);
                         await toast(
