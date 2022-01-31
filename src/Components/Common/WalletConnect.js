@@ -57,6 +57,7 @@ function ConnectWallet({
         rpc: {
           1: "https://eth-mainnet.alchemyapi.io/v2/2wgBGtGnTm3s0A0o23RY0BtXxgow1GAn",
           3: "https://eth-ropsten.alchemyapi.io/v2/vn-ib6FVXaweiMUDJkOmOkXQm1jPacAj",
+          56: "https://bsc-dataseed.binance.org/",
           128: "https://http-mainnet.hecochain.com",
           256: "https://http-testnet.hecochain.com",
         },
