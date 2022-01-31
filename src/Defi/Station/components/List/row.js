@@ -46,9 +46,8 @@ function Row({
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
-  const [requireNetwork, setRequireNetwork] = useRecoilState(
-    requireNetworkState
-  );
+  const [requireNetwork, setRequireNetwork] =
+    useRecoilState(requireNetworkState);
   const [web3_R] = useRecoilState(web3ReaderState);
   const WEB3 = web3_R[poolNet];
   const [isOpen, setOpen] = useState(false);
@@ -578,22 +577,22 @@ function Row({
                     }
 
                     // FIX ME
-                    // else if (status === "Close") {
-                    //   if (userInfo.balance > 0) {
-                    //     // 보상 오류로 balance 추가 됩니다 FIX ME
-                    //     poolMethods.exit(userInfo.balance);
-                    //     await toast(
-                    //       'Please approve "UNPLUG" in your private wallet'
-                    //     );
-                    //   } else toast("There is no withdrawable amount");
-                    // } else {
-                    //   toast("Please try after the pool service period ends");
-                    // }
-                    else {
-                      toast(
-                        "Your balance and reward will be sent to your wallet"
-                      );
+                    else if (status === "Close") {
+                      if (userInfo.balance > 0) {
+                        // 보상 오류로 balance 추가 됩니다 FIX ME
+                        poolMethods.exit(userInfo.balance);
+                        await toast(
+                          'Please approve "UNPLUG" in your private wallet'
+                        );
+                      } else toast("There is no withdrawable amount");
+                    } else {
+                      toast("Please try after the pool service period ends");
                     }
+                    // else {
+                    //   toast(
+                    //     "Your balance and reward will be sent to your wallet"
+                    //   );
+                    // }
                   }}
                 />
               )}
