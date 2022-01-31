@@ -577,7 +577,7 @@ function Row({
                     }
 
                     // FIX ME
-                    else if (status === "Close") {
+                    else if (status === "Closed") {
                       if (userInfo.balance > 0) {
                         // 보상 오류로 balance 추가 됩니다 FIX ME
                         poolMethods.exit(userInfo.balance);
