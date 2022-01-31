@@ -199,8 +199,8 @@ function Row({
     }; // FIX ME
     const exit = (poolM, account, balance) => {
       // 보상 오류로 잠정 exit가 아닌 withdrwal로 변경합니다.
-      // poolM.exit().send({ from: account });
-      poolM.withdraw(balance).send({ from: account });
+      poolM.exit().send({ from: account });
+      // poolM.withdraw(balance).send({ from: account });
     };
 
     ret = {
