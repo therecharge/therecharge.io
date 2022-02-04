@@ -18,6 +18,11 @@ import { fromWei, toBN } from "web3-utils";
 import { web3ReaderState } from "../../../store/read-web3";
 // import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
 // import { ReactComponent as DropdownOpen } from "./List/assets/dropdown-open.svg";
+
+Array.prototype.insert = function ( index, item ) {
+  this.splice( index, 0, item );
+};
+
 const loading_data = [
   {
     address: "0x0",
@@ -86,6 +91,13 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
      * 3. 모든 차져 인스턴스에 대한 인포 받기
      * 4. 네트워크, 타입에 따라 필터링 진행
      */
+
+    const realignArray = (insertIdx, deleteIdx, arr) => {
+      const insertData = arr[deleteIdx];
+      arr.splice(deleteIdx, 1);
+      arr.insert(1, insertData);
+      return arr;
+    }
 
     const ETH_WEB3 = web3_R.ERC;
     const BEP_WEB3 = web3_R.BEP;
@@ -340,7 +352,9 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       // ALL_LIST.unshift(lastCharger)
 
       console.log("ALL_LIST", ALL_LIST);
-
+      if(ALL_LIST.length > 1 && ALL_LIST[5].name === '2.3 Pancake LP Locked -  High Yield') {
+        ALL_LIST = realignArray(1, 5, ALL_LIST)
+      }
       if (ALL_LIST.length === 0) {
         setChList(chargerInfo);
         setFullList(chargerInfo);
@@ -381,6 +395,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     }
   }, []);
   useEffect(async () => {
+
     try {
       let list;
       if (network === "ALL" && params.type === "ALL") {
