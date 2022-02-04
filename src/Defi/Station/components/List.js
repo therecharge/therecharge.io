@@ -391,7 +391,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     try {
       await loadChargerList();
     } catch (err) {
-      console.log(err);
+      console.log(err, 'error');
     }
   }, []);
   useEffect(async () => {
