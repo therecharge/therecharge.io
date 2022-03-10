@@ -59,6 +59,7 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
   const [chList, setChList] = useState(loading_data);
   // const [isOpen, setOpen] = useState(false);
   const [web3_R] = useRecoilState(web3ReaderState);
+  const [lockedPoolAddress, setLockedPoolAddress] = useState([]);
   const NETWORKS = require("../../../lib/networks.json");
 
   const loadChargerList = async () => {
@@ -260,12 +261,10 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
             ALL_STAKES_SYMBOL[network][i],
           ];
           ALL_RESULTS[network][i].network = net;
-          ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes(
-            "LP"
-          );
-          ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][
-            i
-          ].name.includes("Locked");
+          ALL_RESULTS[network][i].isLP =
+            ALL_RESULTS[network][i].name.includes("LP");
+          ALL_RESULTS[network][i].isLocked =
+            ALL_RESULTS[network][i].name.includes("Locked");
           ALL_RESULTS[network][i].poolTVL =
             ALL_RESULTS[network][i].isLP &&
             ALL_RESULTS[network][i].network === "BEP"

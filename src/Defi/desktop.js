@@ -1,67 +1,60 @@
 /* Libraries */
-import { fromWei } from "web3-utils";
-import React, { useState, useEffect, useRef } from "react";
-import { useSortBy, useTable } from "react-table";
-import styled from "styled-components";
-import axios from "axios";
-import { RotateCircleLoading } from "react-loadingg";
-import { withTranslation } from "react-i18next";
+import { fromWei } from 'web3-utils';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSortBy, useTable } from 'react-table';
+import styled from 'styled-components';
+import axios from 'axios';
+import { RotateCircleLoading } from 'react-loadingg';
+import { withTranslation } from 'react-i18next';
 /* Components */
-import Footer from "../Components/Desktop/Footer";
-import WalletConnect from "../Components/Common/WalletConnect";
+import Footer from '../Components/Desktop/Footer';
+import WalletConnect from '../Components/Common/WalletConnect';
 /* Libraries */
-import {
-  getChargerList,
-  createContractInstance,
-  getChargerInfo,
-} from "../lib/read_contract/Station";
+import { getChargerList, createContractInstance, getChargerInfo } from '../lib/read_contract/Station';
 /* State */
-import { useRecoilState } from "recoil";
-import { HashLink } from "react-router-hash-link";
-import { accountState } from "../store/web3";
-import { web3ReaderState } from "../store/read-web3";
-import { tvdState } from "../store/data";
-import { uniLpLockerState } from "../store/data";
+import { useRecoilState } from 'recoil';
+import { HashLink } from 'react-router-hash-link';
+import { accountState } from '../store/web3';
+import { web3ReaderState } from '../store/read-web3';
+import { tvdState } from '../store/data';
+import { uniLpLockerState } from '../store/data';
+import { getAllContracts } from '../api/contract';
 
 function convert(n) {
-  var sign = +n < 0 ? "-" : "",
+  var sign = +n < 0 ? '-' : '',
     toStr = n.toString();
   if (!/e/i.test(toStr)) {
     return n;
   }
   var [lead, decimal, pow] = n
     .toString()
-    .replace(/^-/, "")
-    .replace(/^([0-9]+)(e.*)/, "$1.$2")
+    .replace(/^-/, '')
+    .replace(/^([0-9]+)(e.*)/, '$1.$2')
     .split(/e|\./);
   return +pow < 0
-    ? sign +
-        "0." +
-        "0".repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) +
-        lead +
-        decimal
+    ? sign + '0.' + '0'.repeat(Math.max(Math.abs(pow) - 1 || 0, 0)) + lead + decimal
     : sign +
         lead +
         (+pow >= decimal.length
-          ? decimal + "0".repeat(Math.max(+pow - decimal.length || 0, 0))
-          : decimal.slice(0, +pow) + "." + decimal.slice(+pow));
+          ? decimal + '0'.repeat(Math.max(+pow - decimal.length || 0, 0))
+          : decimal.slice(0, +pow) + '.' + decimal.slice(+pow));
 }
 
 const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
   let newNum;
-  if (typeof num === "string") newNum = Number(num);
+  if (typeof num === 'string') newNum = Number(num);
   if (unitSeparator) return newNum.toLocaleString();
-  return newNum.toLocaleString("fullwide", { useGrouping: false });
+  return newNum.toLocaleString('fullwide', { useGrouping: false });
 };
 function makeNum(str, decimal = 4) {
-  let arr = str.split(".");
+  let arr = str.split('.');
   if (arr.length == 1 || arr[0].length > 8) return arr[0];
   else {
-    return arr[0] + "." + arr[1].substr(0, decimal);
+    return arr[0] + '.' + arr[1].substr(0, decimal);
   }
 }
 const weiToEther = (wei) => {
-  return fromWei(wei, "ether");
+  return fromWei(wei, 'ether');
 };
 
 function Defi({ toast, t }) {
@@ -69,10 +62,10 @@ function Defi({ toast, t }) {
   const [web3_R] = useRecoilState(web3ReaderState);
   const [tvd, setTvd] = useRecoilState(tvdState);
   const [uniLpLocker, setUniLpLocker] = useRecoilState(uniLpLockerState);
-  const NETWORKS = require("../lib/networks.json");
-  const CHARGERLIST_ABI = require("../lib/read_contract/abi/chargerList.json");
-  const CHARGER_ABI = require("../lib/read_contract/abi/charger.json");
-  const ERC20_ABI = require("../lib/read_contract/abi/erc20.json");
+  const NETWORKS = require('../lib/networks.json');
+  const CHARGERLIST_ABI = require('../lib/read_contract/abi/chargerList.json');
+  const CHARGER_ABI = require('../lib/read_contract/abi/charger.json');
+  const ERC20_ABI = require('../lib/read_contract/abi/erc20.json');
   const [onLoading, setOnLoading] = useState(true);
   const [myPools, setMyPools] = useState(null);
   const [analytics, setAnalytics] = useState({
@@ -86,30 +79,28 @@ function Defi({ toast, t }) {
     // general: {},
   });
 
-  const data = React.useMemo(() => (myPools === null ? [] : myPools), [
-    myPools,
-  ]);
+  const data = React.useMemo(() => (myPools === null ? [] : myPools), [myPools]);
   const columns = React.useMemo(
     () => [
       {
-        Header: "Type",
-        accessor: "type", // accessor is the "key" in the data
+        Header: 'Type',
+        accessor: 'type', // accessor is the "key" in the data
         disableSortBy: true,
       },
       {
-        Header: "Name",
-        accessor: "name",
+        Header: 'Name',
+        accessor: 'name',
         disableSortBy: true,
       },
       {
-        Header: "My Balance",
-        accessor: "balance",
-        id: "balance",
+        Header: 'My Balance',
+        accessor: 'balance',
+        id: 'balance',
         disableSortBy: true,
       },
       {
-        Header: "Reward",
-        accessor: "reward",
+        Header: 'Reward',
+        accessor: 'reward',
         disableSortBy: true,
       },
     ],
@@ -118,40 +109,34 @@ function Defi({ toast, t }) {
   const initialState = {
     sortBy: [
       {
-        id: "name",
+        id: 'name',
       },
     ],
   };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data, initialState }, useSortBy);
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
+    { columns, data, initialState },
+    useSortBy
+  );
 
   const loadMyPools = async () => {
     try {
-      const NETWORK = NETWORKS["mainnet"];
-      const ERC_WEB3 = web3_R["ERC"];
-      const BEP_WEB3 = web3_R["BEP"];
-      const ERC_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress["ERC"];
-      const BEP_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress["BEP"];
+      const NETWORK = NETWORKS['mainnet'];
+      const ERC_WEB3 = web3_R['ERC'];
+      const BEP_WEB3 = web3_R['BEP'];
+      const ERC_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress['ERC'];
+      const BEP_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress['BEP'];
 
-      const ERC_CHARGERLIST_INSTANCE = createContractInstance(
-        ERC_WEB3,
-        ERC_CHARGERLIST_ADDRESS,
-        CHARGERLIST_ABI
-      );
-      const BEP_CHARGERLIST_INSTANCE = createContractInstance(
-        BEP_WEB3,
-        BEP_CHARGERLIST_ADDRESS,
-        CHARGERLIST_ABI
-      );
+      const ERC_CHARGERLIST_INSTANCE = createContractInstance(ERC_WEB3, ERC_CHARGERLIST_ADDRESS, CHARGERLIST_ABI);
+      const BEP_CHARGERLIST_INSTANCE = createContractInstance(BEP_WEB3, BEP_CHARGERLIST_ADDRESS, CHARGERLIST_ABI);
 
-      const ERC_CHARGERLIST = await getChargerList(ERC_CHARGERLIST_INSTANCE);
-      const BEP_CHARGERLIST = await getChargerList(BEP_CHARGERLIST_INSTANCE);
+      const allContract = await getAllContracts();
+      const ERC_CHARGERLIST = allContract.chargeList.Etheruem.map((item) => item.address);
+      const BEP_CHARGERLIST = allContract.chargeList.Binance.map((item) => item.address);
+      // const HRC_CHARGER_LIST = allContract.chargeList.Huobi.map((item) => item.address);
+
+      // const ERC_CHARGERLIST = await getChargerList(ERC_CHARGERLIST_INSTANCE);
+      // const BEP_CHARGERLIST = await getChargerList(BEP_CHARGERLIST_INSTANCE);
 
       const ERC_CHARGER_INSTANCES = ERC_CHARGERLIST.map((CHARGER_ADDRESS) => {
         return createContractInstance(ERC_WEB3, CHARGER_ADDRESS, CHARGER_ABI);
@@ -181,13 +166,10 @@ function Defi({ toast, t }) {
           ]);
 
           return {
-            type:
-              name.includes("Locked") || name.includes("Zero")
-                ? "Locked Staking"
-                : "Flexible Staking",
+            type: name.includes('Locked') || name.includes('Zero') ? 'Locked Staking' : 'Flexible Staking',
             name: name,
-            balance: makeNum(fromWei(balance, "ether")),
-            reward: makeNum(fromWei(reward, "ether")),
+            balance: makeNum(fromWei(balance, 'ether')),
+            reward: makeNum(fromWei(reward, 'ether')),
           };
         })
       );
@@ -202,20 +184,15 @@ function Defi({ toast, t }) {
           ]);
 
           return {
-            type:
-              name.includes("Locked") || name.includes("Zero")
-                ? "Locked Staking"
-                : "Flexible Staking",
+            type: name.includes('Locked') || name.includes('Zero') ? 'Locked Staking' : 'Flexible Staking',
             name: name,
-            balance: fromWei(balance, "ether"),
-            reward: fromWei(reward, "ether"),
+            balance: fromWei(balance, 'ether'),
+            reward: fromWei(reward, 'ether'),
           };
         })
       );
 
-      let ALL_OF_CHARCERS_INFO = [...ercPool, ...bepPool].filter(
-        (pool) => pool.balance > 0
-      );
+      let ALL_OF_CHARCERS_INFO = [...ercPool, ...bepPool].filter((pool) => pool.balance > 0);
 
       // console.log("ALL_OF_CHARCERS_INFO", ALL_OF_CHARCERS_INFO)
 
@@ -227,64 +204,32 @@ function Defi({ toast, t }) {
 
   const loadAnalytics = async () => {
     try {
-      const BEP_WEB3 = web3_R["BEP"];
-      const ERC_WEB3 = web3_R["ERC"];
+      const BEP_WEB3 = web3_R['BEP'];
+      const ERC_WEB3 = web3_R['ERC'];
 
-      const RCG_TOKEN_ADDRESS = "0x2d94172436d869c1e3c094bead272508fab0d9e3";
-      const WBNB_TOKEN_ADDRESS = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
-      const UNISWAP_LP_ADDRESS = "0x9C20be0f142FB34F10E33338026fB1DD9e308da3";
-      const RCG_eth_TOKEN_ADDRESS =
-        "0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30";
+      const RCG_TOKEN_ADDRESS = '0x2d94172436d869c1e3c094bead272508fab0d9e3';
+      const WBNB_TOKEN_ADDRESS = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c';
+      const UNISWAP_LP_ADDRESS = '0x9C20be0f142FB34F10E33338026fB1DD9e308da3';
+      const RCG_eth_TOKEN_ADDRESS = '0xe74be071f3b62f6a4ac23ca68e5e2a39797a3c30';
 
-      const RCG_bsc_CONTRACT_ADDRESS =
-        "0x0A9B1C9893aE0BE97A6d31AdBc39bCd6737B4922";
-      const UNISWAP_LP_LOCKER_ADDRESS =
-        "0x384e5de8c108805d6a1d5bf4c2aaa0b390ea018b";
+      const RCG_bsc_CONTRACT_ADDRESS = '0x0A9B1C9893aE0BE97A6d31AdBc39bCd6737B4922';
+      const UNISWAP_LP_LOCKER_ADDRESS = '0x384e5de8c108805d6a1d5bf4c2aaa0b390ea018b';
 
-      const RCG_TOKEN_INSTANCE = createContractInstance(
-        BEP_WEB3,
-        RCG_TOKEN_ADDRESS,
-        ERC20_ABI
-      );
-      const WBNB_TOKEN_INSTANCE = createContractInstance(
-        BEP_WEB3,
-        WBNB_TOKEN_ADDRESS,
-        ERC20_ABI
-      );
+      const RCG_TOKEN_INSTANCE = createContractInstance(BEP_WEB3, RCG_TOKEN_ADDRESS, ERC20_ABI);
+      const WBNB_TOKEN_INSTANCE = createContractInstance(BEP_WEB3, WBNB_TOKEN_ADDRESS, ERC20_ABI);
 
-      const RCG_eth_TOKEN_INSTANCE = createContractInstance(
-        ERC_WEB3,
-        RCG_eth_TOKEN_ADDRESS,
-        ERC20_ABI
-      );
+      const RCG_eth_TOKEN_INSTANCE = createContractInstance(ERC_WEB3, RCG_eth_TOKEN_ADDRESS, ERC20_ABI);
 
-      const UNISWAP_LP_INSTANCE = createContractInstance(
-        ERC_WEB3,
-        UNISWAP_LP_ADDRESS,
-        ERC20_ABI
-      );
+      const UNISWAP_LP_INSTANCE = createContractInstance(ERC_WEB3, UNISWAP_LP_ADDRESS, ERC20_ABI);
 
-      let [
-        RCG_balance,
-        WBNB_balance,
-        UNISWAP_LP_balance,
-        UNISWAP_LP_totalSupply,
-        RCG_eth_TOKEN_balance,
-      ] = await Promise.all([
-        await RCG_TOKEN_INSTANCE.methods
-          .balanceOf(RCG_bsc_CONTRACT_ADDRESS)
-          .call(),
-        await WBNB_TOKEN_INSTANCE.methods
-          .balanceOf(RCG_bsc_CONTRACT_ADDRESS)
-          .call(),
-        await UNISWAP_LP_INSTANCE.methods
-          .balanceOf(UNISWAP_LP_LOCKER_ADDRESS)
-          .call(),
-        await UNISWAP_LP_INSTANCE.methods.totalSupply().call(),
-        await RCG_eth_TOKEN_INSTANCE.methods
-          .balanceOf(UNISWAP_LP_ADDRESS)
-          .call(),
-      ]);
+      let [RCG_balance, WBNB_balance, UNISWAP_LP_balance, UNISWAP_LP_totalSupply, RCG_eth_TOKEN_balance] =
+        await Promise.all([
+          await RCG_TOKEN_INSTANCE.methods.balanceOf(RCG_bsc_CONTRACT_ADDRESS).call(),
+          await WBNB_TOKEN_INSTANCE.methods.balanceOf(RCG_bsc_CONTRACT_ADDRESS).call(),
+          await UNISWAP_LP_INSTANCE.methods.balanceOf(UNISWAP_LP_LOCKER_ADDRESS).call(),
+          await UNISWAP_LP_INSTANCE.methods.totalSupply().call(),
+          await RCG_eth_TOKEN_INSTANCE.methods.balanceOf(UNISWAP_LP_ADDRESS).call(),
+        ]);
 
       // console.log("RCG_eth_TOKEN_balance", RCG_eth_TOKEN_balance);
 
@@ -297,27 +242,21 @@ function Defi({ toast, t }) {
       const coinPriceData = await axios.get(
         `https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd`
       );
-      const BNBPrice = coinPriceData.data["binancecoin"].usd;
+      const BNBPrice = coinPriceData.data['binancecoin'].usd;
 
-      const RCG_bsc_price = ((WBNB_balance / RCG_balance) * BNBPrice).toFixed(
-        4
-      );
+      const RCG_bsc_price = ((WBNB_balance / RCG_balance) * BNBPrice).toFixed(4);
 
       const [analData, priceData, tvlData] = await Promise.all([
         axios.get(`https://analytics.api.therecharge.io/`),
-        axios.post(
-          `https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`,
-          {
-            query:
-              'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
-          }
-        ),
+        axios.post(`https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`, {
+          query: 'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
+        }),
         axios.get(`https://api.therecharge.io/tvl`),
       ]);
       let { token0Price, token1Price } = priceData.data.data.pairs[0];
       token0Price = makeNum(token0Price);
       token1Price = makeNum(token1Price);
-      let TVL = makeNum("" + tvlData.data.TVL);
+      let TVL = makeNum('' + tvlData.data.TVL);
 
       /* Start to get LP Locker */
 
@@ -342,20 +281,15 @@ function Defi({ toast, t }) {
       // );
 
       let uni_lp_price =
-        (Number(fromWei(RCG_eth_TOKEN_balance, "ether")) *
-          token0Price *
-          2 *
-          0.95) /
-        Number(fromWei(UNISWAP_LP_totalSupply, "ether"));
+        (Number(fromWei(RCG_eth_TOKEN_balance, 'ether')) * token0Price * 2 * 0.95) /
+        Number(fromWei(UNISWAP_LP_totalSupply, 'ether'));
       // console.log("RCG_eth_TOKEN_balance", RCG_eth_TOKEN_balance);
 
       // console.log(
       //   "UNI_LP_LOCKER가 보유한 balance(단위: RCG) : ",
       //   fromWei(UNISWAP_LP_balance, "ether")
       // );
-      setUniLpLocker(
-        Number(fromWei(UNISWAP_LP_balance, "ether")) * uni_lp_price
-      );
+      setUniLpLocker(Number(fromWei(UNISWAP_LP_balance, 'ether')) * uni_lp_price);
 
       // console.log(
       //   "UNI_LP_LOCKER가 보유한 balance의 달러가치(단위: $) : ",
@@ -416,23 +350,17 @@ function Defi({ toast, t }) {
   return (
     <Container>
       <Content>
-        <div className="first" id="station" style={{ paddingTop: "80px" }}>
+        <div className="first" id="station" style={{ paddingTop: '80px' }}>
           <div className="theme Roboto_40pt_Black">Overview</div>
           <div className="contents">
             <div className="content">
               <div className="box">
                 <img src="/ic_chargingstation.svg" />
                 <div className="desc">
-                  <div className="name Roboto_30pt_Black_L">
-                    Charging Station
-                  </div>
-                  <div className="text Roboto_16pt_Regular_L">
-                    {t("De-Fi/Station/charging-station")}
-                  </div>
-                  <HashLink to={"/station"} style={{ textDecoration: "none" }}>
-                    <div className="link Roboto_16pt_Regular_L">
-                      {t("De-Fi/Station/charging-station-link")}
-                    </div>
+                  <div className="name Roboto_30pt_Black_L">Charging Station</div>
+                  <div className="text Roboto_16pt_Regular_L">{t('De-Fi/Station/charging-station')}</div>
+                  <HashLink to={'/station'} style={{ textDecoration: 'none' }}>
+                    <div className="link Roboto_16pt_Regular_L">{t('De-Fi/Station/charging-station-link')}</div>
                   </HashLink>
                 </div>
               </div>
@@ -442,13 +370,9 @@ function Defi({ toast, t }) {
                 <img src="/ic_rechargingswap.svg" />
                 <div className="desc">
                   <div className="name Roboto_30pt_Black_L">Recharge swap</div>
-                  <div className="text Roboto_16pt_Regular_L">
-                    {t("De-Fi/Station/recharge-swap")}
-                  </div>
-                  <HashLink to={"/swap"} style={{ textDecoration: "none" }}>
-                    <div className="link Roboto_16pt_Regular_L">
-                      {t("De-Fi/Station/recharge-swap-link")}
-                    </div>
+                  <div className="text Roboto_16pt_Regular_L">{t('De-Fi/Station/recharge-swap')}</div>
+                  <HashLink to={'/swap'} style={{ textDecoration: 'none' }}>
+                    <div className="link Roboto_16pt_Regular_L">{t('De-Fi/Station/recharge-swap-link')}</div>
                   </HashLink>
                 </div>
               </div>
@@ -457,14 +381,12 @@ function Defi({ toast, t }) {
         </div>
       </Content>
       <Content>
-        <div className="second" id="mypools" style={{ paddingTop: "100px" }}>
+        <div className="second" id="mypools" style={{ paddingTop: '100px' }}>
           <div className="theme Roboto_30pt_Black">My pools</div>
           <Line />
           {!account ? (
             <div className="contents">
-              <div className="content Roboto_30pt_Medium">
-                {t("De-Fi/Station/MyPool/ask-connect")}
-              </div>
+              <div className="content Roboto_30pt_Medium">{t('De-Fi/Station/MyPool/ask-connect')}</div>
               {/* <WalletConnect
                 need="2"
                 notConnected="Wallet Connect"
@@ -476,26 +398,21 @@ function Defi({ toast, t }) {
               /> */}
             </div>
           ) : myPools === null ? (
-            <Loading style={{ display: onLoading ? "" : "none" }}>
+            <Loading style={{ display: onLoading ? '' : 'none' }}>
               <div className="box">
-                <RotateCircleLoading
-                  color="#9314b2"
-                  style={{ margin: "auto", marginTop: "67.6px" }}
-                />
+                <RotateCircleLoading color="#9314b2" style={{ margin: 'auto', marginTop: '67.6px' }} />
                 <div className="text Roboto_30pt_Black">Loading…</div>
               </div>
             </Loading>
           ) : myPools.length === 0 ? (
             <div className="contents">
-              <div className="content Roboto_30pt_Medium">
-                {t("De-Fi/Station/MyPool/no-pool")}
-              </div>
+              <div className="content Roboto_30pt_Medium">{t('De-Fi/Station/MyPool/no-pool')}</div>
             </div>
           ) : (
             <div className="contents">
               <table
                 {...getTableProps()}
-                style={{ width: "1088px", borderCollapse: "collapse" }}
+                style={{ width: '1088px', borderCollapse: 'collapse' }}
                 className="Roboto_16pt_Bold"
               >
                 <thead>
@@ -503,23 +420,21 @@ function Defi({ toast, t }) {
                     <tr {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map((column) => (
                         <th
-                          {...column.getHeaderProps(
-                            column.getSortByToggleProps()
-                          )}
+                          {...column.getHeaderProps(column.getSortByToggleProps())}
                           style={{
-                            textAlign: "center",
+                            textAlign: 'center',
                           }}
                         >
-                          {column.render("Header")}
-                          {column.Header !== "" ? (
+                          {column.render('Header')}
+                          {column.Header !== '' ? (
                             <div
                               style={{
-                                width: "100%",
-                                height: "2px",
-                                margin: "20px 0",
-                                objectFit: "contain",
-                                boxShadow: "0 0 20px 0 #ffffff",
-                                backgroundColor: "var(--purple)",
+                                width: '100%',
+                                height: '2px',
+                                margin: '20px 0',
+                                objectFit: 'contain',
+                                boxShadow: '0 0 20px 0 #ffffff',
+                                backgroundColor: 'var(--purple)',
                               }}
                             ></div>
                           ) : (
@@ -539,18 +454,16 @@ function Defi({ toast, t }) {
                         {row.cells.map((cell) => {
                           return (
                             <HashLink
-                              to={`/defi/station#${
-                                myPools[row.index].type.split(" ")[0]
-                              }`}
+                              to={`/defi/station#${myPools[row.index].type.split(' ')[0]}`}
                               style={{
-                                display: "table-cell",
-                                textDecoration: "none",
-                                padding: "10px",
-                                textAlign: "center",
-                                cursor: "pointer",
+                                display: 'table-cell',
+                                textDecoration: 'none',
+                                padding: '10px',
+                                textAlign: 'center',
+                                cursor: 'pointer',
                               }}
                             >
-                              {cell.render("Cell")}
+                              {cell.render('Cell')}
                             </HashLink>
                           );
                         })}
@@ -564,53 +477,38 @@ function Defi({ toast, t }) {
         </div>
       </Content>
       <Content>
-        <div className="third" id="analytics" style={{ paddingTop: "100px" }}>
+        <div className="third" id="analytics" style={{ paddingTop: '100px' }}>
           <div className="themes">
             <div className="theme Roboto_30pt_Black">Analytics</div>
-            <div className="subTheme Roboto_20pt_Medium_L">
-              Overview of Recharge Ecosystem
-            </div>
+            <div className="subTheme Roboto_20pt_Medium_L">Overview of Recharge Ecosystem</div>
           </div>
-          <Line style={{ marginBottom: "20px" }} />
+          <Line style={{ marginBottom: '20px' }} />
           <div className="contents">
             <div className="container">
               <div className="center box exception">
                 <div className="title Roboto_30pt_Black">
-                  ${" "}
+                  ${' '}
                   {/* {analytics.general.tvl
                     ? Number(
                         Number(analytics.general.tvl).toFixed(2)
                       ).toLocaleString()
                     : Number(0).toFixed(2)} */}
-                  {tvd
-                    ? Number(Number(tvd).toFixed(2)).toLocaleString()
-                    : Number(3478866.78).toLocaleString()}
+                  {tvd ? Number(Number(tvd).toFixed(2)).toLocaleString() : Number(3478866.78).toLocaleString()}
                 </div>
-                <div className="text Roboto_16pt_Regular_Gray">
-                  Total Value Deposited
-                </div>
+                <div className="text Roboto_16pt_Regular_Gray">Total Value Deposited</div>
               </div>
             </div>
             <div className="container">
-              <div
-                className="center box"
-                style={{ display: "flex", flexDirection: "row", gap: "180px" }}
-              >
+              <div className="center box" style={{ display: 'flex', flexDirection: 'row', gap: '180px' }}>
                 <div>
                   <div className="title Roboto_30pt_Black">{`$ ${
-                    analytics.uniswap_lp_locker
-                      ? analytics.uniswap_lp_locker
-                      : "0.00"
+                    analytics.uniswap_lp_locker ? analytics.uniswap_lp_locker : '0.00'
                   }`}</div>
-                  <div className="text Roboto_16pt_Regular_Gray">
-                    Uniswap LP Locker
-                  </div>
+                  <div className="text Roboto_16pt_Regular_Gray">Uniswap LP Locker</div>
                 </div>
                 <div>
                   <div className="title Roboto_30pt_Black">$ 0.00</div>
-                  <div className="text Roboto_16pt_Regular_Gray">
-                    PancakeSwap LP Locker
-                  </div>
+                  <div className="text Roboto_16pt_Regular_Gray">PancakeSwap LP Locker</div>
                 </div>
               </div>
             </div>
@@ -622,20 +520,14 @@ function Defi({ toast, t }) {
                     : 0}{" "} */}
                   2 %
                 </div>
-                <div className="text Roboto_12pt_Regular_L_Gray">
-                  Current Redemption Rate
-                </div>
+                <div className="text Roboto_12pt_Regular_L_Gray">Current Redemption Rate</div>
               </div>
               <div className="right box exception">
                 <div className="item">
                   <div className="title Roboto_16pt_Bold">
-                    {analytics.numberOf.Plugged
-                      ? analytics.numberOf.Plugged
-                      : 0}
+                    {analytics.numberOf.Plugged ? analytics.numberOf.Plugged : 0}
                   </div>
-                  <div className="text Roboto_12pt_Regular_L_Gray">
-                    Number of Services Plugged
-                  </div>
+                  <div className="text Roboto_12pt_Regular_L_Gray">Number of Services Plugged</div>
                 </div>
                 <div className="item">
                   <div className="title Roboto_16pt_Bold">
@@ -644,48 +536,29 @@ function Defi({ toast, t }) {
                       : 0} */}
                     3
                   </div>
-                  <div className="text Roboto_12pt_Regular_L_Gray">
-                    Number of Chargers Activated
-                  </div>
+                  <div className="text Roboto_12pt_Regular_L_Gray">Number of Chargers Activated</div>
                 </div>
                 <div className="item">
                   <div className="title Roboto_16pt_Bold">
-                    {analytics.numberOf.Bridges
-                      ? analytics.numberOf.Bridges
-                      : 0}
+                    {analytics.numberOf.Bridges ? analytics.numberOf.Bridges : 0}
                   </div>
-                  <div className="text Roboto_12pt_Regular_L_Gray">
-                    Number of Bridges Activated
-                  </div>
+                  <div className="text Roboto_12pt_Regular_L_Gray">Number of Bridges Activated</div>
                 </div>
               </div>
             </div>
             <div className="container">
               <div className="left box">
-                <div
-                  className="title title Roboto_20pt_Medium_C"
-                  style={{ zIndex: "2" }}
-                >
+                <div className="title title Roboto_20pt_Medium_C" style={{ zIndex: '2' }}>
                   {analytics.totalCirculation.eth
-                    ? Number(
-                        Number(
-                          weiToEther(convertNum(analytics.totalCirculation.eth))
-                        ).toFixed(2)
-                      ).toLocaleString()
-                    : Number(0).toFixed(2)}{" "}
+                    ? Number(Number(weiToEther(convertNum(analytics.totalCirculation.eth))).toFixed(2)).toLocaleString()
+                    : Number(0).toFixed(2)}{' '}
                   RCG
                 </div>
-                <div
-                  className="text Roboto_12pt_Regular_L_Gray"
-                  style={{ zIndex: "2" }}
-                >
+                <div className="text Roboto_12pt_Regular_L_Gray" style={{ zIndex: '2' }}>
                   Total Circulating Supply in ERC20
                 </div>
                 <div className="logo1">
-                  <img
-                    src="/img_erc_back.svg"
-                    style={{ width: "61.5px", height: "100px" }}
-                  />
+                  <img src="/img_erc_back.svg" style={{ width: '61.5px', height: '100px' }} />
                 </div>
               </div>
               <div className="right box">
@@ -694,29 +567,18 @@ function Defi({ toast, t }) {
                     <div className="title Roboto_16pt_Bold">
                       {analytics.Accumulated.eth.Redemption
                         ? Number(
-                            Number(
-                              weiToEther(
-                                convertNum(analytics.Accumulated.eth.Redemption)
-                              )
-                            ).toFixed(2)
+                            Number(weiToEther(convertNum(analytics.Accumulated.eth.Redemption))).toFixed(2)
                           ).toLocaleString()
-                        : Number(0).toFixed(2)}{" "}
+                        : Number(0).toFixed(2)}{' '}
                       RCG
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
-                      Accumulated Carbon Redemption ERC20
-                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">Accumulated Carbon Redemption ERC20</div>
                   </div>
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
-                      ${" "}
-                      {analytics.rcg_eth_price
-                        ? makeNum(analytics.rcg_eth_price)
-                        : 0}
+                      $ {analytics.rcg_eth_price ? makeNum(analytics.rcg_eth_price) : 0}
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
-                      Current RCG Price($) ERC20 Uniswap
-                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">Current RCG Price($) ERC20 Uniswap</div>
                   </div>
                 </div>
                 <div className="content">
@@ -724,67 +586,40 @@ function Defi({ toast, t }) {
                     <div className="title Roboto_16pt_Bold">
                       {analytics.Accumulated.eth.SwappedIn
                         ? Number(
-                            Number(
-                              weiToEther(
-                                convertNum(analytics.Accumulated.eth.SwappedIn)
-                              )
-                            ).toFixed(2)
+                            Number(weiToEther(convertNum(analytics.Accumulated.eth.SwappedIn))).toFixed(2)
                           ).toLocaleString()
-                        : Number(0).toFixed(2)}{" "}
+                        : Number(0).toFixed(2)}{' '}
                       RCG
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
-                      RCG (ERC20) Swapped in
-                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">RCG (ERC20) Swapped in</div>
                   </div>
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
                       {analytics.Accumulated.eth.ConversionFee
                         ? Number(
-                            Number(
-                              weiToEther(
-                                convertNum(
-                                  analytics.Accumulated.eth.ConversionFee
-                                )
-                              )
-                            ).toFixed(2)
+                            Number(weiToEther(convertNum(analytics.Accumulated.eth.ConversionFee))).toFixed(2)
                           ).toLocaleString()
-                        : Number(0).toFixed(2)}{" "}
+                        : Number(0).toFixed(2)}{' '}
                       RCG
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
-                      Accumulated Conversion Fee(ERC20)
-                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">Accumulated Conversion Fee(ERC20)</div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="container">
               <div className="left box">
-                <div
-                  className="title title Roboto_20pt_Medium_C"
-                  style={{ zIndex: "2" }}
-                >
+                <div className="title title Roboto_20pt_Medium_C" style={{ zIndex: '2' }}>
                   {analytics.totalCirculation.bsc
-                    ? Number(
-                        Number(
-                          weiToEther(convertNum(analytics.totalCirculation.bsc))
-                        ).toFixed(2)
-                      ).toLocaleString()
-                    : Number(0).toFixed(2)}{" "}
+                    ? Number(Number(weiToEther(convertNum(analytics.totalCirculation.bsc))).toFixed(2)).toLocaleString()
+                    : Number(0).toFixed(2)}{' '}
                   RCG
                 </div>
-                <div
-                  className="text Roboto_12pt_Regular_L_Gray"
-                  style={{ zIndex: "2" }}
-                >
+                <div className="text Roboto_12pt_Regular_L_Gray" style={{ zIndex: '2' }}>
                   Total Circulating Supply in BEP20
                 </div>
                 <div className="logo3">
-                  <img
-                    src="/img_bep_back.svg"
-                    style={{ width: "100px", height: "100px" }}
-                  />
+                  <img src="/img_bep_back.svg" style={{ width: '100px', height: '100px' }} />
                 </div>
               </div>
               <div className="right box">
@@ -793,26 +628,18 @@ function Defi({ toast, t }) {
                     <div className="title Roboto_16pt_Bold">
                       {analytics.Accumulated.bsc.Redemption
                         ? Number(
-                            Number(
-                              weiToEther(
-                                convertNum(analytics.Accumulated.bsc.Redemption)
-                              )
-                            ).toFixed(2)
+                            Number(weiToEther(convertNum(analytics.Accumulated.bsc.Redemption))).toFixed(2)
                           ).toLocaleString()
-                        : Number(0).toFixed(2)}{" "}
+                        : Number(0).toFixed(2)}{' '}
                       RCG
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
-                      Accumulated Carbon Redemption BEP20
-                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">Accumulated Carbon Redemption BEP20</div>
                   </div>
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
                       $ {analytics.rcg_bsc_price ? analytics.rcg_bsc_price : 0}
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
-                      Current RCG Price($) BEP20 Pancakeswap
-                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">Current RCG Price($) BEP20 Pancakeswap</div>
                   </div>
                 </div>
                 <div className="content">
@@ -820,69 +647,42 @@ function Defi({ toast, t }) {
                     <div className="title Roboto_16pt_Bold">
                       {analytics.Accumulated.bsc.SwappedIn
                         ? Number(
-                            Number(
-                              weiToEther(
-                                convertNum(analytics.Accumulated.bsc.SwappedIn)
-                              )
-                            ).toFixed(2)
+                            Number(weiToEther(convertNum(analytics.Accumulated.bsc.SwappedIn))).toFixed(2)
                           ).toLocaleString()
-                        : Number(0).toFixed(2)}{" "}
+                        : Number(0).toFixed(2)}{' '}
                       RCG
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
-                      RCG (BEP20) Swapped in
-                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">RCG (BEP20) Swapped in</div>
                   </div>
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
                       {analytics.Accumulated.bsc.ConversionFee
                         ? Number(
-                            Number(
-                              weiToEther(
-                                convertNum(
-                                  analytics.Accumulated.bsc.ConversionFee
-                                )
-                              )
-                            ).toFixed(2)
+                            Number(weiToEther(convertNum(analytics.Accumulated.bsc.ConversionFee))).toFixed(2)
                           ).toLocaleString()
-                        : Number(0).toFixed(2)}{" "}
+                        : Number(0).toFixed(2)}{' '}
                       RCG
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
-                      Accumulated Conversion Fee(BEP20)
-                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">Accumulated Conversion Fee(BEP20)</div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="container">
               <div className="left box">
-                <div
-                  className="title title Roboto_20pt_Medium_C"
-                  style={{ zIndex: "2" }}
-                >
+                <div className="title title Roboto_20pt_Medium_C" style={{ zIndex: '2' }}>
                   {analytics.totalCirculation.heco
                     ? Number(
-                        Number(
-                          weiToEther(
-                            convertNum(analytics.totalCirculation.heco)
-                          )
-                        ).toFixed(2)
+                        Number(weiToEther(convertNum(analytics.totalCirculation.heco))).toFixed(2)
                       ).toLocaleString()
-                    : Number(0).toFixed(2)}{" "}
+                    : Number(0).toFixed(2)}{' '}
                   RCG
                 </div>
-                <div
-                  className="text Roboto_12pt_Regular_L_Gray"
-                  style={{ zIndex: "2" }}
-                >
+                <div className="text Roboto_12pt_Regular_L_Gray" style={{ zIndex: '2' }}>
                   Total Circulating Supply in HRC20
                 </div>
                 <div className="logo2">
-                  <img
-                    src="/img_hrc_back.svg"
-                    style={{ width: "65px", height: "100px" }}
-                  />
+                  <img src="/img_hrc_back.svg" style={{ width: '65px', height: '100px' }} />
                 </div>
               </div>
               <div className="right box">
@@ -891,24 +691,16 @@ function Defi({ toast, t }) {
                     <div className="title Roboto_16pt_Bold">
                       {analytics.Accumulated.heco.Redemption
                         ? Number(
-                            Number(
-                              weiToEther(
-                                convertNum(
-                                  analytics.Accumulated.heco.Redemption
-                                )
-                              )
-                            ).toFixed(2)
+                            Number(weiToEther(convertNum(analytics.Accumulated.heco.Redemption))).toFixed(2)
                           ).toLocaleString()
-                        : Number(0).toFixed(2)}{" "}
+                        : Number(0).toFixed(2)}{' '}
                       RCG
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
-                      Accumulated Carbon Redemption HRC20
-                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">Accumulated Carbon Redemption HRC20</div>
                   </div>
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
-                      ${" "}
+                      ${' '}
                       {/* {analytics.HRC.price
                         ? analytics.HRC.price === "0"
                           ? "-"
@@ -916,9 +708,7 @@ function Defi({ toast, t }) {
                         : 0} */}
                       0
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
-                      Current RCG Price($) HRC20-Mdex
-                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">Current RCG Price($) HRC20-Mdex</div>
                   </div>
                 </div>
                 <div className="content">
@@ -926,37 +716,23 @@ function Defi({ toast, t }) {
                     <div className="title Roboto_16pt_Bold">
                       {analytics.Accumulated.heco.SwappedIn
                         ? Number(
-                            Number(
-                              weiToEther(
-                                convertNum(analytics.Accumulated.heco.SwappedIn)
-                              )
-                            ).toFixed(2)
+                            Number(weiToEther(convertNum(analytics.Accumulated.heco.SwappedIn))).toFixed(2)
                           ).toLocaleString()
-                        : Number(0).toFixed(2)}{" "}
+                        : Number(0).toFixed(2)}{' '}
                       RCG
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
-                      RCG (HRC20) Swapped in
-                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">RCG (HRC20) Swapped in</div>
                   </div>
                   <div className="item">
                     <div className="title Roboto_16pt_Bold">
                       {analytics.Accumulated.heco.ConversionFee
                         ? Number(
-                            Number(
-                              weiToEther(
-                                convertNum(
-                                  analytics.Accumulated.heco.ConversionFee
-                                )
-                              )
-                            ).toFixed(2)
+                            Number(weiToEther(convertNum(analytics.Accumulated.heco.ConversionFee))).toFixed(2)
                           ).toLocaleString()
-                        : Number(0).toFixed(2)}{" "}
+                        : Number(0).toFixed(2)}{' '}
                       RCG
                     </div>
-                    <div className="text Roboto_12pt_Regular_L_Gray">
-                      Accumulated Conversion Fee(HRC20)
-                    </div>
+                    <div className="text Roboto_12pt_Regular_L_Gray">Accumulated Conversion Fee(HRC20)</div>
                   </div>
                 </div>
               </div>
