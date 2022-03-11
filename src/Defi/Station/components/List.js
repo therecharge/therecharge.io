@@ -117,9 +117,9 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
     const getList = async () => {
       const allContract = await getAllContracts();
-      const ETH_CHARGER_LIST = allContract.chargeList.Etheruem.map((item) => item.address);
-      const BEP_CHARGER_LIST = allContract.chargeList.Binance.map((item) => item.address);
-      const HRC_CHARGER_LIST = allContract.chargeList.Huobi.map((item) => item.address);
+      const ETH_CHARGER_LIST = allContract.chargeList.ETH.map((item) => item.address);
+      const BEP_CHARGER_LIST = allContract.chargeList.BSC.map((item) => item.address);
+      const HRC_CHARGER_LIST = allContract.chargeList.HECO.map((item) => item.address);
 
       // const ETH_CHARGER_LIST = await getChargerList(ETH_CHARGERLIST_INSTANCE);
       // const BEP_CHARGER_LIST_2 = await getChargerList(BEP_CHARGERLIST_INSTANCE);

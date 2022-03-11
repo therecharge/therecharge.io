@@ -136,8 +136,8 @@ function Defi({ toast, t }) {
       const BEP_CHARGERLIST_INSTANCE = createContractInstance(BEP_WEB3, BEP_CHARGERLIST_ADDRESS, CHARGERLIST_ABI);
 
       const allContract = await getAllContracts();
-      const ERC_CHARGERLIST = allContract.chargeList.Etheruem.map((item) => item.address);
-      const BEP_CHARGERLIST = allContract.chargeList.Binance.map((item) => item.address);
+      const ERC_CHARGERLIST = allContract.chargeList.ETH.map((item) => item.address);
+      const BEP_CHARGERLIST = allContract.chargeList.BSC.map((item) => item.address);
 
       // const ERC_CHARGERLIST = await getChargerList(ERC_CHARGERLIST_INSTANCE);
       // const BEP_CHARGERLIST = await getChargerList(BEP_CHARGERLIST_INSTANCE);
