@@ -34,20 +34,20 @@ function Header({ setNetwork, network, setParams, params, tvl, privateTvl }) {
         <TitleWrapper>
           {/* <Image params={params} /> */}
           <p className="Roboto_40pt_Black">Charger List</p>
-          <TotalValue>
-            <Text
-              className="Roboto_20pt_Regular"
-              style={{ marginBottom: "8px" }}
-            >
-              Total Value Deposited
-            </Text>
-            <Value className="Roboto_30pt_Medium ">
-              $
-              {Number(
-                (tvl + privateTvl + uniLpLocker).toFixed(2)
-              ).toLocaleString()}
-            </Value>
-          </TotalValue>
+          {/*<TotalValue>*/}
+          {/*  <Text*/}
+          {/*    className="Roboto_20pt_Regular"*/}
+          {/*    style={{ marginBottom: "8px" }}*/}
+          {/*  >*/}
+          {/*    Total Value Deposited*/}
+          {/*  </Text>*/}
+          {/*  <Value className="Roboto_30pt_Medium ">*/}
+          {/*    $*/}
+          {/*    {Number(*/}
+          {/*      (tvl + privateTvl + uniLpLocker).toFixed(2)*/}
+          {/*    ).toLocaleString()}*/}
+          {/*  </Value>*/}
+          {/*</TotalValue>*/}
         </TitleWrapper>
       </Title>
       <Line />

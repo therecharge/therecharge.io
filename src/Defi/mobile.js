@@ -475,14 +475,14 @@ function Defi({ toast, t }) {
           </div>
           <Line />
           <div className="contents">
-            <div className="container">
-              <div className="center box exception">
-                <div className="title Roboto_40pt_Medium_C">
-                  $ {tvd ? Number(Number(tvd).toFixed(2)).toLocaleString() : Number(3478866.78).toLocaleString()}
-                </div>
-                <div className="text Roboto_25pt_Gray">Total Value Deposit</div>
-              </div>
-            </div>
+            {/*<div className="container">*/}
+            {/*  <div className="center box exception">*/}
+            {/*    <div className="title Roboto_40pt_Medium_C">*/}
+            {/*      $ {tvd ? Number(Number(tvd).toFixed(2)).toLocaleString() : Number(3478866.78).toLocaleString()}*/}
+            {/*    </div>*/}
+            {/*    <div className="text Roboto_25pt_Gray">Total Value Deposit</div>*/}
+            {/*  </div>*/}
+            {/*</div>*/}
             <div className="container">
               <div
                 className="center box"

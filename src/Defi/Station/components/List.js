@@ -117,9 +117,14 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
     const getList = async () => {
       const allContract = await getAllContracts();
+
+      console.log(allContract, 'allContract');
+
       const ETH_CHARGER_LIST = allContract.chargeList.ETH.map((item) => item.address);
       const BEP_CHARGER_LIST = allContract.chargeList.BSC.map((item) => item.address);
       const HRC_CHARGER_LIST = allContract.chargeList.HECO.map((item) => item.address);
+
+      console.log(BEP_CHARGER_LIST);
 
       // const ETH_CHARGER_LIST = await getChargerList(ETH_CHARGERLIST_INSTANCE);
       // const BEP_CHARGER_LIST_2 = await getChargerList(BEP_CHARGERLIST_INSTANCE);

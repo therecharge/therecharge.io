@@ -484,20 +484,20 @@ function Defi({ toast, t }) {
           </div>
           <Line style={{ marginBottom: '20px' }} />
           <div className="contents">
-            <div className="container">
-              <div className="center box exception">
-                <div className="title Roboto_30pt_Black">
-                  ${' '}
-                  {/* {analytics.general.tvl
-                    ? Number(
-                        Number(analytics.general.tvl).toFixed(2)
-                      ).toLocaleString()
-                    : Number(0).toFixed(2)} */}
-                  {tvd ? Number(Number(tvd).toFixed(2)).toLocaleString() : Number(3478866.78).toLocaleString()}
-                </div>
-                <div className="text Roboto_16pt_Regular_Gray">Total Value Deposited</div>
-              </div>
-            </div>
+            {/*<div className="container">*/}
+            {/*  <div className="center box exception">*/}
+            {/*    <div className="title Roboto_30pt_Black">*/}
+            {/*      ${' '}*/}
+            {/*      /!* {analytics.general.tvl*/}
+            {/*        ? Number(*/}
+            {/*            Number(analytics.general.tvl).toFixed(2)*/}
+            {/*          ).toLocaleString()*/}
+            {/*        : Number(0).toFixed(2)} *!/*/}
+            {/*      {tvd ? Number(Number(tvd).toFixed(2)).toLocaleString() : Number(3478866.78).toLocaleString()}*/}
+            {/*    </div>*/}
+            {/*    <div className="text Roboto_16pt_Regular_Gray">Total Value Deposited</div>*/}
+            {/*  </div>*/}
+            {/*</div>*/}
             <div className="container">
               <div className="center box" style={{ display: 'flex', flexDirection: 'row', gap: '180px' }}>
                 <div>
