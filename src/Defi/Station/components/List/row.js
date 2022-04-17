@@ -670,7 +670,7 @@ function Name({ status, name, info, isLP, isLocked }) {
     if (status != "Active") return "var(--gray-30)";
   }
   const nameDiv = document.querySelectorAll(".tracingHeight");
-
+  console.log(info.network, 'info name', info.address === '"0xBda852B667e3DB881AD03a94db1b0233219bB777"')
   return (
     <div
       className="Roboto_25pt_Medium name"
@@ -692,6 +692,8 @@ function Name({ status, name, info, isLP, isLocked }) {
       <div>
         <img
           src={
+            info.name === "4.17 Protocon Locked Pool - High Yield" ? "https://s3.ap-northeast-2.amazonaws.com/therecharge.io/pen.svg":
+            info.name === "4.17 Protocon Locked Pool" ? "https://s3.ap-northeast-2.amazonaws.com/therecharge.io/pen.svg":
             isLP
               ? info.network === "ERC"
                 ? "/img_rcgusdc.svg"
