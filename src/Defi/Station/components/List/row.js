@@ -694,6 +694,7 @@ function Name({ status, name, info, isLP, isLocked }) {
           src={
             info.name === "4.17 Protocon Locked Pool - High Yield" ? "https://s3.ap-northeast-2.amazonaws.com/therecharge.io/pen.svg":
             info.name === "4.17 Protocon Locked Pool" ? "https://s3.ap-northeast-2.amazonaws.com/therecharge.io/pen.svg":
+            info.name === "4.17 RCG Locked Pool - PEN Reward" ? "https://s3.ap-northeast-2.amazonaws.com/therecharge.io/pen.svg" :
             isLP
               ? info.network === "ERC"
                 ? "/img_rcgusdc.svg"
