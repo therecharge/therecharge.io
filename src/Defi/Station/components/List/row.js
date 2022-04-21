@@ -694,7 +694,7 @@ function Name({ status, name, info, isLP, isLocked }) {
           src={
             info.name === "4.17 Protocon Locked Pool - High Yield" ? "https://s3.ap-northeast-2.amazonaws.com/therecharge.io/pen.svg":
             info.name === "4.17 Protocon Locked Pool" ? "https://s3.ap-northeast-2.amazonaws.com/therecharge.io/pen.svg":
-            info.name === "4.17 RCG Locked Pool - PEN Reward" ? "https://s3.ap-northeast-2.amazonaws.com/therecharge.io/pen.svg" :
+            info.name === "4.17 RCG Locked Pool - PEN Reward" ? "/ic_rcgpen.svg" :
             isLP
               ? info.network === "ERC"
                 ? "/img_rcgusdc.svg"
@@ -703,10 +703,10 @@ function Name({ status, name, info, isLP, isLocked }) {
           }
           style={
             window.innerWidth > 1088
-              ? name.includes("LP")
+              ? name.includes("LP") || info.name === '4.17 RCG Locked Pool - PEN Reward'
                 ? { width: "70px", height: "40px" }
                 : { width: "40px", height: "40px" }
-              : name.includes("LP")
+              : name.includes("LP") || info.name === '4.17 RCG Locked Pool - PEN Reward'
               ? { width: "88px", height: "50px" }
               : { width: "50px", height: "50px" }
           }

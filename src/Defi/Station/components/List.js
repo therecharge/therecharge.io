@@ -337,7 +337,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
   const renewalTVL = (totalSupply, coingecko, symbol) => {
     console.log(parseInt(fromWei(totalSupply, 'ether')), coingecko, symbol, 'tvl')
-    if(symbol.includes('PEN')) {
+    if(symbol.includes('PEN') && !symbol.includes('RCG')) {
       return parseInt(fromWei(totalSupply, 'ether') )* 0.024.toLocaleString()
     }
     const total = parseInt(fromWei(totalSupply, 'ether'),10);
