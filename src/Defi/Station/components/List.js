@@ -16,7 +16,7 @@ import {
 import { fromWei, toBN } from 'web3-utils';
 /* Store */
 import { web3ReaderState } from '../../../store/read-web3';
-import { getAllContracts } from '../../../api/contract';
+import {getAllContracts, getCoingecko} from '../../../api/contract';
 // import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
 // import { ReactComponent as DropdownOpen } from "./List/assets/dropdown-open.svg";
 
@@ -214,6 +214,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         })
       );
 
+      const coingeckoUSD = await getCoingecko();
+
       await ALL_NETWORK_CHARGERLIST.map(async (CHARGERLIST, network) => {
         let net;
         switch (network) {
@@ -256,12 +258,12 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           );
           ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes('LP');
           ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][i].name.includes('Locked');
-          ALL_RESULTS[network][i].poolTVL =
-            ALL_RESULTS[network][i].isLP && ALL_RESULTS[network][i].network === 'BEP'
-              ? 25.6082687419 * Number(fromWei(ALL_RESULTS[network][i].totalSupply, 'ether')) * RCG_PRICE
-              : ALL_RESULTS[network][i].isLP && ALL_RESULTS[network][i].network === 'ERC'
-              ? 4272102.29339 * Number(fromWei(ALL_RESULTS[network][i].totalSupply, 'ether'))
-              : Number(fromWei(ALL_RESULTS[network][i].totalSupply, 'ether')) * RCG_PRICE;
+          ALL_RESULTS[network][i].poolTVL = renewalTVL(ALL_RESULTS[network][i].totalSupply, coingeckoUSD ,ALL_RESULTS[network][i].symbol)
+            // ALL_RESULTS[network][i].isLP && ALL_RESULTS[network][i].network === 'BEP'
+            //   ? 25.6082687419 * Number(fromWei(ALL_RESULTS[network][i].totalSupply, 'ether')) * RCG_PRICE
+            //   : ALL_RESULTS[network][i].isLP && ALL_RESULTS[network][i].network === 'ERC'
+            //   ? 4272102.29339 * Number(fromWei(ALL_RESULTS[network][i].totalSupply, 'ether'))
+            //   : Number(fromWei(ALL_RESULTS[network][i].totalSupply, 'ether')) * RCG_PRICE;
         });
       });
 
@@ -332,6 +334,15 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       return chargerList.filter((charger) => charger.name.includes(params.type) && !charger.name.includes('LP'));
     }
   };
+
+  const renewalTVL = (totalSupply, coingecko, symbol) => {
+    console.log(parseInt(fromWei(totalSupply, 'ether')), coingecko, symbol, 'tvl')
+    if(symbol.includes('PEN')) {
+      return parseInt(fromWei(totalSupply, 'ether') )* 0.024.toLocaleString()
+    }
+    const total = parseInt(fromWei(totalSupply, 'ether'),10);
+    return total * coingecko.toLocaleString();
+  }
 
   // Whenever Staking type is changed, reload Pool list
   useEffect(async () => {
