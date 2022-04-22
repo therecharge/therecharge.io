@@ -670,7 +670,7 @@ function Name({ status, name, info, isLP, isLocked }) {
     if (status != "Active") return "var(--gray-30)";
   }
   const nameDiv = document.querySelectorAll(".tracingHeight");
-  console.log(info.network, 'info name', info.address === '"0xBda852B667e3DB881AD03a94db1b0233219bB777"')
+  // console.log(info.network, 'info name', info.address === '"0xBda852B667e3DB881AD03a94db1b0233219bB777"')
   return (
     <div
       className="Roboto_25pt_Medium name"

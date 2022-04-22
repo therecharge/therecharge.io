@@ -63,6 +63,11 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const [t] = useTranslation();
   const [fullList, setFullList] = useState(loading_data);
   const [chList, setChList] = useState(loading_data);
+  const [aDuration, setADuration] = useState('');
+  const [bDuration, setBDuration] = useState('');
+  const [cDuration, setCDuration] = useState('');
+  const [dDuration, setDDuration] = useState('');
+
   // const [isOpen, setOpen] = useState(false);
   const [web3_R] = useRecoilState(web3ReaderState);
   const NETWORKS = require('../../../lib/networks.json');
@@ -124,7 +129,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       const BEP_CHARGER_LIST = allContract.chargeList.BSC.map((item) => item.address);
       const HRC_CHARGER_LIST = allContract.chargeList.HECO.map((item) => item.address);
 
-      console.log(BEP_CHARGER_LIST);
+      // console.log(BEP_CHARGER_LIST);
 
       // const ETH_CHARGER_LIST = await getChargerList(ETH_CHARGERLIST_INSTANCE);
       // const BEP_CHARGER_LIST_2 = await getChargerList(BEP_CHARGERLIST_INSTANCE);
@@ -141,6 +146,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       };
 
       const ALL_CHARGER_INSTANCES = ALL_NETWORK_CHARGERLIST.map((CHARGERLIST, network) => {
+        console.log(CHARGERLIST, '--')
         return CHARGERLIST.map((CHARGER_ADDRESS) =>
           createContractInstance(ALL_WEB3[network], CHARGER_ADDRESS, CHARGER_ABI)
         );
@@ -216,6 +222,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
       const coingeckoUSD = await getCoingecko();
 
+      console.log(ALL_RESULTS, 'ALL_RESULTS')
+
       await ALL_NETWORK_CHARGERLIST.map(async (CHARGERLIST, network) => {
         let net;
         switch (network) {
@@ -246,7 +254,9 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           ALL_RESULTS[network][i].basePercent = ALL_STAKES_BASEPERCENT[network][i];
           ALL_RESULTS[network][i].symbol = [ALL_REWARDS_SYMBOL[network][i], ALL_STAKES_SYMBOL[network][i]];
           ALL_RESULTS[network][i].network = net;
-          ALL_RESULTS[network][i].apy = getAPY(
+          ALL_RESULTS[network][i].apy =
+              // renewalGetAPY(ALL_RESULTS[network][i], coingeckoUSD)
+              getAPY(
             ALL_RESULTS[network][i].totalSupply,
             ALL_RESULTS[network][i].rewardAmount -
               (ALL_RESULTS[network][i].rewardToken == ALL_RESULTS[network][i].stakeToken
@@ -254,7 +264,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
                 : 0),
             ALL_RESULTS[network][i].DURATION,
             ALL_RESULTS[network][i].name,
-            ALL_RESULTS[network][i].network
+            ALL_RESULTS[network][i].network,
+                  ALL_RESULTS[network][i]
           );
           ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes('LP');
           ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][i].name.includes('Locked');
@@ -307,7 +318,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       // let lastCharger = ALL_LIST.pop()
       // ALL_LIST.unshift(lastCharger)
 
-      console.log('ALL_LIST', ALL_LIST);
+      // console.log('ALL_LIST', ALL_LIST);
       if (ALL_LIST.length > 1 && ALL_LIST[5].name === '2.3 Pancake LP Locked -  High Yield') {
         ALL_LIST = realignArray(1, 5, ALL_LIST);
       }
@@ -336,7 +347,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   };
 
   const renewalTVL = (totalSupply, coingecko, symbol) => {
-    console.log(parseInt(fromWei(totalSupply, 'ether')), coingecko, symbol, 'tvl')
+    // console.log(parseInt(fromWei(totalSupply, 'ether')), coingecko, symbol, 'tvl')
     if(symbol.includes('PEN') && !symbol.includes('RCG')) {
       return parseInt(fromWei(totalSupply, 'ether') )* 0.024.toLocaleString()
     }
@@ -379,8 +390,61 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const updateChargerInfoList = () => {
     loadChargerList();
   };
-  const getAPY = (totalSupply, rewardAmount, DURATION, name, network) => {
-    console.log(name);
+
+  function allAreEqual(array) {
+    const result = array.every(element => {
+      if (element === array[0]) {
+        return true;
+      }
+    });
+
+    return result;
+  }
+
+  const renewalGetAPY = (item, coingecko) => {
+    const year = 365 * 24 * 60 * 60;
+    // console.log(coingecko, 'coinc', item)
+    const penCoin = 0.8;
+    // if(item.symbol.includes('PEN') && !item.symbol.includes('RCG')) {
+    //   console.log(coingecko, 'coinc', item.symbol);
+    //   const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply)) * penCoin
+    //   const totalDeposit = Number(item.totalSupply) * penCoin;
+    //   const result =  (year / Number(item.DURATION)) * (totalReward / totalDeposit);
+    //   return result;
+    //
+    // }
+    if(allAreEqual(item.symbol)) {
+      const duration = aDuration || item.DURATION;
+      setADuration(item.DURATION);
+
+      const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply));
+      const totalDeposit = Number(item.totalSupply);
+
+      const result =  (year / Number(duration)) * (totalReward / totalDeposit) * 100;
+      console.log(duration, result, item.name)
+      // console.log(result, 'result', year / Number(item.DURATION), totalReward, totalDeposit, totalReward/totalDeposit, item );
+      return result;
+    }
+
+
+    const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply)) * coingecko;
+    const totalDeposit = Number(item.totalSupply) * coingecko;
+
+    const result =  (year / Number(item.DURATION)) * (totalReward / totalDeposit);
+
+    // console.log(result, 'result', year / Number(item.DURATION), totalReward, totalDeposit, totalReward/totalDeposit, item );
+    return result;
+
+
+
+    return result;
+  }
+
+  const getAPY = (totalSupply, rewardAmount, DURATION, name, network, item) => {
+    console.log('item', item.name);
+    if(item.name === '4.17 RCG Locked Pool - PEN Reward') {
+      return 304.49;
+    }
     const Year = 1 * 365 * 24 * 60 * 60;
 
     if (
