@@ -42,6 +42,7 @@ function Row({
   index,
   startTime,
   poolTVL,
+  allContractInfo
 }) {
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
@@ -133,7 +134,6 @@ function Row({
             .earned(account)
             .call(); // FIX ME
 
-          console.log("GET_REWARD", GET_REWARD);
           reward = GET_REWARD;
         } else {
           reward = rewardNow;
@@ -240,6 +240,7 @@ function Row({
     }
   };
 
+
   const useInterval = (callback, delay) => {
     const savedCallback = useRef();
 
@@ -341,6 +342,7 @@ function Row({
           isLP={info.isLP}
           isLocked={info.isLocked}
           info={info}
+          allContractInfo={allContractInfo}
         />
         <Apy status={status} apy={makeNum(apy, 2)} />
         <Btn status={status} isOpen={isOpen} />
@@ -665,10 +667,20 @@ function Status({ name, status }) {
     </p>
   );
 }
-function Name({ status, name, info, isLP, isLocked }) {
+function Name({ status, name, info, isLP, isLocked, allContractInfo }) {
   function color() {
     if (status != "Active") return "var(--gray-30)";
   }
+
+  const getImageUrl = (name) => {
+
+
+    const filteredContract = allContractInfo.filter((item) => {
+      return item.name === name
+    })
+    return filteredContract.length ? filteredContract[0].thumbnail : ""
+  }
+
   const nameDiv = document.querySelectorAll(".tracingHeight");
   // console.log(info.network, 'info name', info.address === '"0xBda852B667e3DB881AD03a94db1b0233219bB777"')
   return (
@@ -690,20 +702,22 @@ function Name({ status, name, info, isLP, isLocked }) {
       }
     >
       <div>
+        {}
         <img
           src={
-            info.name === "4.17 Protocon Locked Pool - High Yield" ? "https://s3.ap-northeast-2.amazonaws.com/therecharge.io/pen.svg":
-            info.name === "4.17 Protocon Locked Pool" ? "https://s3.ap-northeast-2.amazonaws.com/therecharge.io/pen.svg":
-            info.name === "4.17 RCG Locked Pool - PEN Reward" ? "/ic_rcgpen.svg" :
-            isLP
-              ? info.network === "ERC"
-                ? "/img_rcgusdc.svg"
-                : "/img_station_rcgbnb.png"
-              : "/swap_rcg.svg"
+            getImageUrl(name)
+            // info.name === "4.17 Protocon Locked Pool - High Yield" ? "https://s3.ap-northeast-2.amazonaws.com/therecharge.io/pen.svg":
+            // info.name === "4.17 Protocon Locked Pool" ? "https://s3.ap-northeast-2.amazonaws.com/therecharge.io/pen.svg":
+            // info.name === "4.17 RCG Locked Pool - PEN Reward" ? "/ic_rcgpen.svg" :
+            // isLP
+            //   ? info.network === "ERC"
+            //     ? "/img_rcgusdc.svg"
+            //     : "/img_station_rcgbnb.png"
+            //   : "/swap_rcg.svg"
           }
           style={
             window.innerWidth > 1088
-              ? name.includes("LP") || info.name === '4.17 RCG Locked Pool - PEN Reward'
+              ? name.includes("LP") || info.name === '5.17 RCG Locked Pool - Pen Reward'
                 ? { width: "70px", height: "40px" }
                 : { width: "40px", height: "40px" }
               : name.includes("LP") || info.name === '4.17 RCG Locked Pool - PEN Reward'

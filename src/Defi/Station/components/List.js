@@ -17,6 +17,9 @@ import { fromWei, toBN } from 'web3-utils';
 /* Store */
 import { web3ReaderState } from '../../../store/read-web3';
 import {getAllContracts, getCoingecko} from '../../../api/contract';
+import moment from 'moment'
+import {bscAbi, pancakeAbi} from "../../../constants";
+import Web3 from "web3";
 // import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
 // import { ReactComponent as DropdownOpen } from "./List/assets/dropdown-open.svg";
 
@@ -63,10 +66,11 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const [t] = useTranslation();
   const [fullList, setFullList] = useState(loading_data);
   const [chList, setChList] = useState(loading_data);
-  const [aDuration, setADuration] = useState('');
-  const [bDuration, setBDuration] = useState('');
-  const [cDuration, setCDuration] = useState('');
-  const [dDuration, setDDuration] = useState('');
+
+  const [bscInfo, setBscInfo] = useState(null);
+  const [bscPrice, setBscPrice] = useState(null);
+  const [allContractInfo, setAllContractInfo] = useState([]);
+
 
   // const [isOpen, setOpen] = useState(false);
   const [web3_R] = useRecoilState(web3ReaderState);
@@ -76,6 +80,16 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const priceData = await axios.post(`https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`, {
       query: 'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
     });
+
+    const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
+    const contract = new web3.eth.Contract(bscAbi, '0x9A908063f7345905A43D35740D00d46ddb5F411d');
+    const pancakeContract = new web3.eth.Contract(pancakeAbi, '0x9A908063f7345905A43D35740D00d46ddb5F411d')
+
+    const response = await axios.get('https://api.pancakeswap.info/api/v2/tokens/0xe9e7cea3dedca5984780bafc599bd69add087d56');
+    const BUSD_Price = response.data.data.price
+    const quantityInfo = await contract.methods.getReserves().call();
+    const pancakeTotalSupply = await pancakeContract.methods.totalSupply().call()
+
     const RCG_PRICE = makeNum(priceData.data.data.pairs[0].token0Price);
 
     /**
@@ -116,20 +130,19 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const TOKEN_ABI = require('../../../lib/read_contract/abi/erc20.json');
     const CHARGER_ABI = require('../../../lib/read_contract/abi/charger.json');
 
+
     const ETH_CHARGERLIST_INSTANCE = createContractInstance(ETH_WEB3, ETH_CHARGERLIST_ADDRESS, CHARGERLIST_ABI);
     const BEP_CHARGERLIST_INSTANCE = createContractInstance(BEP_WEB3, BEP_CHARGERLIST_ADDRESS, CHARGERLIST_ABI);
     const HRC_CHARGERLIST_INSTANCE = createContractInstance(HRC_WEB3, HRC_CHARGERLIST_ADDRESS, CHARGERLIST_ABI); //
 
     const getList = async () => {
       const allContract = await getAllContracts();
-
-      console.log(allContract, 'allContract');
+      setAllContractInfo(allContract.chargeList.BSC)
 
       const ETH_CHARGER_LIST = allContract.chargeList.ETH.map((item) => item.address);
       const BEP_CHARGER_LIST = allContract.chargeList.BSC.map((item) => item.address);
       const HRC_CHARGER_LIST = allContract.chargeList.HECO.map((item) => item.address);
 
-      // console.log(BEP_CHARGER_LIST);
 
       // const ETH_CHARGER_LIST = await getChargerList(ETH_CHARGERLIST_INSTANCE);
       // const BEP_CHARGER_LIST_2 = await getChargerList(BEP_CHARGERLIST_INSTANCE);
@@ -146,7 +159,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       };
 
       const ALL_CHARGER_INSTANCES = ALL_NETWORK_CHARGERLIST.map((CHARGERLIST, network) => {
-        console.log(CHARGERLIST, '--')
         return CHARGERLIST.map((CHARGER_ADDRESS) =>
           createContractInstance(ALL_WEB3[network], CHARGER_ADDRESS, CHARGER_ABI)
         );
@@ -222,7 +234,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
       const coingeckoUSD = await getCoingecko();
 
-      console.log(ALL_RESULTS, 'ALL_RESULTS')
 
       await ALL_NETWORK_CHARGERLIST.map(async (CHARGERLIST, network) => {
         let net;
@@ -255,18 +266,20 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           ALL_RESULTS[network][i].symbol = [ALL_REWARDS_SYMBOL[network][i], ALL_STAKES_SYMBOL[network][i]];
           ALL_RESULTS[network][i].network = net;
           ALL_RESULTS[network][i].apy =
-              // renewalGetAPY(ALL_RESULTS[network][i], coingeckoUSD)
-              getAPY(
-            ALL_RESULTS[network][i].totalSupply,
-            ALL_RESULTS[network][i].rewardAmount -
-              (ALL_RESULTS[network][i].rewardToken == ALL_RESULTS[network][i].stakeToken
-                ? ALL_RESULTS[network][i].totalSupply
-                : 0),
-            ALL_RESULTS[network][i].DURATION,
-            ALL_RESULTS[network][i].name,
-            ALL_RESULTS[network][i].network,
-                  ALL_RESULTS[network][i]
-          );
+              // ALL_RESULTS[network][i].name === '4.17 RCG Locked Pool - PEN Reward' ?
+              //     renewalGetAPY(ALL_RESULTS[network][i], coingeckoUSD, allContract, BUSD_Price, quantityInfo, pancakeTotalSupply) :
+                  getAPY(
+                      ALL_RESULTS[network][i].totalSupply,
+                      ALL_RESULTS[network][i].rewardAmount -
+                      (ALL_RESULTS[network][i].rewardToken == ALL_RESULTS[network][i].stakeToken
+                          ? ALL_RESULTS[network][i].totalSupply
+                          : 0),
+                      ALL_RESULTS[network][i].DURATION,
+                      ALL_RESULTS[network][i].name,
+                      ALL_RESULTS[network][i].network,
+                      ALL_RESULTS[network][i]
+                  )
+          ;
           ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes('LP');
           ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][i].name.includes('Locked');
           ALL_RESULTS[network][i].poolTVL = renewalTVL(ALL_RESULTS[network][i].totalSupply, coingeckoUSD ,ALL_RESULTS[network][i].symbol)
@@ -355,6 +368,18 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     return total * coingecko.toLocaleString();
   }
 
+  const bootstrap = async () => {
+    const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
+    const contract = new web3.eth.Contract(bscAbi, '0x9A908063f7345905A43D35740D00d46ddb5F411d');
+    const price = await axios.get('https://api.pancakeswap.info/api/v2/tokens/0xe9e7cea3dedca5984780bafc599bd69add087d56');
+    const data = await contract.methods.getReserves().call()
+    setBscInfo(data);
+  }
+
+  useEffect(() => {
+    bootstrap()
+  },[])
+
   // Whenever Staking type is changed, reload Pool list
   useEffect(async () => {
     setChList(loading_data);
@@ -401,10 +426,15 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     return result;
   }
 
-  const renewalGetAPY = (item, coingecko) => {
+  const renewalGetAPY =  (item, coingecko, allContract, busdPrice, quantityInfo, pancakeTotalSupply) => {
+    const endTime = Number(item.startTime) + Number(item.DURATION);
+    const currentTime = Number(moment(new Date()).unix())
+    const duration = endTime - currentTime
+    const nums = 0.000000000000000001;
+
     const year = 365 * 24 * 60 * 60;
     // console.log(coingecko, 'coinc', item)
-    const penCoin = 0.8;
+    const penCoin = 0.1;
     // if(item.symbol.includes('PEN') && !item.symbol.includes('RCG')) {
     //   console.log(coingecko, 'coinc', item.symbol);
     //   const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply)) * penCoin
@@ -413,17 +443,57 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     //   return result;
     //
     // }
+    if(item.name.includes('LP')) {
+      const rechargeQuantity = Number(fromWei(quantityInfo['0'])) ;
+      const busdQuantity = Number(fromWei(quantityInfo['1']))
+      const convertTotalSupply = Number(fromWei(pancakeTotalSupply));
+      const rechargeUSD = rechargeQuantity * coingecko;
+      const busdUSD = busdQuantity * busdPrice
+      const lpPrice = (rechargeUSD + busdUSD) / convertTotalSupply
+      const filteredData = allContract.chargeList.BSC.filter((list, i) => {
+        return  item.name === list.name
+      })
+
+      const totalReward = filteredData[0].liquidity * coingecko;
+      const totalSupply = Number(fromWei(item.totalSupply)) * lpPrice;
+
+
+      return (year / Number(item.DURATION)) * (totalReward / totalSupply) * 100;
+
+    }
     if(allAreEqual(item.symbol)) {
-      const duration = aDuration || item.DURATION;
-      setADuration(item.DURATION);
+      // const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply));
+      // const totalDeposit = Number(item.totalSupply);
+      //
+      // const result =  (year / duration) * (totalReward / totalDeposit) * 100;
+      // // console.log(result, 'result', year / Number(item.DURATION), totalReward, totalDeposit, totalReward/totalDeposit, item );
+      // return result;
 
-      const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply));
-      const totalDeposit = Number(item.totalSupply);
-
-      const result =  (year / Number(duration)) * (totalReward / totalDeposit) * 100;
-      console.log(duration, result, item.name)
-      // console.log(result, 'result', year / Number(item.DURATION), totalReward, totalDeposit, totalReward/totalDeposit, item );
+      const filteredData = allContract.chargeList.BSC.filter((list, i) => {
+        return  item.name === list.name
+      })
+      const totalSupply = Number(fromWei(item.totalSupply));
+      const result = (year / Number(item.DURATION)) * (filteredData[0].liquidity / totalSupply) * 100;
       return result;
+    }
+
+    if(!allAreEqual(item.symbol) && !item.name.includes('LP')) {
+      const filteredData = allContract.chargeList.BSC.filter((list, i) => {
+        return  item.name === list.name
+      })
+      const totalReward = filteredData[0].liquidity * penCoin;
+      const totalSupply = Number(fromWei(item.totalSupply));
+
+      const totalDeposit = totalSupply* coingecko;
+
+      const result = (year / Number(item.DURATION)) * (totalReward / totalDeposit) * 100;
+      return result;
+
+      // const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply)) * penCoin;
+      // const totalDeposit = Number(item.totalSupply)* coingecko;
+      //
+      // const result =  (year / duration) * (totalReward / totalDeposit) * 100;
+      // return result;
     }
 
 
@@ -441,7 +511,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   }
 
   const getAPY = (totalSupply, rewardAmount, DURATION, name, network, item) => {
-    console.log('item', item.name);
     if(item.name === '4.17 RCG Locked Pool - PEN Reward') {
       return 304.49;
     }
@@ -491,6 +560,9 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     }, [delay]);
   };
 
+
+
+
   return (
     <Container>
       <Content>
@@ -517,6 +589,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
                     poolNet={charger.network}
                     startTime={charger.startTime}
                     poolTVL={charger.poolTVL}
+                    allContractInfo={allContractInfo}
                   />
                 </div>
               </div>

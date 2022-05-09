@@ -16,6 +16,7 @@ import {
   requireNetworkState,
 } from "../../../../store/web3";
 import { web3ReaderState } from "../../../../store/read-web3";
+import {getAllContracts} from "../../../../api/contract";
 const TOKEN_ABI = require("../../../../lib/read_contract/abi/erc20.json");
 const ERC20_ABI = require("../../../abis/ERC20ABI.json");
 const POOL_ABI = require("../../../abis/poolABI.json");
@@ -40,7 +41,11 @@ function Row({
   poolNet,
   index,
   poolTVL,
+    contractInfo
 }) {
+
+  console.log(info, 'charger', contractInfo);
+
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
@@ -230,6 +235,8 @@ function Row({
     }
   }, [account, isOpen]);
 
+  console.log(name, 'name')
+
   return (
     <Container>
       {isPopupOpen && (
@@ -291,6 +298,8 @@ function Row({
           index={index}
           isLP={info.isLP}
           isLocked={info.isLocked}
+          contractInfo={contractInfo}
+          info={info}
         />
         <Apy status={status} apy="11.12.21 ~ 05.12.10" />
         <Btn status={status} isOpen={isOpen} />
@@ -517,7 +526,24 @@ function Status({ name, status }) {
     </p>
   );
 }
-function Name({ status, name, index, isLP, isLocked }) {
+function Name ({ status, name, index, isLP, isLocked, contractInfo, info }) {
+  console.log(contractInfo, 'debug')
+  let lockerName = '';
+
+
+  // console.log(contractInfo, 'Name', contractInfo.privateLocker.BSC.length, contractInfo)
+  if(contractInfo && contractInfo.privateLocker.BSC.length) {
+    console.log('if, ifififfi', contractInfo)
+    const filteredName = contractInfo.privateLocker.BSC.filter((locker) => {
+      console.log(locker.address, info.address);
+      return locker.address === info.address;
+    })
+    console.log(filteredName, 'filteredName')
+
+    lockerName = filteredName.length ? filteredName[0].name : ''
+  }
+
+
   function color() {
     if (status != "Active") return "var(--gray-30)";
   }
@@ -573,7 +599,7 @@ function Name({ status, name, index, isLP, isLocked }) {
           </div>
         )} */}
 
-        <div>{name}</div>
+        <div>{lockerName}</div>
       </div>
     </div>
   );

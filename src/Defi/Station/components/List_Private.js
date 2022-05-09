@@ -16,6 +16,7 @@ import {
 import { fromWei } from "web3-utils";
 /* Store */
 import { web3ReaderState } from "../../../store/read-web3";
+import {getAllContracts} from "../../../api/contract";
 // import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
 // import { ReactComponent as DropdownOpen } from "./List/assets/dropdown-open.svg";
 const loading_data = [
@@ -60,6 +61,8 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
   // const [isOpen, setOpen] = useState(false);
   const [web3_R] = useRecoilState(web3ReaderState);
   const [lockedPoolAddress, setLockedPoolAddress] = useState([]);
+  const [contractInfo, setContractInfo] = useState(null);
+
   const NETWORKS = require("../../../lib/networks.json");
 
   const loadChargerList = async () => {
@@ -103,6 +106,8 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
     const TOKEN_ABI = require("../../../lib/read_contract/abi/erc20.json");
     const CHARGER_ABI = require("../../../lib/read_contract/abi/charger.json");
 
+
+
     const ETH_CHARGERLIST_INSTANCE = createContractInstance(
       ETH_WEB3,
       ETH_CHARGERLIST_ADDRESS,
@@ -118,14 +123,14 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
       HRC_CHARGERLIST_ADDRESS,
       CHARGERLIST_ABI
     ); //
-
     const getList = async () => {
+
+      const allContract = await getAllContracts();
+      setContractInfo(allContract)
+      const BEP_CHARGER_LIST = allContract.privateLocker.BSC.map((item) => item.address);
+      console.log(BEP_CHARGER_LIST, 'asdasd')
       const ETH_CHARGER_LIST = [];
-      const BEP_CHARGER_LIST = [
-        "0xBda852B667e3DB881AD03a94db1b0233219bB777",
-        "0x2a188018e466069933c2dfcc7326C9b3874D2569",
-        "0x86d1Ecdfb61814bc8fD1f46C4Acb49a2C96a6c80",
-      ];
+
       const HRC_CHARGER_LIST = []; //
       const ALL_NETWORK_CHARGERLIST = [
         ETH_CHARGER_LIST,
@@ -153,6 +158,9 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
           );
         }
       );
+
+      console.log(ALL_CHARGER_INSTANCES, 'private locker')
+
       const ALL_CHARGERS_INFO = await Promise.all(
         ALL_CHARGER_INSTANCES.map(async (CHARGER_INSTANCES) => {
           return Promise.all(
@@ -436,6 +444,7 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
                     period={loadPoolPeriod(charger.startTime, charger.DURATION)}
                     poolNet={charger.network}
                     poolTVL={charger.poolTVL}
+                    contractInfo={contractInfo}
                   />
                 </div>
               </div>
