@@ -467,284 +467,284 @@ function Defi({ toast, t }) {
           )}
         </div>
       </Content>
-      <Content id="analytics" style={{ width: '100%' }}>
-        <div className="third" style={{ marginTop: '200px' }}>
-          <div className="themes">
-            <div className="theme Roboto_30pt_Black_L">Analytics</div>
-            <div className="subTheme Roboto_20pt_Medium_L">Overview of Recharge Ecosystem</div>
-          </div>
-          <Line />
-          <div className="contents">
-            {/*<div className="container">*/}
-            {/*  <div className="center box exception">*/}
-            {/*    <div className="title Roboto_40pt_Medium_C">*/}
-            {/*      $ {tvd ? Number(Number(tvd).toFixed(2)).toLocaleString() : Number(3478866.78).toLocaleString()}*/}
-            {/*    </div>*/}
-            {/*    <div className="text Roboto_25pt_Gray">Total Value Deposit</div>*/}
-            {/*  </div>*/}
-            {/*</div>*/}
-            <div className="container">
-              <div
-                className="center box"
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '20px',
-                  width: '620px',
-                  height: '226px',
-                }}
-              >
-                <div>
-                  <div className="Roboto_25pt_Black" style={{ textAlign: 'center', marginBottom: '8px' }}>
-                    {`$ 
-                    ${analytics.uniswap_lp_locker ? analytics.uniswap_lp_locker : '0.00'}
-                    `}
-                  </div>
-                  <div className="text Roboto_25pt_Gray">Uniswap LP Locker</div>
-                </div>
-                <div>
-                  <div className="Roboto_25pt_Black" style={{ textAlign: 'center', marginBottom: '8px' }}>
-                    $ 0.00
-                  </div>
-                  <div className="text Roboto_25pt_Gray">PancakeSwap LP Locker</div>
-                </div>
-              </div>
-            </div>
-            <div className="container">
-              <div className="left box exception">
-                <div className="title Roboto_40pt_Medium_C">
-                  {/* {analytics.general.RedemptionRate
-                    ? makeNum(analytics.general.RedemptionRate) / 100
-                    : 0}{" "} */}
-                  2 %
-                </div>
-                <div className="text Roboto_25pt_Gray">Current Redemption Rate</div>
-              </div>
-              <div className="right box exception">
-                <div className="item">
-                  <div className="title Roboto_25pt_Black" style={{ textAlign: 'center' }}>
-                    {analytics.numberOf.Plugged ? analytics.numberOf.Plugged : 0}
-                  </div>
-                  <div className="text Roboto_20pt_Regular_Gray">Number of Services{<br />}Plugged</div>
-                </div>
-                <div className="item">
-                  <div className="title Roboto_25pt_Black" style={{ textAlign: 'center' }}>
-                    {/* {analytics.numberOf.Charger
-                      ? analytics.numberOf.Charger
-                      : 0} */}
-                    3
-                  </div>
-                  <div className="text Roboto_20pt_Regular_Gray">Number of Chargers{<br />}Activated</div>
-                </div>
-                <div className="item">
-                  <div className="title Roboto_25pt_Black" style={{ textAlign: 'center' }}>
-                    {analytics.numberOf.Bridges ? analytics.numberOf.Bridges : 0}
-                  </div>
-                  <div className="text Roboto_20pt_Regular_Gray">Number of Bridges{<br />}Activated</div>
-                </div>
-              </div>
-            </div>
-            <div className="container">
-              <div className="left box">
-                <div className="title Roboto_40pt_Medium_C" style={{ zIndex: '2' }}>
-                  {analytics.totalCirculation.eth
-                    ? Number(Number(weiToEther(convertNum(analytics.totalCirculation.eth))).toFixed(2)).toLocaleString()
-                    : Number(0).toFixed(2)}{' '}
-                  RCG
-                </div>
-                <div className="text Roboto_20pt_Regular_Gray" style={{ zIndex: '2' }}>
-                  Total Circulating Supply in ERC20
-                </div>
-                <div className="logo1">
-                  <img src="/img_erc_back.svg" style={{ width: '92.2px', height: '150px' }} />
-                </div>
-              </div>
-              <div className="right box">
-                <div className="content le">
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      {analytics.Accumulated.eth.Redemption
-                        ? Number(
-                            Number(weiToEther(convertNum(analytics.Accumulated.eth.Redemption))).toFixed(2)
-                          ).toLocaleString()
-                        : Number(0).toFixed(2)}{' '}
-                      RCG
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">Accumulated Carbon Redemption ERC20</div>
-                  </div>
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      $ {analytics.rcg_eth_price ? makeNum(analytics.rcg_eth_price) : 0}
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">Current RCG Price($) ERC20 Uniswap</div>
-                  </div>
-                </div>
-                <div className="content">
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      {analytics.Accumulated.eth.SwappedIn
-                        ? Number(
-                            Number(weiToEther(convertNum(analytics.Accumulated.eth.SwappedIn))).toFixed(2)
-                          ).toLocaleString()
-                        : Number(0).toFixed(2)}{' '}
-                      RCG
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">RCG (ERC20) Swapped in</div>
-                  </div>
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      {analytics.Accumulated.eth.ConversionFee
-                        ? Number(
-                            Number(weiToEther(convertNum(analytics.Accumulated.eth.ConversionFee))).toFixed(2)
-                          ).toLocaleString()
-                        : Number(0).toFixed(2)}{' '}
-                      RCG
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">Accumulated Conversion Fee(ERC20)</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="container">
-              <div className="left box">
-                <div className="title Roboto_40pt_Medium_C" style={{ zIndex: '2' }}>
-                  {analytics.totalCirculation.bsc
-                    ? Number(Number(weiToEther(convertNum(analytics.totalCirculation.bsc))).toFixed(2)).toLocaleString()
-                    : Number(0).toFixed(2)}{' '}
-                  RCG
-                </div>
-                <div className="text Roboto_20pt_Regular_Gray" style={{ zIndex: '2' }}>
-                  Total Circulating Supply in BEP20
-                </div>
-                <div className="logo3">
-                  <img src="/img_bep_back.svg" style={{ width: '150px', height: '150px' }} />
-                </div>
-              </div>
-              <div className="right box">
-                <div className="content le">
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      {analytics.Accumulated.bsc.Redemption
-                        ? Number(
-                            Number(weiToEther(convertNum(analytics.Accumulated.bsc.Redemption))).toFixed(2)
-                          ).toLocaleString()
-                        : Number(0).toFixed(2)}{' '}
-                      RCG
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">Accumulated Carbon Redemption BEP20</div>
-                  </div>
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      $ {analytics.rcg_bsc_price ? analytics.rcg_bsc_price : 0}
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">Current RCG Price($) BEP20 Pancakeswap</div>
-                  </div>
-                </div>
-                <div className="content">
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      {analytics.Accumulated.bsc.SwappedIn
-                        ? Number(
-                            Number(weiToEther(convertNum(analytics.Accumulated.bsc.SwappedIn))).toFixed(2)
-                          ).toLocaleString()
-                        : Number(0).toFixed(2)}{' '}
-                      RCG
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">RCG (BEP20) Swapped in</div>
-                  </div>
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      {analytics.Accumulated.bsc.ConversionFee
-                        ? Number(
-                            Number(weiToEther(convertNum(analytics.Accumulated.bsc.ConversionFee))).toFixed(2)
-                          ).toLocaleString()
-                        : Number(0).toFixed(2)}{' '}
-                      RCG
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">Accumulated Conversion Fee(BEP20)</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="container">
-              <div className="left box">
-                <div className="title Roboto_40pt_Medium_C" style={{ zIndex: '2' }}>
-                  {analytics.totalCirculation.heco
-                    ? Number(
-                        Number(weiToEther(convertNum(analytics.totalCirculation.heco))).toFixed(2)
-                      ).toLocaleString()
-                    : Number(0).toFixed(2)}{' '}
-                  RCG
-                </div>
-                <div className="text Roboto_20pt_Regular_Gray" style={{ zIndex: '2' }}>
-                  Total Circulating Supply in HRC20
-                </div>
-                <div className="logo2">
-                  <img src="/img_hrc_back.svg" style={{ width: '97.5px', height: '150px' }} />
-                </div>
-              </div>
-              <div className="right box">
-                <div className="content le">
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      {analytics.Accumulated.heco.Redemption
-                        ? Number(
-                            Number(weiToEther(convertNum(analytics.Accumulated.heco.Redemption))).toFixed(2)
-                          ).toLocaleString()
-                        : Number(0).toFixed(2)}{' '}
-                      RCG
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">Accumulated Carbon Redemption HRC20</div>
-                  </div>
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      ${' '}
-                      {/* {analytics.HRC.price
-                        ? analytics.HRC.price === "0"
-                          ? "-"
-                          : makeNum(analytics.HRC.price)
-                        : 0} */}
-                      0
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">Current RCG Price($) HRC20-Mdex</div>
-                  </div>
-                </div>
-                <div className="content">
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      {analytics.Accumulated.heco.SwappedIn
-                        ? Number(
-                            Number(weiToEther(convertNum(analytics.Accumulated.heco.SwappedIn))).toFixed(2)
-                          ).toLocaleString()
-                        : Number(0).toFixed(2)}{' '}
-                      RCG
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">RCG (HRC20) Swapped in</div>
-                  </div>
-                  <div className="item">
-                    <div className="title Roboto_20pt_Black">
-                      {analytics.Accumulated.heco.ConversionFee
-                        ? Number(
-                            Number(weiToEther(convertNum(analytics.Accumulated.heco.ConversionFee))).toFixed(2)
-                          ).toLocaleString()
-                        : Number(0).toFixed(2)}{' '}
-                      RCG
-                    </div>
-                    <div className="text Roboto_20pt_Regular_Gray">Accumulated Conversion Fee(HRC20)</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      {/*<Content id="analytics" style={{ width: '100%' }}>*/}
+      {/*  <div className="third" style={{ marginTop: '200px' }}>*/}
+      {/*    <div className="themes">*/}
+      {/*      <div className="theme Roboto_30pt_Black_L">Analytics</div>*/}
+      {/*      <div className="subTheme Roboto_20pt_Medium_L">Overview of Recharge Ecosystem</div>*/}
+      {/*    </div>*/}
+      {/*    <Line />*/}
+      {/*    <div className="contents">*/}
+      {/*      /!*<div className="container">*!/*/}
+      {/*      /!*  <div className="center box exception">*!/*/}
+      {/*      /!*    <div className="title Roboto_40pt_Medium_C">*!/*/}
+      {/*      /!*      $ {tvd ? Number(Number(tvd).toFixed(2)).toLocaleString() : Number(3478866.78).toLocaleString()}*!/*/}
+      {/*      /!*    </div>*!/*/}
+      {/*      /!*    <div className="text Roboto_25pt_Gray">Total Value Deposit</div>*!/*/}
+      {/*      /!*  </div>*!/*/}
+      {/*      /!*</div>*!/*/}
+      {/*      <div className="container">*/}
+      {/*        <div*/}
+      {/*          className="center box"*/}
+      {/*          style={{*/}
+      {/*            display: 'flex',*/}
+      {/*            flexDirection: 'column',*/}
+      {/*            gap: '20px',*/}
+      {/*            width: '620px',*/}
+      {/*            height: '226px',*/}
+      {/*          }}*/}
+      {/*        >*/}
+      {/*          <div>*/}
+      {/*            <div className="Roboto_25pt_Black" style={{ textAlign: 'center', marginBottom: '8px' }}>*/}
+      {/*              {`$ */}
+      {/*              ${analytics.uniswap_lp_locker ? analytics.uniswap_lp_locker : '0.00'}*/}
+      {/*              `}*/}
+      {/*            </div>*/}
+      {/*            <div className="text Roboto_25pt_Gray">Uniswap LP Locker</div>*/}
+      {/*          </div>*/}
+      {/*          <div>*/}
+      {/*            <div className="Roboto_25pt_Black" style={{ textAlign: 'center', marginBottom: '8px' }}>*/}
+      {/*              $ 0.00*/}
+      {/*            </div>*/}
+      {/*            <div className="text Roboto_25pt_Gray">PancakeSwap LP Locker</div>*/}
+      {/*          </div>*/}
+      {/*        </div>*/}
+      {/*      </div>*/}
+      {/*      <div className="container">*/}
+      {/*        <div className="left box exception">*/}
+      {/*          <div className="title Roboto_40pt_Medium_C">*/}
+      {/*            /!* {analytics.general.RedemptionRate*/}
+      {/*              ? makeNum(analytics.general.RedemptionRate) / 100*/}
+      {/*              : 0}{" "} *!/*/}
+      {/*            2 %*/}
+      {/*          </div>*/}
+      {/*          <div className="text Roboto_25pt_Gray">Current Redemption Rate</div>*/}
+      {/*        </div>*/}
+      {/*        <div className="right box exception">*/}
+      {/*          <div className="item">*/}
+      {/*            <div className="title Roboto_25pt_Black" style={{ textAlign: 'center' }}>*/}
+      {/*              {analytics.numberOf.Plugged ? analytics.numberOf.Plugged : 0}*/}
+      {/*            </div>*/}
+      {/*            <div className="text Roboto_20pt_Regular_Gray">Number of Services{<br />}Plugged</div>*/}
+      {/*          </div>*/}
+      {/*          <div className="item">*/}
+      {/*            <div className="title Roboto_25pt_Black" style={{ textAlign: 'center' }}>*/}
+      {/*              /!* {analytics.numberOf.Charger*/}
+      {/*                ? analytics.numberOf.Charger*/}
+      {/*                : 0} *!/*/}
+      {/*              3*/}
+      {/*            </div>*/}
+      {/*            <div className="text Roboto_20pt_Regular_Gray">Number of Chargers{<br />}Activated</div>*/}
+      {/*          </div>*/}
+      {/*          <div className="item">*/}
+      {/*            <div className="title Roboto_25pt_Black" style={{ textAlign: 'center' }}>*/}
+      {/*              {analytics.numberOf.Bridges ? analytics.numberOf.Bridges : 0}*/}
+      {/*            </div>*/}
+      {/*            <div className="text Roboto_20pt_Regular_Gray">Number of Bridges{<br />}Activated</div>*/}
+      {/*          </div>*/}
+      {/*        </div>*/}
+      {/*      </div>*/}
+      {/*      <div className="container">*/}
+      {/*        <div className="left box">*/}
+      {/*          <div className="title Roboto_40pt_Medium_C" style={{ zIndex: '2' }}>*/}
+      {/*            {analytics.totalCirculation.eth*/}
+      {/*              ? Number(Number(weiToEther(convertNum(analytics.totalCirculation.eth))).toFixed(2)).toLocaleString()*/}
+      {/*              : Number(0).toFixed(2)}{' '}*/}
+      {/*            RCG*/}
+      {/*          </div>*/}
+      {/*          <div className="text Roboto_20pt_Regular_Gray" style={{ zIndex: '2' }}>*/}
+      {/*            Total Circulating Supply in ERC20*/}
+      {/*          </div>*/}
+      {/*          <div className="logo1">*/}
+      {/*            <img src="/img_erc_back.svg" style={{ width: '92.2px', height: '150px' }} />*/}
+      {/*          </div>*/}
+      {/*        </div>*/}
+      {/*        <div className="right box">*/}
+      {/*          <div className="content le">*/}
+      {/*            <div className="item">*/}
+      {/*              <div className="title Roboto_20pt_Black">*/}
+      {/*                {analytics.Accumulated.eth.Redemption*/}
+      {/*                  ? Number(*/}
+      {/*                      Number(weiToEther(convertNum(analytics.Accumulated.eth.Redemption))).toFixed(2)*/}
+      {/*                    ).toLocaleString()*/}
+      {/*                  : Number(0).toFixed(2)}{' '}*/}
+      {/*                RCG*/}
+      {/*              </div>*/}
+      {/*              <div className="text Roboto_20pt_Regular_Gray">Accumulated Carbon Redemption ERC20</div>*/}
+      {/*            </div>*/}
+      {/*            <div className="item">*/}
+      {/*              <div className="title Roboto_20pt_Black">*/}
+      {/*                $ {analytics.rcg_eth_price ? makeNum(analytics.rcg_eth_price) : 0}*/}
+      {/*              </div>*/}
+      {/*              <div className="text Roboto_20pt_Regular_Gray">Current RCG Price($) ERC20 Uniswap</div>*/}
+      {/*            </div>*/}
+      {/*          </div>*/}
+      {/*          <div className="content">*/}
+      {/*            <div className="item">*/}
+      {/*              <div className="title Roboto_20pt_Black">*/}
+      {/*                {analytics.Accumulated.eth.SwappedIn*/}
+      {/*                  ? Number(*/}
+      {/*                      Number(weiToEther(convertNum(analytics.Accumulated.eth.SwappedIn))).toFixed(2)*/}
+      {/*                    ).toLocaleString()*/}
+      {/*                  : Number(0).toFixed(2)}{' '}*/}
+      {/*                RCG*/}
+      {/*              </div>*/}
+      {/*              <div className="text Roboto_20pt_Regular_Gray">RCG (ERC20) Swapped in</div>*/}
+      {/*            </div>*/}
+      {/*            <div className="item">*/}
+      {/*              <div className="title Roboto_20pt_Black">*/}
+      {/*                {analytics.Accumulated.eth.ConversionFee*/}
+      {/*                  ? Number(*/}
+      {/*                      Number(weiToEther(convertNum(analytics.Accumulated.eth.ConversionFee))).toFixed(2)*/}
+      {/*                    ).toLocaleString()*/}
+      {/*                  : Number(0).toFixed(2)}{' '}*/}
+      {/*                RCG*/}
+      {/*              </div>*/}
+      {/*              <div className="text Roboto_20pt_Regular_Gray">Accumulated Conversion Fee(ERC20)</div>*/}
+      {/*            </div>*/}
+      {/*          </div>*/}
+      {/*        </div>*/}
+      {/*      </div>*/}
+      {/*      <div className="container">*/}
+      {/*        <div className="left box">*/}
+      {/*          <div className="title Roboto_40pt_Medium_C" style={{ zIndex: '2' }}>*/}
+      {/*            {analytics.totalCirculation.bsc*/}
+      {/*              ? Number(Number(weiToEther(convertNum(analytics.totalCirculation.bsc))).toFixed(2)).toLocaleString()*/}
+      {/*              : Number(0).toFixed(2)}{' '}*/}
+      {/*            RCG*/}
+      {/*          </div>*/}
+      {/*          <div className="text Roboto_20pt_Regular_Gray" style={{ zIndex: '2' }}>*/}
+      {/*            Total Circulating Supply in BEP20*/}
+      {/*          </div>*/}
+      {/*          <div className="logo3">*/}
+      {/*            <img src="/img_bep_back.svg" style={{ width: '150px', height: '150px' }} />*/}
+      {/*          </div>*/}
+      {/*        </div>*/}
+      {/*        <div className="right box">*/}
+      {/*          <div className="content le">*/}
+      {/*            <div className="item">*/}
+      {/*              <div className="title Roboto_20pt_Black">*/}
+      {/*                {analytics.Accumulated.bsc.Redemption*/}
+      {/*                  ? Number(*/}
+      {/*                      Number(weiToEther(convertNum(analytics.Accumulated.bsc.Redemption))).toFixed(2)*/}
+      {/*                    ).toLocaleString()*/}
+      {/*                  : Number(0).toFixed(2)}{' '}*/}
+      {/*                RCG*/}
+      {/*              </div>*/}
+      {/*              <div className="text Roboto_20pt_Regular_Gray">Accumulated Carbon Redemption BEP20</div>*/}
+      {/*            </div>*/}
+      {/*            <div className="item">*/}
+      {/*              <div className="title Roboto_20pt_Black">*/}
+      {/*                $ {analytics.rcg_bsc_price ? analytics.rcg_bsc_price : 0}*/}
+      {/*              </div>*/}
+      {/*              <div className="text Roboto_20pt_Regular_Gray">Current RCG Price($) BEP20 Pancakeswap</div>*/}
+      {/*            </div>*/}
+      {/*          </div>*/}
+      {/*          <div className="content">*/}
+      {/*            <div className="item">*/}
+      {/*              <div className="title Roboto_20pt_Black">*/}
+      {/*                {analytics.Accumulated.bsc.SwappedIn*/}
+      {/*                  ? Number(*/}
+      {/*                      Number(weiToEther(convertNum(analytics.Accumulated.bsc.SwappedIn))).toFixed(2)*/}
+      {/*                    ).toLocaleString()*/}
+      {/*                  : Number(0).toFixed(2)}{' '}*/}
+      {/*                RCG*/}
+      {/*              </div>*/}
+      {/*              <div className="text Roboto_20pt_Regular_Gray">RCG (BEP20) Swapped in</div>*/}
+      {/*            </div>*/}
+      {/*            <div className="item">*/}
+      {/*              <div className="title Roboto_20pt_Black">*/}
+      {/*                {analytics.Accumulated.bsc.ConversionFee*/}
+      {/*                  ? Number(*/}
+      {/*                      Number(weiToEther(convertNum(analytics.Accumulated.bsc.ConversionFee))).toFixed(2)*/}
+      {/*                    ).toLocaleString()*/}
+      {/*                  : Number(0).toFixed(2)}{' '}*/}
+      {/*                RCG*/}
+      {/*              </div>*/}
+      {/*              <div className="text Roboto_20pt_Regular_Gray">Accumulated Conversion Fee(BEP20)</div>*/}
+      {/*            </div>*/}
+      {/*          </div>*/}
+      {/*        </div>*/}
+      {/*      </div>*/}
+      {/*      <div className="container">*/}
+      {/*        <div className="left box">*/}
+      {/*          <div className="title Roboto_40pt_Medium_C" style={{ zIndex: '2' }}>*/}
+      {/*            {analytics.totalCirculation.heco*/}
+      {/*              ? Number(*/}
+      {/*                  Number(weiToEther(convertNum(analytics.totalCirculation.heco))).toFixed(2)*/}
+      {/*                ).toLocaleString()*/}
+      {/*              : Number(0).toFixed(2)}{' '}*/}
+      {/*            RCG*/}
+      {/*          </div>*/}
+      {/*          <div className="text Roboto_20pt_Regular_Gray" style={{ zIndex: '2' }}>*/}
+      {/*            Total Circulating Supply in HRC20*/}
+      {/*          </div>*/}
+      {/*          <div className="logo2">*/}
+      {/*            <img src="/img_hrc_back.svg" style={{ width: '97.5px', height: '150px' }} />*/}
+      {/*          </div>*/}
+      {/*        </div>*/}
+      {/*        <div className="right box">*/}
+      {/*          <div className="content le">*/}
+      {/*            <div className="item">*/}
+      {/*              <div className="title Roboto_20pt_Black">*/}
+      {/*                {analytics.Accumulated.heco.Redemption*/}
+      {/*                  ? Number(*/}
+      {/*                      Number(weiToEther(convertNum(analytics.Accumulated.heco.Redemption))).toFixed(2)*/}
+      {/*                    ).toLocaleString()*/}
+      {/*                  : Number(0).toFixed(2)}{' '}*/}
+      {/*                RCG*/}
+      {/*              </div>*/}
+      {/*              <div className="text Roboto_20pt_Regular_Gray">Accumulated Carbon Redemption HRC20</div>*/}
+      {/*            </div>*/}
+      {/*            <div className="item">*/}
+      {/*              <div className="title Roboto_20pt_Black">*/}
+      {/*                ${' '}*/}
+      {/*                /!* {analytics.HRC.price*/}
+      {/*                  ? analytics.HRC.price === "0"*/}
+      {/*                    ? "-"*/}
+      {/*                    : makeNum(analytics.HRC.price)*/}
+      {/*                  : 0} *!/*/}
+      {/*                0*/}
+      {/*              </div>*/}
+      {/*              <div className="text Roboto_20pt_Regular_Gray">Current RCG Price($) HRC20-Mdex</div>*/}
+      {/*            </div>*/}
+      {/*          </div>*/}
+      {/*          <div className="content">*/}
+      {/*            <div className="item">*/}
+      {/*              <div className="title Roboto_20pt_Black">*/}
+      {/*                {analytics.Accumulated.heco.SwappedIn*/}
+      {/*                  ? Number(*/}
+      {/*                      Number(weiToEther(convertNum(analytics.Accumulated.heco.SwappedIn))).toFixed(2)*/}
+      {/*                    ).toLocaleString()*/}
+      {/*                  : Number(0).toFixed(2)}{' '}*/}
+      {/*                RCG*/}
+      {/*              </div>*/}
+      {/*              <div className="text Roboto_20pt_Regular_Gray">RCG (HRC20) Swapped in</div>*/}
+      {/*            </div>*/}
+      {/*            <div className="item">*/}
+      {/*              <div className="title Roboto_20pt_Black">*/}
+      {/*                {analytics.Accumulated.heco.ConversionFee*/}
+      {/*                  ? Number(*/}
+      {/*                      Number(weiToEther(convertNum(analytics.Accumulated.heco.ConversionFee))).toFixed(2)*/}
+      {/*                    ).toLocaleString()*/}
+      {/*                  : Number(0).toFixed(2)}{' '}*/}
+      {/*                RCG*/}
+      {/*              </div>*/}
+      {/*              <div className="text Roboto_20pt_Regular_Gray">Accumulated Conversion Fee(HRC20)</div>*/}
+      {/*            </div>*/}
+      {/*          </div>*/}
+      {/*        </div>*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
 
-          {/* <div className="subTheme Roboto_30pt_Medium">
-              Daily Carbon Redemption
-            </div>
-            <div className="graph">
-              <img src="/sampleimg_graph.svg" />
-            </div> */}
-        </div>
-      </Content>
+      {/*    /!* <div className="subTheme Roboto_30pt_Medium">*/}
+      {/*        Daily Carbon Redemption*/}
+      {/*      </div>*/}
+      {/*      <div className="graph">*/}
+      {/*        <img src="/sampleimg_graph.svg" />*/}
+      {/*      </div> *!/*/}
+      {/*  </div>*/}
+      {/*</Content>*/}
     </Container>
   );
 }

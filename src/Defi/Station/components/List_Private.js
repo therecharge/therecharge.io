@@ -76,7 +76,6 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
     // const RCG_PRICE = makeNum(priceData.data.data.pairs[0].token0Price);
     const RCG_PRICE = await getCoingecko();
 
-    console.log(RCG_PRICE, 'rcgPRICE')
     /**
      * 1. 모든 차져리스트를 받는다
      *  1-1. 각 네트워크에 대한 web3, 풀어드레스를 받는다
@@ -130,7 +129,6 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
       const allContract = await getAllContracts();
       setContractInfo(allContract)
       const BEP_CHARGER_LIST = allContract.privateLocker.BSC.map((item) => item.address);
-      console.log(BEP_CHARGER_LIST, 'asdasd')
       const ETH_CHARGER_LIST = [];
 
       const HRC_CHARGER_LIST = []; //
@@ -161,7 +159,6 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
         }
       );
 
-      console.log(ALL_CHARGER_INSTANCES, 'private locker')
 
       const ALL_CHARGERS_INFO = await Promise.all(
         ALL_CHARGER_INSTANCES.map(async (CHARGER_INSTANCES) => {
@@ -323,7 +320,6 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
       //     test.unshift(catchZeroPool[0]);
       //   }
       // }
-      console.log("ALL_LIST", ALL_LIST.reverse());
 
       if (ALL_LIST.length === 0) {
         setChList(chargerInfo);
