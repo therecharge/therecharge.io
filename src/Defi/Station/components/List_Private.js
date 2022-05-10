@@ -16,7 +16,7 @@ import {
 import { fromWei } from "web3-utils";
 /* Store */
 import { web3ReaderState } from "../../../store/read-web3";
-import {getAllContracts} from "../../../api/contract";
+import {getAllContracts, getCoingecko} from "../../../api/contract";
 // import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
 // import { ReactComponent as DropdownOpen } from "./List/assets/dropdown-open.svg";
 const loading_data = [
@@ -73,8 +73,10 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
           'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
       }
     );
-    const RCG_PRICE = makeNum(priceData.data.data.pairs[0].token0Price);
+    // const RCG_PRICE = makeNum(priceData.data.data.pairs[0].token0Price);
+    const RCG_PRICE = await getCoingecko();
 
+    console.log(RCG_PRICE, 'rcgPRICE')
     /**
      * 1. 모든 차져리스트를 받는다
      *  1-1. 각 네트워크에 대한 web3, 풀어드레스를 받는다

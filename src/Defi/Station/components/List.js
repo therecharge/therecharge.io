@@ -16,7 +16,7 @@ import {
 import { fromWei, toBN } from 'web3-utils';
 /* Store */
 import { web3ReaderState } from '../../../store/read-web3';
-import {getAllContracts, getCoingecko} from '../../../api/contract';
+import {getAllContracts, getCoingecko, getPenUsd} from '../../../api/contract';
 import moment from 'moment'
 import {bscAbi, pancakeAbi} from "../../../constants";
 import Web3 from "web3";
@@ -26,6 +26,8 @@ import Web3 from "web3";
 Array.prototype.insert = function (index, item) {
   this.splice(index, 0, item);
 };
+
+const bufferArray = ['5.2 BSC Locked', '5.2 BSC Flexible', '5.2 Pancake BUSD LP Locked', '5.2 Pancake BUSD LP Flexible'];
 
 const loading_data = [
   {
@@ -233,6 +235,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       );
 
       const coingeckoUSD = await getCoingecko();
+      const penUsd = await getPenUsd();
 
 
       await ALL_NETWORK_CHARGERLIST.map(async (CHARGERLIST, network) => {
@@ -266,9 +269,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           ALL_RESULTS[network][i].symbol = [ALL_REWARDS_SYMBOL[network][i], ALL_STAKES_SYMBOL[network][i]];
           ALL_RESULTS[network][i].network = net;
           ALL_RESULTS[network][i].apy =
-              // ALL_RESULTS[network][i].name === '4.17 RCG Locked Pool - PEN Reward' ?
-              //     renewalGetAPY(ALL_RESULTS[network][i], coingeckoUSD, allContract, BUSD_Price, quantityInfo, pancakeTotalSupply) :
-                  getAPY(
+              bufferArray.includes(ALL_RESULTS[network][i].name) ? getAPY(
                       ALL_RESULTS[network][i].totalSupply,
                       ALL_RESULTS[network][i].rewardAmount -
                       (ALL_RESULTS[network][i].rewardToken == ALL_RESULTS[network][i].stakeToken
@@ -278,7 +279,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
                       ALL_RESULTS[network][i].name,
                       ALL_RESULTS[network][i].network,
                       ALL_RESULTS[network][i]
-                  )
+                  ) :
+                  renewalGetAPY(ALL_RESULTS[network][i], coingeckoUSD, allContract, BUSD_Price, quantityInfo, pancakeTotalSupply, penUsd)
           ;
           ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes('LP');
           ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][i].name.includes('Locked');
@@ -426,7 +428,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     return result;
   }
 
-  const renewalGetAPY =  (item, coingecko, allContract, busdPrice, quantityInfo, pancakeTotalSupply) => {
+  const renewalGetAPY =  (item, coingecko, allContract, busdPrice, quantityInfo, pancakeTotalSupply, penUsd) => {
+    console.log(penUsd, 'penUsd');
     const endTime = Number(item.startTime) + Number(item.DURATION);
     const currentTime = Number(moment(new Date()).unix())
     const duration = endTime - currentTime
@@ -434,7 +437,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
     const year = 365 * 24 * 60 * 60;
     // console.log(coingecko, 'coinc', item)
-    const penCoin = 0.1;
+
     // if(item.symbol.includes('PEN') && !item.symbol.includes('RCG')) {
     //   console.log(coingecko, 'coinc', item.symbol);
     //   const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply)) * penCoin
@@ -481,7 +484,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       const filteredData = allContract.chargeList.BSC.filter((list, i) => {
         return  item.name === list.name
       })
-      const totalReward = filteredData[0].liquidity * penCoin;
+      const totalReward = filteredData[0].liquidity * penUsd;
       const totalSupply = Number(fromWei(item.totalSupply));
 
       const totalDeposit = totalSupply* coingecko;
