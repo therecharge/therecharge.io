@@ -17,6 +17,7 @@ import {
 } from "../../../../store/web3";
 import { web3ReaderState } from "../../../../store/read-web3";
 import {getAllContracts} from "../../../../api/contract";
+import moment from "moment";
 const TOKEN_ABI = require("../../../../lib/read_contract/abi/erc20.json");
 const ERC20_ABI = require("../../../abis/ERC20ABI.json");
 const POOL_ABI = require("../../../abis/poolABI.json");
@@ -44,7 +45,6 @@ function Row({
     contractInfo
 }) {
 
-  console.log(info, 'charger', contractInfo);
 
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
@@ -235,7 +235,6 @@ function Row({
     }
   }, [account, isOpen]);
 
-  console.log(name, 'name')
 
   return (
     <Container>
@@ -301,7 +300,7 @@ function Row({
           contractInfo={contractInfo}
           info={info}
         />
-        <Apy status={status} apy="11.12.21 ~ 05.12.10" />
+        <Apy status={status} apy="11.12.21 ~ 05.12.10" name={name} contractInfo={contractInfo} info={info} />
         <Btn status={status} isOpen={isOpen} />
       </Title>
       {isOpen && (
@@ -527,18 +526,14 @@ function Status({ name, status }) {
   );
 }
 function Name ({ status, name, index, isLP, isLocked, contractInfo, info }) {
-  console.log(contractInfo, 'debug')
   let lockerName = '';
 
 
   // console.log(contractInfo, 'Name', contractInfo.privateLocker.BSC.length, contractInfo)
   if(contractInfo && contractInfo.privateLocker.BSC.length) {
-    console.log('if, ifififfi', contractInfo)
     const filteredName = contractInfo.privateLocker.BSC.filter((locker) => {
-      console.log(locker.address, info.address);
       return locker.address === info.address;
     })
-    console.log(filteredName, 'filteredName')
 
     lockerName = filteredName.length ? filteredName[0].name : ''
   }
@@ -605,7 +600,7 @@ function Name ({ status, name, index, isLP, isLocked, contractInfo, info }) {
   );
 }
 
-function Apy({ status, apy }) {
+function Apy({ status, apy, name, contractInfo,info }) {
   function color() {
     if (status != "Active") return "var(--gray-30)";
     if (apy == "+999999.99") return "var(--green)";
@@ -613,6 +608,19 @@ function Apy({ status, apy }) {
     if (apy >= 50) return "var(--red)";
     return "var(--yellow)";
   }
+  let filteredContractInfo;
+  if(contractInfo && name !== 'Loading List..') {
+     filteredContractInfo = contractInfo.privateLocker.BSC.filter((locker) => {
+      return locker.address === info.address;
+    })
+    console.log(contractInfo, name, filteredContractInfo[0].start, moment(filteredContractInfo[0].start).format('YY.MM.DD'), moment(filteredContractInfo[0].finish).format('YY.MM.DD'))
+    // console.log(filteredContractInfo[0], 'contractInfo',)
+    // console.log(filteredContractInfo[0].start)
+
+  }
+
+
+
   return (
     <p
       className="apy"
@@ -633,7 +641,7 @@ function Apy({ status, apy }) {
             ? "+999999.99"
             : Number(Number(apy).toFixed(2)).toLocaleString()) + "%"
         : "-"} */}
-      21.11.12 ~ 22.05.12
+      {filteredContractInfo ?  `${moment(filteredContractInfo[0].start).format('YY.MM.DD')} ~  ${moment(filteredContractInfo[0].finish).format('YY.MM.DD')}`  : '21.11.12 ~ 22.05.12'}
     </p>
   );
 }

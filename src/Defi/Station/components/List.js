@@ -252,7 +252,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
             break;
         }
         await CHARGERLIST.map((CHARGER_ADDRESS, i) => {
-          console.log(ALL_RESULTS[network][i], '-0------')
           // 11.12 풀을 위해 임시적으로 사용됩니다.
           if (ALL_RESULTS[network][i].name === '11.2 Premier Locked Pool 300') {
             ALL_RESULTS[network][i].name = '11.12 Premier Locked Pool 200';
@@ -365,10 +364,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const renewalTVL = (totalSupply, coingecko, symbol) => {
     // console.log(parseInt(fromWei(totalSupply, 'ether')), coingecko, symbol, 'tvl')
 
-    console.log(symbol, 'symbol');
 
     if(symbol.includes('PEN') && !symbol.includes('RCG')) {
-      console.log('if symbol', symbol)
       return parseInt(fromWei(totalSupply, 'ether') )* 0.024.toLocaleString()
     }
     const total = parseInt(fromWei(totalSupply, 'ether'),10);

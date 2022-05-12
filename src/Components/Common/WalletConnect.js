@@ -108,7 +108,6 @@ function ConnectWallet({
     }
     provider.on("open", async (info) => {
       toast("Wallet Connected!");
-      console.log("info", info);
     });
     provider.on("accountsChanged", async (accounts) => {
       // console.log(accounts);
