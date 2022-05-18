@@ -252,6 +252,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
             break;
         }
         await CHARGERLIST.map((CHARGER_ADDRESS, i) => {
+          console.log(allContract.chargeList.BSC[i].seq, 'CHAGER')
           // 11.12 풀을 위해 임시적으로 사용됩니다.
           if (ALL_RESULTS[network][i].name === '11.2 Premier Locked Pool 300') {
             ALL_RESULTS[network][i].name = '11.12 Premier Locked Pool 200';
@@ -263,7 +264,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           ALL_RESULTS[network][i].status = loadActiveStatus(ALL_RESULTS[network][i]);
           // 컨트랙트에서 미니멈 값을 제대로 주기 전까지 일시적으로 사용합니다.
           ALL_RESULTS[network][i].minimum = fromWei(ALL_RESULTS[network][i].limit, 'ether');
-
+          ALL_RESULTS[network][i].seq = allContract.chargeList.BSC[i].seq;
           ALL_RESULTS[network][i].rewardAmount = ALL_REWARDS_AMOUNT[network][i];
           ALL_RESULTS[network][i].basePercent = ALL_STAKES_BASEPERCENT[network][i];
           ALL_RESULTS[network][i].symbol = [ALL_REWARDS_SYMBOL[network][i], ALL_STAKES_SYMBOL[network][i]];
@@ -293,6 +294,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         });
       });
 
+      console.log(ALL_RESULTS)
+
       // 1. pool type에 따라 필터링 진행
       // let test = updatedList.filter((charger) =>
       //   charger.name.includes(params.type)
@@ -302,13 +305,19 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         ALL_RESULTS[network].map((charger) => {
           if (charger.name === '9.3 Locked Pool 500' || charger.name === '9.15 BSC Zero-Burning Pool 20') {
           } else {
+            console.log(network, 'network', charger)
             ALL_LIST.push(charger);
           }
         });
       }
-
       let tvl = 0;
       ALL_LIST.map((charger) => (tvl += Number(fromWei(charger.totalSupply, 'ether'))));
+      console.log(ALL_LIST, '------------')
+      ALL_LIST.forEach((item) => {
+        console.log(item);
+      })
+
+
       setTvl(tvl * RCG_PRICE);
       // if (params.type === "Locked") {
       //   // 해당 풀타입이 없을 때
@@ -322,8 +331,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       //   }
       // }
 
-      ALL_LIST.sort((charger1, charger2) => charger2.startTime - charger1.startTime);
-
+      // ALL_LIST.sort((charger1, charger2) => charger2.startTime - charger1.startTime);
       // ALL_LIST.sort((charger1, charger2) => charger2.apy - charger1.apy);
 
       // UNISWAP LP POOL을 위해 임시적으로 사용합니다.
@@ -334,9 +342,9 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       // ALL_LIST.unshift(lastCharger)
 
       // console.log('ALL_LIST', ALL_LIST);
-      if (ALL_LIST.length > 1 && ALL_LIST[5].name === '2.3 Pancake LP Locked -  High Yield') {
-        ALL_LIST = realignArray(1, 5, ALL_LIST);
-      }
+      // if (ALL_LIST.length > 1 && ALL_LIST[5].name === '2.3 Pancake LP Locked -  High Yield') {
+      //   ALL_LIST = realignArray(1, 5, ALL_LIST);
+      // }
       if (ALL_LIST.length === 0) {
         setChList(chargerInfo);
         setFullList(chargerInfo);
