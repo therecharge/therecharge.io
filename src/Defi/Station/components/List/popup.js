@@ -139,15 +139,15 @@ export default function Popup({
               left="Current Redemption Rate"
               right={`${info.basePercent / 100} %`}
             />
-            <Info left="RCG to Stake" right={`${plAmount} RCG`} />
+            <Info left="To Stake" right={`${plAmount} RCG`} />
             <Info
-              left="RCG to Redeem"
+              left="To Redeem"
               right={`${makeNum(
                 (plAmount * info.basePercent) / 100 / 100
               )} RCG`}
             />
             <Info
-              left="Net RCG to Stake"
+              left="Net to Stake"
               right={`${makeNum(
                 plAmount - (plAmount * info.basePercent) / 100 / 100
               )} RCG`}
