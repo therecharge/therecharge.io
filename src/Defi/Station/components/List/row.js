@@ -717,7 +717,7 @@ function Name({ status, name, info, isLP, isLocked, allContractInfo }) {
           }
           style={
             window.innerWidth > 1088
-              ? name.includes("LP") || info.name === '5.17 RCG Locked Pool - Pen Reward'
+              ? name.includes("LP") || info.name === '5.17 RCG Locked Pool - Pen Reward' || info.name === '6.2 RCG Locked Pool - ASSA Reward'
                 ? { width: "70px", height: "40px" }
                 : { width: "40px", height: "40px" }
               : name.includes("LP") || info.name === '4.17 RCG Locked Pool - PEN Reward'
