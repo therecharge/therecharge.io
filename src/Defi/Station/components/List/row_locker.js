@@ -613,13 +613,13 @@ function Apy({ status, apy, name, contractInfo,info }) {
      filteredContractInfo = contractInfo.privateLocker.BSC.filter((locker) => {
       return locker.address === info.address;
     })
-    console.log(contractInfo, name, filteredContractInfo[0].start, moment(filteredContractInfo[0].start).format('YY.MM.DD'), moment(filteredContractInfo[0].finish).format('YY.MM.DD'))
+    // console.log(contractInfo, name, filteredContractInfo[0].start, moment(filteredContractInfo[0].start).format('YY.MM.DD'), moment(filteredContractInfo[0].finish).format('YY.MM.DD'))
     // console.log(filteredContractInfo[0], 'contractInfo',)
     // console.log(filteredContractInfo[0].start)
 
   }
 
-
+  console.log(filteredContractInfo, 'filter')
 
   return (
     <p
@@ -641,7 +641,7 @@ function Apy({ status, apy, name, contractInfo,info }) {
             ? "+999999.99"
             : Number(Number(apy).toFixed(2)).toLocaleString()) + "%"
         : "-"} */}
-      {filteredContractInfo ?  `${moment(filteredContractInfo[0].start).format('YY.MM.DD')} ~  ${moment(filteredContractInfo[0].finish).format('YY.MM.DD')}`  : '21.11.12 ~ 22.05.12'}
+      {filteredContractInfo?.length ?  `${moment(filteredContractInfo[0].start).format('YY.MM.DD')} ~  ${moment(filteredContractInfo[0].finish).format('YY.MM.DD')}`  : '21.11.12 ~ 22.05.12'}
     </p>
   );
 }
