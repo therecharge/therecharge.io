@@ -15,3 +15,7 @@ export const getPenUsd = async () => {
   return await axios.get('https://api.coingecko.com/api/v3/coins/protocon').then(resp => resp.data.market_data.current_price.usd)
 }
 
+export const getAssaplayUsd = async () => {
+  return await axios.get('https://api.coingecko.com/api/v3/coins/assaplay').then(resp => resp.data.market_data.current_price.usd);
+}
+

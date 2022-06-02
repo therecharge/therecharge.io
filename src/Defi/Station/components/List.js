@@ -16,7 +16,7 @@ import {
 import { fromWei, toBN } from 'web3-utils';
 /* Store */
 import { web3ReaderState } from '../../../store/read-web3';
-import {getAllContracts, getCoingecko, getPenUsd} from '../../../api/contract';
+import {getAllContracts, getAssaplayUsd, getCoingecko, getPenUsd} from '../../../api/contract';
 import moment from 'moment'
 import {bscAbi, pancakeAbi} from "../../../constants";
 import Web3 from "web3";
@@ -27,7 +27,7 @@ Array.prototype.insert = function (index, item) {
   this.splice(index, 0, item);
 };
 
-const bufferArray = ['5.2 BSC Locked', '5.2 BSC Flexible', '5.2 Pancake BUSD LP Locked', '5.2 Pancake BUSD LP Flexible'];
+const bufferArray = ['5.2 BSC Locked', '5.2 BSC Flexible'];
 
 const loading_data = [
   {
@@ -141,6 +141,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       const allContract = await getAllContracts();
       setAllContractInfo(allContract.chargeList.BSC)
 
+      console.log(allContract, 'allContract');
+
       const ETH_CHARGER_LIST = allContract.chargeList.ETH.map((item) => item.address);
       const BEP_CHARGER_LIST = allContract.chargeList.BSC.map((item) => item.address);
       const HRC_CHARGER_LIST = allContract.chargeList.HECO.map((item) => item.address);
@@ -236,6 +238,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
       const coingeckoUSD = await getCoingecko();
       const penUsd = await getPenUsd();
+      const assaplayUsd = await getAssaplayUsd();
 
 
       await ALL_NETWORK_CHARGERLIST.map(async (CHARGERLIST, network) => {
@@ -281,7 +284,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
                       ALL_RESULTS[network][i].network,
                       ALL_RESULTS[network][i]
                   ) :
-                  renewalGetAPY(ALL_RESULTS[network][i], coingeckoUSD, allContract, BUSD_Price, quantityInfo, pancakeTotalSupply, penUsd)
+                  renewalGetAPY(ALL_RESULTS[network][i], coingeckoUSD, allContract, BUSD_Price, quantityInfo, pancakeTotalSupply, penUsd, assaplayUsd)
           ;
           ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes('LP');
           ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][i].name.includes('Locked');
@@ -438,13 +441,28 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     return result;
   }
 
-  const renewalGetAPY =  (item, coingecko, allContract, busdPrice, quantityInfo, pancakeTotalSupply, penUsd) => {
+  const renewalGetAPY =  (item, coingecko, allContract, busdPrice, quantityInfo, pancakeTotalSupply, penUsd, assaUsd) => {
     const endTime = Number(item.startTime) + Number(item.DURATION);
     const currentTime = Number(moment(new Date()).unix())
     const duration = endTime - currentTime
     const nums = 0.000000000000000001;
 
+
     const year = 365 * 24 * 60 * 60;
+
+    if(item.name === '6.2 RCG Locked Pool - ASSA Reward') {
+      const filteredData = allContract?.chargeList.BSC.filter((list, i) => {
+        return  item.name === list.name
+      })
+      const totalReward = filteredData[0].liquidity * assaUsd;
+      const totalSupply = Number(fromWei(item.totalSupply));
+
+      const totalDeposit = totalSupply * coingecko;
+
+      const result = (year / Number(item.DURATION)) * (totalReward / totalDeposit) * 100;
+      return result;
+    }
+
     // console.log(coingecko, 'coinc', item)
 
     // if(item.symbol.includes('PEN') && !item.symbol.includes('RCG')) {
