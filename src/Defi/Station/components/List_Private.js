@@ -138,8 +138,8 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
         HRC_CHARGER_LIST,
       ];
 
-      if (ETH_CHARGER_LIST.length === 0 && BEP_CHARGER_LIST.length === 0)
-        return setChList(chargerInfo);
+      // if (ETH_CHARGER_LIST.length === 0 && BEP_CHARGER_LIST.length === 0)
+      //   return setChList(chargerInfo);
 
       let ALL_RESULTS = {
         0: [],
@@ -413,44 +413,49 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
     }, [delay]);
   };
 
+  console.log(chList, 'chLisrtssss');
+
   return (
-    <Container>
-      <Content>
-        <RowContainer>
-          {chList.map((charger, index) => {
-            return (
-              <div
-                // className={params.isLP === true ? "disable" : ""}
-                style={
-                  charger.name === "Loading List.."
-                    ? { cursor: "not-allowed" }
-                    : {}
-                }
-              >
-                <div style={{ cursor: "pointer" }}>
-                  <Row
-                    key={charger.name}
-                    index={index}
-                    status={charger.status} // active or not
-                    name={charger.name}
-                    tvl={charger.totalSupply}
-                    apy={charger.apy}
-                    info={charger}
-                    limit={charger.limit}
-                    params={params} // 버튼에 대한 분기처리 때문에 필요
-                    toast={toast}
-                    period={loadPoolPeriod(charger.startTime, charger.DURATION)}
-                    poolNet={charger.network}
-                    poolTVL={charger.poolTVL}
-                    contractInfo={contractInfo}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </RowContainer>
-      </Content>
-    </Container>
+      <>
+        { chList.length > 0 && chList[0].name !== 'There is currently no Charger List available.'  && <Container>
+          <Content>
+            <RowContainer>
+              {chList.map((charger, index) => {
+                return (
+                    <div
+                        // className={params.isLP === true ? "disable" : ""}
+                        style={
+                          charger.name === "Loading List.."
+                              ? { cursor: "not-allowed" }
+                              : {}
+                        }
+                    >
+                      <div style={{ cursor: "pointer" }}>
+                        <Row
+                            key={charger.name}
+                            index={index}
+                            status={charger.status} // active or not
+                            name={charger.name}
+                            tvl={charger.totalSupply}
+                            apy={charger.apy}
+                            info={charger}
+                            limit={charger.limit}
+                            params={params} // 버튼에 대한 분기처리 때문에 필요
+                            toast={toast}
+                            period={loadPoolPeriod(charger.startTime, charger.DURATION)}
+                            poolNet={charger.network}
+                            poolTVL={charger.poolTVL}
+                            contractInfo={contractInfo}
+                        />
+                      </div>
+                    </div>
+                );
+              })}
+            </RowContainer>
+          </Content>
+        </Container> }
+      </>
+
   );
 }
 

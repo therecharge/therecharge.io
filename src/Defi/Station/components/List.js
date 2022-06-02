@@ -141,7 +141,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       const allContract = await getAllContracts();
       setAllContractInfo(allContract.chargeList.BSC)
 
-      console.log(allContract, 'allContract');
 
       const ETH_CHARGER_LIST = allContract.chargeList.ETH.map((item) => item.address);
       const BEP_CHARGER_LIST = allContract.chargeList.BSC.map((item) => item.address);
