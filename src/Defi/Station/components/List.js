@@ -161,16 +161,21 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         2: [], //
       };
 
+
+
       const ALL_CHARGER_INSTANCES = ALL_NETWORK_CHARGERLIST.map((CHARGERLIST, network) => {
         return CHARGERLIST.map((CHARGER_ADDRESS) =>
           createContractInstance(ALL_WEB3[network], CHARGER_ADDRESS, CHARGER_ABI)
         );
       });
+
       const ALL_CHARGERS_INFO = await Promise.all(
         ALL_CHARGER_INSTANCES.map(async (CHARGER_INSTANCES) => {
           return Promise.all(CHARGER_INSTANCES.map((INSTANCE) => getChargerInfo(INSTANCE)));
         })
       );
+
+
       ALL_CHARGERS_INFO.map((CHARGERS_INFO, network) => {
         CHARGERS_INFO.map((INFO, i) => {
           ALL_RESULTS[network][i] = INFO;
@@ -254,7 +259,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
             break;
         }
         await CHARGERLIST.map((CHARGER_ADDRESS, i) => {
-          console.log(allContract.chargeList.BSC[i].seq, 'CHAGER')
           // 11.12 풀을 위해 임시적으로 사용됩니다.
           if (ALL_RESULTS[network][i].name === '11.2 Premier Locked Pool 300') {
             ALL_RESULTS[network][i].name = '11.12 Premier Locked Pool 200';
@@ -296,7 +300,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         });
       });
 
-      console.log(ALL_RESULTS)
 
       // 1. pool type에 따라 필터링 진행
       // let test = updatedList.filter((charger) =>
@@ -307,18 +310,12 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         ALL_RESULTS[network].map((charger) => {
           if (charger.name === '9.3 Locked Pool 500' || charger.name === '9.15 BSC Zero-Burning Pool 20') {
           } else {
-            console.log(network, 'network', charger)
             ALL_LIST.push(charger);
           }
         });
       }
       let tvl = 0;
       ALL_LIST.map((charger) => (tvl += Number(fromWei(charger.totalSupply, 'ether'))));
-      console.log(ALL_LIST, '------------')
-      ALL_LIST.forEach((item) => {
-        console.log(item);
-      })
-
 
       setTvl(tvl * RCG_PRICE);
       // if (params.type === "Locked") {
@@ -446,6 +443,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const duration = endTime - currentTime
     const nums = 0.000000000000000001;
 
+    console.log(item)
+
 
     const year = 365 * 24 * 60 * 60;
 
@@ -497,12 +496,13 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       // const result =  (year / duration) * (totalReward / totalDeposit) * 100;
       // // console.log(result, 'result', year / Number(item.DURATION), totalReward, totalDeposit, totalReward/totalDeposit, item );
       // return result;
-
+      console.log(allContract.chargeList.BSC, '123123123');
       const filteredData = allContract.chargeList.BSC.filter((list, i) => {
         return  item.name === list.name
       })
       const totalSupply = Number(fromWei(item.totalSupply));
-      const result = (year / Number(item.DURATION)) * (filteredData[0].liquidity / totalSupply) * 100;
+      console.log(filteredData[0], 'filteredData', item.name, allContract.chargeList.BSC)
+      const result = (year / Number(item.DURATION)) * (filteredData[0]?.liquidity / totalSupply) * 100;
       return result;
     }
 
