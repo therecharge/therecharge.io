@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
-import WalletConnect from "../Components/Common/WalletConnect";
-import { useTranslation } from "react-i18next";
+import styled from 'styled-components';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
+import WalletConnect from '../Components/Common/WalletConnect';
+import { useTranslation } from 'react-i18next';
 
 function Gnb({ getTitle }) {
   const sidemenuInitialState = {
@@ -22,9 +22,9 @@ function Gnb({ getTitle }) {
 
   return (
     <Container>
-      <Logo style={{ marginRight: "40px" }}>
+      <Logo style={{ marginRight: '40px' }}>
         <HashLink
-          to={"/"}
+          to={'/'}
           onClick={() => {
             setMenuOpen(false);
             setSidemenuOpen({
@@ -38,21 +38,14 @@ function Gnb({ getTitle }) {
       </Logo>
       <div className="state Roboto_30pt_Black">{getTitle()}</div>
       <div className="hamButton" onClick={() => open()}>
-        <img src={menuOpen ? "/ic_menu_close.svg" : "/ic_menu.svg"} />
+        <img src={menuOpen ? '/ic_menu_close.svg' : '/ic_menu.svg'} />
       </div>
-      <div
-        className="nav"
-        style={menuOpen ? { display: "flex" } : { display: "none" }}
-      >
+      <div className="nav" style={menuOpen ? { display: 'flex' } : { display: 'none' }}>
         <div className="dropdowns">
           <div className="dropdown">
-            <div
-              className={
-                sidemenuOpen.home ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
-              }
-            >
+            <div className={sidemenuOpen.home ? 'Roboto_35pt_Black' : 'Roboto_35pt_Nomal'}>
               <HashLink
-                to={"/"}
+                to={'/'}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
@@ -62,13 +55,9 @@ function Gnb({ getTitle }) {
             </div>
           </div>
           <div className="dropdown">
-            <div
-              className={
-                sidemenuOpen.home ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
-              }
-            >
+            <div className={sidemenuOpen.home ? 'Roboto_35pt_Black' : 'Roboto_35pt_Nomal'}>
               <HashLink
-                to={"/station"}
+                to={'/station'}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
@@ -78,13 +67,9 @@ function Gnb({ getTitle }) {
             </div>
           </div>
           <div className="dropdown">
-            <div
-              className={
-                sidemenuOpen.home ? "Roboto_35pt_Black" : "Roboto_35pt_Nomal"
-              }
-            >
+            <div className={sidemenuOpen.home ? 'Roboto_35pt_Black' : 'Roboto_35pt_Nomal'}>
               <HashLink
-                to={"/swap"}
+                to={'/swap'}
                 onClick={() => {
                   setMenuOpen(false);
                 }}
@@ -119,7 +104,7 @@ function Gnb({ getTitle }) {
               <div
                 className="logo"
                 onClick={() => {
-                  window.open("https://therecharge.io", "_blank");
+                  window.open('https://therecharge.io', '_blank');
                 }}
               >
                 <img src="/img_rcg_40px.svg" />
@@ -128,10 +113,8 @@ function Gnb({ getTitle }) {
                 className="logo"
                 onClick={() => {
                   window.open(
-                    i18n.language == "en"
-                      ? "https://medium.com/therecharge"
-                      : "https://medium.com/therecharge-kr",
-                    "_blank"
+                    i18n.language == 'en' ? 'https://medium.com/therecharge' : 'https://medium.com/therecharge-kr',
+                    '_blank'
                   );
                 }}
               >
@@ -140,7 +123,7 @@ function Gnb({ getTitle }) {
               <div
                 className="logo"
                 onClick={() => {
-                  window.open("https://blog.naver.com/therecharge", "_blank");
+                  window.open('https://blog.naver.com/therecharge', '_blank');
                 }}
               >
                 <img src="/ic_naver.svg" />
@@ -148,7 +131,7 @@ function Gnb({ getTitle }) {
               <div
                 className="logo"
                 onClick={() => {
-                  window.open("https://twitter.com/TheRecharge_Ad", "_blank");
+                  window.open('https://twitter.com/TheRecharge_Ad', '_blank');
                 }}
               >
                 <img src="/footer3.png" />
@@ -157,9 +140,7 @@ function Gnb({ getTitle }) {
                 className="logo"
                 onClick={() =>
                   (window.location =
-                    i18n.language == "en"
-                      ? "https://t.me/therecharge_official"
-                      : "https://t.me/therecharge_officialkr")
+                    i18n.language == 'en' ? 'https://t.me/therecharge_official' : 'https://t.me/therecharge_officialkr')
                 }
               >
                 <img src="/footer4.png" />
@@ -169,7 +150,7 @@ function Gnb({ getTitle }) {
               <div
                 className="logo"
                 onClick={() => {
-                  window.open("https://github.com/therecharge", "_blank");
+                  window.open('https://github.com/therecharge', '_blank');
                 }}
               >
                 <img src="/footer1.png" />
@@ -177,62 +158,37 @@ function Gnb({ getTitle }) {
               <div
                 className="logo"
                 onClick={() => {
-                  window.open(
-                    "https://etherscan.io/token/0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30",
-                    "_blank"
-                  );
+                  window.open('https://scan.kcc.io/address/0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30', '_blank');
                 }}
               >
-                <img src="/footer5.png" />
+                <img src="/footer5.svg" alt="" />
               </div>
               <div
                 className="logo"
                 onClick={() => {
-                  window.open(
-                    "https://bscscan.com/token/0x2D94172436D869c1e3c094BeaD272508faB0d9E3",
-                    "_blank"
-                  );
+                  window.open('https://bscscan.com/token/0x2D94172436D869c1e3c094BeaD272508faB0d9E3', '_blank');
                 }}
               >
                 <img src="/footer7.png" />
               </div>
-              <div
-                className="logo"
-                onClick={() => {
-                  window.open(
-                    "https://hecoinfo.com/token/0xbddC276CACC18E9177B2f5CFb3BFb6eef491799b",
-                    "_blank"
-                  );
-                }}
-              >
-                <img src="/footer6.png" />
-              </div>
+
               <div className="logo">
-                <a
-                  className="Roboto_20pt_Regular"
-                  href="mailto:info@therecharge.io"
-                >
+                <a className="Roboto_20pt_Regular" href="mailto:info@therecharge.io">
                   <img src="/ic_mail.svg" />
                 </a>
               </div>
             </div>
-            <div className="bottom Roboto_15pt_Regular">
-              @ 2021 Recharge Labs Ltd.
-            </div>
+            <div className="bottom Roboto_15pt_Regular">@ 2021 Recharge Labs Ltd.</div>
           </div>
         </Footer>
-        <Lang
-          onClick={() =>
-            i18n.changeLanguage(i18n.language != "en" ? "en" : "ko")
-          }
-        >
+        <Lang onClick={() => i18n.changeLanguage(i18n.language != 'en' ? 'en' : 'ko')}>
           <div className="Roboto_35pt_Black">
             <img src="/lang/ic-eng.svg" />
-            <span className={i18n.language == "en" ? "bold" : ""}>ENG</span>
+            <span className={i18n.language == 'en' ? 'bold' : ''}>ENG</span>
           </div>
           <div className="Roboto_35pt_Black">
             <img src="/lang/ic-kor.svg" />
-            <span className={i18n.language == "ko" ? "bold" : ""}>KOR</span>
+            <span className={i18n.language == 'ko' ? 'bold' : ''}>KOR</span>
           </div>
         </Lang>
       </div>
