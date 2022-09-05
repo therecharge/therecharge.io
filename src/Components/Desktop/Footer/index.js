@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { withTranslation } from "react-i18next";
+import React from 'react';
+import styled from 'styled-components';
+import { withTranslation } from 'react-i18next';
 
 function Footer({ t }) {
   return (
@@ -12,16 +12,13 @@ function Footer({ t }) {
           </a>
         </div>
         <div className="sns">
-          <div
-            className="logo"
-            onClick={() => window.open(t("Footer/sns/github"), "_blank")}
-          >
+          <div className="logo" onClick={() => window.open(t('Footer/sns/github'), '_blank')}>
             <img src="/footer1.png" alt="" />
           </div>
           <div
             className="logo"
             onClick={() => {
-              window.open(t("Footer/sns/medium"), "_blank");
+              window.open(t('Footer/sns/medium'), '_blank');
             }}
           >
             <img src="/footer2.png" alt="" />
@@ -29,7 +26,7 @@ function Footer({ t }) {
           <div
             className="logo"
             onClick={() => {
-              window.open(t("Footer/sns/naver"), "_blank");
+              window.open(t('Footer/sns/naver'), '_blank');
             }}
           >
             <img src="/ic_naver.svg" alt="naver" />
@@ -37,7 +34,7 @@ function Footer({ t }) {
           <div
             className="logo"
             onClick={() => {
-              window.open(t("Footer/sns/twitter"), "_blank");
+              window.open(t('Footer/sns/twitter'), '_blank');
             }}
           >
             <img src="/footer3.png" alt="" />
@@ -45,7 +42,7 @@ function Footer({ t }) {
           <div
             className="logo"
             onClick={() => {
-              window.open(t("Footer/sns/telegram"), "_blank");
+              window.open(t('Footer/sns/telegram'), '_blank');
             }}
           >
             <img src="/footer4.png" alt="" />
@@ -53,15 +50,15 @@ function Footer({ t }) {
           <div
             className="logo"
             onClick={() => {
-              window.open(t("Footer/sns/etherscan"), "_blank");
+              window.open(t('https://www.kcc.io/'), '_blank');
             }}
           >
-            <img src="/footer5.png" alt="" />
+            <img src="/footer5.svg" alt="" />
           </div>
           <div
             className="logo"
             onClick={() => {
-              window.open(t("Footer/sns/bscchain"), "_blank");
+              window.open(t('Footer/sns/bscchain'), '_blank');
             }}
           >
             <img src="/footer7.png" alt="" />
@@ -69,13 +66,13 @@ function Footer({ t }) {
           <div
             className="logo"
             onClick={() => {
-              window.open(t("Footer/sns/hecoinfo"), "_blank");
+              window.open(t('https://solscan.io/token/3TM1bok2dpqR674ubX5FDQZtkyycnx1GegRcd13pQgko'), '_blank');
             }}
           >
-            <img src="/footer6.png" alt="" />
+            <img src="/footer6.svg" alt="" />
           </div>
         </div>
-        <div className="bottom" style={{ fontSize: "12px" }}>
+        <div className="bottom" style={{ fontSize: '12px' }}>
           @ 2021 Recharge Labs Ltd.
         </div>
       </div>
