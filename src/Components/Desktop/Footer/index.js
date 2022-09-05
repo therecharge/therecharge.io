@@ -50,7 +50,7 @@ function Footer({ t }) {
           <div
             className="logo"
             onClick={() => {
-              window.open(t('https://www.kcc.io/'), '_blank');
+              window.open(t('https://scan.kcc.io/address/0xe74bE071f3b62f6A4aC23cA68E5E2A39797A3c30'), '_blank');
             }}
           >
             <img src="/footer5.svg" alt="" />
