@@ -20,6 +20,7 @@ import {getAllContracts, getAssaplayUsd, getCoingecko, getPenUsd} from '../../..
 import moment from 'moment'
 import {bscAbi, pancakeAbi} from "../../../constants";
 import Web3 from "web3";
+import _ from 'underscore'
 // import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
 // import { ReactComponent as DropdownOpen } from "./List/assets/dropdown-open.svg";
 
@@ -120,13 +121,15 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const ETH_WEB3 = web3_R.ERC;
     const BEP_WEB3 = web3_R.BEP;
     const HRC_WEB3 = web3_R.HRC;
-    const ALL_WEB3 = [ETH_WEB3, BEP_WEB3, HRC_WEB3];
+    const KCC_WEB3 = web3_R.KCC
+    const ALL_WEB3 = [ETH_WEB3, BEP_WEB3, HRC_WEB3, KCC_WEB3];
 
     const NETWORK = NETWORKS['mainnet'];
     // const TOKEN_ADDRESS = NETWORK.tokenAddress[network]; //
     const ETH_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress.ERC;
     const BEP_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress.BEP;
     const HRC_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress.HRC; //
+    const KCC_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress.KCC;
 
     const CHARGERLIST_ABI = require('../../../lib/read_contract/abi/chargerList.json');
     const TOKEN_ABI = require('../../../lib/read_contract/abi/erc20.json');
@@ -139,19 +142,22 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
     const getList = async () => {
       const allContract = await getAllContracts();
-      setAllContractInfo(allContract.chargeList.BSC)
+      const _allContract = _.flatten(Object.keys(allContract.chargeList).map((key, i) => {
+        return allContract.chargeList[key];
+      }))
+      setAllContractInfo(_allContract)
 
 
       const ETH_CHARGER_LIST = allContract.chargeList.ETH.map((item) => item.address);
       const BEP_CHARGER_LIST = allContract.chargeList.BSC.map((item) => item.address);
       const HRC_CHARGER_LIST = allContract.chargeList.HECO.map((item) => item.address);
-
+      const KCC_CHARGER_LIST = allContract.chargeList.KCC.map((item) => item.address);
 
       // const ETH_CHARGER_LIST = await getChargerList(ETH_CHARGERLIST_INSTANCE);
       // const BEP_CHARGER_LIST_2 = await getChargerList(BEP_CHARGERLIST_INSTANCE);
       // const HRC_CHARGER_LIST = await getChargerList(HRC_CHARGERLIST_INSTANCE); //
 
-      const ALL_NETWORK_CHARGERLIST = [ETH_CHARGER_LIST, BEP_CHARGER_LIST, HRC_CHARGER_LIST];
+      const ALL_NETWORK_CHARGERLIST = [ETH_CHARGER_LIST, BEP_CHARGER_LIST, HRC_CHARGER_LIST, KCC_CHARGER_LIST];
 
       if (ETH_CHARGER_LIST.length === 0 && BEP_CHARGER_LIST.length === 0) return setChList(chargerInfo);
 
@@ -159,6 +165,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         0: [],
         1: [],
         2: [], //
+        3: []
       };
 
 
@@ -205,11 +212,13 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
                 ALL_RESULTS[network][i].rewardToken,
                 TOKEN_ABI
               );
+              console.log(TOKEN_INSTANCE, 'token instance')
               return TOKEN_INSTANCE.methods.symbol().call();
             })
           );
         })
       );
+
       const ALL_STAKES_SYMBOL = await Promise.all(
         ALL_NETWORK_CHARGERLIST.map((CHARERLIST, network) => {
           return Promise.all(
@@ -244,7 +253,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       const penUsd = await getPenUsd();
       const assaplayUsd = await getAssaplayUsd();
 
-
       await ALL_NETWORK_CHARGERLIST.map(async (CHARGERLIST, network) => {
         let net;
         switch (network) {
@@ -257,7 +265,12 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           case 2:
             net = 'HRC';
             break;
+          case 3:
+            net = 'KCC'
+            break;
         }
+
+
         await CHARGERLIST.map((CHARGER_ADDRESS, i) => {
           // 11.12 풀을 위해 임시적으로 사용됩니다.
           if (ALL_RESULTS[network][i].name === '11.2 Premier Locked Pool 300') {
@@ -442,14 +455,17 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const currentTime = Number(moment(new Date()).unix())
     const duration = endTime - currentTime
     const nums = 0.000000000000000001;
-
-    console.log(item)
-
+    console.log(item.symbol, item.name , '123123123123123123')
 
     const year = 365 * 24 * 60 * 60;
 
     if(item.name === '6.2 RCG Locked Pool - ASSA Reward') {
-      const filteredData = allContract?.chargeList.BSC.filter((list, i) => {
+
+      const _allContract = _.flatten(Object.keys(allContract.chargeList).map((key, i) => {
+        return allContract.chargeList[key];
+      }))
+
+      const filteredData = _allContract.filter((list, i) => {
         return  item.name === list.name
       })
       const totalReward = filteredData[0].liquidity * assaUsd;
@@ -472,23 +488,30 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     //
     // }
     if(item.name.includes('LP')) {
+
       const rechargeQuantity = Number(fromWei(quantityInfo['0'])) ;
       const busdQuantity = Number(fromWei(quantityInfo['1']))
       const convertTotalSupply = Number(fromWei(pancakeTotalSupply));
       const rechargeUSD = rechargeQuantity * coingecko;
       const busdUSD = busdQuantity * busdPrice
       const lpPrice = (rechargeUSD + busdUSD) / convertTotalSupply
-      const filteredData = allContract.chargeList.BSC.filter((list, i) => {
+      const _allContract = _.flatten(Object.keys(allContract.chargeList).map((key, i) => {
+        return allContract.chargeList[key];
+      }))
+      const filteredData = _allContract.filter((list, i) => {
         return  item.name === list.name
       })
 
-      const totalReward = filteredData[0].liquidity * coingecko;
+      const totalReward = filteredData[0]?.liquidity * coingecko;
       const totalSupply = Number(fromWei(item.totalSupply)) * lpPrice;
 
 
       return (year / Number(item.DURATION)) * (totalReward / totalSupply) * 100;
 
     }
+
+
+
     if(allAreEqual(item.symbol)) {
       // const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply));
       // const totalDeposit = Number(item.totalSupply);
@@ -496,18 +519,28 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       // const result =  (year / duration) * (totalReward / totalDeposit) * 100;
       // // console.log(result, 'result', year / Number(item.DURATION), totalReward, totalDeposit, totalReward/totalDeposit, item );
       // return result;
-      console.log(allContract.chargeList.BSC, '123123123');
-      const filteredData = allContract.chargeList.BSC.filter((list, i) => {
+
+      const _allContract = _.flatten(Object.keys(allContract.chargeList).map((key, i) => {
+        return allContract.chargeList[key];
+      }))
+
+      const filteredData = _allContract.filter((list, i) => {
         return  item.name === list.name
       })
+
       const totalSupply = Number(fromWei(item.totalSupply));
-      console.log(filteredData[0], 'filteredData', item.name, allContract.chargeList.BSC)
+      console.log(filteredData, item.name, totalSupply)
+
       const result = (year / Number(item.DURATION)) * (filteredData[0]?.liquidity / totalSupply) * 100;
+
       return result;
     }
 
     if(!allAreEqual(item.symbol) && !item.name.includes('LP')) {
-      const filteredData = allContract.chargeList.BSC.filter((list, i) => {
+      const _allContract = _.flatten(Object.keys(allContract.chargeList).map((key, i) => {
+        return allContract.chargeList[key];
+      }))
+      const filteredData = _allContract.filter((list, i) => {
         return  item.name === list.name
       })
       const totalReward = filteredData[0].liquidity * penUsd;
@@ -590,7 +623,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   };
 
 
-
+  console.log(chList, 'chList')
 
   return (
     <Container>

@@ -45,6 +45,21 @@
         "blockExplorerUrls": [
           "https://bscscan.com/"
         ]
+      },
+      "KCC": {
+        "chainId": "321",
+        "chainName": "KCC-MAINNET",
+        "rpcUrls": [
+          "https://rpc-mainnet.kcc.network"
+        ],
+        "nativeCurrency": {
+          "name": "KCC",
+          "symbol": "KCS",
+          "decimals": 18
+        },
+        "blockExplorerUrls": [
+          "https://scan.kcc.io/"
+        ]
       }
     },
     "tokenAddress": {
@@ -55,7 +70,8 @@
     "chargerListAddress": {
       "HRC": "0x705BC407Abfc3D88a2B9a800546ed1C65bb856e8",
       "ERC": "0xb6Ea0d1C92700b3Dc95dB19183DE95dF76994f37",
-      "BEP": "0xf88bf2a6af4255EE9862B1aC8891402F6d0952EC"
+      "BEP": "0xf88bf2a6af4255EE9862B1aC8891402F6d0952EC",
+      "KCC": "0x3Ed3485F05970Ed701D949eE8B2bEc653f5ec427"
     }
   },
   "testnet": {

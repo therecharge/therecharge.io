@@ -123,18 +123,18 @@ function ConnectWallet({
       onDisconnect(true);
       toast("Wallet lose connection.");
     });
-  }
-  function isChainCorrect() {
+  }  function isChainCorrect() {
     // console.log(network, requireNetwork);
     if (!window.ethereum) {
       setNetwork(requireNetwork);
       return true;
     }
     return (
-      (typeof network === "string" ? parseInt(network, 16) : network) ==
-      requireNetwork
+        (typeof network === "string" ? parseInt(network, 16) : network) ==
+        requireNetwork
     );
   }
+
   async function connect() {
     while (
       window.document.querySelectorAll("[id=WEB3_CONNECT_MODAL_ID]").length > 1

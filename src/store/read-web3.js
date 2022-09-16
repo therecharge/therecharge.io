@@ -7,6 +7,7 @@ let Web3_Reader = {
   ERC: new Web3(NETWORKS["mainnet"].network["ERC"].rpcUrls[0]),
   HRC: new Web3(NETWORKS["mainnet"].network["HRC"].rpcUrls[0]),
   BEP: new Web3(NETWORKS["mainnet"].network["BEP"].rpcUrls[0]),
+  KCC: new Web3(NETWORKS["mainnet"].network["KCC"].rpcUrls[0])
 };
 
 export const web3ReaderState = atom({

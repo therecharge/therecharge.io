@@ -275,7 +275,7 @@ function Row({
       loadUserInfo();
     }
   }, [account, isOpen]);
-
+  console.log(userInfo.share, userInfo, 'uerInfo')
   return (
     <Container>
       {isPopupOpen && (
@@ -297,6 +297,7 @@ function Row({
           info.name == "There is currently no Charger List available."
             ? () => {}
             : () => {
+            console.log(name, poolNet, 'open')
                 setOpen(!isOpen);
                 setRequireNetwork(NETWORK.network[poolNet].chainId);
               }
@@ -385,7 +386,7 @@ function Row({
                     info ? info.symbol[1] : ""
                   }`}
                 />
-                <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
+                <Info left="Share" right={ `${isNaN(makeNum(userInfo.share)) ? '0': makeNum(userInfo.share) } %`} />
                 <Info
                   left="Reward"
                   right={`${makeNum(weiToEther(userInfo.reward))} ${
@@ -678,6 +679,9 @@ function Name({ status, name, info, isLP, isLocked, allContractInfo }) {
     const filteredContract = allContractInfo.filter((item) => {
       return item.name === name
     })
+
+    console.log(name, allContractInfo, '---')
+
     return filteredContract.length ? filteredContract[0].thumbnail : ""
   }
 
@@ -787,6 +791,11 @@ function Btn({ status, isOpen }) {
 }
 
 function makeNum(str = "0", decimal = 4) {
+
+  if(str === '-') {
+    return '0%'
+  }
+
   let newStr = str;
   if (typeof newStr === "number") newStr = str.toString();
   let arr = newStr.split(".");

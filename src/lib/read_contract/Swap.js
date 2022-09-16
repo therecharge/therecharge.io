@@ -2,6 +2,7 @@ import { fromWei, toWei } from "web3-utils";
 
 // Create contract instance (web3, Address, Abi ) => return (contract_instance)
 export const createContractInstance = (web3, address, abi) => {
+
   return new web3.eth.Contract(abi, address);
 };
 

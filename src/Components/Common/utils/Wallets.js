@@ -1,4 +1,6 @@
 export function changeNetwork(requireNetwork) {
+
+
   let rpc = {
     0x1: {
       method: "wallet_switchEthereumChain",
@@ -44,7 +46,28 @@ export function changeNetwork(requireNetwork) {
         },
       ],
     },
+
+    0x141: {
+      id: 1,
+      jsonrpc: "2.0",
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          chainId: "0x141",
+          chainName: "KCC-MAINNET",
+          rpcUrls: ["https://rpc-mainnet.kcc.network"],
+          nativeCurrency: {
+            name: "KCC",
+            symbol: "KCS",
+            decimals: 18,
+          },
+          blockExplorerUrls: ["https://scan.kcc.io/"],
+        },
+      ],
+    },
   };
+  console.log(requireNetwork, 'requireNetwork', rpc["56"])
+
   if (window.ethereum) window.ethereum.request(rpc[requireNetwork]);
   else {
     alert("Change Network not support.\r\nPlease change network your self");
