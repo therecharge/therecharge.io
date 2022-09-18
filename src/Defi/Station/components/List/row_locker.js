@@ -336,7 +336,7 @@ function Row({
                     info ? info.symbol[1] : ""
                   }`}
                 />
-                <Info left="Share" right={`${makeNum(userInfo.share)} %`} />
+                <Info left="Share" right={`${isNaN(userInfo.share) ? "0" : makeNum(userInfo.share)}%`} />
                 <Info
                   left="Reward"
                   right={`${makeNum(weiToEther(userInfo.reward))} ${
@@ -530,8 +530,11 @@ function Name ({ status, name, index, isLP, isLocked, contractInfo, info }) {
 
 
   // console.log(contractInfo, 'Name', contractInfo.privateLocker.BSC.length, contractInfo)
-  if(contractInfo && contractInfo.privateLocker.BSC.length) {
-    const filteredName = contractInfo.privateLocker.BSC.filter((locker) => {
+  console.log(contractInfo, 'locker')
+  if(contractInfo && contractInfo.length) {
+
+
+    const filteredName = contractInfo.filter((locker) => {
       return locker.address === info.address;
     })
 
@@ -610,7 +613,7 @@ function Apy({ status, apy, name, contractInfo,info }) {
   }
   let filteredContractInfo;
   if(contractInfo && name !== 'Loading List..') {
-     filteredContractInfo = contractInfo.privateLocker.BSC.filter((locker) => {
+     filteredContractInfo = contractInfo.filter((locker) => {
       return locker.address === info.address;
     })
     // console.log(contractInfo, name, filteredContractInfo[0].start, moment(filteredContractInfo[0].start).format('YY.MM.DD'), moment(filteredContractInfo[0].finish).format('YY.MM.DD'))

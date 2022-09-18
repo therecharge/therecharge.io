@@ -17,8 +17,10 @@ import { fromWei } from "web3-utils";
 /* Store */
 import { web3ReaderState } from "../../../store/read-web3";
 import {getAllContracts, getCoingecko} from "../../../api/contract";
+import _ from "underscore";
 // import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
 // import { ReactComponent as DropdownOpen } from "./List/assets/dropdown-open.svg";
+
 const loading_data = [
   {
     address: "0x0",
@@ -95,7 +97,8 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
     const ETH_WEB3 = web3_R.ERC;
     const BEP_WEB3 = web3_R.BEP;
     const HRC_WEB3 = web3_R.HRC;
-    const ALL_WEB3 = [ETH_WEB3, BEP_WEB3, HRC_WEB3];
+    const KCC_WEB3 = web3_R.KCC;
+    const ALL_WEB3 = [ETH_WEB3, BEP_WEB3, HRC_WEB3, KCC_WEB3];
 
     const NETWORK = NETWORKS["mainnet"];
     // const TOKEN_ADDRESS = NETWORK.tokenAddress[network]; //
@@ -127,15 +130,20 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
     const getList = async () => {
 
       const allContract = await getAllContracts();
-      setContractInfo(allContract)
+      const _allContract = _.flatten(Object.keys(allContract.privateLocker).map((key, i) => {
+        return allContract.privateLocker[key];
+      }))
+      setContractInfo(_allContract)
       const BEP_CHARGER_LIST = allContract.privateLocker.BSC.map((item) => item.address);
       const ETH_CHARGER_LIST = [];
+      const KCC_CHARGER_LIST = allContract.privateLocker.KCC.map((item) => item.address);
 
       const HRC_CHARGER_LIST = []; //
       const ALL_NETWORK_CHARGERLIST = [
         ETH_CHARGER_LIST,
         BEP_CHARGER_LIST,
         HRC_CHARGER_LIST,
+        KCC_CHARGER_LIST
       ];
 
       // if (ETH_CHARGER_LIST.length === 0 && BEP_CHARGER_LIST.length === 0)
@@ -145,6 +153,7 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
         0: [],
         1: [],
         2: [], //
+        3: []
       };
 
       const ALL_CHARGER_INSTANCES = ALL_NETWORK_CHARGERLIST.map(
@@ -244,6 +253,9 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
             break;
           case 2:
             net = "HRC";
+            break;
+          case 3:
+            net = 'KCC'
             break;
         }
         await CHARGERLIST.map((CHARGER_ADDRESS, i) => {

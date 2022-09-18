@@ -212,7 +212,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
                 ALL_RESULTS[network][i].rewardToken,
                 TOKEN_ABI
               );
-              console.log(TOKEN_INSTANCE, 'token instance')
               return TOKEN_INSTANCE.methods.symbol().call();
             })
           );
