@@ -1,24 +1,32 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { ReactComponent as PopupClose } from "./assets/popup-close.svg";
-import WalletConnect from "../../../../Components/Common/WalletConnect";
-import { async } from "@aragon/ui/dist/ToastHub";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { ReactComponent as PopupClose } from './assets/popup-close.svg';
+import WalletConnect from '../../../../Components/Common/WalletConnect';
+import { async } from '@aragon/ui/dist/ToastHub';
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
-export default function Popup({
-  close = () => {},
-  name,
-  apy,
-  info,
-  poolMethods,
-  userInfo,
-  toast,
-}) {
-  const [plAmount, setPlAmount] = useState("");
-
+export default function Popup({ close = () => {}, name, apy, info, poolMethods, userInfo, toast }) {
+  console.log(info, 'info');
+  const [plAmount, setPlAmount] = useState('');
   const SetPercent = (x) => {
     setPlAmount(makeNum((userInfo.available / 100) * x));
   };
+
+  function makeNum(str, decimal = 4) {
+    let newStr = str;
+    if (typeof newStr === 'number') newStr = str.toString();
+
+    let arr = newStr.split('.');
+    // console.log(newStr, arr, decimal);
+    if (arr.length == 1 || arr[0].length > 8) {
+      return arr[0];
+    } else {
+      return arr[0] + '.' + arr[1].substr(0, decimal);
+    }
+  }
+
+  console.log(makeNum((userInfo.available - plAmount).toString()), 'render', userInfo.available);
+
   return (
     <Background>
       <Container>
@@ -26,29 +34,24 @@ export default function Popup({
           <PopupClose
             onClick={() => {
               close();
-              setPlAmount("");
+              setPlAmount('');
             }}
             className="popup-close"
           />
           <div className="group1">
             <span className="Roboto_40pt_Black popup-title">STAKING</span>
             <span className="Roboto_30pt_Regular popup-name">
-              {name === "EVO - 1"
-                ? "Private Locker 1"
-                : name === "EVO - 2"
-                ? "Private Locker 2"
-                : name === "EVO - 3"
-                ? "Private Locker 3"
-                : ""}
+              {name === 'EVO - 1'
+                ? 'Private Locker 1'
+                : name === 'EVO - 2'
+                ? 'Private Locker 2'
+                : name === 'EVO - 3'
+                ? 'Private Locker 3'
+                : ''}
             </span>
-            <span className="Roboto_30pt_Regular popup-apy">
-              {makeNum(apy, 2)} %
-            </span>
+            <span className="Roboto_30pt_Regular popup-apy">{makeNum(apy, 2)} %</span>
             <span className="Roboto_20pt_Regular popup-available">
-              Available:{" "}
-              {`${makeNum((userInfo.available - plAmount).toString())} ${
-                info.symbol[1]
-              }`}
+              Available: {`${makeNum((userInfo.available - plAmount).toString())} ${info.symbol[1]}`}
             </span>
             <span
               className="Roboto_16pt_Regular minimum"
@@ -63,7 +66,7 @@ export default function Popup({
               value={plAmount}
               onChange={(e) => {
                 if (Number(e.target.value) < 0) {
-                  return setPlAmount("0");
+                  return setPlAmount('0');
                 } else if (userInfo.available >= Number(e.target.value)) {
                   return setPlAmount(makeNum(e.target.value, 8));
                 } else {
@@ -74,7 +77,7 @@ export default function Popup({
           </div>
           <QuickSelect>
             <div
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               onClick={() => {
                 SetPercent(25);
               }}
@@ -82,7 +85,7 @@ export default function Popup({
               <span className="Roboto_20pt_Regular">25%</span>
             </div>
             <div
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               onClick={() => {
                 SetPercent(50);
               }}
@@ -90,7 +93,7 @@ export default function Popup({
               <span className="Roboto_20pt_Regular">50%</span>
             </div>
             <div
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               onClick={() => {
                 SetPercent(75);
               }}
@@ -98,7 +101,7 @@ export default function Popup({
               <span className="Roboto_20pt_Regular">75%</span>
             </div>
             <div
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               onClick={() => {
                 SetPercent(100);
               }}
@@ -124,34 +127,19 @@ export default function Popup({
               onClick={async () => {
                 if (plAmount > 0) {
                   await close();
-                  await toast(
-                    'Please approve "PLUG-IN" in your private wallet'
-                  );
+                  await toast('Please approve "PLUG-IN" in your private wallet');
                   await poolMethods.stake(plAmount);
                 } else {
-                  toast("Please enter the amount of Staking");
+                  toast('Please enter the amount of Staking');
                 }
               }}
             />
           </div>
           <InfoContainer>
-            <Info
-              left="Current Redemption Rate"
-              right={`${info.basePercent / 100} %`}
-            />
+            <Info left="Current Redemption Rate" right={`${info.basePercent / 100} %`} />
             <Info left="To Stake" right={`${plAmount} RCG`} />
-            <Info
-              left="To Redeem"
-              right={`${makeNum(
-                (plAmount * info.basePercent) / 100 / 100
-              )} RCG`}
-            />
-            <Info
-              left="Net to Stake"
-              right={`${makeNum(
-                plAmount - (plAmount * info.basePercent) / 100 / 100
-              )} RCG`}
-            />
+            <Info left="To Redeem" right={`${makeNum((plAmount * info.basePercent) / 100 / 100)} RCG`} />
+            <Info left="Net to Stake" right={`${makeNum(plAmount - (plAmount * info.basePercent) / 100 / 100)} RCG`} />
           </InfoContainer>
         </Content>
       </Container>
@@ -179,15 +167,7 @@ const ContainerInfo = styled.div`
     margin-right: 0;
   }
 `;
-function makeNum(str, decimal = 4) {
-  let newStr = str;
-  if (typeof newStr === "number") newStr = str.toString();
-  let arr = newStr.split(".");
-  if (arr.length == 1 || arr[0].length > 8) return arr[0];
-  else {
-    return arr[0] + "." + arr[1].substr(0, decimal);
-  }
-}
+
 const Background = styled.div`
   position: fixed;
   left: 0px;

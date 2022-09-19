@@ -1,37 +1,32 @@
-import { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
-import { fromWei, toWei } from "web3-utils";
-import { ReactComponent as DropdownClose } from "./assets/dropdown-close.svg";
-import { ReactComponent as DropdownOpen } from "./assets/dropdown-open.svg";
-import WalletConnect from "../../../../Components/Common/WalletConnect";
-import Popup from "./popup";
-import Info from "./infoRow";
-import { createContractInstance } from "../../../../lib/read_contract/Station";
+import { useState, useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import { fromWei, toWei } from 'web3-utils';
+import { ReactComponent as DropdownClose } from './assets/dropdown-close.svg';
+import { ReactComponent as DropdownOpen } from './assets/dropdown-open.svg';
+import WalletConnect from '../../../../Components/Common/WalletConnect';
+import Popup from './popup';
+import Info from './infoRow';
+import { createContractInstance } from '../../../../lib/read_contract/Station';
 //store
-import { useRecoilState } from "recoil";
-import {
-  web3State,
-  accountState,
-  networkState,
-  requireNetworkState,
-} from "../../../../store/web3";
-import { web3ReaderState } from "../../../../store/read-web3";
-const TOKEN_ABI = require("../../../../lib/read_contract/abi/erc20.json");
-const ERC20_ABI = require("../../../abis/ERC20ABI.json");
-const POOL_ABI = require("../../../abis/poolABI.json");
-const NEW_CONTRACT_ABI = require("../../../abis/newContract.json");
-const CHARGER_ABI = require("../../../../lib/read_contract/abi/charger.json");
-const NETWORKS = require("../../../../lib/networks.json");
-const NETWORK = NETWORKS["mainnet"];
+import { useRecoilState } from 'recoil';
+import { web3State, accountState, networkState, requireNetworkState } from '../../../../store/web3';
+import { web3ReaderState } from '../../../../store/read-web3';
+const TOKEN_ABI = require('../../../../lib/read_contract/abi/erc20.json');
+const ERC20_ABI = require('../../../abis/ERC20ABI.json');
+const POOL_ABI = require('../../../abis/poolABI.json');
+const NEW_CONTRACT_ABI = require('../../../abis/newContract.json');
+const CHARGER_ABI = require('../../../../lib/read_contract/abi/charger.json');
+const NETWORKS = require('../../../../lib/networks.json');
+const NETWORK = NETWORKS['mainnet'];
 // Row Component structure
 //  1)state
 //  2)style
 //  3)inner component
 //  4)render component with 3)inner component + 2)styles + 1)state
 function Row({
-  status = "Inactive",
-  name = "Charger No.000000",
-  apy = "- %",
+  status = 'Inactive',
+  name = 'Charger No.000000',
+  apy = '- %',
   info, // charger
   params, // params
   toast, // toast
@@ -42,13 +37,12 @@ function Row({
   index,
   startTime,
   poolTVL,
-  allContractInfo
+  allContractInfo,
 }) {
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
   const [network] = useRecoilState(networkState);
-  const [requireNetwork, setRequireNetwork] =
-    useRecoilState(requireNetworkState);
+  const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
   const [web3_R] = useRecoilState(web3ReaderState);
   const WEB3 = web3_R[poolNet];
   const [isOpen, setOpen] = useState(false);
@@ -69,39 +63,31 @@ function Row({
     },
   });
   const [userInfo, setUserInfo] = useState({
-    address: "0x00",
-    available: "0",
-    balance: "-",
-    reward: "-",
-    allowance: "0",
-    share: "-",
-    tvl: "-",
-    apy: "-",
+    address: '0x00',
+    available: '0',
+    balance: '-',
+    reward: '-',
+    allowance: '0',
+    share: '-',
+    tvl: '-',
+    apy: '-',
   });
 
   const loadUserInfo = async () => {
     let ret = {
-      address: "0x00",
-      available: "0",
-      balance: "-",
-      reward: "-",
-      allowance: "0",
-      share: "-",
-      tvl: "-",
-      apy: "-",
+      address: '0x00',
+      available: '0',
+      balance: '-',
+      reward: '-',
+      allowance: '0',
+      share: '-',
+      tvl: '-',
+      apy: '-',
     };
     if (account && info) {
       try {
-        const STAKE_INSTANCE = createContractInstance(
-          WEB3,
-          info.stakeToken,
-          ERC20_ABI
-        );
-        const CHARGER_INSTANCE = createContractInstance(
-          WEB3,
-          info.address,
-          CHARGER_ABI
-        );
+        const STAKE_INSTANCE = createContractInstance(WEB3, info.stakeToken, ERC20_ABI);
+        const CHARGER_INSTANCE = createContractInstance(WEB3, info.address, CHARGER_ABI);
         // chargerInstance
 
         // let EXCEPTIONS
@@ -113,26 +99,27 @@ function Row({
           CHARGER_INSTANCE.methods.balanceOf(account).call(),
           CHARGER_INSTANCE.methods.earned(account).call(),
         ]);
+
+        console.log(available, fromWei(available, 'ether'), 'available');
+
         let share = (balance / tvl) * 100;
         // 1. 내가 스테이킹한 수량
         // 2. 내가 스테이킹한 수량의 전체 비중 (1/tvl %)
         // 3. 내가 받을 수량 (2 * 전체 reward) // charger earned(account)
 
         let reward;
-        let reward_SNAPSHOT_FLEX = Number(toWei("111", "ether")); // FIX ME
+        let reward_SNAPSHOT_FLEX = Number(toWei('111', 'ether')); // FIX ME
 
-        if (info.name === "11.2 Flexible Pool") {
+        if (info.name === '11.2 Flexible Pool') {
           /* GET_REWARD_TOTAL를 위한 신규 인스턴스 생성 후 load */
 
           const NEW_CONTRACT_INSTANCE = createContractInstance(
             WEB3,
-            "0x0fF80e548EbDaC17A6098c30b077D67C3Cf15D17",
+            '0x0fF80e548EbDaC17A6098c30b077D67C3Cf15D17',
             NEW_CONTRACT_ABI
           );
 
-          let GET_REWARD = await NEW_CONTRACT_INSTANCE.methods
-            .earned(account)
-            .call(); // FIX ME
+          let GET_REWARD = await NEW_CONTRACT_INSTANCE.methods.earned(account).call(); // FIX ME
 
           reward = GET_REWARD;
         } else {
@@ -142,7 +129,7 @@ function Row({
         ret = {
           ...ret,
           address: info.address,
-          available: fromWei(available, "ether"),
+          available: fromWei(available, 'ether'),
           allowance: allowance,
           balance: balance,
           share: share,
@@ -155,25 +142,13 @@ function Row({
     setUserInfo(ret);
     return ret;
   };
-  const loadMethods = async (
-    stakeTokenAddress,
-    rewardTokenAddress,
-    chargerAddress
-  ) => {
+  const loadMethods = async (stakeTokenAddress, rewardTokenAddress, chargerAddress) => {
     let ret = {};
-    const STAKE_INSTANCE = createContractInstance(
-      web3,
-      stakeTokenAddress,
-      ERC20_ABI
-    );
-    const POOL_INSTANCE = createContractInstance(
-      web3,
-      chargerAddress,
-      POOL_ABI
-    );
+    const STAKE_INSTANCE = createContractInstance(web3, stakeTokenAddress, ERC20_ABI);
+    const POOL_INSTANCE = createContractInstance(web3, chargerAddress, POOL_ABI);
     const NEW_CONTRACT_INSTANCE = createContractInstance(
       web3,
-      "0x0fF80e548EbDaC17A6098c30b077D67C3Cf15D17",
+      '0x0fF80e548EbDaC17A6098c30b077D67C3Cf15D17',
       NEW_CONTRACT_ABI
     );
     // const REWARD_INSTANCE = createContractInstance(web3, rewardTokenAddress, ERC20_ABI);
@@ -182,16 +157,16 @@ function Row({
     // let balance = await STAKE_INSTANCE.methods.balanceOf(account).call();
 
     const approve = (tokenM, to, amount, account) => {
-      if (typeof amount != "string") amount = String(amount);
-      return tokenM.approve(to, toWei(amount, "ether")).send({ from: account });
+      if (typeof amount != 'string') amount = String(amount);
+      return tokenM.approve(to, toWei(amount, 'ether')).send({ from: account });
     };
     const stake = async (poolM, amount, account) => {
-      if (typeof amount !== "string") amount = String(amount);
-      await poolM.stake(toWei(amount, "ether")).send({ from: account });
+      if (typeof amount !== 'string') amount = String(amount);
+      await poolM.stake(toWei(amount, 'ether')).send({ from: account });
     };
     /* 신규 컨트랙트 배포 후 변경 */
     const earn = (name, poolM, account) => {
-      if (info.name === "11.2 Flexible Pool") {
+      if (info.name === '11.2 Flexible Pool') {
         poolM.getReward(account).send({ from: account });
       } else {
         poolM.getReward().send({ from: account });
@@ -205,24 +180,16 @@ function Row({
 
     ret = {
       // available: fromWei(balance, "ether"),
-      approve: async () =>
-        await approve(
-          STAKE_INSTANCE.methods,
-          chargerAddress,
-          "999999999",
-          account
-        ),
-      stake: async (amount) =>
-        await stake(POOL_INSTANCE.methods, amount, account),
+      approve: async () => await approve(STAKE_INSTANCE.methods, chargerAddress, '999999999', account),
+      stake: async (amount) => await stake(POOL_INSTANCE.methods, amount, account),
       earn: async () => {
-        if (info.name === "11.2 Flexible Pool") {
+        if (info.name === '11.2 Flexible Pool') {
           await earn(info.name, NEW_CONTRACT_INSTANCE.methods, account);
         } else {
           await earn(info.name, POOL_INSTANCE.methods, account);
         }
       },
-      exit: async (balance) =>
-        await exit(POOL_INSTANCE.methods, account, balance), // 보상오류로 잠정 balance 추가됩니다.
+      exit: async (balance) => await exit(POOL_INSTANCE.methods, account, balance), // 보상오류로 잠정 balance 추가됩니다.
     };
 
     setPoolMethods({
@@ -233,13 +200,12 @@ function Row({
   };
 
   const updateChargerInfoList = async () => {
-    if (info.address === "0x0") return;
+    if (info.address === '0x0') return;
     if (account && isOpen) {
       loadUserInfo();
       loadMethods(info.stakeToken, info.rewardToken, info.address);
     }
   };
-
 
   const useInterval = (callback, delay) => {
     const savedCallback = useRef();
@@ -275,7 +241,6 @@ function Row({
       loadUserInfo();
     }
   }, [account, isOpen]);
-  console.log(userInfo.share, userInfo, 'uerInfo')
   return (
     <Container>
       {isPopupOpen && (
@@ -293,50 +258,43 @@ function Row({
       )}
       <Title
         onClick={
-          info.name == "Loading List.." ||
-          info.name == "There is currently no Charger List available."
+          info.name == 'Loading List..' || info.name == 'There is currently no Charger List available.'
             ? () => {}
             : () => {
-            console.log(name, poolNet, 'open')
                 setOpen(!isOpen);
                 setRequireNetwork(NETWORK.network[poolNet].chainId);
               }
         }
         style={
-          info.name === "Loading List.." ||
-          info.name == "There is currently no Charger List available."
-            ? { cursor: "not-allowed" }
-            : { cursor: "pointer" }
+          info.name === 'Loading List..' || info.name == 'There is currently no Charger List available.'
+            ? { cursor: 'not-allowed' }
+            : { cursor: 'pointer' }
         }
-        style={
-          window.innerWidth > 1088
-            ? { width: "100%", height: "80px" }
-            : { height: "119px" }
-        }
+        style={window.innerWidth > 1088 ? { width: '100%', height: '80px' } : { height: '119px' }}
       >
         <img
           className="chargerImage"
           src={
-            name === "EVO - 1" || name === "EVO - 2" || name === "EVO - 3"
-              ? "/ic_locker.svg"
+            name === 'EVO - 1' || name === 'EVO - 2' || name === 'EVO - 3'
+              ? '/ic_locker.svg'
               : `/img_station_${poolNet}.svg`
           }
           style={
             window.innerWidth > 1088
-              ? { width: "100px", height: "80px", opacity: "0.55" }
-              : { width: "150px", height: "119px", opacity: "0.55" }
+              ? { width: '100px', height: '80px', opacity: '0.55' }
+              : { width: '150px', height: '119px', opacity: '0.55' }
           }
         />
         <Status status={status} />
         <Name
           status={status}
           name={
-            name === "11.2 Premier Locked Pool 300"
-              ? "11.12 Premier Locked Pool 300"
-              : name === "11.2 Locked Pool 200"
-              ? "11.12 Locked Pool 200"
-              : name === "11.2 Flexible Pool"
-              ? "11.12 Flexible Pool"
+            name === '11.2 Premier Locked Pool 300'
+              ? '11.12 Premier Locked Pool 300'
+              : name === '11.2 Locked Pool 200'
+              ? '11.12 Locked Pool 200'
+              : name === '11.2 Flexible Pool'
+              ? '11.12 Flexible Pool'
               : name
           }
           index={index}
@@ -352,18 +310,8 @@ function Row({
         <Menu>
           <div className="part">
             <PoolInfo className="innerMenu">
-              <Info
-                left="APY"
-                right={
-                  apy < 0
-                    ? "- %"
-                    : Number(makeNum(apy, 2)).toLocaleString() + " %"
-                }
-              />
-              <Info
-                left="TVL"
-                right={`$ ${Number(poolTVL.toFixed(2)).toLocaleString()}`}
-              />
+              <Info left="APY" right={apy < 0 ? '- %' : Number(makeNum(apy, 2)).toLocaleString() + ' %'} />
+              <Info left="TVL" right={`$ ${Number(poolTVL.toFixed(2)).toLocaleString()}`} />
               <Info
                 left="LIMIT"
                 right="UNLIMITED"
@@ -375,31 +323,22 @@ function Row({
                 //     ` ${info.symbol[1]}`
               />
             </PoolInfo>
-            {account &&
-            (typeof network === "string" ? parseInt(network, 16) : network) ==
-              requireNetwork ? (
+            {account && (typeof network === 'string' ? parseInt(network, 16) : network) == requireNetwork ? (
               <UserInfo account={account} className="innerMenu">
                 <Info
                   className="hide"
                   left="MY BAL"
-                  right={`${makeNum(weiToEther(userInfo.balance))} ${
-                    info ? info.symbol[1] : ""
-                  }`}
+                  right={`${makeNum(weiToEther(userInfo.balance))} ${info ? info.symbol[1] : ''}`}
                 />
-                <Info left="Share" right={ `${isNaN(makeNum(userInfo.share)) ? '0': makeNum(userInfo.share) } %`} />
-                <Info
-                  left="Reward"
-                  right={`${makeNum(weiToEther(userInfo.reward))} ${
-                    info ? info.symbol[0] : ""
-                  }`}
-                />
+                <Info left="Share" right={`${isNaN(makeNum(userInfo.share)) ? '0' : makeNum(userInfo.share)} %`} />
+                <Info left="Reward" right={`${makeNum(weiToEther(userInfo.reward))} ${info ? info.symbol[0] : ''}`} />
               </UserInfo>
             ) : (
               <UserInfo
                 className="innerMenu"
                 style={{
-                  alignItems: "center",
-                  justifyContent: "center",
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <WalletConnect
@@ -411,79 +350,54 @@ function Row({
                   h="60px"
                   toast={toast}
                 />
-                {network &&
-                  requireNetwork !=
-                    (typeof network === "string"
-                      ? parseInt(network, 16)
-                      : network) && (
-                    <div className="warning">Wrong, Network!</div>
-                  )}
+                {network && requireNetwork != (typeof network === 'string' ? parseInt(network, 16) : network) && (
+                  <div className="warning">Wrong, Network!</div>
+                )}
               </UserInfo>
             )}
           </div>
           <Pannel className="innerMenu">
-            <Info direction="column" left="Period" right={period + "(UTC+9)"} />
+            <Info direction="column" left="Period" right={period + '(UTC+9)'} />
 
             <Wallets>
               <WalletConnect
-                need={userInfo.address == "0x00" ? "2" : "2"}
+                need={userInfo.address == '0x00' ? '2' : '2'}
                 // disable={userInfo.address == "0x00" ? false : false}
-                bgColor={
-                  status === "Active" /*&& startTime == "1636693200"*/
-                    ? "var(--purple)"
-                    : "var(--gray-30)"
-                }
-                border={
-                  name.includes("Flexible") || name.includes("11.1 ")
-                    ? ""
-                    : "locked"
-                }
+                bgColor={status === 'Active' /*&& startTime == "1636693200"*/ ? 'var(--purple)' : 'var(--gray-30)'}
+                border={name.includes('Flexible') || name.includes('11.1 ') ? '' : 'locked'}
                 hcolor=""
                 radius="20px"
                 w="540px"
-                fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
+                fontsize={window.innerWidth > 1088 ? '20px' : '30px'}
                 notConnected="Wallet Connect"
                 wrongNetwork="Change network for PLUG-IN"
                 text={
-                  userInfo.allowance !== "0"
-                    ? "PLUG-IN"
-                    : userInfo.address == "0x00"
-                    ? "Now Loading ..."
-                    : "APPROVE"
+                  userInfo.allowance !== '0' ? 'PLUG-IN' : userInfo.address == '0x00' ? 'Now Loading ...' : 'APPROVE'
                 } //어프로브 안되어 있으면 APPROVE로 대체 필요함.
                 onClick={() => {
-                  if (status === "Inactive") {
-                    toast("This pool is inactive");
-                  } else if (status === "Active") {
+                  if (status === 'Inactive') {
+                    toast('This pool is inactive');
+                  } else if (status === 'Active') {
                     // toast("This pool is closed");
-                    if (
-                      userInfo.allowance == "0" &&
-                      userInfo.address != "0x00"
-                    ) {
+                    if (userInfo.allowance == '0' && userInfo.address != '0x00') {
                       poolMethods.approve();
-                    } else if (
-                      userInfo.allowance != "0" &&
-                      userInfo.address != "0x00"
-                    ) {
+                    } else if (userInfo.allowance != '0' && userInfo.address != '0x00') {
                       setPopupOpen(!isPopupOpen);
                     } else {
-                      toast("Please wait for seconds");
+                      toast('Please wait for seconds');
                     }
                   } else {
-                    toast("This pool is closed");
+                    toast('This pool is closed');
                   }
                 }}
               />
               {/* 강제 출금 이용자들을 위해 한시적으로 적용합니다. */}
-              {name.includes("Flexible") || name.includes("11.1 ") ? (
+              {name.includes('Flexible') || name.includes('11.1 ') ? (
                 <WalletConnect
                   need="0"
                   disable={true}
                   bgColor={
-                    account &&
-                    userInfo.reward > 0 /*&& startTime == "1636693200"*/
-                      ? "var(--yellow)"
-                      : "var(--gray-30)"
+                    account && userInfo.reward > 0 /*&& startTime == "1636693200"*/ ? 'var(--yellow)' : 'var(--gray-30)'
                     // !account
                     //   ? "var(--gray-30)"
                     //   : status === "Inactive"
@@ -496,7 +410,7 @@ function Row({
                   hcolor=""
                   radius="20px"
                   w="540px"
-                  fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
+                  fontsize={window.innerWidth > 1088 ? '20px' : '30px'}
                   text="GET FILLED"
                   onClick={async () => {
                     // if (
@@ -506,50 +420,44 @@ function Row({
                     //   return toast("금일 18시까지 잠정 중단 됩니다.");
                     // }
                     if (!account) {
-                      toast("Please connect to wallet");
+                      toast('Please connect to wallet');
                     } else if (userInfo.reward > 0) {
                       poolMethods.earn();
-                      await toast(
-                        'Please approve "GET FILLED" in your private wallet'
-                      );
+                      await toast('Please approve "GET FILLED" in your private wallet');
                     }
                     // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
                     else {
-                      toast("There is no withdrawable amount");
+                      toast('There is no withdrawable amount');
                     }
                   }}
                 />
               ) : (
                 <></>
               )}
-              {name.includes("Flexible") ? (
+              {name.includes('Flexible') ? (
                 <WalletConnect
                   need="0"
                   disable={true}
                   bgColor={
-                    userInfo.balance > 0 /*&& startTime == "1636693200"*/
-                      ? "var(--ultramarine-blue)"
-                      : "var(--gray-30)"
+                    userInfo.balance > 0 /*&& startTime == "1636693200"*/ ? 'var(--ultramarine-blue)' : 'var(--gray-30)'
                   }
                   border=""
                   hcolor=""
                   radius="20px"
                   w="540px"
-                  fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
+                  fontsize={window.innerWidth > 1088 ? '20px' : '30px'}
                   text="UNPLUG"
                   onClick={async () => {
                     if (!account) {
-                      toast("Please connect to wallet");
+                      toast('Please connect to wallet');
                     } else if (userInfo.balance > 0) {
                       // 보상 오류로 balance 추가 됩니다 FIX ME
                       poolMethods.exit(userInfo.balance);
-                      await toast(
-                        'Please approve "UNPLUG" in your private wallet'
-                      );
+                      await toast('Please approve "UNPLUG" in your private wallet');
                     }
                     // 다음 풀 진행 전까지 강제출금자들을 위해 오픈 합니다.
                     else {
-                      toast("There is no withdrawable amount");
+                      toast('There is no withdrawable amount');
                     }
                   }}
                 />
@@ -558,40 +466,33 @@ function Row({
                   need="0"
                   disable={true}
                   bgColor={
-                    status === "Closed" &&
-                    (userInfo.balance > 0 || userInfo.reward > 0)
+                    status === 'Closed' && (userInfo.balance > 0 || userInfo.reward > 0)
                       ? /*&& startTime == "1636693200"*/
-                        "var(--ultramarine-blue)"
-                      : "var(--gray-30)"
+                        'var(--ultramarine-blue)'
+                      : 'var(--gray-30)'
                   }
-                  border={
-                    name.includes("Flexible") || name.includes("11.1 ")
-                      ? ""
-                      : "locked"
-                  }
+                  border={name.includes('Flexible') || name.includes('11.1 ') ? '' : 'locked'}
                   hcolor=""
                   radius="20px"
                   w="540px"
-                  fontsize={window.innerWidth > 1088 ? "20px" : "30px"}
+                  fontsize={window.innerWidth > 1088 ? '20px' : '30px'}
                   text="UNPLUG"
                   onClick={async () => {
                     // Locked인 경우에, period가 종료된 이후에 출금할 수 있음
                     if (!account) {
-                      toast("Please connect to wallet");
+                      toast('Please connect to wallet');
                     }
 
                     // FIX ME
-                    else if (status === "Closed") {
+                    else if (status === 'Closed') {
                       // Fix Me
                       if (userInfo.balance > 0 || userInfo.reward > 0) {
                         // 보상 오류로 balance 추가 됩니다 FIX ME
                         poolMethods.exit(userInfo.balance);
-                        await toast(
-                          'Please approve "UNPLUG" in your private wallet'
-                        );
-                      } else toast("There is no withdrawable amount");
+                        await toast('Please approve "UNPLUG" in your private wallet');
+                      } else toast('There is no withdrawable amount');
                     } else {
-                      toast("Please try after the pool service period ends");
+                      toast('Please try after the pool service period ends');
                     }
                     // else {
                     //   toast(
@@ -612,22 +513,22 @@ function Row({
 function Status({ name, status }) {
   function color() {
     switch (name) {
-      case "EVO - 1":
-        return "#b21a14";
-      case "EVO - 2":
-        return "#b21a14";
-      case "EVO - 3":
-        return "#b21a14";
+      case 'EVO - 1':
+        return '#b21a14';
+      case 'EVO - 2':
+        return '#b21a14';
+      case 'EVO - 3':
+        return '#b21a14';
     }
     switch (status) {
-      case "Closed":
-        return "#b21a14";
-      case "Inactive":
-        return "#7E7E7E";
-      case "Active":
-        return "#0eef6d";
-      case "Locked":
-        return "#b21a14";
+      case 'Closed':
+        return '#b21a14';
+      case 'Inactive':
+        return '#7E7E7E';
+      case 'Active':
+        return '#0eef6d';
+      case 'Locked':
+        return '#b21a14';
     }
   }
   return (
@@ -636,31 +537,31 @@ function Status({ name, status }) {
       style={
         window.innerWidth > 1088
           ? {
-              marginLeft: "50px",
+              marginLeft: '50px',
               color:
-                name === "11.12 Pancake LP Locked Pool 300" ||
-                name === "11.12 Premier Locked Pool 200" ||
-                name === "11.12 Locked Pool 100"
-                  ? "#b21a14"
+                name === '11.12 Pancake LP Locked Pool 300' ||
+                name === '11.12 Premier Locked Pool 200' ||
+                name === '11.12 Locked Pool 100'
+                  ? '#b21a14'
                   : color(status),
-              width: "71.5px",
-              textAlign: "center",
-              zIndex: "1",
+              width: '71.5px',
+              textAlign: 'center',
+              zIndex: '1',
             }
           : {
-              marginTop: "20px",
-              marginLeft: "20px",
-              marginRight: "25px",
+              marginTop: '20px',
+              marginLeft: '20px',
+              marginRight: '25px',
               backgroundColor:
-                name === "11.12 Pancake LP Locked Pool 300" ||
-                name === "11.12 Premier Locked Pool 200" ||
-                name === "11.12 Locked Pool 100"
-                  ? "#b21a14"
+                name === '11.12 Pancake LP Locked Pool 300' ||
+                name === '11.12 Premier Locked Pool 200' ||
+                name === '11.12 Locked Pool 100'
+                  ? '#b21a14'
                   : color(status),
-              width: "15px",
-              height: "15px",
-              textAlign: "center",
-              borderRadius: "100px",
+              width: '15px',
+              height: '15px',
+              textAlign: 'center',
+              borderRadius: '100px',
             }
       }
     >
@@ -670,22 +571,18 @@ function Status({ name, status }) {
 }
 function Name({ status, name, info, isLP, isLocked, allContractInfo }) {
   function color() {
-    if (status != "Active") return "var(--gray-30)";
+    if (status != 'Active') return 'var(--gray-30)';
   }
 
   const getImageUrl = (name) => {
-
-
     const filteredContract = allContractInfo.filter((item) => {
-      return item.name === name
-    })
+      return item.name === name;
+    });
 
-    console.log(name, allContractInfo, '---')
+    return filteredContract.length ? filteredContract[0].thumbnail : '';
+  };
 
-    return filteredContract.length ? filteredContract[0].thumbnail : ""
-  }
-
-  const nameDiv = document.querySelectorAll(".tracingHeight");
+  const nameDiv = document.querySelectorAll('.tracingHeight');
   // console.log(info.network, 'info name', info.address === '"0xBda852B667e3DB881AD03a94db1b0233219bB777"')
   return (
     <div
@@ -693,15 +590,15 @@ function Name({ status, name, info, isLP, isLocked, allContractInfo }) {
       style={
         window.innerWidth > 1088
           ? {
-              marginLeft: "47px",
+              marginLeft: '47px',
               color: color(),
-              zIndex: "1",
+              zIndex: '1',
             }
           : {
-              marginLeft: "5px",
+              marginLeft: '5px',
               // marginRight: "2px",
               color: color(),
-              zIndex: "1",
+              zIndex: '1',
             }
       }
     >
@@ -721,12 +618,14 @@ function Name({ status, name, info, isLP, isLocked, allContractInfo }) {
           }
           style={
             window.innerWidth > 1088
-              ? name.includes("LP") || info.name === '5.17 RCG Locked Pool - Pen Reward' || info.name === '6.2 RCG Locked Pool - ASSA Reward'
-                ? { width: "70px", height: "40px" }
-                : { width: "40px", height: "40px" }
-              : name.includes("LP") || info.name === '4.17 RCG Locked Pool - PEN Reward'
-              ? { width: "88px", height: "50px" }
-              : { width: "50px", height: "50px" }
+              ? name.includes('LP') ||
+                info.name === '5.17 RCG Locked Pool - Pen Reward' ||
+                info.name === '6.2 RCG Locked Pool - ASSA Reward'
+                ? { width: '70px', height: '40px' }
+                : { width: '40px', height: '40px' }
+              : name.includes('LP') || info.name === '4.17 RCG Locked Pool - PEN Reward'
+              ? { width: '88px', height: '50px' }
+              : { width: '50px', height: '50px' }
           }
         />
       </div>
@@ -736,13 +635,7 @@ function Name({ status, name, info, isLP, isLocked, allContractInfo }) {
           <p />
         ) : (
           <div className="class Roboto_18pt_Regular_L">
-            {isLP
-              ? isLocked
-                ? "LP Locked"
-                : "LP Flexible"
-              : isLocked
-              ? "Locked"
-              : "Flexible"}
+            {isLP ? (isLocked ? 'LP Locked' : 'LP Flexible') : isLocked ? 'Locked' : 'Flexible'}
           </div>
         )}
 
@@ -754,58 +647,45 @@ function Name({ status, name, info, isLP, isLocked, allContractInfo }) {
 
 function Apy({ status, apy }) {
   function color() {
-    if (status != "Active") return "var(--gray-30)";
-    if (apy == "+999999.99") return "var(--green)";
+    if (status != 'Active') return 'var(--gray-30)';
+    if (apy == '+999999.99') return 'var(--green)';
     // FIX ME
-    if (apy >= 0) return "var(--green)";
+    if (apy >= 0) return 'var(--green)';
     // if (apy >= 50) return "var(--yellow)";
-    return "var(--red)";
+    return 'var(--red)';
   }
   return (
     <p
-      className={`${
-        window.innerWidth > 720 ? "Roboto_25pt_Black" : "Roboto_25pt_Black"
-      } apy`}
+      className={`${window.innerWidth > 720 ? 'Roboto_25pt_Black' : 'Roboto_25pt_Black'} apy`}
       style={{ color: color() }}
     >
-      {status !== "Inactive"
-        ? (apy === "+999999.99"
-            ? "+999999.99"
-            : apy < 0
-            ? "- "
-            : Number(Number(apy).toFixed(2)).toLocaleString()) + "%"
-        : "-"}
+      {status !== 'Inactive'
+        ? (apy === '+999999.99' ? '+999999.99' : apy < 0 ? '- ' : Number(Number(apy).toFixed(2)).toLocaleString()) + '%'
+        : '-'}
     </p>
   );
 }
 
 function Btn({ status, isOpen }) {
   if (isOpen) return <DropdownOpen className="btn" />;
-  else
-    return (
-      <DropdownClose
-        className="btn"
-        fill={status == "Inactive" ? "#7E7E7E" : "#fff"}
-      />
-    );
+  else return <DropdownClose className="btn" fill={status == 'Inactive' ? '#7E7E7E' : '#fff'} />;
 }
 
-function makeNum(str = "0", decimal = 4) {
-
-  if(str === '-') {
-    return '0%'
+function makeNum(str = '0', decimal = 4) {
+  if (str === '-') {
+    return '0%';
   }
 
   let newStr = str;
-  if (typeof newStr === "number") newStr = str.toString();
-  let arr = newStr.split(".");
+  if (typeof newStr === 'number') newStr = str.toString();
+  let arr = newStr.split('.');
   if (arr.length == 1 || arr[0].length > 8) return arr[0];
   else {
-    return arr[0] + "." + arr[1].substr(0, decimal);
+    return arr[0] + '.' + arr[1].substr(0, decimal);
   }
 }
 const weiToEther = (wei) => {
-  return fromWei(wei, "ether");
+  return fromWei(wei, 'ether');
 };
 
 const Container = styled.div`
@@ -902,7 +782,7 @@ const PoolInfo = styled.div`
 `;
 const UserInfo = styled.div`
   display: flex;
-  position: ${(props) => (props.account ? "inherit" : "relative")};
+  position: ${(props) => (props.account ? 'inherit' : 'relative')};
   gap: 8px;
   flex-direction: column;
   justify-content: space-between;
