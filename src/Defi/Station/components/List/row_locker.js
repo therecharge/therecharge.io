@@ -13,6 +13,7 @@ import { web3State, accountState, networkState, requireNetworkState } from '../.
 import { web3ReaderState } from '../../../../store/read-web3';
 import { getAllContracts } from '../../../../api/contract';
 import moment from 'moment';
+import { poolContractListAtom } from '../../../../store/pool';
 const TOKEN_ABI = require('../../../../lib/read_contract/abi/erc20.json');
 const ERC20_ABI = require('../../../abis/ERC20ABI.json');
 const POOL_ABI = require('../../../abis/poolABI.json');
@@ -38,6 +39,7 @@ function Row({
   index,
   poolTVL,
   contractInfo,
+  isOpen,
 }) {
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
@@ -45,7 +47,7 @@ function Row({
   const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
   const [web3_R] = useRecoilState(web3ReaderState);
   const WEB3 = web3_R[poolNet];
-  const [isOpen, setOpen] = useState(false);
+  // const [isOpen, setOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [poolMethods, setPoolMethods] = useState({
     available: 0,
@@ -72,6 +74,22 @@ function Row({
     tvl: '-',
     apy: '-',
   });
+  const [poolContractList, setPoolContractList] = useRecoilState(poolContractListAtom);
+  const setOpen = (address) => {
+    console.log(address, poolContractList, 'dadadadtest');
+    const copyData = JSON.parse(JSON.stringify(poolContractList));
+    const changeData = copyData.map((info) => {
+      if (info.address === address) {
+        info.isOpen = !info.isOpen;
+        return info;
+      }
+      info.isOpen = false;
+      return info;
+    });
+
+    console.log(changeData, 'changeData');
+    setPoolContractList(changeData);
+  };
 
   const loadUserInfo = async () => {
     let ret = {
@@ -201,7 +219,7 @@ function Row({
       loadUserInfo();
     }
   }, [account, isOpen]);
-
+  console.log(isOpen, 'isisisisisi', info?.name, poolContractList);
   return (
     <Container>
       {isPopupOpen && (
@@ -222,7 +240,7 @@ function Row({
           info.name == 'Loading List..' || info.name == 'There is currently no Charger List available.'
             ? () => {}
             : () => {
-                setOpen(!isOpen);
+                setOpen(info.address);
                 setRequireNetwork(NETWORK.network[poolNet].chainId);
               }
         }

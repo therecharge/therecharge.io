@@ -11,6 +11,7 @@ import { createContractInstance } from '../../../../lib/read_contract/Station';
 import { useRecoilState } from 'recoil';
 import { web3State, accountState, networkState, requireNetworkState } from '../../../../store/web3';
 import { web3ReaderState } from '../../../../store/read-web3';
+import { poolContractListAtom } from '../../../../store/pool';
 const TOKEN_ABI = require('../../../../lib/read_contract/abi/erc20.json');
 const ERC20_ABI = require('../../../abis/ERC20ABI.json');
 const POOL_ABI = require('../../../abis/poolABI.json');
@@ -38,6 +39,7 @@ function Row({
   startTime,
   poolTVL,
   allContractInfo,
+  isOpen,
 }) {
   const [web3] = useRecoilState(web3State);
   const [account] = useRecoilState(accountState);
@@ -45,7 +47,9 @@ function Row({
   const [requireNetwork, setRequireNetwork] = useRecoilState(requireNetworkState);
   const [web3_R] = useRecoilState(web3ReaderState);
   const WEB3 = web3_R[poolNet];
-  const [isOpen, setOpen] = useState(false);
+  const [poolContractList, setPoolContractList] = useRecoilState(poolContractListAtom);
+
+  // const [isOpen, setOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [poolMethods, setPoolMethods] = useState({
     available: 0,
@@ -72,7 +76,21 @@ function Row({
     tvl: '-',
     apy: '-',
   });
+  const setOpen = (address) => {
+    console.log(address);
+    const copyData = JSON.parse(JSON.stringify(poolContractList));
+    const changeData = copyData.map((info) => {
+      if (info.address === address) {
+        info.isOpen = !info.isOpen;
+        return info;
+      }
+      info.isOpen = false;
+      return info;
+    });
 
+    console.log(changeData, 'changeData');
+    setPoolContractList(changeData);
+  };
   const loadUserInfo = async () => {
     let ret = {
       address: '0x00',
@@ -261,7 +279,7 @@ function Row({
           info.name == 'Loading List..' || info.name == 'There is currently no Charger List available.'
             ? () => {}
             : () => {
-                setOpen(!isOpen);
+                setOpen(info?.address);
                 setRequireNetwork(NETWORK.network[poolNet].chainId);
               }
         }

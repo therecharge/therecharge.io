@@ -21,6 +21,7 @@ import moment from 'moment';
 import { bscAbi, pancakeAbi } from '../../../constants';
 import Web3 from 'web3';
 import _ from 'underscore';
+import { poolContractListAtom } from '../../../store/pool';
 // import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
 // import { ReactComponent as DropdownOpen } from "./List/assets/dropdown-open.svg";
 
@@ -73,6 +74,15 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const [bscInfo, setBscInfo] = useState(null);
   const [bscPrice, setBscPrice] = useState(null);
   const [allContractInfo, setAllContractInfo] = useState([]);
+  const [poolContractList, setPoolContractList] = useRecoilState(poolContractListAtom);
+
+  const setIsOpenValue = (address, contractLists) => {
+    const filterData = contractLists.filter((contract) => {
+      return contract.address === address;
+    });
+
+    return filterData[0]?.isOpen;
+  };
 
   // const [isOpen, setOpen] = useState(false);
   const [web3_R] = useRecoilState(web3ReaderState);
@@ -147,6 +157,22 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           return allContract.chargeList[key];
         })
       );
+
+      const privateLocker = _.flatten(
+        Object.keys(allContract.privateLocker).map((key, i) => {
+          return allContract.privateLocker[key];
+        })
+      );
+
+      const sumContract = _allContract.concat(privateLocker);
+      sumContract.forEach((contract) => {
+        contract.isOpen = false;
+      });
+      _allContract.forEach((contract) => {
+        contract.isOpen = false;
+      });
+      setPoolContractList(sumContract);
+
       setAllContractInfo(_allContract);
 
       const ETH_CHARGER_LIST = allContract.chargeList.ETH.map((item) => item.address);
@@ -663,6 +689,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
                     startTime={charger.startTime}
                     poolTVL={charger.poolTVL}
                     allContractInfo={allContractInfo}
+                    isOpen={setIsOpenValue(charger.address, poolContractList)}
                   />
                 </div>
               </div>

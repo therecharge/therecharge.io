@@ -1,34 +1,28 @@
-import React from "react";
-import styled, { css } from "styled-components";
-import Web3 from "web3";
-import Web3Modal from "web3modal";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import { changeNetwork } from "./utils/Wallets";
+import React from 'react';
+import styled, { css } from 'styled-components';
+import Web3 from 'web3';
+import Web3Modal from 'web3modal';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import { changeNetwork } from './utils/Wallets';
 //store
-import { useRecoilState } from "recoil";
-import {
-  web3State,
-  providerState,
-  accountState,
-  networkState,
-  requireNetworkState,
-} from "../../store/web3";
+import { useRecoilState } from 'recoil';
+import { web3State, providerState, accountState, networkState, requireNetworkState } from '../../store/web3';
 
 function ConnectWallet({
-  need = "0", // 1 = Need wallet Connect, 2 = Need correct network
+  need = '0', // 1 = Need wallet Connect, 2 = Need correct network
   disable = false,
-  notConnected = "Wallet Connect",
-  wrongNetwork = "Wrong Network!",
+  notConnected = 'Wallet Connect',
+  wrongNetwork = 'Wrong Network!',
   text = undefined,
-  w = "540px",
-  m = "",
-  h = "80px",
-  radius = "210px",
-  border = "2px solid #ffb900",
+  w = '540px',
+  m = '',
+  h = '80px',
+  radius = '210px',
+  border = '2px solid #ffb900',
   bgColor,
-  hcolor = "var(--yellow)",
-  fontsize = "",
-  fontClass = "",
+  hcolor = 'var(--yellow)',
+  fontsize = '',
+  fontClass = '',
   onClick = () => {},
   toast = () => {},
 }) {
@@ -38,6 +32,8 @@ function ConnectWallet({
   const [network, setNetwork] = useRecoilState(networkState);
   const [requireNetwork] = useRecoilState(requireNetworkState);
 
+  console.log(network, requireNetwork, '12323123');
+
   // function isOnClickFunctionDetected() {
   //   if (onClick.toString() == "()=>{}") return false;
   //   return true;
@@ -46,32 +42,25 @@ function ConnectWallet({
   /* Setting WalletConnect */
   const providerOptions = {
     metamask: {
-      id: "injected",
-      name: "MetaMask",
-      type: "injected",
-      check: "isMetaMask",
+      id: 'injected',
+      name: 'MetaMask',
+      type: 'injected',
+      check: 'isMetaMask',
     },
     walletconnect: {
       package: WalletConnectProvider, // required
       options: {
         rpc: {
-          1: "https://eth-mainnet.alchemyapi.io/v2/2wgBGtGnTm3s0A0o23RY0BtXxgow1GAn",
-          3: "https://eth-ropsten.alchemyapi.io/v2/vn-ib6FVXaweiMUDJkOmOkXQm1jPacAj",
-          56: "https://bsc-dataseed.binance.org/",
-          128: "https://http-mainnet.hecochain.com",
-          256: "https://http-testnet.hecochain.com",
+          1: 'https://eth-mainnet.alchemyapi.io/v2/2wgBGtGnTm3s0A0o23RY0BtXxgow1GAn',
+          3: 'https://eth-ropsten.alchemyapi.io/v2/vn-ib6FVXaweiMUDJkOmOkXQm1jPacAj',
+          56: 'https://bsc-dataseed.binance.org/',
+          128: 'https://http-mainnet.hecochain.com',
+          256: 'https://http-testnet.hecochain.com',
         },
-        infuraId: "3fc11d1feb8944229a1cfba7bd62c8bc", // Required
-        network: "mainnet",
+        infuraId: '3fc11d1feb8944229a1cfba7bd62c8bc', // Required
+        network: 'mainnet',
         qrcodeModalOptions: {
-          mobileLinks: [
-            "rainbow",
-            "metamask",
-            "argent",
-            "trust",
-            "imtoken",
-            "pillar",
-          ],
+          mobileLinks: ['rainbow', 'metamask', 'argent', 'trust', 'imtoken', 'pillar'],
         },
       },
     },
@@ -106,42 +95,36 @@ function ConnectWallet({
     if (!provider.on) {
       return;
     }
-    provider.on("open", async (info) => {
-      toast("Wallet Connected!");
+    provider.on('open', async (info) => {
+      toast('Wallet Connected!');
     });
-    provider.on("accountsChanged", async (accounts) => {
+    provider.on('accountsChanged', async (accounts) => {
       // console.log(accounts);
       setAccount(accounts[0]);
-      toast("Account Changed");
+      toast('Account Changed');
     });
-    provider.on("chainChanged", async (chainId) => {
+    provider.on('chainChanged', async (chainId) => {
       // console.log(chainId);
       setNetwork(chainId);
-      toast("Chain Id Changed");
+      toast('Chain Id Changed');
     });
-    provider.on("disconnect", async (error) => {
+    provider.on('disconnect', async (error) => {
       onDisconnect(true);
-      toast("Wallet lose connection.");
+      toast('Wallet lose connection.');
     });
-  }  function isChainCorrect() {
+  }
+  function isChainCorrect() {
     // console.log(network, requireNetwork);
     if (!window.ethereum) {
       setNetwork(requireNetwork);
       return true;
     }
-    return (
-        (typeof network === "string" ? parseInt(network, 16) : network) ==
-        requireNetwork
-    );
+    return (typeof network === 'string' ? parseInt(network, 16) : network) == requireNetwork;
   }
 
   async function connect() {
-    while (
-      window.document.querySelectorAll("[id=WEB3_CONNECT_MODAL_ID]").length > 1
-    ) {
-      window.document
-        .querySelectorAll("[id=WEB3_CONNECT_MODAL_ID]")[1]
-        .remove();
+    while (window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]').length > 1) {
+      window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')[1].remove();
     }
     // console.log("Connect!");
     // console.log("asdf", web3Modal);
@@ -159,17 +142,17 @@ function ConnectWallet({
   function getAccount() {
     if (text) return text;
     // console.log(network, requireNetwork);
-    let ret = account.slice(0, 8) + "..." + account.slice(-6);
+    let ret = account.slice(0, 8) + '...' + account.slice(-6);
     return ret;
   }
   function isDisable() {
     if (!disable) return false;
     switch (need) {
-      case "0":
+      case '0':
         return false;
-      case "1":
+      case '1':
         if (account) return false;
-      case "2":
+      case '2':
         if (account && isChainCorrect()) return false;
     }
     return true;
@@ -188,16 +171,16 @@ function ConnectWallet({
       fontsize={fontsize}
       fontClass={fontClass}
       // }
-      className={isDisable() ? "disable" : ""}
+      className={isDisable() ? 'disable' : ''}
       onClick={() => {
         switch (need) {
-          case "0":
+          case '0':
             onClickEvent();
             break;
-          case "1":
+          case '1':
             account ? onClickEvent() : connect();
             break;
-          case "2":
+          case '2':
             if (account && isChainCorrect()) onClickEvent();
             else if (!account) connect();
             else if (!isChainCorrect()) changeNetwork(requireNetwork);
@@ -205,24 +188,10 @@ function ConnectWallet({
         }
       }}
     >
-      <span
-        className={
-          fontClass || window.innerWidth > 1088
-            ? "Roboto_20pt_Black"
-            : "Roboto_30pt_Black"
-        }
-      >
-        {need === "0" && text}
-        {need === "1" &&
-          !isDisable() &&
-          (account ? getAccount() : notConnected)}
-        {need === "2" &&
-          !isDisable() &&
-          (account
-            ? isChainCorrect()
-              ? getAccount()
-              : wrongNetwork
-            : notConnected)}
+      <span className={fontClass || window.innerWidth > 1088 ? 'Roboto_20pt_Black' : 'Roboto_30pt_Black'}>
+        {need === '0' && text}
+        {need === '1' && !isDisable() && (account ? getAccount() : notConnected)}
+        {need === '2' && !isDisable() && (account ? (isChainCorrect() ? getAccount() : wrongNetwork) : notConnected)}
         {isDisable() && text}
       </span>
     </Button>
@@ -252,8 +221,8 @@ const Button = styled.div`
         @media (min-width: 1088px) {
           font-size: ${props.account
             ? props.fontsize
-            : props.text === "APPROVE" || props.text === "PLUG-IN"
-            ? "20px"
+            : props.text === 'APPROVE' || props.text === 'PLUG-IN'
+            ? '20px'
             : props.fontsize};
         }
       }
@@ -263,18 +232,18 @@ const Button = styled.div`
       }
 
       @media (min-width: 1088px) {
-        width: ${props.border === "3px solid #9314B2"
-          ? "540px"
-          : props.border === "4px solid #9314B2"
-          ? "474px"
-          : props.border === "locked"
-          ? "474px"
-          : props.notConnected === "Connect Wallet for data"
-          ? "420px"
-          : "250px"};
+        width: ${props.border === '3px solid #9314B2'
+          ? '540px'
+          : props.border === '4px solid #9314B2'
+          ? '474px'
+          : props.border === 'locked'
+          ? '474px'
+          : props.notConnected === 'Connect Wallet for data'
+          ? '420px'
+          : '250px'};
         // margin: auto;
-        margin-top: ${props.border === "4px solid #9314B2" ? "40px" : ""};
-        height: ${props.border === "4px solid #9314B2" ? "60px" : ""};
+        margin-top: ${props.border === '4px solid #9314B2' ? '40px' : ''};
+        height: ${props.border === '4px solid #9314B2' ? '60px' : ''};
       }
     `;
   }};

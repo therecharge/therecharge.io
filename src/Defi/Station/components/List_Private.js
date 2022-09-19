@@ -18,6 +18,7 @@ import { fromWei } from 'web3-utils';
 import { web3ReaderState } from '../../../store/read-web3';
 import { getAllContracts, getCoingecko } from '../../../api/contract';
 import _ from 'underscore';
+import { poolContractListAtom } from '../../../store/pool';
 // import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
 // import { ReactComponent as DropdownOpen } from "./List/assets/dropdown-open.svg";
 
@@ -64,8 +65,18 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
   const [web3_R] = useRecoilState(web3ReaderState);
   const [lockedPoolAddress, setLockedPoolAddress] = useState([]);
   const [contractInfo, setContractInfo] = useState(null);
+  const [poolContractList, setPoolContractList] = useRecoilState(poolContractListAtom);
 
   const NETWORKS = require('../../../lib/networks.json');
+
+  const setIsOpenValue = (address, contractLists) => {
+    const filterData = contractLists.filter((contract) => {
+      return contract.address === address;
+    });
+
+    return filterData[0]?.isOpen;
+  };
+
   const getMinimum = (address, contractLists) => {
     const filterData = contractLists.filter((contract) => {
       return contract.address === address;
@@ -121,7 +132,20 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
           return allContract.privateLocker[key];
         })
       );
+      const chargeListContract = _.flatten(
+        Object.keys(allContract.chargeList).map((key, i) => {
+          return allContract.chargeList[key];
+        })
+      );
 
+      const sumContract = _allContract.concat(chargeListContract);
+      sumContract.forEach((contract) => {
+        contract.isOpen = false;
+      });
+      _allContract.forEach((contract) => {
+        contract.isOpen = false;
+      });
+      setPoolContractList(sumContract);
       setContractInfo(_allContract);
       const BEP_CHARGER_LIST = allContract.privateLocker.BSC.map((item) => item.address);
       const ETH_CHARGER_LIST = [];
@@ -231,7 +255,6 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
             break;
         }
         await CHARGERLIST.map((CHARGER_ADDRESS, i) => {
-          console.log(CHARGER_ADDRESS, '123123123', _allContract);
           ALL_RESULTS[network][i].address = CHARGER_ADDRESS;
           ALL_RESULTS[network][i].status = loadActiveStatus(ALL_RESULTS[network][i]);
           ALL_RESULTS[network][i].minimum = getMinimum(CHARGER_ADDRESS, _allContract);
@@ -272,8 +295,6 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
           }
         });
       }
-
-      console.log(ALL_LIST, 'all list');
 
       let tvl = 0;
       ALL_LIST.map((charger) => (tvl += Number(fromWei(charger.totalSupply, 'ether'))));
@@ -372,9 +393,7 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
       }
     }, [delay]);
   };
-
-  console.log(chList, 'chLisrtssss');
-
+  console.log('parent', poolContractList);
   return (
     <>
       {chList.length > 0 && chList[0].name !== 'There is currently no Charger List available.' && (
@@ -382,6 +401,7 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
           <Content>
             <RowContainer>
               {chList.map((charger, index) => {
+                console.log('charger', charger, poolContractList);
                 return (
                   <div
                     // className={params.isLP === true ? "disable" : ""}
@@ -403,6 +423,7 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
                         poolNet={charger.network}
                         poolTVL={charger.poolTVL}
                         contractInfo={contractInfo}
+                        isOpen={setIsOpenValue(charger.address, poolContractList)}
                       />
                     </div>
                   </div>
