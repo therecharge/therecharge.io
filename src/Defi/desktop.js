@@ -19,6 +19,7 @@ import { web3ReaderState } from '../store/read-web3';
 import { tvdState } from '../store/data';
 import { uniLpLockerState } from '../store/data';
 import { getAllContracts } from '../api/contract';
+import CHARGER_ABI from '../lib/read_contract/abi/charger.json';
 
 function convert(n) {
   var sign = +n < 0 ? '-' : '',
@@ -124,15 +125,17 @@ function Defi({ toast, t }) {
       const NETWORK = NETWORKS['mainnet'];
       const ERC_WEB3 = web3_R['ERC'];
       const BEP_WEB3 = web3_R['BEP'];
+      const KCC_WEB3 = web3_R['KCC'];
       const ERC_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress['ERC'];
       const BEP_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress['BEP'];
-
+      const KCC_CHARGERLIST_ADDRESS = NETWORK.chargerListAddress['KCC'];
       const ERC_CHARGERLIST_INSTANCE = createContractInstance(ERC_WEB3, ERC_CHARGERLIST_ADDRESS, CHARGERLIST_ABI);
       const BEP_CHARGERLIST_INSTANCE = createContractInstance(BEP_WEB3, BEP_CHARGERLIST_ADDRESS, CHARGERLIST_ABI);
 
       const allContract = await getAllContracts();
       const ERC_CHARGERLIST = allContract.chargeList.ETH.map((item) => item.address);
       const BEP_CHARGERLIST = allContract.chargeList.BSC.map((item) => item.address);
+      const KCC_CHARGERLIST = allContract.chargeList.KCC.map((item) => item.address);
       // const HRC_CHARGER_LIST = allContract.chargeList.Huobi.map((item) => item.address);
 
       // const ERC_CHARGERLIST = await getChargerList(ERC_CHARGERLIST_INSTANCE);
@@ -145,6 +148,10 @@ function Defi({ toast, t }) {
         return createContractInstance(BEP_WEB3, CHARGER_ADDRESS, CHARGER_ABI);
       });
 
+      const KCC_CHARGER_INSTANCES = KCC_CHARGERLIST.map((CHARGER_ADDRESS) => {
+        return createContractInstance(KCC_WEB3, CHARGER_ADDRESS, CHARGER_ABI);
+      });
+
       const ERC_CHARGERS_INFO = await Promise.all(
         ERC_CHARGER_INSTANCES.map((CHARGER_INSTANCE) => {
           return getChargerInfo(CHARGER_INSTANCE);
@@ -152,6 +159,12 @@ function Defi({ toast, t }) {
       );
       const BEP_CHARGERS_INFO = await Promise.all(
         BEP_CHARGER_INSTANCES.map((CHARGER_INSTANCE) => {
+          return getChargerInfo(CHARGER_INSTANCE);
+        })
+      );
+
+      const KCC_CHARGERS_INFO = await Promise.all(
+        KCC_CHARGER_INSTANCES.map((CHARGER_INSTANCE) => {
           return getChargerInfo(CHARGER_INSTANCE);
         })
       );
@@ -192,8 +205,25 @@ function Defi({ toast, t }) {
         })
       );
 
-      let ALL_OF_CHARCERS_INFO = [...ercPool, ...bepPool].filter((pool) => pool.balance > 0);
+      let kccPool = await Promise.all(
+        KCC_CHARGER_INSTANCES.map(async (instance, i) => {
+          let { name } = KCC_CHARGERS_INFO[i];
 
+          let [balance, reward] = await Promise.all([
+            await instance.methods.balanceOf(account).call(),
+            await instance.methods.earned(account).call(),
+          ]);
+
+          return {
+            type: name.includes('Locked') || name.includes('Zero') ? 'Locked Staking' : 'Flexible Staking',
+            name: name,
+            balance: fromWei(balance, 'ether'),
+            reward: fromWei(reward, 'ether'),
+          };
+        })
+      );
+      console.log(kccPool, 'kccc', bepPool);
+      let ALL_OF_CHARCERS_INFO = [...ercPool, ...bepPool, ...kccPool].filter((pool) => pool.balance > 0);
       // console.log("ALL_OF_CHARCERS_INFO", ALL_OF_CHARCERS_INFO)
 
       setMyPools(ALL_OF_CHARCERS_INFO);
