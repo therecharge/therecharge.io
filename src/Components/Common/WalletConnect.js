@@ -128,7 +128,8 @@ function ConnectWallet({
 
   async function connect() {
     if (isMobile()) {
-      alert('연결');
+      window.open('https://metamask.app.link/dapp/defi.therecharge.io/', '_blank');
+      return;
     }
 
     while (window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]').length > 1) {
