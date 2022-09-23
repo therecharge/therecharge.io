@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import { useRecoilState } from "recoil";
-import { tvdState } from "../../../store/data";
-import { uniLpLockerState } from "../../../store/data";
-import styled from "styled-components";
-import { useTranslation } from "react-i18next";
-import Networks from "./Networks";
-import Slider from "./Slider";
-import SortBy from "./SortBy";
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { tvdState } from '../../../store/data';
+import { uniLpLockerState } from '../../../store/data';
+import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
+import Networks from './Networks';
+import Slider from './Slider';
+import SortBy from './SortBy';
 
 // const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
 //   let newNum;
@@ -22,9 +22,9 @@ function Header({ setNetwork, network, setParams, params, tvl, privateTvl }) {
 
   const convertNum = (num, { unitSeparator } = { unitSeparator: false }) => {
     let newNum;
-    if (typeof num === "string") newNum = Number(num);
+    if (typeof num === 'string') newNum = Number(num);
     if (unitSeparator) return newNum.toLocaleString();
-    return newNum.toLocaleString("fullwide", { useGrouping: false });
+    return newNum.toLocaleString('fullwide', { useGrouping: false });
   };
 
   setTvd(tvl + privateTvl + uniLpLocker);
@@ -52,9 +52,9 @@ function Header({ setNetwork, network, setParams, params, tvl, privateTvl }) {
       </Title>
       <Line />
       <Test>
-        <Networks setNetwork={setNetwork} network={network} />
-        <Slider setParams={setParams} params={params} />
-        <SortBy />
+        {/*<Networks setNetwork={setNetwork} network={network} />*/}
+        {/*<Slider setParams={setParams} params={params} />*/}
+        {/*<SortBy />*/}
       </Test>
     </Contain>
   );

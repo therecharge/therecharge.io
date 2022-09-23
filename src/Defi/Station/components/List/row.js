@@ -77,7 +77,6 @@ function Row({
     apy: '-',
   });
   const setOpen = (address) => {
-    console.log(address);
     const copyData = JSON.parse(JSON.stringify(poolContractList));
     const changeData = copyData.map((info) => {
       if (info.address === address) {
@@ -88,7 +87,6 @@ function Row({
       return info;
     });
 
-    console.log(changeData, 'changeData');
     setPoolContractList(changeData);
   };
   const loadUserInfo = async () => {

@@ -32,8 +32,6 @@ function ConnectWallet({
   const [network, setNetwork] = useRecoilState(networkState);
   const [requireNetwork] = useRecoilState(requireNetworkState);
 
-  console.log(network, requireNetwork, '12323123');
-
   // function isOnClickFunctionDetected() {
   //   if (onClick.toString() == "()=>{}") return false;
   //   return true;

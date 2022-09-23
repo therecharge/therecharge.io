@@ -88,6 +88,13 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const [web3_R] = useRecoilState(web3ReaderState);
   const NETWORKS = require('../../../lib/networks.json');
 
+  const getSeq = (address, contractLists) => {
+    const filteredData = contractLists.filter((item) => {
+      return item.address === address;
+    });
+    return filteredData[0]?.seq;
+  };
+
   const loadChargerList = async () => {
     const priceData = await axios.post(`https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`, {
       query: 'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
@@ -305,7 +312,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           ALL_RESULTS[network][i].status = loadActiveStatus(ALL_RESULTS[network][i]);
           // 컨트랙트에서 미니멈 값을 제대로 주기 전까지 일시적으로 사용합니다.
           ALL_RESULTS[network][i].minimum = fromWei(ALL_RESULTS[network][i].limit, 'ether');
-          ALL_RESULTS[network][i].seq = allContract.chargeList.BSC[i].seq;
+          ALL_RESULTS[network][i].seq = getSeq(CHARGER_ADDRESS, _allContract);
           ALL_RESULTS[network][i].rewardAmount = ALL_REWARDS_AMOUNT[network][i];
           ALL_RESULTS[network][i].basePercent = ALL_STAKES_BASEPERCENT[network][i];
           ALL_RESULTS[network][i].symbol = [ALL_REWARDS_SYMBOL[network][i], ALL_STAKES_SYMBOL[network][i]];
@@ -351,6 +358,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       // let test = updatedList.filter((charger) =>
       //   charger.name.includes(params.type)
       // ); //
+
       let ALL_LIST = [];
       for (let network in ALL_RESULTS) {
         ALL_RESULTS[network].map((charger) => {
@@ -362,6 +370,10 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       }
       let tvl = 0;
       ALL_LIST.map((charger) => (tvl += Number(fromWei(charger.totalSupply, 'ether'))));
+
+      ALL_LIST = ALL_LIST.sort((p, n) => {
+        return p.seq - n.seq;
+      });
 
       setTvl(tvl * RCG_PRICE);
       // if (params.type === "Locked") {
