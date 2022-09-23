@@ -127,7 +127,7 @@ function ConnectWallet({
   }
 
   async function connect() {
-    if (isMobile()) {
+    if (!window.ethereum && isMobile()) {
       window.open('https://metamask.app.link/dapp/defi.therecharge.io/', '_blank');
       return;
     }
