@@ -91,6 +91,10 @@ function ConnectWallet({
     else onClick();
   }
 
+  function isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
   function connectEventHandler(provider) {
     if (!provider.on) {
       return;
@@ -123,6 +127,10 @@ function ConnectWallet({
   }
 
   async function connect() {
+    if (isMobile()) {
+      alert('연결');
+    }
+
     while (window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]').length > 1) {
       window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')[1].remove();
     }
