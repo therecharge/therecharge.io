@@ -14,6 +14,7 @@ import { web3ReaderState } from '../../../../store/read-web3';
 import { getAllContracts } from '../../../../api/contract';
 import moment from 'moment';
 import { poolContractListAtom } from '../../../../store/pool';
+import { timezone } from '../../../../lib/timezone';
 const TOKEN_ABI = require('../../../../lib/read_contract/abi/erc20.json');
 const ERC20_ABI = require('../../../abis/ERC20ABI.json');
 const POOL_ABI = require('../../../abis/poolABI.json');
@@ -330,7 +331,7 @@ function Row({
             )}
           </div>
           <Pannel className="innerMenu">
-            <Info direction="column" left="Period" right={period + '(UTC+9)'} />
+            <Info direction="column" left="Period" right={period + `(UTC+${timezone})`} />
 
             <Wallets>
               <WalletConnect

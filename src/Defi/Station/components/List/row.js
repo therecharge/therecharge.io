@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+
 import styled from 'styled-components';
 import { fromWei, toWei } from 'web3-utils';
 import { ReactComponent as DropdownClose } from './assets/dropdown-close.svg';
@@ -12,6 +13,8 @@ import { useRecoilState } from 'recoil';
 import { web3State, accountState, networkState, requireNetworkState } from '../../../../store/web3';
 import { web3ReaderState } from '../../../../store/read-web3';
 import { poolContractListAtom } from '../../../../store/pool';
+
+import { timezone } from '../../../../lib/timezone';
 const TOKEN_ABI = require('../../../../lib/read_contract/abi/erc20.json');
 const ERC20_ABI = require('../../../abis/ERC20ABI.json');
 const POOL_ABI = require('../../../abis/poolABI.json');
@@ -24,6 +27,7 @@ const NETWORK = NETWORKS['mainnet'];
 //  2)style
 //  3)inner component
 //  4)render component with 3)inner component + 2)styles + 1)state
+
 function Row({
   status = 'Inactive',
   name = 'Charger No.000000',
@@ -115,8 +119,6 @@ function Row({
           CHARGER_INSTANCE.methods.balanceOf(account).call(),
           CHARGER_INSTANCE.methods.earned(account).call(),
         ]);
-
-        console.log(available, fromWei(available, 'ether'), 'available');
 
         let share = (balance / tvl) * 100;
         // 1. 내가 스테이킹한 수량
@@ -373,7 +375,7 @@ function Row({
             )}
           </div>
           <Pannel className="innerMenu">
-            <Info direction="column" left="Period" right={period + '(UTC+9)'} />
+            <Info direction="column" left="Period" right={period + `(UTC+${timezone})`} />
 
             <Wallets>
               <WalletConnect

@@ -18,6 +18,7 @@
     "i18next-browser-languagedetector": "^6.1.2",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.3",
+    "moment-timezone": "^0.5.37",
     "nuka-carousel": "4.7.8",
     "prettier": "^2.5.1",
     "react": "^17.0.2",
