@@ -103,11 +103,16 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
     const contract = new web3.eth.Contract(bscAbi, '0x9A908063f7345905A43D35740D00d46ddb5F411d');
     const pancakeContract = new web3.eth.Contract(pancakeAbi, '0x9A908063f7345905A43D35740D00d46ddb5F411d');
-
-    const response = await axios.get(
-      'https://api.pancakeswap.info/api/v2/tokens/0xe9e7cea3dedca5984780bafc599bd69add087d56'
-    );
-    const BUSD_Price = response.data.data.price;
+    let pancakeDefault;
+    const response = await axios
+      .get('https://api.pancakeswap.info/api/v2/tokens/0xe9e7cea3dedca5984780bafc599bd69add087d56')
+      .then((resp) => {
+        pancakeDefault = resp?.data.data.price;
+      })
+      .catch((err) => {
+        pancakeDefault = 1;
+      });
+    const BUSD_Price = pancakeDefault;
     const quantityInfo = await contract.methods.getReserves().call();
     const pancakeTotalSupply = await pancakeContract.methods.totalSupply().call();
 
@@ -439,9 +444,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const bootstrap = async () => {
     const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
     const contract = new web3.eth.Contract(bscAbi, '0x9A908063f7345905A43D35740D00d46ddb5F411d');
-    const price = await axios.get(
-      'https://api.pancakeswap.info/api/v2/tokens/0xe9e7cea3dedca5984780bafc599bd69add087d56'
-    );
     const data = await contract.methods.getReserves().call();
     setBscInfo(data);
   };
