@@ -373,6 +373,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           }
         });
       }
+
       let tvl = 0;
       ALL_LIST.map((charger) => (tvl += Number(fromWei(charger.totalSupply, 'ether'))));
 
@@ -736,9 +737,8 @@ const loadActiveStatus = ({ totalSupply, startTime, DURATION, limit, name }) => 
   startTime = Number(startTime);
   DURATION = Number(DURATION);
   let NOW = new Date().getTime() / 1000;
-
   // 11.1 풀을 위해 일시적으로 사용합니다.
-  if (name.includes('11.1 ')) return 'Inactive';
+  // if (name.includes('11.1 ')) return 'Inactive';
 
   if (name.includes('10.1 ')) return 'Inactive';
 
