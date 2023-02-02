@@ -16,9 +16,9 @@ import {
 import { fromWei, toBN } from 'web3-utils';
 /* Store */
 import { web3ReaderState } from '../../../store/read-web3';
-import { getAllContracts, getAssaplayUsd, getRcgUsd, getPenUsd, getKusUsd } from '../../../api/contract'
+import { getAllContracts, getAssaplayUsd, getRcgUsd, getPenUsd, getKusUsd, getwKcsUsd } from '../../../api/contract'
 import moment from 'moment';
-import { bscAbi, pancakeAbi } from '../../../constants';
+import { bscAbi, kusLPAbi, pancakeAbi } from '../../../constants'
 import Web3 from 'web3';
 import _ from 'underscore';
 import { poolContractListAtom } from '../../../store/pool';
@@ -98,23 +98,12 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       query: 'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
     });
 
-    const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
-    const contract = new web3.eth.Contract(bscAbi, '0x9A908063f7345905A43D35740D00d46ddb5F411d');
-    const pancakeContract = new web3.eth.Contract(pancakeAbi, '0x9A908063f7345905A43D35740D00d46ddb5F411d');
-    let pancakeDefault;
-    const response = await axios
-      .get('https://api.pancakeswap.info/api/v2/tokens/0xe9e7cea3dedca5984780bafc599bd69add087d56')
-      .then((resp) => {
-        pancakeDefault = resp?.data.data.price;
-      })
-      .catch((err) => {
-        pancakeDefault = 1;
-      });
-    const BUSD_Price = pancakeDefault;
-    const quantityInfo = await contract.methods.getReserves().call();
-    const pancakeTotalSupply = await pancakeContract.methods.totalSupply().call();
-
     const RCG_PRICE = makeNum(priceData.data.data.pairs[0].token0Price);
+
+    // kuslp
+    const web3 = new Web3('https://rpc-mainnet.kcc.network');
+    const kusLPContract = new web3.eth.Contract(bscAbi, '0x41c0296C6C7F4333e0B367df2a782E0A930ce733');
+    const kusLPTotalSupply = await kusLPContract.methods.totalSupply().call();
 
     /**
      * 1. 모든 차져리스트를 받는다
@@ -162,6 +151,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
     const getList = async () => {
       const allContract = await getAllContracts();
+      console.log(allContract)
       const _allContract = _.flatten(
         Object.keys(allContract.chargeList).map((key, i) => {
           return allContract.chargeList[key];
@@ -286,7 +276,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         'RCG': await getRcgUsd(),
         'PEN': await getPenUsd(),
         'ASSA': await getAssaplayUsd(),
-        'KUS': await getKusUsd()
+        'KUS': await getKusUsd(),
+        'wKCS': await getwKcsUsd()
       }
 
       await ALL_NETWORK_CHARGERLIST.map(async (CHARGERLIST, network) => {
@@ -316,8 +307,13 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           ALL_RESULTS[network][i].basePercent = ALL_STAKES_BASEPERCENT[network][i];
           ALL_RESULTS[network][i].symbol = [ALL_REWARDS_SYMBOL[network][i], ALL_STAKES_SYMBOL[network][i]];
 
-          const stakeCoingekoUsd = usd[ALL_STAKES_SYMBOL[network][i]] || usd['RCG']
-          const rewardCoingekoUsd = usd[ALL_REWARDS_SYMBOL[network][i]] || usd['RCG']
+          let stakeCoingekoUsd = usd[ALL_STAKES_SYMBOL[network][i]] || usd['RCG'];
+          let rewardCoingekoUsd = usd[ALL_REWARDS_SYMBOL[network][i]] || usd['RCG'];
+
+          // 2.1 wKCS-KUS LP 예외처리
+          if (ALL_RESULTS[network][i].name.includes('2.1 wKCS - KUS LP Flexible')) {
+            stakeCoingekoUsd = (usd['wKCS'] + usd['KUS']) / Number(fromWei(kusLPTotalSupply));
+          }
 
           ALL_RESULTS[network][i].network = net;
           ALL_RESULTS[network][i].apy = renewalGetAPY(
@@ -385,7 +381,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
   const bootstrap = async () => {
     const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
-    const contract = new web3.eth.Contract(bscAbi, '0x9A908063f7345905A43D35740D00d46ddb5F411d');
+    const contract = new web3.eth.Contract(kusLPAbi, '0x1EE6b0F7302b3c48c5Fa89Cd0a066309D9AC3584');
     const data = await contract.methods.getReserves().call();
     setBscInfo(data);
   };
@@ -438,7 +434,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const nums = 0.000000000000000001;
 
     const year = 365 * 24 * 60 * 60;
-
     const _allContract = _.flatten(
       Object.keys(allContract.chargeList).map((key, i) => {
         return allContract.chargeList[key];
@@ -496,7 +491,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 }
 
 const loadPoolPeriod = (startTime, duration) => {
-  console.log(`${new Date(startTime * 1000)} / ${duration}`)
   let ret = '21.01.01 00:00:00 ~ 21.01.30 00:00:00((UTC+9)+9)';
   const endTime = Number(startTime) + Number(duration);
 

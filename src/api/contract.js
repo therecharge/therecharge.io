@@ -42,3 +42,12 @@ export const getKusUsd = async () => {
       return 0;
     });
 }
+
+export const getwKcsUsd = async () => {
+  return await axios
+    .get('https://api.coingecko.com/api/v3/coins/wrapped-kcs')
+    .then((resp) => resp.data.market_data.current_price.usd)
+    .catch((err) => {
+      return 0;
+    });
+}

@@ -393,7 +393,6 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
       }
     }, [delay]);
   };
-  console.log('parent', poolContractList);
   return (
     <>
       {chList.length > 0 && chList[0].name !== 'There is currently no Charger List available.' && (
