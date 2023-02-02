@@ -7,7 +7,7 @@ export const getAllContracts = async () => {
   return await api.get('/blockchain/contracts?enabled=true').then((resp) => resp.data.data);
 };
 
-export const getCoingecko = async () => {
+export const getRcgUsd = async () => {
   return await axios
     .get('https://api.coingecko.com/api/v3/coins/recharge')
     .then((resp) => resp.data.market_data.current_price.usd)
@@ -33,3 +33,12 @@ export const getAssaplayUsd = async () => {
       return 0;
     });
 };
+
+export const getKusUsd = async () => {
+  return await axios
+    .get('https://api.coingecko.com/api/v3/coins/kuswap')
+    .then((resp) => resp.data.market_data.current_price.usd)
+    .catch((err) => {
+      return 0;
+    });
+}

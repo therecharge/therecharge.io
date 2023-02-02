@@ -16,7 +16,7 @@ import {
 import { fromWei, toBN } from 'web3-utils';
 /* Store */
 import { web3ReaderState } from '../../../store/read-web3';
-import { getAllContracts, getAssaplayUsd, getCoingecko, getPenUsd } from '../../../api/contract';
+import { getAllContracts, getAssaplayUsd, getRcgUsd, getPenUsd, getKusUsd } from '../../../api/contract'
 import moment from 'moment';
 import { bscAbi, pancakeAbi } from '../../../constants';
 import Web3 from 'web3';
@@ -28,8 +28,6 @@ import { poolContractListAtom } from '../../../store/pool';
 Array.prototype.insert = function (index, item) {
   this.splice(index, 0, item);
 };
-
-const bufferArray = ['5.2 BSC Locked', '5.2 BSC Flexible'];
 
 const loading_data = [
   {
@@ -284,9 +282,12 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         })
       );
 
-      const coingeckoUSD = await getCoingecko();
-      const penUsd = await getPenUsd();
-      const assaplayUsd = await getAssaplayUsd();
+      const usd = {
+        'RCG': await getRcgUsd(),
+        'PEN': await getPenUsd(),
+        'ASSA': await getAssaplayUsd(),
+        'KUS': await getKusUsd()
+      }
 
       await ALL_NETWORK_CHARGERLIST.map(async (CHARGERLIST, network) => {
         let net;
@@ -306,13 +307,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         }
 
         await CHARGERLIST.map((CHARGER_ADDRESS, i) => {
-          // 11.12 풀을 위해 임시적으로 사용됩니다.
-          if (ALL_RESULTS[network][i].name === '11.2 Premier Locked Pool 300') {
-            ALL_RESULTS[network][i].name = '11.12 Premier Locked Pool 200';
-          } else if (ALL_RESULTS[network][i].name === '11.2 Locked Pool 200') {
-            ALL_RESULTS[network][i].name = '11.12 Locked Pool 100';
-          }
-
           ALL_RESULTS[network][i].address = CHARGER_ADDRESS;
           ALL_RESULTS[network][i].status = loadActiveStatus(ALL_RESULTS[network][i]);
           // 컨트랙트에서 미니멈 값을 제대로 주기 전까지 일시적으로 사용합니다.
@@ -321,48 +315,25 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
           ALL_RESULTS[network][i].rewardAmount = ALL_REWARDS_AMOUNT[network][i];
           ALL_RESULTS[network][i].basePercent = ALL_STAKES_BASEPERCENT[network][i];
           ALL_RESULTS[network][i].symbol = [ALL_REWARDS_SYMBOL[network][i], ALL_STAKES_SYMBOL[network][i]];
+
+          const stakeCoingekoUsd = usd[ALL_STAKES_SYMBOL[network][i]] || usd['RCG']
+          const rewardCoingekoUsd = usd[ALL_REWARDS_SYMBOL[network][i]] || usd['RCG']
+
           ALL_RESULTS[network][i].network = net;
-          ALL_RESULTS[network][i].apy = bufferArray.includes(ALL_RESULTS[network][i].name)
-            ? getAPY(
-                ALL_RESULTS[network][i].totalSupply,
-                ALL_RESULTS[network][i].rewardAmount -
-                  (ALL_RESULTS[network][i].rewardToken == ALL_RESULTS[network][i].stakeToken
-                    ? ALL_RESULTS[network][i].totalSupply
-                    : 0),
-                ALL_RESULTS[network][i].DURATION,
-                ALL_RESULTS[network][i].name,
-                ALL_RESULTS[network][i].network,
-                ALL_RESULTS[network][i]
-              )
-            : renewalGetAPY(
-                ALL_RESULTS[network][i],
-                coingeckoUSD,
-                allContract,
-                BUSD_Price,
-                quantityInfo,
-                pancakeTotalSupply,
-                penUsd,
-                assaplayUsd
-              );
+          ALL_RESULTS[network][i].apy = renewalGetAPY(
+            ALL_RESULTS[network][i],
+            allContract,
+            stakeCoingekoUsd,
+            rewardCoingekoUsd
+          );
           ALL_RESULTS[network][i].isLP = ALL_RESULTS[network][i].name.includes('LP');
           ALL_RESULTS[network][i].isLocked = ALL_RESULTS[network][i].name.includes('Locked');
           ALL_RESULTS[network][i].poolTVL = renewalTVL(
             ALL_RESULTS[network][i].totalSupply,
-            coingeckoUSD,
-            ALL_RESULTS[network][i].symbol
+            stakeCoingekoUsd
           );
-          // ALL_RESULTS[network][i].isLP && ALL_RESULTS[network][i].network === 'BEP'
-          //   ? 25.6082687419 * Number(fromWei(ALL_RESULTS[network][i].totalSupply, 'ether')) * RCG_PRICE
-          //   : ALL_RESULTS[network][i].isLP && ALL_RESULTS[network][i].network === 'ERC'
-          //   ? 4272102.29339 * Number(fromWei(ALL_RESULTS[network][i].totalSupply, 'ether'))
-          //   : Number(fromWei(ALL_RESULTS[network][i].totalSupply, 'ether')) * RCG_PRICE;
         });
       });
-
-      // 1. pool type에 따라 필터링 진행
-      // let test = updatedList.filter((charger) =>
-      //   charger.name.includes(params.type)
-      // ); //
 
       let ALL_LIST = [];
       for (let network in ALL_RESULTS) {
@@ -382,32 +353,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
       });
 
       setTvl(tvl * RCG_PRICE);
-      // if (params.type === "Locked") {
-      //   // 해당 풀타입이 없을 때
-      //   let catchZeroPool = [];
-      //   // bep Loced 예외처리 Zero 잡기
-      //   catchZeroPool = updatedList.filter((charger) =>
-      //     charger.name.includes("Zero")
-      //   );
-      //   if (catchZeroPool.length !== 0) {
-      //     test.unshift(catchZeroPool[0]);
-      //   }
-      // }
 
-      // ALL_LIST.sort((charger1, charger2) => charger2.startTime - charger1.startTime);
-      // ALL_LIST.sort((charger1, charger2) => charger2.apy - charger1.apy);
-
-      // UNISWAP LP POOL을 위해 임시적으로 사용합니다.
-
-      // ALL_LIST.reverse()
-      // console.log("ALL_LIST", ALL_LIST)
-      // let lastCharger = ALL_LIST.pop()
-      // ALL_LIST.unshift(lastCharger)
-
-      // console.log('ALL_LIST', ALL_LIST);
-      // if (ALL_LIST.length > 1 && ALL_LIST[5].name === '2.3 Pancake LP Locked -  High Yield') {
-      //   ALL_LIST = realignArray(1, 5, ALL_LIST);
-      // }
       if (ALL_LIST.length === 0) {
         setChList(chargerInfo);
         setFullList(chargerInfo);
@@ -432,12 +378,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     }
   };
 
-  const renewalTVL = (totalSupply, coingecko, symbol) => {
-    // console.log(parseInt(fromWei(totalSupply, 'ether')), coingecko, symbol, 'tvl')
-
-    if (symbol.includes('PEN') && !symbol.includes('RCG')) {
-      return parseInt(fromWei(totalSupply, 'ether')) * (0.024).toLocaleString();
-    }
+  const renewalTVL = (totalSupply, coingecko) => {
     const total = parseInt(fromWei(totalSupply, 'ether'), 10);
     return total * coingecko.toLocaleString();
   };
@@ -485,29 +426,11 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     }
   }, [params, network]);
 
-  const updateChargerInfoList = () => {
-    loadChargerList();
-  };
-
-  function allAreEqual(array) {
-    const result = array.every((element) => {
-      if (element === array[0]) {
-        return true;
-      }
-    });
-
-    return result;
-  }
-
   const renewalGetAPY = (
     item,
-    coingecko,
     allContract,
-    busdPrice,
-    quantityInfo,
-    pancakeTotalSupply,
-    penUsd,
-    assaUsd
+    stakeCoingekoUsd,
+    rewardCoingekoUsd
   ) => {
     const endTime = Number(item.startTime) + Number(item.DURATION);
     const currentTime = Number(moment(new Date()).unix());
@@ -516,165 +439,21 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
     const year = 365 * 24 * 60 * 60;
 
-    if (item.name === '6.2 RCG Locked Pool - ASSA Reward') {
-      const _allContract = _.flatten(
-        Object.keys(allContract.chargeList).map((key, i) => {
-          return allContract.chargeList[key];
-        })
-      );
+    const _allContract = _.flatten(
+      Object.keys(allContract.chargeList).map((key, i) => {
+        return allContract.chargeList[key];
+      })
+    );
+    const filteredData = _allContract.filter((list, i) => {
+      return item.name === list.name;
+    });
+    const totalRewardUsd = filteredData[0].liquidity * rewardCoingekoUsd;
+    const totalSupply = Number(fromWei(item.totalSupply));
 
-      const filteredData = _allContract.filter((list, i) => {
-        return item.name === list.name;
-      });
-      const totalReward = filteredData[0].liquidity * assaUsd;
-      const totalSupply = Number(fromWei(item.totalSupply));
+    const totalDepositUsd = totalSupply * stakeCoingekoUsd;
 
-      const totalDeposit = totalSupply * coingecko;
-
-      const result = (year / Number(item.DURATION)) * (totalReward / totalDeposit) * 100;
-      return result;
-    }
-
-    // console.log(coingecko, 'coinc', item)
-
-    // if(item.symbol.includes('PEN') && !item.symbol.includes('RCG')) {
-    //   console.log(coingecko, 'coinc', item.symbol);
-    //   const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply)) * penCoin
-    //   const totalDeposit = Number(item.totalSupply) * penCoin;
-    //   const result =  (year / Number(item.DURATION)) * (totalReward / totalDeposit);
-    //   return result;
-    //
-    // }
-    if (item.name.includes('LP')) {
-      const rechargeQuantity = Number(fromWei(quantityInfo['0']));
-      const busdQuantity = Number(fromWei(quantityInfo['1']));
-      const convertTotalSupply = Number(fromWei(pancakeTotalSupply));
-      const rechargeUSD = rechargeQuantity * coingecko;
-      const busdUSD = busdQuantity * busdPrice;
-      const lpPrice = (rechargeUSD + busdUSD) / convertTotalSupply;
-      const _allContract = _.flatten(
-        Object.keys(allContract.chargeList).map((key, i) => {
-          return allContract.chargeList[key];
-        })
-      );
-      const filteredData = _allContract.filter((list, i) => {
-        return item.name === list.name;
-      });
-
-      const totalReward = filteredData[0]?.liquidity * coingecko;
-      const totalSupply = Number(fromWei(item.totalSupply)) * lpPrice;
-
-      return (year / Number(item.DURATION)) * (totalReward / totalSupply) * 100;
-    }
-
-    if (allAreEqual(item.symbol)) {
-      // const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply));
-      // const totalDeposit = Number(item.totalSupply);
-      //
-      // const result =  (year / duration) * (totalReward / totalDeposit) * 100;
-      // // console.log(result, 'result', year / Number(item.DURATION), totalReward, totalDeposit, totalReward/totalDeposit, item );
-      // return result;
-
-      const _allContract = _.flatten(
-        Object.keys(allContract.chargeList).map((key, i) => {
-          return allContract.chargeList[key];
-        })
-      );
-
-      const filteredData = _allContract.filter((list, i) => {
-        return item.name === list.name;
-      });
-
-      const totalSupply = Number(fromWei(item.totalSupply));
-
-      const result = (year / Number(item.DURATION)) * (filteredData[0]?.liquidity / totalSupply) * 100;
-
-      return result;
-    }
-
-    if (!allAreEqual(item.symbol) && !item.name.includes('LP')) {
-      const _allContract = _.flatten(
-        Object.keys(allContract.chargeList).map((key, i) => {
-          return allContract.chargeList[key];
-        })
-      );
-      const filteredData = _allContract.filter((list, i) => {
-        return item.name === list.name;
-      });
-      const totalReward = filteredData[0].liquidity * penUsd;
-      const totalSupply = Number(fromWei(item.totalSupply));
-
-      const totalDeposit = totalSupply * coingecko;
-
-      const result = (year / Number(item.DURATION)) * (totalReward / totalDeposit) * 100;
-      return result;
-
-      // const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply)) * penCoin;
-      // const totalDeposit = Number(item.totalSupply)* coingecko;
-      //
-      // const result =  (year / duration) * (totalReward / totalDeposit) * 100;
-      // return result;
-    }
-
-    const totalReward = (Number(item.rewardAmount) - Number(item.totalSupply)) * coingecko;
-    const totalDeposit = Number(item.totalSupply) * coingecko;
-
-    const result = (year / Number(item.DURATION)) * (totalReward / totalDeposit);
-
-    // console.log(result, 'result', year / Number(item.DURATION), totalReward, totalDeposit, totalReward/totalDeposit, item );
+    const result = (year / Number(item.DURATION)) * (totalRewardUsd / totalDepositUsd) * 100;
     return result;
-
-    return result;
-  };
-
-  const getAPY = (totalSupply, rewardAmount, DURATION, name, network, item) => {
-    if (item.name === '4.17 RCG Locked Pool - PEN Reward') {
-      return 304.49;
-    }
-    const Year = 1 * 365 * 24 * 60 * 60;
-
-    if (
-      name === '11.12 Pancake LP Locked Pool 300' ||
-      name === '11.12 Premier Locked Pool 200' ||
-      name === '11.12 Locked Pool 100'
-    ) {
-      return 0;
-    }
-
-    if (name.includes('LP')) {
-      if (network === 'BEP') {
-        // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25).toString())
-        return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 25.6328762768).toString();
-      } else if (network === 'ERC') {
-        // console.log(toBN(rewardAmount))
-        // console.log(fromWei(rewardAmount, "ether"))
-        // console.log(((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString())
-        // return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 31).toString();
-        return ((((rewardAmount * (Year / DURATION)) / totalSupply) * 100) / 966514.761619).toString();
-      }
-    } else {
-      return (((rewardAmount * (Year / DURATION)) / totalSupply) * 100).toString();
-    }
-  };
-
-  const useInterval = (callback, delay) => {
-    const savedCallback = useRef();
-
-    // Remember the latest callback.
-    useEffect(() => {
-      savedCallback.current = callback;
-    }, [callback]);
-
-    // Set up the interval.
-    useEffect(() => {
-      function tick() {
-        savedCallback.current();
-      }
-      if (delay !== null) {
-        let id = setInterval(tick, delay);
-        return () => clearInterval(id);
-      }
-    }, [delay]);
   };
 
   return (
@@ -717,6 +496,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 }
 
 const loadPoolPeriod = (startTime, duration) => {
+  console.log(`${new Date(startTime * 1000)} / ${duration}`)
   let ret = '21.01.01 00:00:00 ~ 21.01.30 00:00:00((UTC+9)+9)';
   const endTime = Number(startTime) + Number(duration);
 
