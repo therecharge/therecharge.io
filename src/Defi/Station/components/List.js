@@ -69,7 +69,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
   const [fullList, setFullList] = useState(loading_data);
   const [chList, setChList] = useState(loading_data);
 
-  const [bscInfo, setBscInfo] = useState(null);
   const [bscPrice, setBscPrice] = useState(null);
   const [allContractInfo, setAllContractInfo] = useState([]);
   const [poolContractList, setPoolContractList] = useRecoilState(poolContractListAtom);
@@ -102,8 +101,13 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
     // kuslp
     const web3 = new Web3('https://rpc-mainnet.kcc.network');
-    const kusLPContract = new web3.eth.Contract(bscAbi, '0x41c0296C6C7F4333e0B367df2a782E0A930ce733');
-    const kusLPTotalSupply = await kusLPContract.methods.totalSupply().call();
+    const contract = new web3.eth.Contract(bscAbi, '0x1ee6b0f7302b3c48c5fa89cd0a066309d9ac3584');
+    const data = await contract.methods.getReserves().call();
+    const lpBalances = {
+      'total': await contract.methods.totalSupply().call(),
+      'wKCS': data['0'],
+      'KUS': data['1']
+    }
 
     /**
      * 1. 모든 차져리스트를 받는다
@@ -151,7 +155,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
     const getList = async () => {
       const allContract = await getAllContracts();
-      console.log(allContract)
       const _allContract = _.flatten(
         Object.keys(allContract.chargeList).map((key, i) => {
           return allContract.chargeList[key];
@@ -312,7 +315,11 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
 
           // 2.1 wKCS-KUS LP 예외처리
           if (ALL_RESULTS[network][i].name.includes('2.1 wKCS - KUS LP Flexible')) {
-            stakeCoingekoUsd = (usd['wKCS'] + usd['KUS']) / Number(fromWei(kusLPTotalSupply));
+            stakeCoingekoUsd = (
+              usd['wKCS'] * lpBalances['wKCS']
+              +
+              usd['KUS'] * lpBalances['KUS']
+            ) / lpBalances['total'];
           }
 
           ALL_RESULTS[network][i].network = net;
@@ -378,17 +385,6 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const total = parseInt(fromWei(totalSupply, 'ether'), 10);
     return total * coingecko.toLocaleString();
   };
-
-  const bootstrap = async () => {
-    const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
-    const contract = new web3.eth.Contract(kusLPAbi, '0x1EE6b0F7302b3c48c5Fa89Cd0a066309D9AC3584');
-    const data = await contract.methods.getReserves().call();
-    setBscInfo(data);
-  };
-
-  useEffect(() => {
-    bootstrap();
-  }, []);
 
   // Whenever Staking type is changed, reload Pool list
   useEffect(async () => {
