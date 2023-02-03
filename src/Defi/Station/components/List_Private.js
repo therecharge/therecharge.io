@@ -16,7 +16,7 @@ import {
 import { fromWei } from 'web3-utils';
 /* Store */
 import { web3ReaderState } from '../../../store/read-web3';
-import { getAllContracts, getCoingecko } from '../../../api/contract';
+import { getAllContracts, getRcgUsd } from '../../../api/contract';
 import _ from 'underscore';
 import { poolContractListAtom } from '../../../store/pool';
 // import { ReactComponent as DropdownClose } from "./List/assets/dropdown-close.svg";
@@ -88,7 +88,7 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
       query: 'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
     });
     // const RCG_PRICE = makeNum(priceData.data.data.pairs[0].token0Price);
-    const RCG_PRICE = await getCoingecko();
+    const RCG_PRICE = await getRcgUsd();
 
     /**
      * 1. 모든 차져리스트를 받는다
@@ -393,7 +393,6 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
       }
     }, [delay]);
   };
-  console.log('parent', poolContractList);
   return (
     <>
       {chList.length > 0 && chList[0].name !== 'There is currently no Charger List available.' && (
