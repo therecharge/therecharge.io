@@ -100,7 +100,7 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     return filteredData[0]?.seq;
   };
 
-  const getKusLpBalances = (cAddress, symbol1, symbol2) => {
+  const getKusLpBalances = async (cAddress, symbol1, symbol2) => {
     const web3 = new Web3('https://rpc-mainnet.kcc.network');
     const contract = new web3.eth.Contract(kusLPAbi, cAddress);
     const data = await contract.methods.getReserves().call();
@@ -119,8 +119,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const RCG_PRICE = makeNum(priceData.data.data.pairs[0].token0Price);
 
     // kuslp
-    const lpBalances = getKusLpBalances('0x1ee6b0f7302b3c48c5fa89cd0a066309d9ac3584', 'wKCS', 'KUS')
-    const lpBalances2 = getKusLpBalances('0xF531EE5cb4Fd655522122d7036389474B7CEc677', 'RCG', 'USDT')
+    const lpBalances = await getKusLpBalances('0x1ee6b0f7302b3c48c5fa89cd0a066309d9ac3584', 'wKCS', 'KUS')
+    const lpBalances2 = await getKusLpBalances('0xF531EE5cb4Fd655522122d7036389474B7CEc677', 'RCG', 'USDT')
 
     /**
      * 1. 모든 차져리스트를 받는다
