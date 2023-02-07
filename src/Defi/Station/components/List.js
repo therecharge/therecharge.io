@@ -16,7 +16,15 @@ import {
 import { fromWei, toBN } from 'web3-utils';
 /* Store */
 import { web3ReaderState } from '../../../store/read-web3';
-import { getAllContracts, getAssaplayUsd, getRcgUsd, getPenUsd, getKusUsd, getwKcsUsd } from '../../../api/contract'
+import {
+  getAllContracts,
+  getAssaplayUsd,
+  getRcgUsd,
+  getPenUsd,
+  getKusUsd,
+  getwKcsUsd,
+  getUsdtUsd,
+} from '../../../api/contract'
 import moment from 'moment';
 import { bscAbi, kusLPAbi, pancakeAbi } from '../../../constants'
 import Web3 from 'web3';
@@ -92,6 +100,17 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     return filteredData[0]?.seq;
   };
 
+  const getKusLpBalances = (cAddress, symbol1, symbol2) => {
+    const web3 = new Web3('https://rpc-mainnet.kcc.network');
+    const contract = new web3.eth.Contract(kusLPAbi, cAddress);
+    const data = await contract.methods.getReserves().call();
+    return {
+      'total': await contract.methods.totalSupply().call(),
+      [symbol1]: data['0'],
+      [symbol2]: data['1']
+    }
+  }
+
   const loadChargerList = async () => {
     const priceData = await axios.post(`https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`, {
       query: 'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
@@ -100,14 +119,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
     const RCG_PRICE = makeNum(priceData.data.data.pairs[0].token0Price);
 
     // kuslp
-    const web3 = new Web3('https://rpc-mainnet.kcc.network');
-    const contract = new web3.eth.Contract(bscAbi, '0x1ee6b0f7302b3c48c5fa89cd0a066309d9ac3584');
-    const data = await contract.methods.getReserves().call();
-    const lpBalances = {
-      'total': await contract.methods.totalSupply().call(),
-      'wKCS': data['0'],
-      'KUS': data['1']
-    }
+    const lpBalances = getKusLpBalances('0x1ee6b0f7302b3c48c5fa89cd0a066309d9ac3584', 'wKCS', 'KUS')
+    const lpBalances2 = getKusLpBalances('0xF531EE5cb4Fd655522122d7036389474B7CEc677', 'RCG', 'USDT')
 
     /**
      * 1. 모든 차져리스트를 받는다
@@ -280,7 +293,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         'PEN': await getPenUsd(),
         'ASSA': await getAssaplayUsd(),
         'KUS': await getKusUsd(),
-        'wKCS': await getwKcsUsd()
+        'wKCS': await getwKcsUsd(),
+        'USDT': await getUsdtUsd()
       }
 
       await ALL_NETWORK_CHARGERLIST.map(async (CHARGERLIST, network) => {
@@ -320,6 +334,14 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
               +
               usd['KUS'] * lpBalances['KUS']
             ) / lpBalances['total'];
+          }
+
+          if (ALL_RESULTS[network][i].name.includes('2.8 RCG - USDT LP Locked')) {
+            stakeCoingekoUsd = (
+              usd['RCG'] * lpBalances2['RCG']
+              +
+              usd['USDT'] * lpBalances2['USDT']
+            ) / lpBalances2['total'];
           }
 
           ALL_RESULTS[network][i].network = net;
