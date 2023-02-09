@@ -3,13 +3,19 @@ import styled from 'styled-components';
 import { ReactComponent as PopupClose } from './assets/popup-close.svg';
 import WalletConnect from '../../../../Components/Common/WalletConnect';
 import { async } from '@aragon/ui/dist/ToastHub';
+import { fromWei, toWei } from 'web3-utils'
 
 // 경고 경고!! Caution에서 2%로 되어 있는 수수료도 상태처리 대상입니다.
 export default function Popup({ close = () => {}, name, apy, info, poolMethods, userInfo, toast }) {
   console.log(info, 'info');
+  console.log(userInfo, 'userInfo');
   const [plAmount, setPlAmount] = useState('');
   const SetPercent = (x) => {
-    setPlAmount(makeNum((userInfo.available / 100) * x));
+    setPlAmount(
+      makeNum(
+        fromWei((toWei(userInfo.available) * x / 100).toString())
+      )
+    )
   };
 
   function makeNum(str, decimal = 4) {
