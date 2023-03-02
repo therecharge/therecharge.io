@@ -1,16 +1,12 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import Language from "../Components/Desktop/Language";
-import { HashLink } from "react-router-hash-link";
-import WalletConnect from "../Components/Common/WalletConnect";
-import { useRecoilState } from "recoil";
-import {
-  modalPoolOpenState,
-  modalSwapOpenState,
-  modalPool2OpenState,
-} from "../store/modal";
+import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import Language from '../Components/Desktop/Language';
+import { HashLink } from 'react-router-hash-link';
+import WalletConnect from '../Components/Common/WalletConnect';
+import { useRecoilState } from 'recoil';
+import { modalPoolOpenState, modalSwapOpenState, modalPool2OpenState } from '../store/modal';
 
 function Gnb() {
   const { t, i18n } = useTranslation();
@@ -18,9 +14,7 @@ function Gnb() {
 
   const [modalPoolOpen, setModalPoolOpen] = useRecoilState(modalPoolOpenState);
   const [modalSwapOpen, setModalSwapOpen] = useRecoilState(modalSwapOpenState);
-  const [modalPool2Open, setModalPool2Open] = useRecoilState(
-    modalPool2OpenState
-  );
+  const [modalPool2Open, setModalPool2Open] = useRecoilState(modalPool2OpenState);
 
   // const homeSection = useScrollSection('home');
   // const aboutSection = useScrollSection('about');
@@ -35,33 +29,26 @@ function Gnb() {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", listener);
+    window.addEventListener('scroll', listener);
     return () => {
-      window.removeEventListener("scroll", listener);
+      window.removeEventListener('scroll', listener);
     };
   });
 
   return (
     <Container
-      style={
-        black
-          ? { backgroundColor: "#000000", borderBottom: "1px solid white" }
-          : { backgroundColor: "#02051c" }
-      }
+      style={black ? { backgroundColor: '#000000', borderBottom: '1px solid white' } : { backgroundColor: '#02051c' }}
     >
       <SubContainer>
-        <HashLink
-          className="logo"
-          onClick={() => window.open("https://therecharge.io", "_blank")}
-        >
+        <HashLink className="logo" onClick={() => window.open('https://therecharge.io', '_blank')}>
           <Logo>
-            <img src="/ic_defi_logo.svg" />
+            <img src="/ic_defi_logo.svg" alt="logo" />
           </Logo>
         </HashLink>
         <Nav>
           <HashLink
             className="content"
-            to={"/"}
+            to={'/'}
             // onClick={() => {
             //   setModalPoolOpen(false);
             //   setModalPool2Open(false);
@@ -71,10 +58,11 @@ function Gnb() {
             <div className="dropdown Roboto_16pt_Regular">
               <a
                 style={{
-                  width: "70px",
-                  display: "flex",
-                  justifyContent: "center",
+                  width: '70px',
+                  display: 'flex',
+                  justifyContent: 'center',
                 }}
+                href
               >
                 Overview
               </a>
@@ -82,7 +70,7 @@ function Gnb() {
           </HashLink>
           <HashLink
             className="content"
-            to={"/station"}
+            to={'/station'}
             // onClick={() => {
             //   setModalPoolOpen(false);
             //   setModalPool2Open(false);
@@ -92,10 +80,11 @@ function Gnb() {
             <div className="dropdown Roboto_16pt_Regular">
               <a
                 style={{
-                  width: "125px",
-                  display: "flex",
-                  justifyContent: "center",
+                  width: '125px',
+                  display: 'flex',
+                  justifyContent: 'center',
                 }}
+                href
               >
                 Charging Station
               </a>
@@ -103,7 +92,7 @@ function Gnb() {
           </HashLink>
           <HashLink
             className="content"
-            to={"/swap"}
+            to={'/swap'}
             // onClick={() => {
             //   setModalPoolOpen(false);
             //   setModalPool2Open(false);
@@ -113,10 +102,11 @@ function Gnb() {
             <div className="dropdown Roboto_16pt_Regular">
               <a
                 style={{
-                  width: "115px",
-                  display: "flex",
-                  justifyContent: "center",
+                  width: '115px',
+                  display: 'flex',
+                  justifyContent: 'center',
                 }}
+                href
               >
                 Recharge Swap
               </a>
