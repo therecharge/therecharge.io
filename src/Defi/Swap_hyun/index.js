@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { useGetBridges } from '../../api/hooks/queries/bridge';
+import { fromWei, toWei } from 'web3-utils';
 
 const dummyData = {
   available: 12345,
@@ -32,11 +35,37 @@ const UnderDesc = [
   },
 ];
 
-const Swap = () => {
-  const availableForm = (number) => {
-    const result = number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+const SwapDetail = () => {
+  const [bridges, setBridges] = useState([]);
+  const [amount, setAmount] = useState('');
+  const queryGetSwapData = useGetBridges();
+
+  useEffect(() => {
+    if (queryGetSwapData.isSuccess) {
+      setBridges(queryGetSwapData.data.bridges);
+    }
+  }, []);
+  const amountToStr = (value) => {
+    const result = Number(value)
+      .toFixed(2)
+      .replace(/\d(?=(\d{3})+\.)/g, '$&,');
     return result;
   };
+  const amountToNum = (value) => {
+    if (value === '') {
+      return;
+    } else {
+      const result = value.replace(/,/g, '').split('.')[0] + '.' + value.split('.')[1].substring(0, 2);
+      return result;
+    }
+  };
+  const changeAmount = (e) => {
+    const value = e.target.value;
+    setAmount(value);
+  };
+  console.log(fromWei('10000000', 'ether'));
+  console.log(bridges);
+  if (queryGetSwapData.isFetching || queryGetSwapData.isLoading) return <h1>is Loading...</h1>;
   return (
     <H.ContentWrap>
       <H.SwapBox>
@@ -64,18 +93,23 @@ const Swap = () => {
         <H.AmountBox>
           <H.AmountLogo src={dummyData.amount.img} alt="AmountLogo" />
           <H.AmountTitle>{dummyData.amount.name}</H.AmountTitle>
-          <H.Amount>{availableForm(dummyData.amount.amount)}</H.Amount>
+          <H.Amount
+            value={amount}
+            onChange={changeAmount}
+            onBlur={() => setAmount(amountToStr(amount))}
+            onFocus={() => setAmount(amountToNum(amount))}
+          />
           <H.AmountLine />
           <H.MaxBtn>MAX</H.MaxBtn>
         </H.AmountBox>
-        <H.AmountRightUnderLabel>Available: {availableForm(dummyData.available)} RCG</H.AmountRightUnderLabel>
+        <H.AmountRightUnderLabel>Available: {amountToStr(dummyData.available)} RCG</H.AmountRightUnderLabel>
         <H.AmountRightUnderLabel color="#ffb900">Minimum: {dummyData.Minimum} RCG</H.AmountRightUnderLabel>
         <H.SwapBtn>
           <H.BtnText>Swap</H.BtnText>
         </H.SwapBtn>
         <H.FeeWrap>
           <H.DescText>Transfer Fee</H.DescText>
-          <H.DescText>{availableForm(dummyData.amount.amount * dummyData.fee)}RCG</H.DescText>
+          <H.DescText>{amountToStr(dummyData.amount.amount * dummyData.fee)}RCG</H.DescText>
         </H.FeeWrap>
         {UnderDesc.map(({ id, desc }) => {
           return <H.DescText id={id}>{desc}</H.DescText>;
@@ -85,6 +119,14 @@ const Swap = () => {
   );
 };
 
+const Swap = () => {
+  const queryClient = new QueryClient();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SwapDetail />
+    </QueryClientProvider>
+  );
+};
 export default Swap;
 
 const H = {
@@ -244,6 +286,7 @@ const H = {
     @media screen and (min-width: 1088px) {
       width: 28px;
       height: 28px;
+      margin-top: 0px;
     }
   `,
   AmountTitle: styled.span`
@@ -268,7 +311,28 @@ const H = {
       text-align: left;
     }
   `,
-  Amount: styled.span`
+  // AmountInput: styled.input`
+  //   width: 98px;
+  //   height: 19px;
+  //   margin: 4.5px 10px 4.5px 65px;
+  //   font-family: Roboto;
+  //   font-size: 14px;
+  //   font-weight: 500;
+  //   font-stretch: normal;
+  //   font-style: normal;
+  //   line-height: 1.36;
+  //   letter-spacing: normal;
+  //   text-align: right;
+  //   color: #fff;
+  //   @media screen and (min-width: 1088px) {
+  //     width: 315px;
+  //     height: 26px;
+  //     margin: 0 16px 0 0;
+  //     font-size: 20px;
+  //     line-height: 1.3;
+  //   }
+  // `,
+  Amount: styled.input`
     width: 98px;
     height: 19px;
     margin: 4.5px 10px 4.5px 65px;
@@ -281,6 +345,9 @@ const H = {
     letter-spacing: normal;
     text-align: right;
     color: #fff;
+    decoration: none;
+    background-color: transparent;
+    border: none;
     @media screen and (min-width: 1088px) {
       width: 315px;
       height: 26px;

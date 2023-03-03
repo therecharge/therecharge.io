@@ -2,7 +2,7 @@
 import Gnb from './Gnb/desktop';
 import Home from './Defi/desktop';
 import Station from './Defi/Station';
-import Swap from './Defi/Swap_hyun';
+import SwapDetail from './Defi/Swap_hyun';
 /* Modules */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
@@ -22,7 +22,7 @@ const App = React.memo(
         <Gnb />
         <Switch>
           <Route path="/station" component={() => <Station toast={toast} />}></Route>
-          <Route path="/swap" component={() => <Swap toast={toast} />}></Route>
+          <Route path="/swap" component={() => <SwapDetail toast={toast} />}></Route>
           <Route path="/" component={Home}></Route>
         </Switch>
         <style jsx global>{`
