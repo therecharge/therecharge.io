@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Web3 from 'web3';
+import Web3Modal from 'web3modal';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import { changeNetwork } from '../../Components/Common/utils/Wallets';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useGetBridges } from '../../api/hooks/queries/bridge';
 import { fromWei, toWei } from 'web3-utils';
+
+import { useRecoilState } from 'recoil';
+import { web3State, providerState, accountState, networkState } from '../../store/web3';
 
 const dummyData = {
   available: 12345,
@@ -44,7 +51,13 @@ const SwapDetail = () => {
     if (queryGetSwapData.isSuccess) {
       setBridges(queryGetSwapData.data.bridges);
     }
+
+    connect();
+    if (network !== 321) {
+      changeNetwork(321);
+    }
   }, []);
+
   const amountToStr = (value) => {
     const result = Number(value)
       .toFixed(2)
@@ -66,6 +79,107 @@ const SwapDetail = () => {
   console.log(fromWei('10000000', 'ether'));
   console.log(bridges);
   if (queryGetSwapData.isFetching || queryGetSwapData.isLoading) return <h1>is Loading...</h1>;
+
+  const [web3, setWeb3] = useRecoilState(web3State);
+  const [provider, setProvider] = useRecoilState(providerState);
+  const [account, setAccount] = useRecoilState(accountState);
+  const [network, setNetwork] = useRecoilState(networkState);
+
+  const providerOptions = {
+    metamask: {
+      id: 'injected',
+      name: 'MetaMask',
+      type: 'injected',
+      check: 'isMetaMask',
+    },
+    walletconnect: {
+      package: WalletConnectProvider, // required
+      options: {
+        rpc: {
+          56: 'https://bsc-dataseed.binance.org/', // BSC
+          97: 'https://data-seed-prebsc-1-s1.binance.org:8545', // BSC-testnet
+          321: 'https://rpc-mainnet.kcc.network', // KCC
+          322: 'https://rpc-testnet.kcc.network', // KCC-testnet
+        },
+        infuraId: '3fc11d1feb8944229a1cfba7bd62c8bc', // Required
+        network: 'mainnet',
+        qrcodeModalOptions: {
+          mobileLinks: ['rainbow', 'metamask', 'argent', 'trust', 'imtoken', 'pillar'],
+        },
+      },
+    },
+  };
+
+  let web3Modal = new Web3Modal({
+    cacheProvider: true,
+    providerOptions,
+  });
+
+  function connectEventHandler(provider) {
+    if (!provider.on) {
+      return;
+    }
+    provider.on('open', async (info) => {
+      console.log('Wallet Connected!');
+    });
+    provider.on('accountsChanged', async (accounts) => {
+      setAccount(accounts[0]);
+      console.log('Account Changed');
+      console.log(accounts);
+    });
+    provider.on('chainChanged', async (chainId) => {
+      setNetwork(chainId);
+      console.log('Chain Id Changed');
+      console.log(chainId);
+    });
+    provider.on('disconnect', async (error) => {
+      onDisconnect(true);
+      console.log('Wallet lose connection.');
+    });
+  }
+
+  function isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  async function onDisconnect(event) {
+    if (!event && web3 && web3.currentProvider && web3.currentProvider.close) {
+      await web3.currentProvider.close();
+    }
+    setAccount(undefined);
+    setProvider(undefined);
+    setNetwork(undefined);
+    await web3Modal.clearCachedProvider();
+  }
+
+  async function connect() {
+    if (!window.ethereum && isMobile()) {
+      window.open('https://metamask.app.link/dapp/defi.therecharge.io/bridge/', '_blank');
+      return;
+    }
+
+    while (window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]').length > 1) {
+      window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')[1].remove();
+    }
+
+    let provider = await web3Modal.connect();
+    setProvider(provider);
+    const web3 = new Web3(provider);
+    setWeb3(web3);
+    const accounts = await web3.eth.getAccounts();
+    const network = await web3.eth.getChainId();
+    setAccount(accounts[0]);
+    setNetwork(network);
+    alert(network);
+
+    connectEventHandler(provider);
+  }
+
+  const availableForm = (number) => {
+    const result = number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    return result;
+  };
+
   return (
     <H.ContentWrap>
       <H.SwapBox>
