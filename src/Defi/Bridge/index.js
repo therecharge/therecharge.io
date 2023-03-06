@@ -47,39 +47,6 @@ const SwapDetail = () => {
   const [amount, setAmount] = useState('');
   const queryGetSwapData = useGetBridges();
 
-  useEffect(() => {
-    if (queryGetSwapData.isSuccess) {
-      setBridges(queryGetSwapData.data.bridges);
-    }
-
-    connect();
-    if (network !== 321) {
-      changeNetwork(321);
-    }
-  }, []);
-
-  const amountToStr = (value) => {
-    const result = Number(value)
-      .toFixed(2)
-      .replace(/\d(?=(\d{3})+\.)/g, '$&,');
-    return result;
-  };
-  const amountToNum = (value) => {
-    if (value === '') {
-      return;
-    } else {
-      const result = value.replace(/,/g, '').split('.')[0] + '.' + value.split('.')[1].substring(0, 2);
-      return result;
-    }
-  };
-  const changeAmount = (e) => {
-    const value = e.target.value;
-    setAmount(value);
-  };
-  console.log(fromWei('10000000', 'ether'));
-  console.log(bridges);
-  if (queryGetSwapData.isFetching || queryGetSwapData.isLoading) return <h1>is Loading...</h1>;
-
   const [web3, setWeb3] = useRecoilState(web3State);
   const [provider, setProvider] = useRecoilState(providerState);
   const [account, setAccount] = useRecoilState(accountState);
@@ -114,6 +81,70 @@ const SwapDetail = () => {
     cacheProvider: true,
     providerOptions,
   });
+
+  useEffect(() => {
+    if (queryGetSwapData.isSuccess) {
+      setBridges(queryGetSwapData.data.bridges);
+    }
+    // if (network !== 321) {
+    //   changeNetwork(321);
+    // }
+  }, [queryGetSwapData.isSuccess]);
+
+  useEffect(() => {
+    connect();
+  }, [bridges]);
+
+  async function connect() {
+    if (!window.ethereum && isMobile()) {
+      window.open('https://metamask.app.link/dapp/defi.therecharge.io/bridge/', '_blank');
+      return;
+    }
+
+    while (window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]').length > 1) {
+      window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')[1].remove();
+    }
+    console.log(1);
+    try {
+      const provider = await web3Modal.connect();
+      setProvider(provider);
+      const web3 = new Web3(provider);
+      setWeb3(web3);
+      const accounts = await web3.eth.getAccounts();
+      const network = await web3.eth.getChainId();
+      setAccount(accounts[0]);
+      setNetwork(network);
+      alert(bridges.filter((item) => item.fromNetwork.chainId === network)[0].fromNetwork.name);
+
+      connectEventHandler(provider);
+    } catch (error) {
+      console.error('error:', error);
+    }
+  }
+
+  const amountToStr = (value) => {
+    if (!value) {
+      return;
+    } else {
+      const result = Number(value)
+        .toFixed(2)
+        .replace(/\d(?=(\d{3})+\.)/g, '$&,');
+      return result ?? '';
+    }
+  };
+  const amountToNum = (value) => {
+    if (!value) {
+      return;
+    } else {
+      const result = value.replace(/,/g, '').split('.')[0] + '.' + value.split('.')[1].substring(0, 2);
+      return result ?? '';
+    }
+  };
+  const changeAmount = (e) => {
+    const value = e.target.value;
+    setAmount(value);
+  };
+  if (queryGetSwapData.isFetching || queryGetSwapData.isLoading) return <h1>is Loading...</h1>;
 
   function connectEventHandler(provider) {
     if (!provider.on) {
@@ -151,34 +182,6 @@ const SwapDetail = () => {
     setNetwork(undefined);
     await web3Modal.clearCachedProvider();
   }
-
-  async function connect() {
-    if (!window.ethereum && isMobile()) {
-      window.open('https://metamask.app.link/dapp/defi.therecharge.io/bridge/', '_blank');
-      return;
-    }
-
-    while (window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]').length > 1) {
-      window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')[1].remove();
-    }
-
-    let provider = await web3Modal.connect();
-    setProvider(provider);
-    const web3 = new Web3(provider);
-    setWeb3(web3);
-    const accounts = await web3.eth.getAccounts();
-    const network = await web3.eth.getChainId();
-    setAccount(accounts[0]);
-    setNetwork(network);
-    alert(network);
-
-    connectEventHandler(provider);
-  }
-
-  const availableForm = (number) => {
-    const result = number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-    return result;
-  };
 
   return (
     <H.ContentWrap>

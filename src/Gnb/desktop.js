@@ -92,7 +92,7 @@ function Gnb() {
           </HashLink>
           <HashLink
             className="content"
-            to={'/swap'}
+            to={'/bridge'}
             // onClick={() => {
             //   setModalPoolOpen(false);
             //   setModalPool2Open(false);

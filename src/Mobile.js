@@ -2,7 +2,7 @@
 import Gnb from './Gnb/mobile';
 import Home from './Defi/mobile';
 import Station from './Defi/Station';
-import SwapDetail from './Defi/Swap_hyun';
+import SwapDetail from './Defi/Bridge';
 /* Libraries */
 import React, { useState, useEffect, useRef } from 'react';
 import { Route, Switch } from 'react-router-dom';
