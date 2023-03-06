@@ -7,29 +7,31 @@ import { changeNetwork } from '../../Components/Common/utils/Wallets';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useGetBridges } from '../../api/hooks/queries/bridge';
 import { fromWei, toWei } from 'web3-utils';
-
 import { useRecoilState } from 'recoil';
 import { web3State, providerState, accountState, networkState } from '../../store/web3';
+import { object } from 'underscore';
 
-const dummyData = {
-  available: 12345,
-  Minimum: 10,
-  from: {
-    img: '/logo_kcc.png',
-    name: 'KCC',
-    type: 'Network',
+const networkInfo = {
+  tBNB: {
+    img: 'logo_bnb_active.png',
+    name: 'BNB',
+    type: 'TestNetwork',
   },
-  to: {
+  BNB: {
     img: 'logo_bnb_active.png',
     name: 'BNB',
     type: 'Network',
   },
-  amount: {
-    img: 'img_rcg_40px.svg',
-    name: 'RCG',
-    amount: 100000,
+  tKCS: {
+    img: '/logo_kcc.png',
+    name: 'KCC',
+    type: 'TestNetwork',
   },
-  fee: 0.003,
+  KCS: {
+    img: '/logo_kcc.png',
+    name: 'KCC',
+    type: 'Network',
+  },
 };
 const UnderDesc = [
   {
@@ -44,6 +46,7 @@ const UnderDesc = [
 
 const SwapDetail = () => {
   const [bridges, setBridges] = useState([]);
+  const [currentBridge, setCurrentBridge] = useState();
   const [amount, setAmount] = useState('');
   const queryGetSwapData = useGetBridges();
 
@@ -86,12 +89,15 @@ const SwapDetail = () => {
     if (queryGetSwapData.isSuccess) {
       setBridges(queryGetSwapData.data.bridges);
     }
-    // if (network !== 321) {
-    //   changeNetwork(321);
-    // }
   }, [queryGetSwapData.isSuccess]);
 
   useEffect(() => {
+    if (bridges.length === 0) {
+      return;
+    }
+    if (network !== 322) {
+      changeNetwork(322);
+    }
     connect();
   }, [bridges]);
 
@@ -100,11 +106,9 @@ const SwapDetail = () => {
       window.open('https://metamask.app.link/dapp/defi.therecharge.io/bridge/', '_blank');
       return;
     }
-
     while (window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]').length > 1) {
       window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]')[1].remove();
     }
-    console.log(1);
     try {
       const provider = await web3Modal.connect();
       setProvider(provider);
@@ -114,8 +118,9 @@ const SwapDetail = () => {
       const network = await web3.eth.getChainId();
       setAccount(accounts[0]);
       setNetwork(network);
-      alert(bridges.filter((item) => item.fromNetwork.chainId === network)[0].fromNetwork.name);
-
+      const arr = bridges.filter((item) => item.fromNetwork.chainId === network);
+      alert(arr[0].fromNetwork.name);
+      setCurrentBridge(arr[0]);
       connectEventHandler(provider);
     } catch (error) {
       console.error('error:', error);
@@ -123,7 +128,9 @@ const SwapDetail = () => {
   }
 
   const amountToStr = (value) => {
-    if (!value) {
+    if (value === 0) {
+      return '0.00';
+    } else if (!value) {
       return;
     } else {
       const result = Number(value)
@@ -144,7 +151,6 @@ const SwapDetail = () => {
     const value = e.target.value;
     setAmount(value);
   };
-  if (queryGetSwapData.isFetching || queryGetSwapData.isLoading) return <h1>is Loading...</h1>;
 
   function connectEventHandler(provider) {
     if (!provider.on) {
@@ -182,56 +188,70 @@ const SwapDetail = () => {
     setNetwork(undefined);
     await web3Modal.clearCachedProvider();
   }
+  const weiToEther = (value) => {
+    return fromWei(value, 'ether');
+  };
+  if (!queryGetSwapData.isSuccess) {
+    return <h1>Loading...</h1>;
+  }
+  console.log(network);
 
   return (
     <H.ContentWrap>
-      <H.SwapBox>
-        <H.SwapTitle>Recharge Swap</H.SwapTitle>
-        <H.BoxContainer>
-          <H.BoxWrap>
-            <H.BoxLabel>From</H.BoxLabel>
-            <H.BoxToken>
-              <H.BoxLogo src={dummyData.from.img} alt="FromLogo" />
-              <H.BoxTitle>{dummyData.from.name}</H.BoxTitle>
-              <H.DescText color="#afafaf">{dummyData.from.type}</H.DescText>
-            </H.BoxToken>
-          </H.BoxWrap>
-          <H.ChangeBtn src="/btn_switch.png" />
-          <H.BoxWrap>
-            <H.BoxLabel>To</H.BoxLabel>
-            <H.BoxToken>
-              <H.BoxLogo src={dummyData.to.img} alt="ToLogo" />
-              <H.BoxTitle>{dummyData.to.name}</H.BoxTitle>
-              <H.DescText color="#afafaf">{dummyData.to.type}</H.DescText>
-            </H.BoxToken>
-          </H.BoxWrap>
-        </H.BoxContainer>
-        <H.BoxLabel>Asset / Amount</H.BoxLabel>
-        <H.AmountBox>
-          <H.AmountLogo src={dummyData.amount.img} alt="AmountLogo" />
-          <H.AmountTitle>{dummyData.amount.name}</H.AmountTitle>
-          <H.Amount
-            value={amount}
-            onChange={changeAmount}
-            onBlur={() => setAmount(amountToStr(amount))}
-            onFocus={() => setAmount(amountToNum(amount))}
-          />
-          <H.AmountLine />
-          <H.MaxBtn>MAX</H.MaxBtn>
-        </H.AmountBox>
-        <H.AmountRightUnderLabel>Available: {amountToStr(dummyData.available)} RCG</H.AmountRightUnderLabel>
-        <H.AmountRightUnderLabel color="#ffb900">Minimum: {dummyData.Minimum} RCG</H.AmountRightUnderLabel>
-        <H.SwapBtn>
-          <H.BtnText>Swap</H.BtnText>
-        </H.SwapBtn>
-        <H.FeeWrap>
-          <H.DescText>Transfer Fee</H.DescText>
-          <H.DescText>{amountToStr(dummyData.amount.amount * dummyData.fee)}RCG</H.DescText>
-        </H.FeeWrap>
-        {UnderDesc.map(({ id, desc }) => {
-          return <H.DescText id={id}>{desc}</H.DescText>;
-        })}
-      </H.SwapBox>
+      {currentBridge && (
+        <H.SwapBox>
+          <H.SwapTitle>Recharge Swap</H.SwapTitle>
+          <H.BoxContainer>
+            <H.BoxWrap>
+              <H.BoxLabel>From</H.BoxLabel>
+              <H.BoxToken>
+                <H.BoxLogo src={networkInfo[currentBridge.fromNetwork.currency].img} alt="FromLogo" />
+                <H.BoxTitle>{networkInfo[currentBridge.fromNetwork.currency].name}</H.BoxTitle>
+                <H.DescText color="#afafaf">{networkInfo[currentBridge.fromNetwork.currency].type}</H.DescText>
+              </H.BoxToken>
+            </H.BoxWrap>
+            <H.ChangeBtn src="/btn_switch.png" />
+            <H.BoxWrap>
+              <H.BoxLabel>To</H.BoxLabel>
+              <H.BoxToken>
+                <H.BoxLogo src={networkInfo[currentBridge.toNetwork.currency].img} alt="ToLogo" />
+                <H.BoxTitle>{networkInfo[currentBridge.toNetwork.currency].name}</H.BoxTitle>
+                <H.DescText color="#afafaf">{networkInfo[currentBridge.toNetwork.currency].type}</H.DescText>
+              </H.BoxToken>
+            </H.BoxWrap>
+          </H.BoxContainer>
+          <H.BoxLabel>Asset / Amount</H.BoxLabel>
+          <H.AmountBox>
+            <H.AmountLogo src="/img_rcg_40px.svg" alt="AmountLogo" />
+            <H.AmountTitle>{currentBridge.symbol}</H.AmountTitle>
+            <H.Amount
+              value={amount}
+              onChange={changeAmount}
+              onBlur={() => setAmount(amountToStr(amount))}
+              onFocus={() => setAmount(amountToNum(amount))}
+            />
+            <H.AmountLine />
+            <H.MaxBtn>MAX</H.MaxBtn>
+          </H.AmountBox>
+          <H.AmountRightUnderLabel>Available: {amountToStr(123456)} RCG</H.AmountRightUnderLabel>
+          <H.AmountRightUnderLabel color="#ffb900">
+            Minimum: {weiToEther(currentBridge.minFee)} {currentBridge.symbol}
+          </H.AmountRightUnderLabel>
+          <H.SwapBtn>
+            <H.BtnText>Swap</H.BtnText>
+          </H.SwapBtn>
+          <H.FeeWrap>
+            <H.DescText>Transfer Fee</H.DescText>
+            <H.DescText>
+              {amountToStr(amount * currentBridge.feeRate)}
+              {currentBridge.symbol}
+            </H.DescText>
+          </H.FeeWrap>
+          {UnderDesc.map(({ id, desc }) => {
+            return <H.DescText id={id}>{desc}</H.DescText>;
+          })}
+        </H.SwapBox>
+      )}
     </H.ContentWrap>
   );
 };
