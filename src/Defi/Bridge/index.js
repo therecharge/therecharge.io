@@ -9,7 +9,8 @@ import { useGetBridges } from '../../api/hooks/queries/bridge';
 import { fromWei, toWei } from 'web3-utils';
 import { useRecoilState } from 'recoil';
 import { web3State, providerState, accountState, networkState } from '../../store/web3';
-import { object } from 'underscore';
+
+const ERC20_ABI = require('../abis/ERC20ABI.json');
 
 const networkInfo = {
   tBNB: {
@@ -44,11 +45,35 @@ const UnderDesc = [
   },
 ];
 
+// export const Bridges = () => {
+//   const queryGetBridge = useGetBridges();
+//   const [bridges, setBridges] = useState([]);
+//   const [network] = useRecoilState(networkState);
+
+//   useEffect(() => {
+//     if (queryGetBridge.isSuccess) {
+//       console.log('queryGetSwapData is success');
+//       setBridges(queryGetBridge.data.bridges);
+//       // connect();
+//       if (bridges.length === 0) {
+//         return;
+//       }
+//       if (network !== 321) {
+//         changeNetwork(321);
+//       }
+//     }
+//   }, [queryGetBridge.isSuccess]);
+// };
+
 const SwapDetail = () => {
   const [bridges, setBridges] = useState([]);
   const [currentBridge, setCurrentBridge] = useState();
-  const [amount, setAmount] = useState('');
-  const queryGetSwapData = useGetBridges();
+  const [amount, setAmount] = useState(0);
+  const [avail, setAvail] = useState(0);
+  const [currentNetwork, setCurrentNetwork] = useState(322);
+  const queryClient = new QueryClient();
+
+  const queryGetBridge = useGetBridges();
 
   const [web3, setWeb3] = useRecoilState(web3State);
   const [provider, setProvider] = useRecoilState(providerState);
@@ -85,23 +110,7 @@ const SwapDetail = () => {
     providerOptions,
   });
 
-  useEffect(() => {
-    if (queryGetSwapData.isSuccess) {
-      setBridges(queryGetSwapData.data.bridges);
-    }
-  }, [queryGetSwapData.isSuccess]);
-
-  useEffect(() => {
-    if (bridges.length === 0) {
-      return;
-    }
-    if (network !== 322) {
-      changeNetwork(322);
-    }
-    connect();
-  }, [bridges]);
-
-  async function connect() {
+  const connect = async () => {
     if (!window.ethereum && isMobile()) {
       window.open('https://metamask.app.link/dapp/defi.therecharge.io/bridge/', '_blank');
       return;
@@ -118,41 +127,95 @@ const SwapDetail = () => {
       const network = await web3.eth.getChainId();
       setAccount(accounts[0]);
       setNetwork(network);
-      const arr = bridges.filter((item) => item.fromNetwork.chainId === network);
-      alert(arr[0].fromNetwork.name);
-      setCurrentBridge(arr[0]);
+      const currentBridge = queryGetBridge.data.bridges.filter((item) => item.fromNetwork.chainId === network)[0];
+      if (currentBridge === undefined) {
+        // 브릿지 목록에서 현재 네트워크 못 찾을때
+        return;
+      }
+      setCurrentBridge(currentBridge);
+
       connectEventHandler(provider);
+
+      await connected(network, currentBridge, accounts);
     } catch (error) {
       console.error('error:', error);
     }
+  };
+
+  const connected = async (network, currentBridge, accounts) => {
+    console.log('connected -> currentBridge');
+    console.log(network);
+    console.log(currentBridge);
+    if (currentBridge === undefined) {
+      return;
+    }
+
+    // avail 계산
+    const web3 = new Web3(currentBridge.fromNetwork.url);
+    const contract = new web3.eth.Contract(ERC20_ABI, currentBridge.inTokenContract);
+    const balance = await contract.methods.balanceOf(accounts[0]).call();
+    setAvail(fromWei(balance));
+  };
+
+  useEffect(() => {
+    changeNetwork(currentNetwork);
+    connect();
+  }, [currentNetwork]);
+
+  useEffect(() => {
+    if (network !== 322) {
+      changeNetwork(322);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (queryGetBridge.isSuccess) {
+      console.log(queryGetBridge);
+      setBridges(queryGetBridge.data.bridges);
+      connect();
+      if (bridges.length === 0) {
+        return;
+      }
+    }
+  }, [queryGetBridge.isSuccess]);
+
+  if (!queryGetBridge.isSuccess) {
+    return <h1>Loading...</h1>;
   }
 
-  const amountToStr = (value) => {
-    if (value === 0) {
-      return '0.00';
-    } else if (!value) {
+  // 스왑버튼 누를 때 실행
+  const letsSwap = async () => {
+    if (currentBridge === undefined) {
       return;
-    } else {
-      const result = Number(value)
-        .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, '$&,');
-      return result ?? '';
     }
-  };
-  const amountToNum = (value) => {
-    if (!value) {
-      return;
-    } else {
-      const result = value.replace(/,/g, '').split('.')[0] + '.' + value.split('.')[1].substring(0, 2);
-      return result ?? '';
-    }
-  };
-  const changeAmount = (e) => {
-    const value = e.target.value;
-    setAmount(value);
+    // 현재 네트워크 맞는지 한번 더 확인
+
+    const testAmount = 1;
+    // const weiAmount = toWei(amount.toString(), 'ether');
+    const weiAmount = toWei(testAmount.toString(), 'ether');
+
+    const web3 = new Web3(currentBridge.fromNetwork.url);
+    const gasPrice = await web3.eth.getGasPrice();
+    const gasLimit = 300000;
+    const nonce = await web3.eth.getTransactionCount(account, 'pending');
+    const contract = new web3.eth.Contract(ERC20_ABI, currentBridge.inTokenContract);
+    const data = contract.methods.transfer(currentBridge.address, weiAmount).encodeABI();
+    const tx = {
+      from: account,
+      to: currentBridge.address,
+      gas: gasLimit,
+      gasPrice: gasPrice,
+      data: data,
+      nonce: nonce,
+    };
+
+    const signedTx = await web3.eth.signTransaction(tx);
+    const txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+
+    console.log(`Transaction hash: ${txHash}`);
   };
 
-  function connectEventHandler(provider) {
+  const connectEventHandler = (provider) => {
     if (!provider.on) {
       return;
     }
@@ -173,13 +236,9 @@ const SwapDetail = () => {
       onDisconnect(true);
       console.log('Wallet lose connection.');
     });
-  }
+  };
 
-  function isMobile() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  }
-
-  async function onDisconnect(event) {
+  const onDisconnect = async (event) => {
     if (!event && web3 && web3.currentProvider && web3.currentProvider.close) {
       await web3.currentProvider.close();
     }
@@ -187,14 +246,52 @@ const SwapDetail = () => {
     setProvider(undefined);
     setNetwork(undefined);
     await web3Modal.clearCachedProvider();
-  }
+  };
+
   const weiToEther = (value) => {
     return fromWei(value, 'ether');
   };
-  if (!queryGetSwapData.isSuccess) {
-    return <h1>Loading...</h1>;
-  }
-  console.log(network);
+
+  const amountToStr = (value) => {
+    if (value === 0) {
+      return '0.00';
+    } else if (!value) {
+      return;
+    } else {
+      const result = Number(value)
+        .toFixed(2)
+        .replace(/\d(?=(\d{3})+\.)/g, '$&,');
+      if (Number(value) > Number(avail)) {
+        return Number(avail)
+          .toFixed(2)
+          .replace(/\d(?=(\d{3})+\.)/g, '$&,');
+      } else {
+        return result ?? '';
+      }
+    }
+  };
+  const amountToNum = (value) => {
+    if (!value) {
+      return;
+    } else {
+      const result = value.replace(/,/g, '').split('.')[0] + '.' + value.split('.')[1].substring(0, 2);
+      return result ?? '';
+    }
+  };
+  const changeSwapNetwork = () => {
+    console.log('click');
+    console.log(network);
+    console.log(currentNetwork);
+    if (network === 322) {
+      setCurrentNetwork(97);
+    } else {
+      setCurrentNetwork(322);
+    }
+  };
+
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  };
 
   return (
     <H.ContentWrap>
@@ -210,7 +307,7 @@ const SwapDetail = () => {
                 <H.DescText color="#afafaf">{networkInfo[currentBridge.fromNetwork.currency].type}</H.DescText>
               </H.BoxToken>
             </H.BoxWrap>
-            <H.ChangeBtn src="/btn_switch.png" />
+            <H.ChangeBtn src="/btn_switch.png" onClick={() => changeSwapNetwork()} />
             <H.BoxWrap>
               <H.BoxLabel>To</H.BoxLabel>
               <H.BoxToken>
@@ -226,25 +323,24 @@ const SwapDetail = () => {
             <H.AmountTitle>{currentBridge.symbol}</H.AmountTitle>
             <H.Amount
               value={amount}
-              onChange={changeAmount}
+              onChange={(e) => setAmount(e.target.value)}
               onBlur={() => setAmount(amountToStr(amount))}
               onFocus={() => setAmount(amountToNum(amount))}
             />
             <H.AmountLine />
-            <H.MaxBtn>MAX</H.MaxBtn>
+            <H.MaxBtn onClick={() => setAmount(amountToStr(avail))}>MAX</H.MaxBtn>
           </H.AmountBox>
-          <H.AmountRightUnderLabel>Available: {amountToStr(123456)} RCG</H.AmountRightUnderLabel>
-          <H.AmountRightUnderLabel color="#ffb900">
-            Minimum: {weiToEther(currentBridge.minFee)} {currentBridge.symbol}
+          <H.AmountRightUnderLabel>
+            Available: {amountToStr(avail)} {currentBridge.symbol}
           </H.AmountRightUnderLabel>
-          <H.SwapBtn>
+          <H.AmountRightUnderLabel color="#ffb900">Minimum: 10 {currentBridge.symbol}</H.AmountRightUnderLabel>
+          <H.SwapBtn onClick={() => letsSwap()}>
             <H.BtnText>Swap</H.BtnText>
           </H.SwapBtn>
           <H.FeeWrap>
             <H.DescText>Transfer Fee</H.DescText>
             <H.DescText>
-              {amountToStr(amount * currentBridge.feeRate)}
-              {currentBridge.symbol}
+              {amountToStr(weiToEther(currentBridge.minFee))} {currentBridge.symbol}
             </H.DescText>
           </H.FeeWrap>
           {UnderDesc.map(({ id, desc }) => {
@@ -552,6 +648,7 @@ const H = {
     border-radius: 10px;
     background-color: #00c9e8;
     border: none;
+    cursor: pointer;
     @media screen and (min-width: 1088px) {
       width: 520px;
       height: 60px;
