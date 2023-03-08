@@ -70,6 +70,8 @@ const SwapDetail = () => {
   const [currentBridge, setCurrentBridge] = useState();
   const [amount, setAmount] = useState(0);
   const [avail, setAvail] = useState(0);
+  const [isSwapping, setIsSwapping] = useState(false);
+
   // const [currentNetwork, setCurrentNetwork] = useState();
   const queryClient = new QueryClient();
 
@@ -80,7 +82,7 @@ const SwapDetail = () => {
   const [account, setAccount] = useRecoilState(accountState);
   const [network, setNetwork] = useRecoilState(networkState);
 
-  const isSwapping = false;
+  const networkWhiteList = [56, 321];
 
   const providerOptions = {
     metamask: {
@@ -193,12 +195,7 @@ const SwapDetail = () => {
   // }, [currentNetwork]);
 
   useEffect(() => {
-    if (network === undefined) {
-      return;
-    }
-    const networkWhiteList = [56, 321];
-    // const networkWhiteList = [97, 322];
-    if (!networkWhiteList.includes(network)) {
+    if (network !== undefined && !networkWhiteList.includes(network)) {
       console.log('changeNetwork --force');
       changeNetwork(56);
     }
@@ -214,6 +211,11 @@ const SwapDetail = () => {
     //   return;
     // }
     // setCurrentBridge(currentBridge);
+
+    if (network !== undefined && !networkWhiteList.includes(network)) {
+      console.log('changeNetwork --force');
+      changeNetwork(56);
+    }
   }, [network]);
 
   useEffect(() => {
@@ -225,6 +227,11 @@ const SwapDetail = () => {
       // console.log(currentBridge);
       setCurrentBridge(currentBridge);
       connect();
+
+      if (network !== undefined && !networkWhiteList.includes(network)) {
+        console.log('changeNetwork --force');
+        changeNetwork(56);
+      }
     }
   }, [queryGetBridge.dataUpdatedAt]);
 
@@ -245,7 +252,7 @@ const SwapDetail = () => {
       alert('Too less');
       return;
     }
-
+    setIsSwapping(true);
     // TODO: swap 버튼 비활성화
     // TODO: 진행중 표시
 
@@ -260,6 +267,7 @@ const SwapDetail = () => {
     alert('Transfer complete!\nEstimated time of crosschain arrival is 10-30 min.');
 
     // TODO: swap 버튼 활성화
+    setIsSwapping(false);
     // TODO: 진행중 종료
   };
 
@@ -364,7 +372,7 @@ const SwapDetail = () => {
             Available: {amountToStr(avail)} {currentBridge.symbol}
           </H.AmountRightUnderLabel>
           <H.AmountRightUnderLabel color="#ffb900">Minimum: 10 {currentBridge.symbol}</H.AmountRightUnderLabel>
-          <H.SwapBtn onClick={() => letsSwap()}>
+          <H.SwapBtn onClick={() => letsSwap()} disabled={isSwapping}>
             <H.BtnText>Swap</H.BtnText>
           </H.SwapBtn>
           <H.FeeWrap>
@@ -411,7 +419,7 @@ const H = {
     border-radius: 20px;
     border: solid 1px #366a72;
     background-color: #1b1d27;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       width: 600px;
       height: 690px;
       margin-top: 135px;
@@ -431,7 +439,7 @@ const H = {
     letter-spacing: normal;
     text-align: left;
     color: #fff;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       width: 100%;
       height: 32px;
       margin: 0 81px 0 0;
@@ -460,7 +468,7 @@ const H = {
     letter-spacing: normal;
     text-align: left;
     color: #afafaf;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       height: 21px;
       margin-top: 40px;
       line-height: 1.31;
@@ -475,7 +483,7 @@ const H = {
     object-fit: contain;
     border-radius: 10px;
     border: solid 1px #7e7e7e;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       width: 220px;
       height: 70px;
       margin: 9px 0 0 0;
@@ -486,7 +494,7 @@ const H = {
     width: 20px;
     height: 18.9px;
     object-fit: contain;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       width: 40px;
       height: 40px;
       margin: 0 8px 0 0;
@@ -505,7 +513,7 @@ const H = {
     letter-spacing: normal;
     text-align: left;
     color: #fff;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       width: 47px;
       height: 32px;
       margin: 3px 7px 2.7px 12px;
@@ -518,7 +526,7 @@ const H = {
     height: 15px;
     margin-top: 0px;
     object-fit: contain;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       width: 26px;
       height: 26px;
       margin-top: 70px;
@@ -534,7 +542,7 @@ const H = {
     object-fit: contain;
     border-radius: 10px;
     border: solid 1px #7e7e7e;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       width: 520px;
       height: 60px;
       margin: 9px 0 0;
@@ -546,7 +554,7 @@ const H = {
     height: 20px;
     margin-top: 2.5px;
     object-fit: contain;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       width: 28px;
       height: 28px;
       margin-top: 0px;
@@ -565,7 +573,7 @@ const H = {
     letter-spacing: normal;
     text-align: center;
     color: #fff;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       width: 39px;
       height: 26px;
       margin: 0 0 0 16px;
@@ -611,7 +619,7 @@ const H = {
     decoration: none;
     background-color: transparent;
     border: none;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       width: 315px;
       height: 26px;
       margin: 0 16px 0 0;
@@ -624,7 +632,7 @@ const H = {
     height: 28px;
     object-fit: contain;
     border: solid 1px #7e7e7e;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       margin: 0.5px 0 0;
     }
   `,
@@ -641,7 +649,7 @@ const H = {
     letter-spacing: normal;
     text-align: center;
     color: #fff;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       width: 34px;
       height: 21px;
       margin: 0px 0 3.5px 16px;
@@ -662,7 +670,7 @@ const H = {
     letter-spacing: normal;
     text-align: right;
     color: ${({ color }) => (color ? color : '#fff')};
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       height: 21px;
       margin-top: 8px;
       font-size: 16px;
@@ -679,7 +687,7 @@ const H = {
     background-color: #00c9e8;
     border: none;
     cursor: pointer;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       width: 520px;
       height: 60px;
       margin: 40px 0 7px;
@@ -698,7 +706,7 @@ const H = {
     letter-spacing: normal;
     text-align: center;
     color: #fff;
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       height: 32px;
       font-size: 24px;
       line-height: 1.33;
@@ -721,7 +729,7 @@ const H = {
     letter-spacing: normal;
     text-align: left;
     color: ${({ color }) => (color ? color : '#fff')};
-    @media screen and (min-width: 1088px) {
+    @media screen and (min-width: 300px) {
       height: 19px;
       margin-top: 9px;
       font-size: 14px;
