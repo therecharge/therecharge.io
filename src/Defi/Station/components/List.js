@@ -24,6 +24,7 @@ import {
   getKusUsd,
   getwKcsUsd,
   getUsdtUsd,
+  getMapUsd
 } from '../../../api/contract'
 import moment from 'moment';
 import { bscAbi, kusLPAbi, pancakeAbi } from '../../../constants'
@@ -294,7 +295,8 @@ function List({ /*type, list,*/ params, toast, network, setTvl }) {
         'ASSA': await getAssaplayUsd(),
         'KUS': await getKusUsd(),
         'wKCS': await getwKcsUsd(),
-        'USDT': await getUsdtUsd()
+        'USDT': await getUsdtUsd(),
+        'MAP': await getMapUsd()
       }
 
       await ALL_NETWORK_CHARGERLIST.map(async (CHARGERLIST, network) => {
