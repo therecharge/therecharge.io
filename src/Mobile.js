@@ -2,7 +2,8 @@
 import Gnb from './Gnb/mobile';
 import Home from './Defi/mobile';
 import Station from './Defi/Station';
-import SwapDetail from './Defi/Bridge';
+import SwapDetail from './Defi/Swap'; // 기존의 Swap
+import SwapDetail2 from './Defi/Swap2'; // 새로 만든 Swap (bridge)
 /* Libraries */
 import React, { useState, useEffect, useRef } from 'react';
 import { Route, Switch } from 'react-router-dom';
@@ -194,6 +195,7 @@ const Mobile = React.memo(
             <Route path="/station" component={() => <Station toast={toast} />}></Route>
             {/* <Route path="/bridge" component={() => <SwapDetail toast={toast} />}></Route> */}
             <Route path="/swap" component={() => <SwapDetail toast={toast} />}></Route>
+            <Route path="/swap2" component={() => <SwapDetail2 toast={toast} />}></Route>
             <Route path="/" component={Home}></Route>
           </Switch>
           <style jsx global>{`
