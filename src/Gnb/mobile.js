@@ -69,7 +69,7 @@ function Gnb({ getTitle }) {
           <div className="dropdown">
             <div className={sidemenuOpen.home ? 'Roboto_35pt_Black' : 'Roboto_35pt_Nomal'}>
               <HashLink
-                to={'/bridge'}
+                to={'/swap'}
                 onClick={() => {
                   setMenuOpen(false);
                 }}

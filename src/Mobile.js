@@ -192,7 +192,8 @@ const Mobile = React.memo(
               )}
             ></Route> */}
             <Route path="/station" component={() => <Station toast={toast} />}></Route>
-            <Route path="/bridge" component={() => <SwapDetail toast={toast} />}></Route>
+            {/* <Route path="/bridge" component={() => <SwapDetail toast={toast} />}></Route> */}
+            <Route path="/swap" component={() => <SwapDetail toast={toast} />}></Route>
             <Route path="/" component={Home}></Route>
           </Switch>
           <style jsx global>{`

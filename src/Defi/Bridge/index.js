@@ -66,11 +66,11 @@ const UnderDesc = [
 // };
 
 const SwapDetail = () => {
-  const [bridges, setBridges] = useState([]);
+  // const [bridges, setBridges] = useState([]);
   const [currentBridge, setCurrentBridge] = useState();
   const [amount, setAmount] = useState(0);
   const [avail, setAvail] = useState(0);
-  const [currentNetwork, setCurrentNetwork] = useState(322);
+  // const [currentNetwork, setCurrentNetwork] = useState();
   const queryClient = new QueryClient();
 
   const queryGetBridge = useGetBridges();
@@ -79,6 +79,8 @@ const SwapDetail = () => {
   const [provider, setProvider] = useRecoilState(providerState);
   const [account, setAccount] = useRecoilState(accountState);
   const [network, setNetwork] = useRecoilState(networkState);
+
+  const isSwapping = false;
 
   const providerOptions = {
     metamask: {
@@ -110,7 +112,30 @@ const SwapDetail = () => {
     providerOptions,
   });
 
-  const connect = async () => {
+  const connectEventHandler = (provider) => {
+    if (!provider.on) {
+      return;
+    }
+    provider.on('open', async (info) => {
+      console.log('Wallet Connected!');
+    });
+    provider.on('accountsChanged', async (accounts) => {
+      setAccount(accounts[0]);
+      console.log('Account Changed');
+      console.log(accounts);
+    });
+    provider.on('chainChanged', async (chainId) => {
+      setNetwork(chainId);
+      console.log('Chain Id Changed');
+      console.log(chainId);
+    });
+    provider.on('disconnect', async (error) => {
+      onDisconnect(true);
+      console.log('Wallet lose connection.');
+    });
+  };
+
+  const connect = async (currentBridge) => {
     if (!window.ethereum && isMobile()) {
       window.open('https://metamask.app.link/dapp/defi.therecharge.io/bridge/', '_blank');
       return;
@@ -129,6 +154,8 @@ const SwapDetail = () => {
       setAccount(accounts[0]);
       setNetwork(network);
 
+      connectEventHandler(provider);
+
       const currentBridge = queryGetBridge.data.bridges.filter((item) => item.fromNetwork.chainId === network)[0];
       if (currentBridge === undefined) {
         // 브릿지 목록에서 현재 네트워크 못 찾을때
@@ -136,15 +163,13 @@ const SwapDetail = () => {
       }
       setCurrentBridge(currentBridge);
 
-      connectEventHandler(provider);
-
-      await connected(network, currentBridge, accounts);
+      await connected(web3, network, currentBridge, accounts);
     } catch (error) {
       console.error('error:', error);
     }
   };
 
-  const connected = async (network, currentBridge, accounts) => {
+  const connected = async (web3, network, currentBridge, accounts) => {
     console.log('connected -> currentBridge');
     console.log(network);
     console.log(currentBridge);
@@ -153,41 +178,67 @@ const SwapDetail = () => {
     }
 
     // avail 계산
-    const web3 = new Web3(currentBridge.fromNetwork.url);
     const contract = new web3.eth.Contract(ERC20_ABI, currentBridge.inTokenContract);
     const balance = await contract.methods.balanceOf(accounts[0]).call();
     setAvail(fromWei(balance));
   };
 
-  useEffect(() => {
-    changeNetwork(currentNetwork);
-    connect();
-  }, [currentNetwork]);
+  // useEffect(() => {
+  //   if (currentNetwork === undefined) {
+  //     return;
+  //   }
+  //   console.log('currentNetwork is changed');
+  //   changeNetwork(currentNetwork);
+  //   connect();
+  // }, [currentNetwork]);
 
   useEffect(() => {
-    if (network !== 322) {
-      changeNetwork(322);
+    if (network === undefined) {
+      return;
+    }
+    const networkWhiteList = [56, 321];
+    // const networkWhiteList = [97, 322];
+    if (!networkWhiteList.includes(network)) {
+      console.log('changeNetwork --force');
+      changeNetwork(56);
     }
   }, []);
 
   useEffect(() => {
-    if (queryGetBridge.isSuccess) {
-      console.log(queryGetBridge);
-      setBridges(queryGetBridge.data.bridges);
-      connect();
-      if (bridges.length === 0) {
-        return;
-      }
-    }
-  }, [queryGetBridge.isSuccess]);
+    console.log('useEffect - network');
 
-  if (!queryGetBridge.isSuccess) {
+    queryClient.invalidateQueries(['bridges']);
+    queryGetBridge.refetch();
+
+    // if (currentBridge === undefined) {
+    //   return;
+    // }
+    // setCurrentBridge(currentBridge);
+  }, [network]);
+
+  useEffect(() => {
+    console.log('useEffect - queryGetBridge');
+    console.log(queryGetBridge);
+
+    if (queryGetBridge.isSuccess) {
+      const currentBridge = queryGetBridge.data.bridges.filter((item) => item.fromNetwork.chainId === network)[0];
+      // console.log(currentBridge);
+      setCurrentBridge(currentBridge);
+      connect();
+    }
+  }, [queryGetBridge.dataUpdatedAt]);
+
+  if (queryGetBridge.isLoading) {
     return <h1>Loading...</h1>;
   }
 
   // 스왑버튼 누를 때 실행
   const letsSwap = async () => {
     if (currentBridge === undefined) {
+      return;
+    }
+    if (isNaN(amount)) {
+      alert('Wrong amount');
       return;
     }
     if (amount < 10) {
@@ -212,29 +263,6 @@ const SwapDetail = () => {
     // TODO: 진행중 종료
   };
 
-  const connectEventHandler = (provider) => {
-    if (!provider.on) {
-      return;
-    }
-    provider.on('open', async (info) => {
-      console.log('Wallet Connected!');
-    });
-    provider.on('accountsChanged', async (accounts) => {
-      setAccount(accounts[0]);
-      console.log('Account Changed');
-      console.log(accounts);
-    });
-    provider.on('chainChanged', async (chainId) => {
-      setNetwork(chainId);
-      console.log('Chain Id Changed');
-      console.log(chainId);
-    });
-    provider.on('disconnect', async (error) => {
-      onDisconnect(true);
-      console.log('Wallet lose connection.');
-    });
-  };
-
   const onDisconnect = async (event) => {
     if (!event && web3 && web3.currentProvider && web3.currentProvider.close) {
       await web3.currentProvider.close();
@@ -251,7 +279,7 @@ const SwapDetail = () => {
 
   const amountToStr = (value) => {
     if (value === 0) {
-      return '0.00';
+      return '-';
     } else if (!value) {
       return;
     } else {
@@ -275,14 +303,19 @@ const SwapDetail = () => {
       return result ?? '';
     }
   };
+
   const changeSwapNetwork = () => {
-    console.log('click');
-    console.log(network);
-    console.log(currentNetwork);
+    if (network === 56) {
+      changeNetwork(321);
+    }
+    if (network === 321) {
+      changeNetwork(56);
+    }
     if (network === 322) {
-      setCurrentNetwork(97);
-    } else {
-      setCurrentNetwork(322);
+      changeNetwork(97);
+    }
+    if (network === 97) {
+      changeNetwork(322);
     }
   };
 
