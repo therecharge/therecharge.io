@@ -120,13 +120,15 @@ const SwapDetail = () => {
     }
     try {
       const provider = await web3Modal.connect();
-      setProvider(provider);
       const web3 = new Web3(provider);
-      setWeb3(web3);
       const accounts = await web3.eth.getAccounts();
       const network = await web3.eth.getChainId();
+
+      setProvider(provider);
+      setWeb3(web3);
       setAccount(accounts[0]);
       setNetwork(network);
+
       const currentBridge = queryGetBridge.data.bridges.filter((item) => item.fromNetwork.chainId === network)[0];
       if (currentBridge === undefined) {
         // 브릿지 목록에서 현재 네트워크 못 찾을때
@@ -188,31 +190,26 @@ const SwapDetail = () => {
     if (currentBridge === undefined) {
       return;
     }
-    // 현재 네트워크 맞는지 한번 더 확인
+    if (amount < 10) {
+      alert('Too less');
+      return;
+    }
 
-    const testAmount = 1;
-    // const weiAmount = toWei(amount.toString(), 'ether');
-    const weiAmount = toWei(testAmount.toString(), 'ether');
+    // TODO: swap 버튼 비활성화
+    // TODO: 진행중 표시
 
-    const web3 = new Web3(currentBridge.fromNetwork.url);
-    const gasPrice = await web3.eth.getGasPrice();
-    const gasLimit = 300000;
-    const nonce = await web3.eth.getTransactionCount(account, 'pending');
+    const weiAmount = toWei(amount.toString(), 'ether');
     const contract = new web3.eth.Contract(ERC20_ABI, currentBridge.inTokenContract);
-    const data = contract.methods.transfer(currentBridge.address, weiAmount).encodeABI();
-    const tx = {
-      from: account,
-      to: currentBridge.address,
-      gas: gasLimit,
-      gasPrice: gasPrice,
-      data: data,
-      nonce: nonce,
-    };
+    console.log(account);
+    console.log(currentBridge.address);
+    console.log(amount);
+    console.log(weiAmount);
 
-    const signedTx = await web3.eth.signTransaction(tx);
-    const txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+    await contract.methods.transfer(currentBridge.address, weiAmount).send({ from: account });
+    alert('Transfer complete!\nEstimated time of crosschain arrival is 10-30 min.');
 
-    console.log(`Transaction hash: ${txHash}`);
+    // TODO: swap 버튼 활성화
+    // TODO: 진행중 종료
   };
 
   const connectEventHandler = (provider) => {
