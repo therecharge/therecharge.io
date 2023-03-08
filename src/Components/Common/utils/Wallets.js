@@ -63,9 +63,47 @@ export function changeNetwork(requireNetwork) {
         },
       ],
     },
+
+    0x142: {
+      id: 1,
+      jsonrpc: '2.0',
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: '0x142',
+          chainName: 'KCC-TESTNET',
+          rpcUrls: ['https://rpc-testnet.kcc.network'],
+          nativeCurrency: {
+            name: 'KCC-TESTNET',
+            symbol: 'KCS',
+            decimals: 18,
+          },
+          blockExplorerUrls: ['https://scan-testnet.kcc.network/'],
+        },
+      ],
+    },
+
+    0x61: {
+      id: 1,
+      jsonrpc: '2.0',
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: '0x61',
+          chainName: 'BSC-TESTNET',
+          rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545'],
+          nativeCurrency: {
+            name: 'BSC-TESTNET',
+            symbol: 'tBNB',
+            decimals: 18,
+          },
+          blockExplorerUrls: ['https://testnet.bscscan.com/'],
+        },
+      ],
+    },
   };
 
-  if (window.ethereum) window.ethereum.request(rpc[requireNetwork]);
+  if (window.ethereum) return window.ethereum.request(rpc[requireNetwork]);
   else {
     alert('Change Network not support.\r\nPlease change network your self');
   }
