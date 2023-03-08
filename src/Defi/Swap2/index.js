@@ -82,6 +82,8 @@ const SwapDetail = () => {
   const [account, setAccount] = useRecoilState(accountState);
   const [network, setNetwork] = useRecoilState(networkState);
 
+  const networkWhiteList = [56, 321];
+
   const providerOptions = {
     metamask: {
       id: 'injected',
@@ -193,12 +195,7 @@ const SwapDetail = () => {
   // }, [currentNetwork]);
 
   useEffect(() => {
-    if (network === undefined) {
-      return;
-    }
-    const networkWhiteList = [56, 321];
-    // const networkWhiteList = [97, 322];
-    if (!networkWhiteList.includes(network)) {
+    if (network !== undefined && !networkWhiteList.includes(network)) {
       console.log('changeNetwork --force');
       changeNetwork(56);
     }
@@ -214,6 +211,11 @@ const SwapDetail = () => {
     //   return;
     // }
     // setCurrentBridge(currentBridge);
+
+    if (network !== undefined && !networkWhiteList.includes(network)) {
+      console.log('changeNetwork --force');
+      changeNetwork(56);
+    }
   }, [network]);
 
   useEffect(() => {
@@ -225,6 +227,11 @@ const SwapDetail = () => {
       // console.log(currentBridge);
       setCurrentBridge(currentBridge);
       connect();
+
+      if (network !== undefined && !networkWhiteList.includes(network)) {
+        console.log('changeNetwork --force');
+        changeNetwork(56);
+      }
     }
   }, [queryGetBridge.dataUpdatedAt]);
 
