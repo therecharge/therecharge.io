@@ -2,8 +2,8 @@
 import Gnb from './Gnb/mobile';
 import Home from './Defi/mobile';
 import Station from './Defi/Station';
-import SwapDetail from './Defi/Swap'; // 기존의 Swap
-import SwapDetail2 from './Defi/Swap2'; // 새로 만든 Swap (bridge)
+import SwapDetail2 from './Defi/Swap'; // 새로만든 Swap
+import SwapDetail from './Defi/Swap2'; // 기존 Swap
 /* Libraries */
 import React, { useState, useEffect, useRef } from 'react';
 import { Route, Switch } from 'react-router-dom';

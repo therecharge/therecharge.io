@@ -252,8 +252,8 @@ const SwapDetail = () => {
       alert('Too less');
       return;
     }
-    setIsSwapping(true);
     // TODO: swap 버튼 비활성화
+    setIsSwapping(true);
     // TODO: 진행중 표시
 
     const weiAmount = toWei(amount.toString(), 'ether');
@@ -526,6 +526,7 @@ const H = {
     height: 15px;
     margin-top: 0px;
     object-fit: contain;
+    cursor: pointer;
     @media screen and (min-width: 300px) {
       width: 26px;
       height: 26px;
@@ -692,6 +693,10 @@ const H = {
       height: 60px;
       margin: 40px 0 7px;
       padding: 14px 231px;
+    }
+    :disabled {
+      pointer-events: none;
+      opacity: 0.6;
     }
   `,
   BtnText: styled.span`
