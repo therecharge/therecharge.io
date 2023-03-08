@@ -139,7 +139,7 @@ const SwapDetail = () => {
 
   const connect = async (currentBridge) => {
     if (!window.ethereum && isMobile()) {
-      window.open('https://metamask.app.link/dapp/defi.therecharge.io/bridge/', '_blank');
+      window.open('https://metamask.app.link/dapp/defi.therecharge.io/swap/', '_blank');
       return;
     }
     while (window.document.querySelectorAll('[id=WEB3_CONNECT_MODAL_ID]').length > 1) {
