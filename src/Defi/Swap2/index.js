@@ -195,8 +195,10 @@ const SwapDetail = () => {
   // }, [currentNetwork]);
 
   useEffect(() => {
-    if (network !== undefined && !networkWhiteList.includes(network)) {
+    if (network !== undefined && !networkWhiteList.includes(Number(network))) {
       console.log('changeNetwork --force');
+      console.log(network);
+      console.log(typeof network);
       changeNetwork(56);
     }
   }, []);
@@ -212,9 +214,10 @@ const SwapDetail = () => {
     // }
     // setCurrentBridge(currentBridge);
 
-    if (network !== undefined && !networkWhiteList.includes(network)) {
-      console.log('changeNetwork --force');
-      changeNetwork(56);
+    if (network !== undefined && !networkWhiteList.includes(Number(network))) {
+      console.log('changeNetwork --force (useEffect->network)');
+      console.log(network);
+      changeNetwork(321);
     }
   }, [network]);
 
@@ -228,9 +231,11 @@ const SwapDetail = () => {
       setCurrentBridge(currentBridge);
       connect();
 
-      if (network !== undefined && !networkWhiteList.includes(network)) {
-        console.log('changeNetwork --force');
-        changeNetwork(56);
+      if (network !== undefined && !networkWhiteList.includes(Number(network))) {
+        console.log('changeNetwork --force (useEffect->queryGetBridge.dataUpdatedAt)');
+        console.log(network);
+        console.log(typeof network);
+        changeNetwork(321);
       }
     }
   }, [queryGetBridge.dataUpdatedAt]);
