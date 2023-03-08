@@ -33,12 +33,12 @@ function Gnb({ getTitle }) {
             });
           }}
         >
-          <img src="/logo.png" />
+          <img src="/logo.png" alt="logo" />
         </HashLink>
       </Logo>
       <div className="state Roboto_30pt_Black">{getTitle()}</div>
       <div className="hamButton" onClick={() => open()}>
-        <img src={menuOpen ? '/ic_menu_close.svg' : '/ic_menu.svg'} />
+        <img src={menuOpen ? '/ic_menu_close.svg' : '/ic_menu.svg'} alt="menu toggle" />
       </div>
       <div className="nav" style={menuOpen ? { display: 'flex' } : { display: 'none' }}>
         <div className="dropdowns">

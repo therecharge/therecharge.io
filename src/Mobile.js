@@ -1,44 +1,33 @@
 /* Components */
-import Gnb from "./Gnb/mobile";
-import Home from "./Defi/mobile";
-import Station from "./Defi/Station";
-import Swap from "./Defi/Swap";
+import Gnb from './Gnb/mobile';
+import Home from './Defi/mobile';
+import Station from './Defi/Station';
+import SwapDetail from './Defi/Swap'; // 기존의 Swap
+import SwapDetail2 from './Defi/Swap2'; // 새로 만든 Swap (bridge)
 /* Libraries */
-import React, { useState, useEffect, useRef } from "react";
-import { Route, Switch } from "react-router-dom";
-import Web3 from "web3";
-import styled from "styled-components";
-import { Main } from "@aragon/ui";
-import { useRecoilState } from "recoil";
-import {
-  modalPoolOpenState,
-  modalSwapOpenState,
-  modalPool2OpenState,
-} from "./store/modal";
+import React, { useState, useEffect, useRef } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Web3 from 'web3';
+import styled from 'styled-components';
+import { Main } from '@aragon/ui';
+import { useRecoilState } from 'recoil';
+import { modalPoolOpenState, modalSwapOpenState, modalPool2OpenState } from './store/modal';
 
 const Mobile = React.memo(
   ({ web3Modal, toast }) => {
     const [account, setAccount] = useState(undefined);
     const [chainId, setChainId] = useState(-1);
-    const [web3, setWeb3] = useState(
-      new Web3(
-        "https://eth-ropsten.alchemyapi.io/v2/HTyoniu4l4byjCl-JpWjerrearvI__4x"
-      )
-    );
+    const [web3, setWeb3] = useState(new Web3('https://eth-ropsten.alchemyapi.io/v2/HTyoniu4l4byjCl-JpWjerrearvI__4x'));
 
-    const [page, setPage] = useState("/");
+    const [page, setPage] = useState('/');
     const [countDown, setCountDown] = useState(null);
-    const [modalPoolOpen, setModalPoolOpen] = useRecoilState(
-      modalPoolOpenState
-    );
-    const [modalSwapOpen, setModalSwapOpen] = useRecoilState(
-      modalSwapOpenState
-    );
+    const [modalPoolOpen, setModalPoolOpen] = useRecoilState(modalPoolOpenState);
+    const [modalSwapOpen, setModalSwapOpen] = useRecoilState(modalSwapOpenState);
     const [modal2Open, setModal2Open] = useRecoilState(modalPool2OpenState);
     const [params, setParams] = useState({
-      type: "Flexible",
+      type: 'Flexible',
       isLP: false,
-      address: "0x",
+      address: '0x',
     });
 
     // Chosen wallet provider given by the dialog window
@@ -47,7 +36,7 @@ const Mobile = React.memo(
     async function fetchAccountData() {
       // Get a Web3 instance for the wallet
       const web3 = new Web3(provider);
-      console.log("Web3 instance is", web3);
+      console.log('Web3 instance is', web3);
       // Get list of accounts of the connected wallet
       const accounts = await web3.eth.getAccounts();
       // Get connected chain id from Ethereum node
@@ -57,18 +46,13 @@ const Mobile = React.memo(
     }
 
     async function refreshAccountData() {
-      console.log("refreshAccountData");
+      console.log('refreshAccountData');
       await fetchAccountData(provider);
     }
 
     async function onDisconnect(event) {
-      toast("Disconnecting Wallet");
-      if (
-        !event &&
-        web3 &&
-        web3.currentProvider &&
-        web3.currentProvider.close
-      ) {
+      toast('Disconnecting Wallet');
+      if (!event && web3 && web3.currentProvider && web3.currentProvider.close) {
         await web3.currentProvider.close();
       }
       await web3Modal.clearCachedProvider();
@@ -79,42 +63,40 @@ const Mobile = React.memo(
       if (!provider.on) {
         return;
       }
-      provider.on("open", async (info) => {
-        toast("Wallet Connected!");
+      provider.on('open', async (info) => {
+        toast('Wallet Connected!');
         fetchAccountData(provider);
       });
-      provider.on("close", () => onDisconnect(true));
-      provider.on("accountsChanged", async (accounts) => {
+      provider.on('close', () => onDisconnect(true));
+      provider.on('accountsChanged', async (accounts) => {
         fetchAccountData(provider);
-        toast("Account Changed");
+        toast('Account Changed');
       });
-      provider.on("chainChanged", async (chainId) => {
+      provider.on('chainChanged', async (chainId) => {
         const networkId = await web3.eth.net.getId();
         fetchAccountData(provider);
-        toast("Chain Id Changed");
+        toast('Chain Id Changed');
       });
 
-      provider.on("networkChanged", async (networkId) => {
+      provider.on('networkChanged', async (networkId) => {
         // const chainId = await web3.eth.chainId();
         fetchAccountData(provider);
-        toast("Network Changed");
+        toast('Network Changed');
       });
-      provider.on("disconnect", async (error) => {
-        toast("Wallet lose connection.");
+      provider.on('disconnect', async (error) => {
+        toast('Wallet lose connection.');
       });
     }
     async function ConnectWallet() {
-      console.log("Opening a dialog", web3Modal);
-      toast("Please Connect Wallet");
+      console.log('Opening a dialog', web3Modal);
+      toast('Please Connect Wallet');
       try {
         provider = await web3Modal.connect();
-        toast("Wallet Connected!");
+        toast('Wallet Connected!');
         connectEventHandler(provider);
       } catch (e) {
-        e
-          ? toast("Wallet Connect Failed. Please try again")
-          : toast("Wallet Connect Failed. Please Log-in metamask");
-        console.log("Could not get a wallet connection", e);
+        e ? toast('Wallet Connect Failed. Please try again') : toast('Wallet Connect Failed. Please Log-in metamask');
+        console.log('Could not get a wallet connection', e);
         return;
       }
 
@@ -146,17 +128,17 @@ const Mobile = React.memo(
     useTimeout(() => onDisconnect(), countDown);
 
     const getTitle = () => {
-      const path = window.location.pathname.split("/")[1];
-      const path2 = window.location.pathname.split("/")[2];
+      const path = window.location.pathname.split('/')[1];
+      const path2 = window.location.pathname.split('/')[2];
       // return path;
 
       switch (path) {
-        case "station":
-          return "Charging Station";
-        case "swap":
-          return "Recharge Swap";
+        case 'station':
+          return 'Charging Station';
+        case 'swap':
+          return 'Recharge Swap';
         default:
-          return "Overview";
+          return 'Overview';
       }
     };
 
@@ -172,7 +154,7 @@ const Mobile = React.memo(
 
     return (
       <Main layout={false}>
-        <div className={"desktop " + getTitle()}>
+        <div className={'desktop ' + getTitle()}>
           <Gnb
             connectWallet={ConnectWallet}
             onDisconnect={onDisconnect}
@@ -210,14 +192,10 @@ const Mobile = React.memo(
                 />
               )}
             ></Route> */}
-            <Route
-              path="/station"
-              component={() => <Station toast={toast} />}
-            ></Route>
-            <Route
-              path="/swap"
-              component={() => <Swap toast={toast} />}
-            ></Route>
+            <Route path="/station" component={() => <Station toast={toast} />}></Route>
+            {/* <Route path="/bridge" component={() => <SwapDetail toast={toast} />}></Route> */}
+            <Route path="/swap" component={() => <SwapDetail toast={toast} />}></Route>
+            <Route path="/swap2" component={() => <SwapDetail2 toast={toast} />}></Route>
             <Route path="/" component={Home}></Route>
           </Switch>
           <style jsx global>{`
@@ -225,7 +203,7 @@ const Mobile = React.memo(
               width: 100%;
               margin: 0px;
               padding: 0px;
-              font-family: "Roboto", sans-serif;
+              font-family: 'Roboto', sans-serif;
               background-color: #03051d;
             }
             div {

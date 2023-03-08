@@ -100,7 +100,7 @@ export function changeNetwork(requireNetwork) {
           blockExplorerUrls: ['https://testnet.bscscan.com/'],
         },
       ],
-    }
+    },
   };
 
   if (window.ethereum) return window.ethereum.request(rpc[requireNetwork]);
