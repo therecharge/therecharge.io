@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useTranslation } from "react-i18next";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 // Components
 // import Networks from "./components/Networks";
 // import Slider from "./components/Slider";
-import List from "./components/List";
-import List_Private from "./components/List_Private";
-import Header from "./components/Header";
-import Header_Private from "./components/Header_Private";
+import List from './components/List';
+// import List_Private from "./components/List_Private";
+import Header from './components/Header';
+// import Header_Private from "./components/Header_Private";
 function Station(props) {
   const [t] = useTranslation();
   const [params, setParams] = useState({
-    type: "ALL",
-    isLP: "ALL",
-    address: "0x", // useless?
+    type: 'ALL',
+    isLP: 'ALL',
+    address: '0x', // useless?
   });
-  const [network, setNetwork] = useState("ALL");
+  const [network, setNetwork] = useState('ALL');
   const [tvl, setTvl] = useState(0);
   const [privateTvl, setPrivateTvl] = useState(0);
 
@@ -27,13 +27,7 @@ function Station(props) {
   // }, [network]);
 
   return (
-    <Container
-      style={
-        window.innerWidth > 1088
-          ? { marginTop: "80px" }
-          : { marginTop: "100.5px" }
-      }
-    >
+    <Container style={window.innerWidth > 1088 ? { marginTop: '80px' } : { marginTop: '100.5px' }}>
       <Content>
         <span className="Roboto_50pt_Black pool-title1">Charging Station</span>
         <Header
@@ -46,19 +40,14 @@ function Station(props) {
         />
         {/* <Networks setNetwork={setNetwork} network={network} /> */}
         {/* <Slider setParams={setParams} params={params} /> */}
-        <List
-          params={params}
-          toast={props.toast}
-          network={network}
-          setTvl={setTvl}
-        />
-        <Header_Private />
+        <List params={params} toast={props.toast} network={network} setTvl={setTvl} />
+        {/* <Header_Private />
         <List_Private
           params={params}
           toast={props.toast}
           network={network}
           setPrivateTvl={setPrivateTvl}
-        />
+        /> */}
       </Content>
     </Container>
   );
