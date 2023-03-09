@@ -190,7 +190,7 @@ function ConnectWallet({
           case '2':
             if (account && isChainCorrect()) onClickEvent();
             else if (!account) connect();
-            else if (!isChainCorrect()) changeNetwork(requireNetwork);
+            else if (!isChainCorrect() && requireNetwork !== 1) changeNetwork(requireNetwork);
             break;
         }
       }}
