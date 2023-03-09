@@ -332,9 +332,20 @@ const SwapDetail = () => {
     }
   };
 
+  const mobileConnectClick = () => {
+    window.open('https://metamask.app.link/dapp/defi.therecharge.io/swap/', '_blank');
+  };
+
   const isMobile = () => {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   };
+  if (!window.ethereum && isMobile()) {
+    return (
+      <H.WalletConnectWrap onClick={() => mobileConnectClick()}>
+        <H.WalletConnectBtn>Wallet Connect</H.WalletConnectBtn>
+      </H.WalletConnectWrap>
+    );
+  }
 
   return (
     <H.ContentWrap>
@@ -745,5 +756,29 @@ const H = {
       font-size: 14px;
       line-height: 1.36;
     }
+  `,
+  WalletConnectWrap: styled.div`
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 400px;
+    height: 70px;
+    border: 2px solid #ffb900;
+    border-radius: 210px;
+    cursor: pointer;
+  `,
+  WalletConnectBtn: styled.span`
+    font-family: Roboto;
+    font-size: 40px;
+    font-weight: 900;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.7;
+    letter-spacing: normal;
+    text-align: center;
+    color: #ffffff;
   `,
 };
