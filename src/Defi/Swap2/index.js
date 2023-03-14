@@ -249,7 +249,7 @@ const SwapDetail = () => {
     if (currentBridge === undefined) {
       return;
     }
-    if (isNaN(amount)) {
+    if (amountToNum(amount) === undefined) {
       alert('Wrong amount');
       return;
     }
@@ -274,6 +274,7 @@ const SwapDetail = () => {
     // TODO: swap 버튼 활성화
     setIsSwapping(false);
     // TODO: 진행중 종료
+    setAmount(0);
   };
 
   const onDisconnect = async (event) => {
