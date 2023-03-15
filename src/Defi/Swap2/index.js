@@ -249,31 +249,31 @@ const SwapDetail = () => {
     if (currentBridge === undefined) {
       return;
     }
-    if (isNaN(amount)) {
+    const swapAmount = amountToNum(amount);
+    if (swapAmount === undefined) {
       alert('Wrong amount');
       return;
     }
-    if (amount < 10) {
+
+    if (swapAmount < 10) {
       alert('Too less');
       return;
     }
-    // TODO: swap 버튼 비활성화
-    setIsSwapping(true);
-    // TODO: 진행중 표시
 
-    const weiAmount = toWei(amount.toString(), 'ether');
+    setIsSwapping(true);
+
+    const weiAmount = toWei(swapAmount.toString(), 'ether');
     const contract = new web3.eth.Contract(ERC20_ABI, currentBridge.inTokenContract);
     console.log(account);
     console.log(currentBridge.address);
-    console.log(amount);
+    console.log(swapAmount);
     console.log(weiAmount);
 
     await contract.methods.transfer(currentBridge.address, weiAmount).send({ from: account });
     alert('Transfer complete!\nEstimated time of crosschain arrival is 10-30 min.');
 
-    // TODO: swap 버튼 활성화
     setIsSwapping(false);
-    // TODO: 진행중 종료
+    setAmount(0);
   };
 
   const onDisconnect = async (event) => {
