@@ -69,3 +69,14 @@ export const getMapUsd = async () => {
       return 0;
     });
 }
+
+
+
+export const getCchgUsd = async () => {
+  return await axios
+    .get('https://api.coingecko.com/api/v3/coins/c-charge')
+    .then((resp) => resp.data.market_data.current_price.usd)
+    .catch((err) => {
+      return 0;
+    });
+}
