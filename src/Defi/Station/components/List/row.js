@@ -636,10 +636,16 @@ function Name({ status, name, info, isLP, isLocked, allContractInfo }) {
           }
           style={
             window.innerWidth > 1088
-              ? name.includes('LP') || info.name === '4.3 MAP Locked' || info.name === '3.31 CCHG Locked'
+              ? name.includes('LP') ||
+                info.name === '4.3 MAP Locked' ||
+                info.name === '5.2 CCHG Locked' ||
+                info.name === '5.2 MAP Locked'
                 ? { width: '70px', height: '40px' }
                 : { width: '40px', height: '40px' }
-              : name.includes('LP') || info.name === '4.3 MAP Locked' || info.name === '3.31 CCHG Locked'
+              : name.includes('LP') ||
+                info.name === '4.3 MAP Locked' ||
+                info.name === '5.2 CCHG Locked' ||
+                info.name === '5.2 MAP Locked'
               ? { width: '88px', height: '50px' }
               : { width: '50px', height: '50px' }
           }
