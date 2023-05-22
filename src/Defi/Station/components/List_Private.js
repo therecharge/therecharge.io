@@ -84,9 +84,9 @@ function List({ /*type, list,*/ params, toast, network, setPrivateTvl }) {
     return filterData[0].minimum;
   };
   const loadChargerList = async () => {
-    const priceData = await axios.post(`https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`, {
-      query: 'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
-    });
+    // const priceData = await axios.post(`https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2`, {
+    //   query: 'query{pairs(where:{id:"0x9c20be0f142fb34f10e33338026fb1dd9e308da3"}) { token0Price token1Price }}',
+    // });
     // const RCG_PRICE = makeNum(priceData.data.data.pairs[0].token0Price);
     const RCG_PRICE = await getRcgUsd();
 
