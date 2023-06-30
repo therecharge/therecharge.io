@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 // import Slider from "./components/Slider";
 import List from './components/List';
 import Header from './components/Header';
-import Header_Private from './components/Header_Private';
-import List_Private from './components/List_Private';
+// import Header_Private from './components/Header_Private';
+// import List_Private from './components/List_Private';
 function Station(props) {
   const [t] = useTranslation();
   const [params, setParams] = useState({
@@ -41,8 +41,8 @@ function Station(props) {
         {/* <Networks setNetwork={setNetwork} network={network} /> */}
         {/* <Slider setParams={setParams} params={params} /> */}
         <List params={params} toast={props.toast} network={network} setTvl={setTvl} />
-        <Header_Private />
-        <List_Private params={params} toast={props.toast} network={network} setPrivateTvl={setPrivateTvl} />
+        {/* <Header_Private />
+        <List_Private params={params} toast={props.toast} network={network} setPrivateTvl={setPrivateTvl} /> */}
       </Content>
     </Container>
   );
